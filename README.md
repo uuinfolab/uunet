@@ -1,13 +1,19 @@
-multinet
+uunet
 ===============
 
-A library for the analysis and mining of multilayer networks, based on the book: Multilayer Social Networks, by Dickison, Magnani and Rossi, Cambridge University Press. This is available as a C++ library and as an R library. A stable version of the R library is also available on CRAN.
+A repository for the analysis and mining of networks maintained by the Uppsala University Information Laboratory.
 
+This repository contains:
+* a C++ library provising the native implementation of most of the data storage and analysis functions
+developed at our lab.
+* the multinet R library, making the C++ functions about multilayer network analysis available as an R package.
+This is based on the book: Multilayer Social Networks, by Dickison, Magnani &
+Rossi, Cambridge University Press (2016), and the latest stable version is also available on CRAN.
 
 Documentation
 -------------
 
-* A doxygen generated *API reference* which lists all types and functions of the library.
+* A doxygen generated *API reference* which lists all types and functions of the C++ library.
 * [Unit Tests](test/) which contain small code snippets used to test each library feature.
 
 Requirements
@@ -15,8 +21,7 @@ Requirements
 
 The multinet library requires:
 
-* A modern, C++11 ready compiler such as `g++` version 4.7 or higher
-or `clang` version 3.2 or higher.
+* A modern, C++14-ready compiler.
 * The *cmake* build system.
 
 Installation - C++
@@ -25,7 +30,7 @@ Installation - C++
 To download and install the library use the following commands.
 
 ```sh
-git clone https://github.com/magnanim/multinet.git
+git clone https://magnanim@bitbucket.org/uuinfolab/net.git
 cd net
 cd C++
 
@@ -36,15 +41,13 @@ cmake ..
 make
 ```
 
-This compiles and generates a sahred library into the `build` directory in the
-root library. A different location can be specified by executing cmake from
-another folder.
+This compiles and generates a shared library into the `build` directory.
+A different location can be specified by executing cmake from another folder.
 
 The documentation is generated inside the `build/doc` directory, while the
 testing suite will reside in `build/test`. In order run the test suite execute:
 
 ```sh
-cd test
 ./net-tests
 ```
 
@@ -70,5 +73,8 @@ folder and copy into it:
 Then: 
 ```sh
 R CMD build Rmultinet
-R CMD check multinet_1.1.1.tar.gz
+R CMD check multinet_<current_version_number>.tar.gz
+R
+> install.packages("multinet_<current_version_number>.tar.gz", repos=NULL)
 ```
+
