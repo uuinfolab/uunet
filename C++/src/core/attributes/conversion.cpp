@@ -147,17 +147,8 @@ epoch_to_time (
 )
 {
     int seconds_since_epoch = to_int(time_as_string);
-    std::tm epoch = {};
-    std::istringstream time_epoch("1970-01-01 00:00:00 +0");
-    time_epoch >> std::get_time(&epoch, "%F %T %z");
-
-    Time result = core::timegm(&epoch);
-
-    if (result == (time_t) -1)
-        throw WrongFormatException("Error converting epoch string to time: " +
-                                   time_as_string);
-
-    return result + seconds_since_epoch;
+    
+    return epoch_to_time(seconds_since_epoch);
 }
 
 
@@ -166,17 +157,16 @@ epoch_to_time (
     int seconds_since_epoch
 )
 {
-    std::tm epoch = {};
+    /*std::tm epoch = {};
     std::istringstream time_epoch("1970-01-01 00:00:00 +0");
     time_epoch >> std::get_time(&epoch, "%F %T %z");
-
-    Time result = core::timegm(&epoch);
-
-    if (result == (time_t) -1)
-        throw WrongFormatException("Error converting epoch string to time: " +
-                                   to_string(seconds_since_epoch));
-
-    return result + seconds_since_epoch;
+    */
+    time_t epoch = to_time("1970-01-01 00:00:00", "%F %T");
+    time_t epoch_plus_one = to_time("1970-01-01 00:00:01", "%F %T");
+    double one_second = std::difftime(epoch_plus_one, epoch);
+    
+    return epoch + one_second*seconds_since_epoch;
+    
 }
 
 
