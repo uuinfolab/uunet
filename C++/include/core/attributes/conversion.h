@@ -178,7 +178,7 @@ epoch_to_time(
  */
 Time
 epoch_to_time(
-    long seconds_since_epoch
+    int seconds_since_epoch
 );
 
 

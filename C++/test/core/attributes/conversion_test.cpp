@@ -35,10 +35,10 @@ TEST(core_attributes_conversion_test, from_string)
     EXPECT_EQ(uu::core::Text("some text..."), uu::core::to_text("some text..."))
     << "Wrong result: to_text";
     
-    EXPECT_EQ(uu::core::Time(17874835387), uu::core::to_time("2536-06-06 16:03:07"))
+    EXPECT_EQ(uu::core::epoch_to_time(3667), uu::core::to_time("1970-01-01 01:01:07"))
     << "Wrong result: to_time(string)";
     
-    EXPECT_EQ(uu::core::Time(17874835387), uu::core::to_time("2536/06/06 16:03:07", "%Y/%m/%d %H:%M:%S"))
+    EXPECT_EQ(uu::core::epoch_to_time(3667), uu::core::to_time("1970/01/01 01:01:07", "%Y/%m/%d %H:%M:%S"))
     << "Wrong result: to_time(string, format)";
     
 }
@@ -47,10 +47,10 @@ TEST(core_attributes_conversion_test, from_string)
 TEST(core_attributes_conversion_test, epoch_to_time)
 {
     
-    EXPECT_EQ(uu::core::Time(17874835387), uu::core::epoch_to_time(17874835387))
+    EXPECT_EQ(uu::core::to_time("1970-01-01 01:01:07"), uu::core::epoch_to_time(3667))
     << "Wrong result: epoch_to_time(long)";
     
-    EXPECT_EQ(uu::core::Time(17874835387), uu::core::epoch_to_time("17874835387"))
+    EXPECT_EQ(uu::core::to_time("1970-01-01 01:01:07"), uu::core::epoch_to_time("3667"))
     << "Wrong result: epoch_to_time(string)";
     
 }

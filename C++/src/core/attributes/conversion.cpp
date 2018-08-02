@@ -146,10 +146,10 @@ epoch_to_time (
     const std::string& time_as_string
 )
 {
-    long seconds_since_epoch = to_long(time_as_string);
+    int seconds_since_epoch = to_int(time_as_string);
     std::tm epoch = {};
-    std::istringstream time_epoch("1970-01-01 00:00:00");
-    time_epoch >> std::get_time(&epoch, "%F %T");
+    std::istringstream time_epoch("1970-01-01 00:00:00 +0");
+    time_epoch >> std::get_time(&epoch, "%F %T %z");
 
     Time result = core::timegm(&epoch);
 
@@ -163,7 +163,7 @@ epoch_to_time (
 
 Time
 epoch_to_time (
-    long seconds_since_epoch
+    int seconds_since_epoch
 )
 {
     std::tm epoch = {};
