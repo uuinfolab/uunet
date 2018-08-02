@@ -249,7 +249,7 @@ get_next()
     {
         std::vector<std::string> quoted_record;
         bool quote_on = false;
-        int quote_start = -1;
+        size_t quote_start = 0;
 
         for (size_t pos=0; pos<record.size(); pos++)
         {

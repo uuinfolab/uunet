@@ -64,7 +64,7 @@ class
      * @param name name of the element.
      * @return a pointer to the requested element, or nullptr if it does not exist.
      **/
-    E * const
+    E *
     get(
         const std::string& name
     ) const;
@@ -108,7 +108,7 @@ add(
 }
 
 template <typename E>
-E * const
+E * 
 LabeledUniquePtrSortedRandomSet<E>::
 get(
     const std::string& name
