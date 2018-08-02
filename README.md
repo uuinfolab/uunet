@@ -4,6 +4,7 @@ uunet
 A repository for the analysis and mining of networks maintained by the Uppsala University Information Laboratory.
 
 This repository contains:
+
 * a C++ library provising the native implementation of most of the data storage and analysis functions
 developed at our lab.
 * the multinet R library, making the C++ functions about multilayer network analysis available as an R package.
