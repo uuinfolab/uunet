@@ -13,4 +13,4 @@ pipelines:
           - cd build
           - cmake -D CMAKE_BUILD_TYPE=Debug ..
           - make
-          - ./net-tests
+          - ./core-tests
