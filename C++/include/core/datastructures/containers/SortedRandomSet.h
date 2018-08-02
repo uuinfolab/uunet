@@ -55,10 +55,10 @@ class SortedRandomSet
     size_t num_entries = 0;
 
     /* Maximum level */
-    int MAX_LEVEL = 0;
+    size_t MAX_LEVEL = 0;
 
     /* Current maximum level in use. */
-    int level;
+    size_t level;
 
   public:
 

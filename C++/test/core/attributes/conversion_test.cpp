@@ -17,7 +17,7 @@ TEST(core_attributes_conversion_test, to_string)
     EXPECT_EQ("some text...", uu::core::to_string(uu::core::Text("some text...")))
     << "Wrong result: to_string(text)";
     
-    EXPECT_EQ("2536-06-06 16:03:07", uu::core::to_string(uu::core::Time(17874835387)))
+    EXPECT_EQ("1970-01-01 01:01:07", uu::core::to_string(uu::core::epoch_to_time(3667)))
     << "Wrong result: to_string(time)";
     
 }

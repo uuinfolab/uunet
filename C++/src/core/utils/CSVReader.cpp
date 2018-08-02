@@ -251,7 +251,7 @@ get_next()
         bool quote_on = false;
         int quote_start = -1;
 
-        for (int pos=0; pos<record.size(); pos++)
+        for (size_t pos=0; pos<record.size(); pos++)
         {
             std::string f = record.at(pos);
 
@@ -293,7 +293,7 @@ get_next()
 
                     std::stringstream ss;
 
-                    for (int i=quote_start; i<=pos; i++)
+                    for (size_t i=quote_start; i<=pos; i++)
                     {
                         ss << record.at(i);
 

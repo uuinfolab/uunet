@@ -157,12 +157,8 @@ epoch_to_time (
     int seconds_since_epoch
 )
 {
-    /*std::tm epoch = {};
-    std::istringstream time_epoch("1970-01-01 00:00:00 +0");
-    time_epoch >> std::get_time(&epoch, "%F %T %z");
-    */
-    time_t epoch = to_time("1970-01-01 00:00:00", "%F %T");
-    time_t epoch_plus_one = to_time("1970-01-01 00:00:01", "%F %T");
+    time_t epoch = to_time("1970-01-01 00:00:00", "%Y-%m-%d %H:%M:%S");
+    time_t epoch_plus_one = to_time("1970-01-01 00:00:01", "%Y-%m-%d %H:%M:%S");
     double one_second = std::difftime(epoch_plus_one, epoch);
     
     return epoch + one_second*seconds_since_epoch;

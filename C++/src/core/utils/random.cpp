@@ -64,7 +64,7 @@ random_level(
 
     double num = std::log(r);
     double denum = std::log(1.0-P);
-    int lvl = (int)(num/denum);
+    size_t lvl = (size_t)(num/denum);
     return lvl < MAX_LEVEL ? lvl : MAX_LEVEL;
 }
 
