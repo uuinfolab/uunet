@@ -57,26 +57,26 @@ add(
 
 
     /// MULTI SPEC.
-    cidx_edges_by_vertices[e->v1->id][e->v2->id].insert(new_edge);
+    cidx_edges_by_vertices[e->v1][e->v2].insert(new_edge);
 
     /// DIR SPECIFIC.
     if (edge_directionality==EdgeDir::UNDIRECTED)
     {
-        cidx_edges_by_vertices[e->v2->id][e->v1->id].insert(new_edge);
+        cidx_edges_by_vertices[e->v2][e->v1].insert(new_edge);
 
-        if (sidx_neighbors_out.count(e->v2->id)==0)
+        if (sidx_neighbors_out.count(e->v2)==0)
         {
-            sidx_neighbors_out[e->v2->id] = std::make_unique<VertexList>();
+            sidx_neighbors_out[e->v2] = std::make_unique<VertexList>();
         }
 
-        sidx_neighbors_out[e->v2->id]->add(e->v1);
+        sidx_neighbors_out[e->v2]->add(e->v1);
 
-        if (sidx_neighbors_in.count(e->v1->id)==0)
+        if (sidx_neighbors_in.count(e->v1)==0)
         {
-            sidx_neighbors_in[e->v1->id] = std::make_unique<VertexList>();
+            sidx_neighbors_in[e->v1] = std::make_unique<VertexList>();
         }
 
-        sidx_neighbors_in[e->v1->id]->add(e->v2);
+        sidx_neighbors_in[e->v1]->add(e->v2);
     }
 
 
@@ -94,17 +94,15 @@ get(
 {
     core::SortedRandomSet<const Edge*> result;
 
-    if (cidx_edges_by_vertices.count(vertex1->id)>0 &&
-            cidx_edges_by_vertices.at(vertex1->id).count(vertex2->id)>0)
+    if (cidx_edges_by_vertices.count(vertex1)>0 &&
+            cidx_edges_by_vertices.at(vertex1).count(vertex2)>0)
     {
-        auto edges = cidx_edges_by_vertices.at(vertex1->id).at(vertex2->id);
+        auto edges = cidx_edges_by_vertices.at(vertex1).at(vertex2);
 
         for (auto edge: edges)
         {
             result.add(edge);
         }
-
-        //return result;
     }
 
     return result;
@@ -126,32 +124,32 @@ erase(
         obs->notify_erase(edge);
     }
 
-    cidx_edges_by_vertices[edge->v1->id][edge->v2->id].erase(edge);
+    cidx_edges_by_vertices[edge->v1][edge->v2].erase(edge);
 
-    if (cidx_edges_by_vertices[edge->v1->id][edge->v2->id].size()==0)
+    if (cidx_edges_by_vertices[edge->v1][edge->v2].size()==0)
     {
-        sidx_neighbors_in[edge->v2->id]->erase(edge->v1);
-        sidx_neighbors_out[edge->v1->id]->erase(edge->v2);
+        sidx_neighbors_in[edge->v2]->erase(edge->v1);
+        sidx_neighbors_out[edge->v1]->erase(edge->v2);
     }
 
     // if the edge is directed, we erase neighbors only if there isn't
     // any edge in the other direction keeping them neighbors
-    if (edge->directionality==EdgeDir::DIRECTED && cidx_edges_by_vertices[edge->v2->id][edge->v1->id].size()==0)
+    if (edge->dir==EdgeDir::DIRECTED && cidx_edges_by_vertices[edge->v2][edge->v1].size()==0)
     {
-        sidx_neighbors_all[edge->v2->id]->erase(edge->v1);
-        sidx_neighbors_all[edge->v1->id]->erase(edge->v2);
+        sidx_neighbors_all[edge->v2]->erase(edge->v1);
+        sidx_neighbors_all[edge->v1]->erase(edge->v2);
     }
 
-    if (edge->directionality==EdgeDir::UNDIRECTED)
+    if (edge->dir==EdgeDir::UNDIRECTED)
     {
-        cidx_edges_by_vertices[edge->v2->id][edge->v1->id].erase(edge);
+        cidx_edges_by_vertices[edge->v2][edge->v1].erase(edge);
 
-        if (cidx_edges_by_vertices[edge->v1->id][edge->v2->id].size()==0)
+        if (cidx_edges_by_vertices[edge->v1][edge->v2].size()==0)
         {
-            sidx_neighbors_in[edge->v1->id]->erase(edge->v2);
-            sidx_neighbors_out[edge->v2->id]->erase(edge->v1);
-            sidx_neighbors_all[edge->v1->id]->erase(edge->v2);
-            sidx_neighbors_all[edge->v2->id]->erase(edge->v1);
+            sidx_neighbors_in[edge->v1]->erase(edge->v2);
+            sidx_neighbors_out[edge->v2]->erase(edge->v1);
+            sidx_neighbors_all[edge->v1]->erase(edge->v2);
+            sidx_neighbors_all[edge->v2]->erase(edge->v1);
         }
     }
 
@@ -200,9 +198,10 @@ MultiEdgeStore::
 summary(
 ) const
 {
-    std::string summary = std::to_string(size()) + " multi edges";
+    std::string summary = std::to_string(size()) + " multiedges";
     return summary;
 }
+
 
 
 }

@@ -9,23 +9,31 @@
 #include <unordered_set>
 #include <unordered_map>
 #include "core/datastructures/containers/SharedPtrSortedRandomSet.h"
-#include "core/datastructures/containers/Attributed.h"
-#include "core/datastructures/observers/Observer.h"
 #include "core/datastructures/observers/Subject.h"
 #include "net/datastructures/objects/Edge.h"
+#include "net/datastructures/objects/EdgeMode.h"
 #include "net/datastructures/objects/Vertex.h"
-#include "net/datastructures/objects/EdgeList.h"
 #include "net/datastructures/objects/VertexList.h"
 #include "core/exceptions/OperationNotSupportedException.h"
 
 namespace uu {
 namespace net {
 
+    /**
+     * An Edge Store is a basic class to store edges. It provides functionality shared among
+     * different types of edge stores.
+     *
+     * Once an edge store has been created with a given directionality (DIRECTED or UNDIRECTED),
+     * only edges with the same directionality can be added to the store.
+     */
 class EdgeStore :
     public core::SharedPtrSortedRandomSet<const Edge>,
     public core::Subject<const Edge>
 {
 
+private:
+    typedef core::SharedPtrSortedRandomSet<const Edge> super;
+    
   protected:
 
     EdgeStore(
@@ -35,22 +43,38 @@ class EdgeStore :
 
   public:
 
+    using super::add;
+    
     virtual
     const Edge *
     add(
         std::shared_ptr<const Edge>  e
     ) override;
 
+    /**
+     * Adds a new edge.
+     * Multiple edges between the same pair of vertices are not allowed.
+     * @param vertex1 a pointer to the "from" vertex if directed, or to one end of
+     * the edge if undirected.
+     * @param vertex2 a pointer to the "to" vertex if directed, or one end of the
+     * edge if undirected.
+     * @return a pointer to the new edge, or nullptr if the edge already exists.
+     **/
+    virtual
+    const Edge *
+    add(
+        const Vertex* vertex1,
+        const Vertex* vertex2
+        ) = 0;
+    
     virtual
     bool
     erase(
-        Edge const * const e
+        const Edge * const e
     ) override = 0;
 
     /**
-     * @brief Deletes all edges adjacent to a vertex.
-     * Attribute values associated to this edge are also deleted.
-     * @param edge a pointer to the edge to be deleted
+     * Deletes all edges incident to a vertex.
      **/
     virtual
     void
@@ -60,10 +84,10 @@ class EdgeStore :
 
 
     /**
-     * @brief Returns the nodes with an edge from/to the input node.
+     * @brief Returns the nodes with an edge from/to the input vertex.
      * @param node pointer to the node.
      * @param mode IN, OUT or INOUT.
-     * @return an iterator containing pointers to vertexs.
+     * @return the list of neighbors.
      **/
     const
     VertexList&
@@ -72,12 +96,9 @@ class EdgeStore :
         EdgeMode mode
     ) const;
 
-
     bool
     is_directed(
     );
-
-    //using core::Attributed<A>::attributes_;
 
     virtual
     std::string
@@ -87,25 +108,18 @@ class EdgeStore :
 
   protected:
 
-    // largest identifier assigned so far
-    //static EdgeId max_edge_id;
-
-
     /** Edge directionality */
     EdgeDir edge_directionality;
 
-    /** All edges in this store */
-    //std::shared_ptr<EdgeList> edges;
-
     // Indexes to sets of objects (Set IDX):
-    std::unordered_map<VertexId, std::unique_ptr<VertexList>> sidx_neighbors_out;
-    std::unordered_map<VertexId, std::unique_ptr<VertexList>> sidx_neighbors_in;
-    std::unordered_map<VertexId, std::unique_ptr<VertexList>> sidx_neighbors_all;
+    std::unordered_map<const Vertex*, std::unique_ptr<VertexList>> sidx_neighbors_out;
+    std::unordered_map<const Vertex*, std::unique_ptr<VertexList>> sidx_neighbors_in;
+    std::unordered_map<const Vertex*, std::unique_ptr<VertexList>> sidx_neighbors_all;
 
 };
 
 
-} // namespace net
-} // namespace uu
+}
+}
 
-#endif /* UU_NET_DATASTRUCTURES_COREEDGESTORE_H_ */
+#endif

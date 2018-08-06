@@ -9,11 +9,10 @@
 #include <memory>
 #include <string>
 #include "core/exceptions/ElementNotFoundException.h"
-//#include "core/datastructures/Factory.h"
-#include "core/datastructures/observers/Observer.h"
+#include "core/datastructures/observers/ObserverStore.h"
+#include "core/datastructures/observers/Subject.h"
 #include "net/datastructures/objects/Edge.h"
 #include "net/datastructures/objects/Vertex.h"
-#include "net/datastructures/observers/EdgeVertexObserver.h"
 
 namespace uu {
 namespace net {
@@ -21,13 +20,15 @@ namespace net {
 /**
  * Graph is a generic class that can be instantiated into several specific types of network.
  *
- * A Graph is instantiated by specifying a VertexStore (V) and an EdgeStore (E).
+ * A Graph is instantiated specifying a VertexStore (V) and an EdgeStore (E).
  */
 template<typename V, typename E>
 class Graph
+    : public core::ObserverStore
 {
 
   public:
+    
     /**
      * Creates an empty graph.
      *
@@ -43,30 +44,17 @@ class Graph
         std::unique_ptr<E> e
     );
 
-
-    /**
-     * Creates a new graph and returns a shared pointer to it.
-     *
-     * This should be used when we want to specify directionality at compilation time.
-     *
-    static
-    std::shared_ptr<Graph<V,E>>
-    create(
-           std::unique_ptr<V>& v,
-           std::unique_ptr<E>& e
-    );*/
-
     /**
      * Returns a pointer to the graph's vertex store.
      */
-    V&
+    V*
     vertices(
     );
 
     /**
      * Returns a pointer to the graph's (const) vertex store.
      */
-    const V&
+    const V*
     vertices(
     ) const;
 
@@ -74,7 +62,7 @@ class Graph
     /**
      * Returns a pointer to the graph's edge store.
      */
-    E&
+    E*
     edges(
     );
 
@@ -82,7 +70,7 @@ class Graph
     /**
      * Returns a pointer to the graph's (const) edge store.
      */
-    const E&
+    const E*
     edges(
     ) const;
 
@@ -93,7 +81,7 @@ class Graph
     bool
     is_directed(
     ) const;
-
+    
     /**
      * Returns a string providing a summary of the graph structure.
      */
@@ -112,9 +100,6 @@ class Graph
     /** Internal edge store. */
     std::unique_ptr<E> edges_;
 
-    /** ... */
-    std::unique_ptr<EdgeVertexObserver<V,V,E>> obs_;
-
 };
 
 
@@ -129,68 +114,45 @@ Graph(
 {
     vertices_ = std::move(v);
     edges_ = std::move(e);
-
-    obs_ = std::make_unique<EdgeVertexObserver<V,V,E>>(vertices_.get(), vertices_.get(), edges_.get());
-    vertices_->attach(obs_.get());
-    edges_->attach(obs_.get());
 }
 
-/*
 template<typename V, typename E>
-std::shared_ptr<Graph<V,E> >
-Graph<V,E>::
-create(
-   std::unique_ptr<V>& v,
-   std::unique_ptr<E>& e
-)
-{
-std::shared_ptr<Graph<V,E>> g = std::shared_ptr<Graph<V,E>>(new Graph<V,E>(v,e));
-
-// observe
-//g->vertices()->attach(this);
-//g->edges()->attach(this);
-
-return g;
-}
-*/
-
-template<typename V, typename E>
-V&
+V*
 Graph<V,E>::
 vertices(
 )
 {
-    return *vertices_.get();
+    return vertices_.get();
 }
 
 
 template<typename V, typename E>
-const V&
+const V*
 Graph<V,E>::
 vertices(
 ) const
 {
-    return *vertices_.get();
+    return vertices_.get();
 }
 
 
 template<typename V, typename E>
-E&
+E*
 Graph<V,E>::
 edges(
 )
 {
-    return *edges_.get();
+    return edges_.get();
 }
 
 
 template<typename V, typename E>
-const E&
+const E*
 Graph<V,E>::
 edges(
 ) const
 {
-    return *edges_.get();
+    return edges_.get();
 }
 
 
@@ -218,7 +180,7 @@ summary(
 }
 
 
-} // namespace net
-} // namespace uu
+}
+}
 
 #endif

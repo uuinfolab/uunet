@@ -21,7 +21,6 @@ class
 
     /** Constructor. */
     NamedObject(
-        const ObjectId& oid,
         const std::string& name
     );
 

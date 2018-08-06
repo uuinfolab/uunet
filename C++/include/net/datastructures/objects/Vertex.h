@@ -13,9 +13,6 @@
 namespace uu {
 namespace net {
 
-/** The identifyier of a vertex. */
-using VertexId = core::ObjectId;
-
 /**
  * A vertex in a graph.
  */
@@ -29,7 +26,6 @@ class
 
     /** Constructor. */
     Vertex(
-        VertexId id,
         const std::string& name
     );
 
@@ -44,14 +40,9 @@ class
     to_string(
     ) const;
 
-  public:
-
-    /* largest identifier assigned so far. */
-    static VertexId max_vertex_id;
-
 };
 
-} // namespace net
-} // namespace uu
+} 
+}
 
 #endif

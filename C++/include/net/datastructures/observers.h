@@ -10,7 +10,7 @@
 #ifndef UU_NET_DATASTRUCTURES_OBSERVERS_H_
 #define UU_NET_DATASTRUCTURES_OBSERVERS_H_
 
-//@todo
-//#include "net/datastructures/observers/.h"
+#include "net/datastructures/observers/AdjVertexCheckObserver.h"
+#include "net/datastructures/observers/PropagateObserver.h"
 
 #endif

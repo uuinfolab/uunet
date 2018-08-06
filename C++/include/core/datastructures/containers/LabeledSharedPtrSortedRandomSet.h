@@ -10,6 +10,7 @@
 #include <string>
 #include <unordered_map>
 #include "core/datastructures/containers/SharedPtrSortedRandomSet.h"
+#include "core/exceptions/NullPtrException.h"
 
 namespace uu {
 namespace core {
@@ -91,6 +92,8 @@ add(
     std::shared_ptr<E> element
 )
 {
+    if (!element.get()) throw NullPtrException("element to be added to the store");
+    
     // Return false if an element with this name exists.
     auto search = cidx_element_by_name.find(element->name);
 
@@ -135,6 +138,8 @@ erase(
 )
 {
 
+    if (!element) throw NullPtrException("element to be erased from the store");
+    
     auto search = cidx_element_by_name.find(element->name);
 
     if (search != cidx_element_by_name.end())
@@ -150,7 +155,7 @@ erase(
     }
 }
 
-} // namespace net
-} // namespace uu
+}
+} 
 
 #endif

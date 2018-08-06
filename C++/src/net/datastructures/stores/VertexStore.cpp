@@ -4,6 +4,7 @@
  */
 
 #include "net/datastructures/stores/VertexStore.h"
+#include "core/exceptions/NullPtrException.h"
 
 namespace uu {
 namespace net {
@@ -22,6 +23,8 @@ add(
     std::shared_ptr<const Vertex> vertex
 )
 {
+    if (!vertex) throw core::NullPtrException("vertex in add(vertex)");
+    
     // Notify the observers.
     for (auto obs: observers)
     {
@@ -36,8 +39,6 @@ add(
         return nullptr;
     }
 
-
-
     return res;
 }
 
@@ -49,6 +50,8 @@ erase(
     const Vertex * const vertex
 )
 {
+    if (!vertex) throw core::NullPtrException("vertex in erase(vertex)");
+    
     // Notify the observers.
     for (auto obs: observers)
     {
@@ -77,17 +80,8 @@ summary(
     size_t s = size();
     std::string summary =
         std::to_string(s) +
-        (s==1?" vertex":" vertices") +
-        ", ";// +
-    //attributes_->summary();
+        (s==1?" vertex":" vertices");
     return summary;
-}
-
-
-std::unique_ptr<VertexStore>
-create_vertex_store()
-{
-    return std::make_unique<VertexStore>();
 }
 
 

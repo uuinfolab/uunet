@@ -9,6 +9,7 @@
 
 #include <memory>
 #include "core/datastructures/containers/SortedRandomSet.h"
+#include "core/exceptions/NullPtrException.h"
 
 namespace uu {
 namespace core {
@@ -146,18 +147,6 @@ class
     ) = 0;
 
     /**
-     * Adds an existing vertex to the store.
-     *
-     * @param vertex a pointer to an existing vertex
-     * @return a pointer to the vertex, or nullptr if a vertex with the same name already exists in the store.
-     **
-     virtual
-     bool
-     add(
-     E * const element
-     );*/
-
-    /**
      * Erases an existing vertex from the store.
      *
      * @param vertex a pointer to the vertex to be deleted
@@ -195,6 +184,7 @@ erase(
     E * const element
 )
 {
+    if (!element) throw NullPtrException("element to be erased from the store");
     return set.template erase<E*,PtrLT,PtrEQ>(element);
 }
 
@@ -297,6 +287,7 @@ contains(
     E* search_value
 ) const
 {
+    if (!search_value) throw NullPtrException("element to be looked up in the store");
     return set.template contains<E*,PtrLT,PtrEQ>(search_value);
 }
 
@@ -307,6 +298,7 @@ get_index(
     E* search_value
 ) const
 {
+    if (!search_value) throw NullPtrException("element to be looked up in the store");
     return set.template get_index<E*,PtrLT,PtrEQ>(search_value);
 }
 

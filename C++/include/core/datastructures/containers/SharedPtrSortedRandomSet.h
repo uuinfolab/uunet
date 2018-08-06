@@ -10,6 +10,7 @@
 #include "core/datastructures/containers/PtrSortedRandomSet.h"
 #include "core/datastructures/containers/SharedPtrEQ.h"
 #include "core/datastructures/containers/SharedPtrLT.h"
+#include "core/exceptions/NullPtrException.h"
 
 namespace uu {
 namespace core {
@@ -79,6 +80,8 @@ add(
     std::shared_ptr<E> element
 )
 {
+    
+    if (!element.get()) throw NullPtrException("element to be added to the store");
     if (super::set.add(element))
     {
         return element.get();
@@ -98,6 +101,7 @@ add(
     E * const element
 )
 {
+    if (!element) throw NullPtrException("element to be added to the store");
     return super::set.add(element->shared_from_this());
 }
 

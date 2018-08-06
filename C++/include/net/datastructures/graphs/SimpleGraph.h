@@ -15,16 +15,26 @@
 namespace uu {
 namespace net {
 
+    /**
+     * A simple graph is an undirected graph with at most one edge between each pair of vertices,
+     * no loops and no attributes.
+     * In this library that is the default setting for simple graphs, but we can also have directed
+     * edges and loops if specified in the creation function.
+     */
 using SimpleGraph =
     Graph<
     VertexStore,
     SimpleEdgeStore
     >;
 
+    /**
+     * Creates a graph with directed or undirected simple edges and with or without loops.
+     */
 std::unique_ptr<SimpleGraph>
 create_simple_graph(
     const std::string& name,
-    EdgeDir dir);
+    EdgeDir dir = EdgeDir::UNDIRECTED,
+    bool allow_loops = false);
 
 }
 }

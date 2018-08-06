@@ -5,10 +5,10 @@ namespace core {
 
 NamedObject::
 NamedObject(
-    const ObjectId& id,
+    //const ObjectId& id,
     const std::string& name
 ) :
-    Object(id),
+    //Object(id),
     name(name)
 {
 

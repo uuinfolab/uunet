@@ -40,7 +40,7 @@ class MultiEdgeStore :
     add(
         const Vertex* vertex1,
         const Vertex* vertex2
-    );
+    ) override;
 
     /**
      * Adds a new edge.
@@ -74,7 +74,6 @@ class MultiEdgeStore :
     ) const;
 
 
-    // using EdgeStore::get_all;
     using EdgeStore::neighbors;
     using EdgeStore::is_directed;
     using EdgeStore::attach;
@@ -82,7 +81,6 @@ class MultiEdgeStore :
 
     using EdgeStore::size;
     using EdgeStore::edge_directionality;
-    //using EdgeStore::edges;
     using EdgeStore::sidx_neighbors_out;
     using EdgeStore::sidx_neighbors_in;
     using EdgeStore::sidx_neighbors_all;
@@ -111,13 +109,12 @@ class MultiEdgeStore :
   protected:
 
     // Indexes to objects (Component IDX):
-    std::unordered_map<VertexId, std::unordered_map<VertexId, std::unordered_set<const Edge*> > >
+    std::unordered_map<const Vertex*, std::unordered_map<const Vertex*, std::unordered_set<const Edge*> > >
     cidx_edges_by_vertices;
 
 };
 
+} 
+}
 
-} // namespace net
-} // namespace uu
-
-#endif /* UU_NET_DATASTRUCTURES_MULTIEDGESTORE_H_ */
+#endif

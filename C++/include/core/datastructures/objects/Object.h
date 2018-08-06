@@ -25,9 +25,14 @@ class
   protected:
     /** Constructor. */
     Object(
-        const ObjectId& oid
+        //const ObjectId& oid
     );
 
+    /** Constructor. */
+    Object(
+        const ObjectId& oid
+    );
+    
     /** Returns a complete description of the object. */
     std::string
     to_string(
@@ -43,8 +48,7 @@ class
   public:
 
     /**
-     * Unique identifier of the object. Uniqueness must be ensured by the
-     * container handling the object.
+     * Unique identifier of the object.
      */
     const ObjectId id;
 

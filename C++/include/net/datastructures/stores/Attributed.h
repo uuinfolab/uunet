@@ -32,14 +32,14 @@ class
     /**
      * Returns a reference to the attribute store managing attributes for this attributed object.
      */
-    A&
+    A*
     attr(
     );
 
     /**
      * Returns a reference to the attribute store managing attributes for this attributed object.
      */
-    const A&
+    const A*
     attr(
     ) const;
 
@@ -63,20 +63,20 @@ Attributed(
 
 
 template <typename A>
-A&
+A*
 Attributed<A>::attr(
 )
 {
-    return *attributes_;
+    return attributes_.get();
 }
 
 
 template <typename A>
-const A&
+const A*
 Attributed<A>::attr(
 ) const
 {
-    return *attributes_;
+    return attributes_.get();
 }
 
 

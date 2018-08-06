@@ -10,19 +10,13 @@
 #include <memory>
 #include "net/datastructures/objects/Vertex.h"
 #include "net/datastructures/objects/EdgeDir.h"
-#include "net/datastructures/objects/EdgeMode.h"
 
 namespace uu {
 namespace net {
-
-/** The identifyier of an edge. */
-using EdgeId = core::ObjectId;
-
-
+    
 /**
  * An edge between two actors.
  */
-//template <typename Vertex = Actor>
 class
     Edge :
     public core::Object,
@@ -33,7 +27,6 @@ class
 
     /** Constructor. */
     Edge(
-        EdgeId id,
         const Vertex* v1,
         const Vertex* v2,
         EdgeDir dir
@@ -59,13 +52,11 @@ class
     const Vertex* v2;
 
     /** Edge directionality. */
-    const EdgeDir directionality;
-
-    static EdgeId max_edge_id;
+    const EdgeDir dir;
 
 };
 
-} // namespace net
-} // namespace uu
+}
+}
 
 #endif

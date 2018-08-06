@@ -8,19 +8,16 @@
 
 #include <memory>
 #include <unordered_map>
-//#include "core/datastructures/Container.h"
-#include "net/datastructures/objects/Vertex.h"
+#include "core/datastructures/containers/LabeledSharedPtrSortedRandomSet.h"
 #include "core/datastructures/observers/Observer.h"
 #include "core/datastructures/observers/Subject.h"
-#include "core/datastructures/containers/LabeledSharedPtrSortedRandomSet.h"
+#include "net/datastructures/objects/Vertex.h"
 
 namespace uu {
 namespace net {
 
 /**
  * A VertexStore allows to create, store, retrieve and erase a set of vertices.
- *
- * A must be an attribute store, itself templatized to work with vertices.
  */
 class
     VertexStore :
@@ -35,15 +32,6 @@ class
   public:
     VertexStore(
     );
-
-    /**
-     * Creates a new vertex store and returns a pointer to it.
-     *
-    static
-    std::unique_ptr<VertexStore<A> >
-    create(
-           std::unique_ptr<A>& attr
-           );*/
 
     using super::add;
 
@@ -68,22 +56,9 @@ class
     summary(
     ) const;
 
-  protected:
-
-    /** Index: find vertex by name. */
-    //std::unordered_map<std::string, Vertex const * const> cidx_vertex_by_name;
-
-    /** Convenience object to return when the result is empty. */
-    //std::shared_ptr<VertexList> empty_list;
-    //std::set<std::shared_ptr<const Vertex>> owned_vertices;
-
 };
 
-
-std::unique_ptr<VertexStore>
-create_vertex_store();
-
-} // namespace net
-} // namespace uu
+}
+}
 
 #endif

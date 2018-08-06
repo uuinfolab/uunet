@@ -26,7 +26,7 @@ add(
     const Vertex* vertex2
 )
 {
-
+        // Edge::create will also take care of checking that the pointers are not null
     std::shared_ptr<const Edge> e = Edge::create(vertex1, vertex2, edge_directionality);
 
     return add(e);
@@ -40,7 +40,8 @@ add(
     std::shared_ptr<const Edge> e
 )
 {
-
+    if (!e.get()) throw core::NullPtrException("edge in add(edge)");
+    
     for (auto obs: observers)
     {
         obs->notify_add(e.get());
@@ -58,25 +59,25 @@ add(
         return nullptr;
     }
 
-    cidx_edge_by_vertexes[e->v1->id][e->v2->id] = new_edge;
+    cidx_edge_by_vertexes[e->v1][e->v2] = new_edge;
 
     if (!is_directed())
     {
-        cidx_edge_by_vertexes[e->v2->id][e->v1->id] = new_edge;
+        cidx_edge_by_vertexes[e->v2][e->v1] = new_edge;
 
-        if (sidx_neighbors_out.count(e->v2->id)==0)
+        if (sidx_neighbors_out.count(e->v2)==0)
         {
-            sidx_neighbors_out[e->v2->id] = std::make_unique<VertexList>();
+            sidx_neighbors_out[e->v2] = std::make_unique<VertexList>();
         }
 
-        sidx_neighbors_out[e->v2->id]->add(e->v1);
+        sidx_neighbors_out[e->v2]->add(e->v1);
 
-        if (sidx_neighbors_in.count(e->v1->id)==0)
+        if (sidx_neighbors_in.count(e->v1)==0)
         {
-            sidx_neighbors_in[e->v1->id] = std::make_unique<VertexList>();
+            sidx_neighbors_in[e->v1] = std::make_unique<VertexList>();
         }
 
-        sidx_neighbors_in[e->v1->id]->add(e->v2);
+        sidx_neighbors_in[e->v1]->add(e->v2);
     }
 
     return new_edge;
@@ -91,10 +92,13 @@ get(
     const Vertex* vertex2
 ) const
 {
-    if (cidx_edge_by_vertexes.count(vertex1->id)>0 &&
-            cidx_edge_by_vertexes.at(vertex1->id).count(vertex2->id)>0)
+    if (!vertex1) throw core::NullPtrException("vertex1 in get(vertex1, vertex2)");
+    if (!vertex2) throw core::NullPtrException("vertex2 in get(vertex1, vertex2)");
+    
+    if (cidx_edge_by_vertexes.count(vertex1)>0 &&
+            cidx_edge_by_vertexes.at(vertex1).count(vertex2)>0)
     {
-        return cidx_edge_by_vertexes.at(vertex1->id).at(vertex2->id);
+        return cidx_edge_by_vertexes.at(vertex1).at(vertex2);
     }
 
     else
@@ -111,15 +115,16 @@ erase(
     const Edge* edge
 )
 {
+    if (!edge) throw core::NullPtrException("edge in erase(edge)");
+    
     for (auto obs: observers)
     {
         obs->notify_erase(edge);
     }
 
-    bool res = core::SharedPtrSortedRandomSet<const Edge>::erase(edge);
-    cidx_edge_by_vertexes[edge->v1->id].erase(edge->v2->id);
-    sidx_neighbors_in[edge->v2->id]->erase(edge->v1);
-    sidx_neighbors_out[edge->v1->id]->erase(edge->v2);
+    cidx_edge_by_vertexes[edge->v1].erase(edge->v2);
+    sidx_neighbors_in[edge->v2]->erase(edge->v1);
+    sidx_neighbors_out[edge->v1]->erase(edge->v2);
 
     // if the edge is directed, we erase neighbors only if there isn't
     // an edge in the other direction keeping them neighbors
@@ -127,21 +132,21 @@ erase(
     {
         if (!get(edge->v2,edge->v1))
         {
-            sidx_neighbors_all[edge->v2->id]->erase(edge->v1);
-            sidx_neighbors_all[edge->v1->id]->erase(edge->v2);
+            sidx_neighbors_all[edge->v2]->erase(edge->v1);
+            sidx_neighbors_all[edge->v1]->erase(edge->v2);
         }
     }
 
     else
     {
-        cidx_edge_by_vertexes[edge->v2->id].erase(edge->v1->id);
-        sidx_neighbors_in[edge->v1->id]->erase(edge->v2);
-        sidx_neighbors_out[edge->v2->id]->erase(edge->v1);
-        sidx_neighbors_all[edge->v1->id]->erase(edge->v2);
-        sidx_neighbors_all[edge->v2->id]->erase(edge->v1);
+        cidx_edge_by_vertexes[edge->v2].erase(edge->v1);
+        sidx_neighbors_in[edge->v1]->erase(edge->v2);
+        sidx_neighbors_out[edge->v2]->erase(edge->v1);
+        sidx_neighbors_all[edge->v1]->erase(edge->v2);
+        sidx_neighbors_all[edge->v2]->erase(edge->v1);
     }
 
-    return res;
+    return core::SharedPtrSortedRandomSet<const Edge>::erase(edge);
 }
 
 
@@ -153,14 +158,14 @@ erase(
 )
 {
 
+    if (!vertex) throw core::NullPtrException("vertex in erase(vertex) from edge store");
+    
     std::unordered_set<const Edge*> to_erase;
 
     for (const Vertex* neighbor: neighbors(vertex,EdgeMode::OUT))
     {
         const Edge* e = get(vertex,neighbor);
-        std::cout << " -> " << e->v1 << ", " << e->v2 << std::endl;
-        std::cout << "    " << vertex << " : " << vertex->id << " " << vertex->name << std::endl;
-
+        
         to_erase.insert(e);
     }
 
@@ -176,11 +181,19 @@ erase(
     }
 }
 
-std::unique_ptr<SimpleEdgeStore>
-create_simple_edge_store(EdgeDir dir)
-{
-    return std::make_unique<SimpleEdgeStore>(dir);
-}
+    
+    std::string
+    SimpleEdgeStore::
+    summary(
+    ) const
+    {
+        size_t s = size();
+        std::string summary =
+        std::to_string(s) +
+        (s==1?" edge":" edges");
+        return summary;
+    }
+    
 
 }
 }

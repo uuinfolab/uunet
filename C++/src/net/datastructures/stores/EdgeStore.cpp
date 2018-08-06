@@ -4,6 +4,7 @@
  */
 
 #include "net/datastructures/stores/EdgeStore.h"
+#include "core/exceptions/NullPtrException.h"
 
 namespace uu {
 namespace net {
@@ -12,13 +13,8 @@ EdgeStore::
 EdgeStore(
     EdgeDir dir
 )
-//:    core::Attributed<A>(std::move(attr))
 {
     edge_directionality = dir;
-
-    //auto obs = static_cast<std::shared_ptr<core::Observer<Edge> > >(attributes_);
-
-    //attach(&this->attr());
 }
 
 
@@ -29,7 +25,9 @@ add(
     std::shared_ptr<const Edge> e
 )
 {
-    if (e->directionality != edge_directionality)
+    if (!e.get()) throw core::NullPtrException("edge added to vertex store");
+    
+    if (e->dir != edge_directionality)
     {
         throw core::OperationNotSupportedException("wrong edge directionality");
     }
@@ -41,33 +39,33 @@ add(
         return nullptr;
     }
 
-    if (sidx_neighbors_out.count(e->v1->id)==0)
+    if (sidx_neighbors_out.count(e->v1)==0)
     {
-        sidx_neighbors_out[e->v1->id] = std::make_unique<VertexList>();
+        sidx_neighbors_out[e->v1] = std::make_unique<VertexList>();
     }
 
-    sidx_neighbors_out[e->v1->id]->add(e->v2);
+    sidx_neighbors_out[e->v1]->add(e->v2);
 
-    if (sidx_neighbors_in.count(e->v2->id)==0)
+    if (sidx_neighbors_in.count(e->v2)==0)
     {
-        sidx_neighbors_in[e->v2->id] = std::make_unique<VertexList>();
+        sidx_neighbors_in[e->v2] = std::make_unique<VertexList>();
     }
 
-    sidx_neighbors_in[e->v2->id]->add(e->v1);
+    sidx_neighbors_in[e->v2]->add(e->v1);
 
-    if (sidx_neighbors_all.count(e->v1->id)==0)
+    if (sidx_neighbors_all.count(e->v1)==0)
     {
-        sidx_neighbors_all[e->v1->id] = std::make_unique<VertexList>();
+        sidx_neighbors_all[e->v1] = std::make_unique<VertexList>();
     }
 
-    sidx_neighbors_all[e->v1->id]->add(e->v2);
+    sidx_neighbors_all[e->v1]->add(e->v2);
 
-    if (sidx_neighbors_all.count(e->v2->id)==0)
+    if (sidx_neighbors_all.count(e->v2)==0)
     {
-        sidx_neighbors_all[e->v2->id] = std::make_unique<VertexList>();
+        sidx_neighbors_all[e->v2] = std::make_unique<VertexList>();
     }
 
-    sidx_neighbors_all[e->v2->id]->add(e->v1);
+    sidx_neighbors_all[e->v2]->add(e->v1);
 
     return new_edge;
 }
@@ -82,34 +80,36 @@ neighbors(
     EdgeMode mode
 ) const
 {
+    if (!vertex) throw core::NullPtrException("input vertex, to find its neighbors");
+    
     if (mode==EdgeMode::IN)
     {
-        if (sidx_neighbors_in.count(vertex->id)==0)
+        if (sidx_neighbors_in.count(vertex)==0)
         {
-            return *empty_vertex_list;
+            return *kEMPTY_VERTEX_LIST;
         }
 
-        return *sidx_neighbors_in.at(vertex->id);
+        return *sidx_neighbors_in.at(vertex);
     }
 
     else if (mode==EdgeMode::OUT)
     {
-        if (sidx_neighbors_out.count(vertex->id)==0)
+        if (sidx_neighbors_out.count(vertex)==0)
         {
-            return *empty_vertex_list;
+            return *kEMPTY_VERTEX_LIST;
         }
 
-        return *sidx_neighbors_out.at(vertex->id);
+        return *sidx_neighbors_out.at(vertex);
     }
 
     else if (mode==EdgeMode::INOUT)
     {
-        if (sidx_neighbors_all.count(vertex->id)==0)
+        if (sidx_neighbors_all.count(vertex)==0)
         {
-            return *empty_vertex_list;
+            return *kEMPTY_VERTEX_LIST;
         }
 
-        return *sidx_neighbors_all.at(vertex->id);
+        return *sidx_neighbors_all.at(vertex);
     }
 
     else
@@ -137,43 +137,9 @@ summary(
     size_t s = size();
 
     std::string summary = std::to_string(s) +
-                          (s==1?" edge":" edges");// +
-    //", " +
-    //attributes_->summary();
+                          (s==1?" edge":" edges");
     return summary;
 }
-
-/*
-
- std::string EdgeStore::to_string() const {
- std::string summary =
- "Network (\"" + name + "\": " +
- std::to_string(get_vertexs()->size()) + " vertexs, " +
- std::to_string(get_all()->size()) + " edges)";
- return summary;
- }
-
- std::string EdgeStore::to_long_string() const {
- std::string summary =
- "Network (\"" + name + "\": " +
- std::to_string(get_vertexs()->size()) + " vertexs, " +
- std::to_string(get_all()->size()) + " edges)\n";
- int num_attributes = 0;
- std::string attributes = "";
- for (auto a: vertex_attributes_) {
- attributes += "- " + a.first + " (vertex, " + core::to_string(a.second->type()) + ")\n";
- num_attributes++;
- }
- for (auto a: edge_attributes_) {
- attributes += "- " + a.first + " (edge: " + core::to_string(a.second->type()) + ")\n";
- num_attributes++;
- }
- if (num_attributes>0)
- summary = summary + "Attributes:\n" + attributes + "\n";
- return summary;
- }
- */
-
 
 }
 }

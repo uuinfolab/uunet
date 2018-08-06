@@ -20,7 +20,7 @@ enum class EdgeMode
     OUT
 };
 
-} // namespace net
-} // namespace uu
+}
+} 
 
 #endif

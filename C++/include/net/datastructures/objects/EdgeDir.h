@@ -17,7 +17,7 @@ enum class EdgeDir
 };
 
 
-} // namespace net
-} // namespace uu
+}
+} 
 
 #endif

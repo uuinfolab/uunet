@@ -13,7 +13,7 @@ namespace net {
 
 using EdgeList = core::SortedRandomSet<const Edge*>;
 
-} // namespace net
-} // namespace uu
+}
+}
 
 #endif

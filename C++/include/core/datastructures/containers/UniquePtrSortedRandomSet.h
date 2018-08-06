@@ -10,6 +10,7 @@
 #include "core/datastructures/containers/PtrSortedRandomSet.h"
 #include "core/datastructures/containers/UniquePtrEQ.h"
 #include "core/datastructures/containers/UniquePtrLT.h"
+#include "core/exceptions/NullPtrException.h"
 
 namespace uu {
 namespace core {
@@ -66,8 +67,9 @@ add(
 )
 {
     auto res = element.get();
+    if (!res) throw NullPtrException("element to be added to the store");
 
-    if (super::set.add(std::move(element))) // @todo "if" not needed I guess...
+    if (super::set.add(std::move(element)))
     {
         return res;
     }

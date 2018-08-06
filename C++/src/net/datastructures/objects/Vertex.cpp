@@ -3,15 +3,11 @@
 namespace uu {
 namespace net {
 
-
-VertexId Vertex::max_vertex_id = 0;
-
 Vertex::
 Vertex(
-    VertexId id,
     const std::string& name
 ) :
-    NamedObject(id,name)
+    NamedObject(name)
 {
 }
 
@@ -22,8 +18,7 @@ create(
     const std::string& name
 )
 {
-    VertexId vid = ++Vertex::max_vertex_id;
-    return std::make_shared<const Vertex>(vid, name);
+    return std::make_shared<const Vertex>(name);
 }
 
 std::string
@@ -33,5 +28,5 @@ to_string() const
     return name;
 }
 
-} // namespace mnet
-} // namespace uu
+}
+} 

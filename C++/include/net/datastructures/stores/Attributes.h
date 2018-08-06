@@ -3,12 +3,13 @@
  * - 2018.03.09 file created, with code taken from other existing files.
  */
 
-#ifndef UU_NET_DATASTRUCTURES_STORES_ATTRIBUTESTORE_H_
-#define UU_NET_DATASTRUCTURES_STORES_ATTRIBUTESTORE_H_
+#ifndef UU_NET_DATASTRUCTURES_STORES_ATTRIBUTES_H_
+#define UU_NET_DATASTRUCTURES_STORES_ATTRIBUTES_H_
 
 #include <memory>
 #include "core/attributes.h"
 #include "core/datastructures/observers/Observer.h"
+#include "net/datastructures/stores/AttributeStoreWrapper.h"
 
 namespace uu {
 namespace net {
@@ -18,10 +19,11 @@ namespace net {
  *
  * OT can currently be Vertex or Edge.
  */
-template <typename OT>
-class AttributeStore :
-    public core::MainMemoryAttributeStore<const OT*>,
-    public core::Observer<const OT>
+template <typename OT, typename ...Attrs>
+class Attributes :
+    public core::Observer<const OT>,
+    private AttributeStoreWrapper<OT>,
+    public Attrs...
 {
 
   public:
@@ -29,8 +31,10 @@ class AttributeStore :
     /**
      * Constructor.
      */
-    AttributeStore();
+    Attributes();
 
+    using AttributeStoreWrapper<OT>::attr_;
+    
     /**
      * Returns a short summary of the store, indicating the number of attributes.
      */
@@ -53,71 +57,57 @@ class AttributeStore :
         const OT* const o
     );
 
-    /**
-     *
-     */
-    virtual
-    void
-    read_attributes(
-        const OT* v,
-        const std::vector<std::string>& fields,
-        size_t offset,
-        const std::vector<core::Attribute>& attributes,
-        size_t line_number);
+    
 
 };
-
     
-    template <typename OT>
-    std::unique_ptr<AttributeStore<OT>> create_attribute_store()
-    {
-        return std::make_unique<AttributeStore<OT>>();
-    }
-    
-template <typename OT>
-AttributeStore<OT>::
-AttributeStore()
+template <typename OT, typename ...Attrs>
+Attributes<OT, Attrs...>::
+    Attributes() :
+    AttributeStoreWrapper<OT>(std::make_unique<AttributeStore<OT>>()),
+    Attrs(attr_.get())...
 {
 }
 
-template <typename OT>
+    
+template <typename OT, typename ...Attrs>
 std::string
-AttributeStore<OT>::
+Attributes<OT, Attrs...>::
 summary(
 ) const
 {
-    size_t s = this->size();
+    size_t s = attr_->size();
     std::string summary = std::to_string(s) + ((s==1)?" attribute":" attributes");
     return summary;
 }
 
 
-template <typename OT>
+template <typename OT, typename ...Attrs>
 void
-AttributeStore<OT>::
+Attributes<OT, Attrs...>::
 notify_erase(
     const OT* object
 )
 {
-    for (auto att: *this)
+    for (auto att: *attr_)
     {
-        this->reset(object, att->name);
+        attr_->reset(object, att->name);
     }
 }
 
-template <typename OT>
+template <typename OT, typename ...Attrs>
 void
-AttributeStore<OT>::
+Attributes<OT, Attrs...>::
 notify_add(
     const OT* object
 )
 {
 }
 
-
-template <typename OT>
+/*
+template <typename OT, typename ...Attrs>
 void
-AttributeStore<OT>::
+Attributes<OT, Attrs...>::
 read_attributes(
     const OT* v,
     const std::vector<std::string>& fields,
@@ -139,7 +129,7 @@ read_attributes(
         this->set_as_string(v, attribute.name, fields[idx]);
         idx++;
     }
-}
+}*/
 
 
 } // namespace net

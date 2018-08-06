@@ -10,8 +10,7 @@
 #include <string>
 #include <unordered_set>
 #include "core/exceptions/ElementNotFoundException.h"
-//#include "core/datastructures/Factory.h"
-#include "core/datastructures/observers/Observer.h"
+#include "core/datastructures/observers/ObserverStore.h"
 #include "net/datastructures/objects/Edge.h"
 #include "net/datastructures/objects/Vertex.h"
 
@@ -24,7 +23,7 @@ namespace net {
  * A MultilayerNetwork is instantiated by specifying a VertexStore (V) and an EdgeStore (E).
  */
 template <typename V, typename L, typename E>
-class MultilayerNetwork
+    class MultilayerNetwork : ObserverStore
 {
 
   public:
@@ -101,11 +100,6 @@ class MultilayerNetwork
     edges(
     ) const;
 
-    void
-    register_observer(
-        std::unique_ptr<core::GenericObserver>
-    );
-
     /**
      * Returns a string providing a summary of the graph structure.
      */
@@ -147,31 +141,8 @@ MultilayerNetwork(
     layers_ = std::move(l);
     edges_ = std::move(e);
 
-    /*
-    obs_ = std::make_unique<EdgeVertexObserver<V,V,E>>(vertices_.get(), vertices_.get(), edges_.get());
-    vertices_->attach(obs_.get());
-    edges_->attach(obs_.get());
-     */
 }
 
-/*
- template <typename V, typename L, typename E>
- std::shared_ptr<MultilayerNetwork<V,L,E> >
- MultilayerNetwork<V,L,E>::
- create(
- std::unique_ptr<V>& v,
- std::unique_ptr<E>& e
- )
- {
- std::shared_ptr<MultilayerNetwork<V,L,E>> g = std::shared_ptr<MultilayerNetwork<V,L,E>>(new MultilayerNetwork<V,L,E>(v,e));
-
- // observe
- //g->vertices()->attach(this);
- //g->edges()->attach(this);
-
- return g;
- }
- */
 
 template <typename V, typename L, typename E>
 V&
@@ -232,17 +203,6 @@ layers(
     return *layers_.get();
 }
 
-
-template <typename V, typename L, typename E>
-void
-MultilayerNetwork<V,L,E>::
-register_observer(
-    std::unique_ptr<core::GenericObserver> obs
-)
-{
-    obs_.insert(std::move(obs));
-}
-
 template <typename V, typename L, typename E>
 std::string
 MultilayerNetwork<V,L,E>::
@@ -258,7 +218,7 @@ summary(
 }
 
 
-} // namespace net
-} // namespace uu
+}
+}
 
 #endif
