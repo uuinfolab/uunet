@@ -8,6 +8,7 @@
 
 
 #include <vector>
+#include <memory>
 #include "core/datastructures/observers/GenericObserver.h"
 
 namespace uu {
