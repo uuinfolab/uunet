@@ -27,7 +27,7 @@ class
 {
 
     using Attributed<A>::attributes_;
-    
+
   public:
     AttributedVertexStore(
         std::unique_ptr<A> attr
@@ -70,7 +70,7 @@ summary(
     return summary;
 }
 
-} 
+}
 }
 
 #endif

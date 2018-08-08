@@ -22,7 +22,7 @@ class AdjVertexCheckObserver :
 {
 
   public:
-    
+
     /**
      * Creates an observer with a pointer to the vertex store where vertices are expected to be.
      *
@@ -48,35 +48,41 @@ class AdjVertexCheckObserver :
         const Edge* e
     ) override;
 
-    
+
   private:
     /** Internal vertex store. */
     V* vertices_;
 
 };
 
-    
-    
-    template<typename V>
-    AdjVertexCheckObserver<V>::
-    AdjVertexCheckObserver(
-                           V* vertices
-                           ) :
-    vertices_(vertices)
-    {
-        if (!vertices_) throw core::NullPtrException("vertex store to be registered in the observer");
-    }
 
-    
+
+template<typename V>
+AdjVertexCheckObserver<V>::
+AdjVertexCheckObserver(
+    V* vertices
+) :
+    vertices_(vertices)
+{
+    if (!vertices_)
+    {
+        throw core::NullPtrException("vertex store to be registered in the observer");
+    }
+}
+
+
 template<typename V>
 void
 AdjVertexCheckObserver<V>::
 notify_add(
     const Edge* e
 )
+{
+    if (!e)
     {
-    if (!e) throw core::NullPtrException("edge passed to the observer");
-        
+        throw core::NullPtrException("edge passed to the observer");
+    }
+
     if (!vertices_->contains(e->v1))
     {
         throw core::ElementNotFoundException("vertex " + e->v1->name);
@@ -96,7 +102,10 @@ notify_erase(
     const Edge* e
 )
 {
-    if (!e) throw core::NullPtrException("edge passed to the observer");
+    if (!e)
+    {
+        throw core::NullPtrException("edge passed to the observer");
+    }
 }
 
 

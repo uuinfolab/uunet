@@ -40,6 +40,12 @@ class
         std::shared_ptr<const Vertex> vertex
     ) override;
 
+    /** Creates a new vertex and adds it to the store. */
+    const Vertex *
+    add(
+        std::string vertex_name
+    );
+
 
     bool
     erase(

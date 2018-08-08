@@ -26,7 +26,7 @@ add(
     const Vertex* vertex2
 )
 {
-        // Edge::create will also take care of checking that the pointers are not null
+    // Edge::create will also take care of checking that the pointers are not null
     std::shared_ptr<const Edge> e = Edge::create(vertex1, vertex2, edge_directionality);
 
     return add(e);
@@ -40,8 +40,11 @@ add(
     std::shared_ptr<const Edge> e
 )
 {
-    if (!e.get()) throw core::NullPtrException("edge in add(edge)");
-    
+    if (!e.get())
+    {
+        throw core::NullPtrException("edge in add(edge)");
+    }
+
     for (auto obs: observers)
     {
         obs->notify_add(e.get());
@@ -92,9 +95,16 @@ get(
     const Vertex* vertex2
 ) const
 {
-    if (!vertex1) throw core::NullPtrException("vertex1 in get(vertex1, vertex2)");
-    if (!vertex2) throw core::NullPtrException("vertex2 in get(vertex1, vertex2)");
-    
+    if (!vertex1)
+    {
+        throw core::NullPtrException("vertex1 in get(vertex1, vertex2)");
+    }
+
+    if (!vertex2)
+    {
+        throw core::NullPtrException("vertex2 in get(vertex1, vertex2)");
+    }
+
     if (cidx_edge_by_vertexes.count(vertex1)>0 &&
             cidx_edge_by_vertexes.at(vertex1).count(vertex2)>0)
     {
@@ -115,8 +125,11 @@ erase(
     const Edge* edge
 )
 {
-    if (!edge) throw core::NullPtrException("edge in erase(edge)");
-    
+    if (!edge)
+    {
+        throw core::NullPtrException("edge in erase(edge)");
+    }
+
     for (auto obs: observers)
     {
         obs->notify_erase(edge);
@@ -158,14 +171,17 @@ erase(
 )
 {
 
-    if (!vertex) throw core::NullPtrException("vertex in erase(vertex) from edge store");
-    
+    if (!vertex)
+    {
+        throw core::NullPtrException("vertex in erase(vertex) from edge store");
+    }
+
     std::unordered_set<const Edge*> to_erase;
 
     for (const Vertex* neighbor: neighbors(vertex,EdgeMode::OUT))
     {
         const Edge* e = get(vertex,neighbor);
-        
+
         to_erase.insert(e);
     }
 
@@ -181,19 +197,19 @@ erase(
     }
 }
 
-    
-    std::string
-    SimpleEdgeStore::
-    summary(
-    ) const
-    {
-        size_t s = size();
-        std::string summary =
+
+std::string
+SimpleEdgeStore::
+summary(
+) const
+{
+    size_t s = size();
+    std::string summary =
         std::to_string(s) +
         (s==1?" edge":" edges");
-        return summary;
-    }
-    
+    return summary;
+}
+
 
 }
 }

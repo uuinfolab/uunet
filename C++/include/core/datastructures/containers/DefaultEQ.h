@@ -13,11 +13,11 @@ namespace uu {
 namespace core {
 
 
-    /**
-     * SortedRandomSets allow to look for elements using generic comparison functions.
-     * DefaultEQ() is the default way used by SortedRandomSets to check the "equals" predicate,
-     * and uses the == operator.
-     */
+/**
+ * SortedRandomSets allow to look for elements using generic comparison functions.
+ * DefaultEQ() is the default way used by SortedRandomSets to check the "equals" predicate,
+ * and uses the == operator.
+ */
 template <typename T1, typename T2>
 struct DefaultEQ
 {

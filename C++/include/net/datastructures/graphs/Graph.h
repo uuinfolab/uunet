@@ -10,9 +10,11 @@
 #include <string>
 #include "core/exceptions/ElementNotFoundException.h"
 #include "core/datastructures/observers/ObserverStore.h"
-#include "core/datastructures/observers/Subject.h"
-#include "net/datastructures/objects/Edge.h"
-#include "net/datastructures/objects/Vertex.h"
+#include "net/datastructures/observers/AdjVertexCheckObserver.h"
+#include "net/datastructures/observers/PropagateObserver.h"
+//#include "core/datastructures/observers/Subject.h"
+//#include "net/datastructures/objects/Edge.h"
+//#include "net/datastructures/objects/Vertex.h"
 
 namespace uu {
 namespace net {
@@ -28,7 +30,7 @@ class Graph
 {
 
   public:
-    
+
     /**
      * Creates an empty graph.
      *
@@ -81,7 +83,7 @@ class Graph
     bool
     is_directed(
     ) const;
-    
+
     /**
      * Returns a string providing a summary of the graph structure.
      */
@@ -114,6 +116,16 @@ Graph(
 {
     vertices_ = std::move(v);
     edges_ = std::move(e);
+    
+    // register an observer to propagate the removal of vertices to the edge store
+    auto obs1 = std::make_unique<PropagateObserver<E, const Vertex>>(edges());
+    vertices()->attach(obs1.get());
+    register_observer(std::move(obs1));
+    
+    // register an observer to check that the end vertices of a newly inserted graph exist
+    auto obs2 = std::make_unique<AdjVertexCheckObserver<V>>(vertices());
+    edges()->attach(obs2.get());
+    register_observer(std::move(obs2));
 }
 
 template<typename V, typename E>

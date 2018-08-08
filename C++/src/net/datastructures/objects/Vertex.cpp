@@ -28,5 +28,13 @@ to_string() const
     return name;
 }
 
+
+std::ostream&
+operator<<(std::ostream& os, const Vertex& v)
+{
+    os << v.to_string();
+    return os;
 }
-} 
+
+}
+}

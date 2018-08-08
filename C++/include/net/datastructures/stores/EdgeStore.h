@@ -19,21 +19,21 @@
 namespace uu {
 namespace net {
 
-    /**
-     * An Edge Store is a basic class to store edges. It provides functionality shared among
-     * different types of edge stores.
-     *
-     * Once an edge store has been created with a given directionality (DIRECTED or UNDIRECTED),
-     * only edges with the same directionality can be added to the store.
-     */
+/**
+ * An Edge Store is a basic class to store edges. It provides functionality shared among
+ * different types of edge stores.
+ *
+ * Once an edge store has been created with a given directionality (DIRECTED or UNDIRECTED),
+ * only edges with the same directionality can be added to the store.
+ */
 class EdgeStore :
     public core::SharedPtrSortedRandomSet<const Edge>,
     public core::Subject<const Edge>
 {
 
-private:
+  private:
     typedef core::SharedPtrSortedRandomSet<const Edge> super;
-    
+
   protected:
 
     EdgeStore(
@@ -44,7 +44,7 @@ private:
   public:
 
     using super::add;
-    
+
     virtual
     const Edge *
     add(
@@ -65,8 +65,8 @@ private:
     add(
         const Vertex* vertex1,
         const Vertex* vertex2
-        ) = 0;
-    
+    ) = 0;
+
     virtual
     bool
     erase(

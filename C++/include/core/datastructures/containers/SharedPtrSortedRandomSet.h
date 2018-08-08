@@ -15,15 +15,15 @@
 namespace uu {
 namespace core {
 
-    
 
-    /**
-     * A container to store shared_ptr's to objects.
-     *
-     * The typical use case is to store objects that can also be stored (and belong to) other
-     * containers. Objects are deleted when they are no longer present in any container.
-     */
-    template <typename E>
+
+/**
+ * A container to store shared_ptr's to objects.
+ *
+ * The typical use case is to store objects that can also be stored (and belong to) other
+ * containers. Objects are deleted when they are no longer present in any container.
+ */
+template <typename E>
 class
     SharedPtrSortedRandomSet :
     public PtrSortedRandomSet<E,std::shared_ptr<E>,SharedPtrLT<E>,SharedPtrEQ<E>>
@@ -80,8 +80,12 @@ add(
     std::shared_ptr<E> element
 )
 {
-    
-    if (!element.get()) throw NullPtrException("element to be added to the store");
+
+    if (!element.get())
+    {
+        throw NullPtrException("element to be added to the store");
+    }
+
     if (super::set.add(element))
     {
         return element.get();
@@ -101,7 +105,11 @@ add(
     E * const element
 )
 {
-    if (!element) throw NullPtrException("element to be added to the store");
+    if (!element)
+    {
+        throw NullPtrException("element to be added to the store");
+    }
+
     return super::set.add(element->shared_from_this());
 }
 

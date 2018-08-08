@@ -15,9 +15,9 @@
 namespace uu {
 namespace core {
 
-    /**
-     * A container whose elements are unique pointers to objects having a 'name' attribute.
-     */
+/**
+ * A container whose elements are unique pointers to objects having a 'name' attribute.
+ */
 template <typename E>
 class
     LabeledUniquePtrSortedRandomSet :
@@ -92,8 +92,11 @@ add(
     std::unique_ptr<E> element
 )
 {
-    if (!element.get()) throw NullPtrException("element to be added to the store");
-    
+    if (!element.get())
+    {
+        throw NullPtrException("element to be added to the store");
+    }
+
     // Return false if an element with this name exists.
     auto search = cidx_element_by_name.find(element->name);
 
@@ -104,14 +107,14 @@ add(
 
     // Indexing.
     cidx_element_by_name[element->name] = element.get();
-    
+
     E* res = super::add(std::move(element));
 
     return res;
 }
 
 template <typename E>
-E * 
+E *
 LabeledUniquePtrSortedRandomSet<E>::
 get(
     const std::string& name
@@ -137,7 +140,10 @@ erase(
     E * const element
 )
 {
-    if (!element) throw NullPtrException("element to be erased from the store");
+    if (!element)
+    {
+        throw NullPtrException("element to be erased from the store");
+    }
 
     auto search = cidx_element_by_name.find(element->name);
 

@@ -8,6 +8,7 @@
 
 #include <memory>
 #include "net/datastructures/stores/AttributeStore.h"
+#include "core/exceptions/ElementNotFoundException.h"
 
 namespace uu {
 namespace net {
@@ -47,6 +48,19 @@ class Weights
         const OT* obj
     ) const;
 
+    /**
+     * If the AttributeStore used by this class to store the weights contains other attributes
+     * of type double, this function can be used so that subsequent calls to get_weight and
+     * set_weight will get/set values from one of these attributes.
+     * @param name the name of the attribute to be used from now on to set/get weights
+     * @throw ElementNotFoundException if a double-typed attribute with that name does not exist
+     */
+    void
+    set_weight_attribute(
+               const std::string& name
+               );
+
+    
     /*
     void
     read_attributes(
@@ -55,10 +69,10 @@ class Weights
         size_t offset,
         const std::vector<core::Attribute>& attributes,
         size_t line_number);
-*/
-    
-  protected:
-    
+    */
+
+  private:
+
     AttributeStore<OT>* attr_;
     std::string weight_attribute_;
 
@@ -98,36 +112,49 @@ get_weight(
     return attr_->get_double(obj, weight_attribute_);
 }
 
-    /*
+    
+    template <typename OT>
+    void
+    Weights<OT>::
+    set_weight_attribute(
+                         const std::string& name
+                         )
+    {
+        if (!attr_->get(name))
+            throw core::ElementNotFoundException("attribute " + name);
+        weight_attribute_ = name;
+    }
+    
+/*
 template <typename OT>
 void
 Weights<OT>::
 read_attributes(
-    const OT* v,
-    const std::vector<std::string>& fields,
-    size_t offset,
-    const std::vector<core::Attribute>& attributes,
-    size_t line_number)
+const OT* v,
+const std::vector<std::string>& fields,
+size_t offset,
+const std::vector<core::Attribute>& attributes,
+size_t line_number)
 {
 
-    int idx = offset;
+int idx = offset;
 
-    if (offset+attributes.size()>fields.size())
-        throw core::WrongFormatException("Line " +
-                                         std::to_string(line_number) +
-                                         ": not enough attribute values");
+if (offset+attributes.size()>fields.size())
+    throw core::WrongFormatException("Line " +
+                                     std::to_string(line_number) +
+                                     ": not enough attribute values");
 
-    set_as_string(weight_attribute_,v,fields[idx]);
+set_as_string(weight_attribute_,v,fields[idx]);
+idx++;
+
+for (core::Attribute attribute: attributes)
+{
+    set_as_string(attribute.name(),v,fields[idx]);
     idx++;
-
-    for (core::Attribute attribute: attributes)
-    {
-        set_as_string(attribute.name(),v,fields[idx]);
-        idx++;
-    }
+}
 }
 */
-    
+
 }
 }
 

@@ -1,7 +1,7 @@
 # Style guide (C++)
 
 This is a style guide to be used when writing software in C++ at the Uppsala University Information Laboratory.
-We currently use the C++11 standard.
+We currently use the C++14 standard.
 
 ## General structure of the library
 

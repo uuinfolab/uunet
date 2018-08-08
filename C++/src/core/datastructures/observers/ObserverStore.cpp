@@ -4,15 +4,19 @@
 namespace uu {
 namespace core {
 
-    void
-    ObserverStore::
-    register_observer(
-                      std::unique_ptr<core::GenericObserver> obs
-                      )
+void
+ObserverStore::
+register_observer(
+    std::unique_ptr<core::GenericObserver> obs
+)
+{
+    if (!obs.get())
     {
-        if (!obs.get()) throw NullPtrException("observer");
-        observers_.push_back(std::move(obs));
+        throw NullPtrException("observer");
     }
-    
+
+    observers_.push_back(std::move(obs));
+}
+
 }
 }

@@ -11,10 +11,10 @@
 namespace uu {
 namespace core {
 
-    
-    /**
-     * An object used to look for shared_ptr's inside this set using their raw pointer as a key.
-     */
+
+/**
+ * An object used to look for shared_ptr's inside this set using their raw pointer as a key.
+ */
 template<typename T>
 struct SharedPtrLT
 {
@@ -30,7 +30,7 @@ struct SharedPtrLT
     }
 };
 
-    
+
 
 }
 }

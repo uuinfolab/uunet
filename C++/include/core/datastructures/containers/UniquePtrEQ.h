@@ -11,10 +11,10 @@
 namespace uu {
 namespace core {
 
-    
-    /**
-     * An object used to look for unique_ptr's inside this set using their raw pointer as a key.
-     */
+
+/**
+ * An object used to look for unique_ptr's inside this set using their raw pointer as a key.
+ */
 template<typename T>
 struct UniquePtrEQ
 {

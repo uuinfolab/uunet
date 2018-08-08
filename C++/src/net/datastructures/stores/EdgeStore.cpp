@@ -25,8 +25,11 @@ add(
     std::shared_ptr<const Edge> e
 )
 {
-    if (!e.get()) throw core::NullPtrException("edge added to vertex store");
-    
+    if (!e.get())
+    {
+        throw core::NullPtrException("edge added to vertex store");
+    }
+
     if (e->dir != edge_directionality)
     {
         throw core::OperationNotSupportedException("wrong edge directionality");
@@ -80,8 +83,11 @@ neighbors(
     EdgeMode mode
 ) const
 {
-    if (!vertex) throw core::NullPtrException("input vertex, to find its neighbors");
-    
+    if (!vertex)
+    {
+        throw core::NullPtrException("input vertex, to find its neighbors");
+    }
+
     if (mode==EdgeMode::IN)
     {
         if (sidx_neighbors_in.count(vertex)==0)

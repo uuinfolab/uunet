@@ -14,14 +14,14 @@
 
 namespace uu {
 namespace core {
-    
 
-    /**
-     * A container to store unique_ptr's to objects.
-     *
-     * The container is responsible for ownership: when the container is garbaged, all the
-     * objects stored in the container are also deleted.
-     */
+
+/**
+ * A container to store unique_ptr's to objects.
+ *
+ * The container is responsible for ownership: when the container is garbaged, all the
+ * objects stored in the container are also deleted.
+ */
 template <typename E>
 class
     UniquePtrSortedRandomSet :
@@ -67,7 +67,11 @@ add(
 )
 {
     auto res = element.get();
-    if (!res) throw NullPtrException("element to be added to the store");
+
+    if (!res)
+    {
+        throw NullPtrException("element to be added to the store");
+    }
 
     if (super::set.add(std::move(element)))
     {

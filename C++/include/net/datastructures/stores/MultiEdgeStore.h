@@ -114,7 +114,7 @@ class MultiEdgeStore :
 
 };
 
-} 
+}
 }
 
 #endif

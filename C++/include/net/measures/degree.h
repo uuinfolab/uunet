@@ -6,6 +6,10 @@
 #ifndef UU_NET_MEASURES_DEGREE_H_
 #define UU_NET_MEASURES_DEGREE_H_
 
+#include <vector>
+#include "net/datastructures/objects/Vertex.h"
+#include "net/datastructures/objects/EdgeMode.h"
+
 namespace uu {
 namespace net {
 
@@ -19,7 +23,7 @@ namespace net {
 template<typename G>
 int
 maximum_degree(
-    const std::shared_ptr<const G> g
+    const G* g
 );
 
 
@@ -33,20 +37,20 @@ maximum_degree(
 template<typename G>
 int
 minimum_degree(
-    const std::shared_ptr<const G> g
+    const G* g
 );
 
 /**
  * Returns the degree sequence of a graph.
  * @param g input graph
- * @return a vector of length n with the ordered sequence of vertex degrees in the g
+ * @return a vector of length n with the ordered sequence of vertex degrees in g
  *
  * @todo NOT IMPLEMENTED
  */
 template<typename G>
 std::vector<int>
 degree_sequence(
-    const std::shared_ptr<const G> g
+    const G* g
 );
 
 /**
@@ -59,9 +63,28 @@ degree_sequence(
 template<typename G>
 std::vector<int>
 degree_distribution(
-    const std::shared_ptr<const G> g
+    const G* g
 );
-} // namespace net
-} // namespace uu
+
+/**
+ * Returns the degree of a vertex.
+ * @param g input graph
+ * @param v input vertex
+ * @param mode to select IN, OUT, or INOUT degree
+ * @return the (mode-)degree of v in g
+ *
+ * @todo NOT IMPLEMENTED
+ */
+template<typename G>
+int
+degree(
+    const G* g,
+    const Vertex* v,
+    const EdgeMode mode
+);
+
+
+}
+}
 
 #endif

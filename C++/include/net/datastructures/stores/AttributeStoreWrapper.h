@@ -29,17 +29,17 @@ class AttributeStoreWrapper
     AttributeStoreWrapper(std::unique_ptr<AttributeStore<OT>>);
 
 
-protected:
-    
+  protected:
+
     std::unique_ptr<AttributeStore<OT>> attr_;
 
 };
-    
+
 template <typename OT>
 AttributeStoreWrapper<OT>::
-    AttributeStoreWrapper(
-                          std::unique_ptr<AttributeStore<OT>> attr
-                          ) : attr_(std::move(attr))
+AttributeStoreWrapper(
+    std::unique_ptr<AttributeStore<OT>> attr
+) : attr_(std::move(attr))
 {
 }
 

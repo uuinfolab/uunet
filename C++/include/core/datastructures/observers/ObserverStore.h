@@ -21,16 +21,16 @@ namespace core {
 class
     ObserverStore
 {
-public:
-    
+  public:
+
     void
     register_observer(
-                      std::unique_ptr<core::GenericObserver> obs
-                      );
-    
-protected:
+        std::unique_ptr<core::GenericObserver> obs
+    );
+
+  protected:
     std::vector<std::unique_ptr<GenericObserver>> observers_;
-    
+
 };
 
 }

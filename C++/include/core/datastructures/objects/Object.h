@@ -32,7 +32,7 @@ class
     Object(
         const ObjectId& oid
     );
-    
+
     /** Returns a complete description of the object. */
     std::string
     to_string(

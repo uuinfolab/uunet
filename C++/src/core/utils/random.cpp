@@ -4,10 +4,10 @@
 
 namespace uu {
 namespace core {
-    
+
 std::mt19937 &
 get_random_engine(
-    )
+)
 {
     static std::mt19937 engine;
     static bool seed = true;
@@ -23,8 +23,8 @@ get_random_engine(
 
 size_t
 getRandomInt(
-             size_t max
-             )
+    size_t max
+)
 {
     std::uniform_int_distribution<int> distribution(0,max-1);
     return distribution(get_random_engine());
@@ -33,15 +33,15 @@ getRandomInt(
 
 long
 getRandomLong(
-              long max
-              )
+    long max
+)
 {
     std::uniform_int_distribution<long> distribution(0,max-1);
     return distribution(get_random_engine());
 
 }
 
-    
+
 double
 drand()
 {
@@ -51,9 +51,9 @@ drand()
 
 size_t
 random_level(
-             size_t MAX_LEVEL,
-             double P
-             )
+    size_t MAX_LEVEL,
+    double P
+)
 {
     double r = drand();
 
@@ -68,12 +68,12 @@ random_level(
     return lvl < MAX_LEVEL ? lvl : MAX_LEVEL;
 }
 
-    
+
 std::set<size_t>
 getKRandom(
-           size_t max,
-           size_t k
-           )
+    size_t max,
+    size_t k
+)
 {
     if (max<k)
     {
@@ -92,8 +92,8 @@ getKRandom(
 
 bool
 test(
-     double probability
-     )
+    double probability
+)
 {
     std::bernoulli_distribution distribution(probability);
     return distribution(get_random_engine());
@@ -101,8 +101,8 @@ test(
 
 size_t
 test(
-     const std::vector<double>& options
-     )
+    const std::vector<double>& options
+)
 {
     // For efficiency reasons, we do not check if the values sum to 1
     double prob_failing_previous_tests=1;
@@ -125,9 +125,9 @@ test(
 
 size_t
 test(
-     const std::vector<std::vector<double> >& options,
-     size_t row_num
-     )
+    const std::vector<std::vector<double> >& options,
+    size_t row_num
+)
 {
     // For efficiency reasons, we do not check if the values sum to 1
     double prob_failing_previous_tests=1;

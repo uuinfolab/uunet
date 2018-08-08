@@ -21,6 +21,6 @@ enum class EdgeMode
 };
 
 }
-} 
+}
 
 #endif

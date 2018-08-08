@@ -176,7 +176,7 @@ PtrSortedRandomSet(
 {
 }
 
-    
+
 template <typename E, typename PTR, typename PtrLT, typename PtrEQ>
 bool
 PtrSortedRandomSet<E, PTR, PtrLT, PtrEQ>::
@@ -184,7 +184,11 @@ erase(
     E * const element
 )
 {
-    if (!element) throw NullPtrException("element to be erased from the store");
+    if (!element)
+    {
+        throw NullPtrException("element to be erased from the store");
+    }
+
     return set.template erase<E*,PtrLT,PtrEQ>(element);
 }
 
@@ -287,7 +291,11 @@ contains(
     E* search_value
 ) const
 {
-    if (!search_value) throw NullPtrException("element to be looked up in the store");
+    if (!search_value)
+    {
+        throw NullPtrException("element to be looked up in the store");
+    }
+
     return set.template contains<E*,PtrLT,PtrEQ>(search_value);
 }
 
@@ -298,7 +306,11 @@ get_index(
     E* search_value
 ) const
 {
-    if (!search_value) throw NullPtrException("element to be looked up in the store");
+    if (!search_value)
+    {
+        throw NullPtrException("element to be looked up in the store");
+    }
+
     return set.template get_index<E*,PtrLT,PtrEQ>(search_value);
 }
 

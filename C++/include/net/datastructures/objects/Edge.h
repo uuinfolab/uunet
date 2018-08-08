@@ -8,12 +8,13 @@
 
 #include <string>
 #include <memory>
+#include <iostream>
 #include "net/datastructures/objects/Vertex.h"
 #include "net/datastructures/objects/EdgeDir.h"
 
 namespace uu {
 namespace net {
-    
+
 /**
  * An edge between two actors.
  */
@@ -55,6 +56,11 @@ class
     const EdgeDir dir;
 
 };
+
+
+std::ostream&
+operator<<(std::ostream& os, const Edge& e);
+
 
 }
 }

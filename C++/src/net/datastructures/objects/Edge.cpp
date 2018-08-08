@@ -14,8 +14,15 @@ Edge(
     v2(v2),
     dir(dir)
 {
-    if (!v1) throw core::NullPtrException("vertex v1 missing during edge creation");
-    if (!v2) throw core::NullPtrException("vertex v1 missing during edge creation");
+    if (!v1)
+    {
+        throw core::NullPtrException("vertex v1 missing during edge creation");
+    }
+
+    if (!v2)
+    {
+        throw core::NullPtrException("vertex v1 missing during edge creation");
+    }
 }
 
 std::shared_ptr<Edge>
@@ -47,5 +54,14 @@ to_string(
     return ""; // cannot get here
 }
 
+
+
+std::ostream&
+operator<<(std::ostream& os, const Edge& e)
+{
+    os << e.to_string();
+    return os;
 }
-} 
+
+}
+}

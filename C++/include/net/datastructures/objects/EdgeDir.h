@@ -18,6 +18,6 @@ enum class EdgeDir
 
 
 }
-} 
+}
 
 #endif

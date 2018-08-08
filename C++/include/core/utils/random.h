@@ -17,13 +17,13 @@
 namespace uu {
 namespace core {
 
-    
+
 /**
  * @return a random device shared by all the library
  */
 std::mt19937 &
 get_random_engine(
-    );
+);
 
 /**
  * Returns a random integral number in the range [0,max[ using an
@@ -33,8 +33,8 @@ get_random_engine(
  */
 size_t
 getRandomInt(
-             size_t max
-             );
+    size_t max
+);
 
 /**
  * Returns a random integral number in the range [0,max[ using an
@@ -44,8 +44,8 @@ getRandomInt(
  */
 long
 getRandomLong(
-              long max
-              );
+    long max
+);
 
 /**
  * Returns a random double number in the range [0,1[ using an
@@ -53,7 +53,7 @@ getRandomLong(
  */
 double
 drand(
-    );
+);
 
 /**
  * Returns a number from 0 to MAX_LEVEL with geometrically decreasing
@@ -61,9 +61,9 @@ drand(
  */
 size_t
 random_level(
-             size_t MAX_LEVEL,
-             double P
-             );
+    size_t MAX_LEVEL,
+    double P
+);
 
 /**
 * Returns K random integral numbers in the range [0,max[ using an
@@ -73,17 +73,17 @@ random_level(
 */
 std::set<size_t>
 getKRandom(
-           size_t max,
-           size_t k
-           );
+    size_t max,
+    size_t k
+);
 
 /**
  * Random test: returns TRUE with probability probability.
  */
 bool
 test(
-     double probability
-     );
+    double probability
+);
 
 /**
  * Random test: returns the index of the vector randomly selected,
@@ -92,8 +92,8 @@ test(
  */
 size_t
 test(
-     const std::vector<double>& options
-     );
+    const std::vector<double>& options
+);
 
 /**
  * Random test: returns the index of the vector randomly selected,
@@ -102,9 +102,9 @@ test(
  */
 size_t
 test(
-     const std::vector<std::vector<double> >& options,
-     int row_num
-     );
+    const std::vector<std::vector<double> >& options,
+    int row_num
+);
 
 }
 }

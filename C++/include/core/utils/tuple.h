@@ -72,7 +72,7 @@ struct print_tuple_element
         std::cout << t << std::endl;
     }
 };
-    
+
 }
 }
 

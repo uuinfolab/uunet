@@ -23,8 +23,11 @@ add(
     std::shared_ptr<const Vertex> vertex
 )
 {
-    if (!vertex) throw core::NullPtrException("vertex in add(vertex)");
-    
+    if (!vertex)
+    {
+        throw core::NullPtrException("vertex in add(vertex)");
+    }
+
     // Notify the observers.
     for (auto obs: observers)
     {
@@ -42,6 +45,14 @@ add(
     return res;
 }
 
+const Vertex *
+VertexStore::
+add(
+    std::string vertex_name
+)
+{
+    return add(Vertex::create(vertex_name));
+}
 
 
 bool
@@ -50,8 +61,11 @@ erase(
     const Vertex * const vertex
 )
 {
-    if (!vertex) throw core::NullPtrException("vertex in erase(vertex)");
-    
+    if (!vertex)
+    {
+        throw core::NullPtrException("vertex in erase(vertex)");
+    }
+
     // Notify the observers.
     for (auto obs: observers)
     {

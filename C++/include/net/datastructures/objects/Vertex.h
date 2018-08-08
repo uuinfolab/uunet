@@ -8,6 +8,7 @@
 
 #include <string>
 #include <memory>
+#include <iostream>
 #include "core/datastructures/objects/NamedObject.h"
 
 namespace uu {
@@ -42,7 +43,10 @@ class
 
 };
 
-} 
+std::ostream&
+operator<<(std::ostream& os, const Vertex& v);
+
+}
 }
 
 #endif

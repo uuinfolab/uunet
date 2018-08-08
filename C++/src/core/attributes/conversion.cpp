@@ -147,7 +147,7 @@ epoch_to_time (
 )
 {
     int seconds_since_epoch = to_int(time_as_string);
-    
+
     return epoch_to_time(seconds_since_epoch);
 }
 
@@ -160,9 +160,9 @@ epoch_to_time (
     time_t epoch = to_time("1970-01-01 00:00:00", "%Y-%m-%d %H:%M:%S");
     time_t epoch_plus_one = to_time("1970-01-01 00:00:01", "%Y-%m-%d %H:%M:%S");
     double one_second = std::difftime(epoch_plus_one, epoch);
-    
+
     return epoch + one_second*seconds_since_epoch;
-    
+
 }
 
 

@@ -15,12 +15,12 @@ namespace uu {
 namespace net {
 
 
-    /**
-     * An attributed edge store (AttributedSimpleEdgeStore) is an edge store that can also associate
-     * attribute values to its vertices.
-     *
-     * A must be an attribute store, itself templatized to work with edges.
-     */
+/**
+ * An attributed edge store (AttributedSimpleEdgeStore) is an edge store that can also associate
+ * attribute values to its vertices.
+ *
+ * A must be an attribute store, itself templatized to work with edges.
+ */
 template <typename A = Attributes<const Edge>>
 class AttributedSimpleEdgeStore :
     public SimpleEdgeStore,
@@ -46,9 +46,9 @@ class AttributedSimpleEdgeStore :
     std::string
     summary(
     ) const;
-    
-protected:
-    
+
+  protected:
+
     using Attributed<A>::attributes_;
 
 };
@@ -66,20 +66,20 @@ AttributedSimpleEdgeStore(
     attach(this->attr());
 }
 
-    template <typename A>
-    std::string
-    AttributedSimpleEdgeStore<A>::
-    summary(
-    ) const
-    {
-        size_t s = size();
-        std::string summary =
+template <typename A>
+std::string
+AttributedSimpleEdgeStore<A>::
+summary(
+) const
+{
+    size_t s = size();
+    std::string summary =
         std::to_string(s) +
         (s==1?" edge (":" edges (") +
         attributes_->summary() + ")";
-        return summary;
-    }
-    
+    return summary;
+}
+
 }
 }
 

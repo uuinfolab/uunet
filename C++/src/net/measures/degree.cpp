@@ -3,8 +3,8 @@
  * - 2018.03.09 file created, following a restructuring of the previous library.
  */
 
-#ifndef UU_NET_MEASURES_DEGREE_H_
-#define UU_NET_MEASURES_DEGREE_H_
+#include "net/measures/degree.h"
+
 
 namespace uu {
 namespace net {
@@ -20,7 +20,10 @@ template<typename G>
 int
 maximum_degree(
     const G* g
-);
+)
+{
+
+}
 
 
 /**
@@ -34,7 +37,10 @@ template<typename G>
 int
 minimum_degree(
     const G* g
-);
+)
+{
+
+}
 
 /**
  * Returns the degree sequence of a graph.
@@ -47,7 +53,10 @@ template<typename G>
 std::vector<int>
 degree_sequence(
     const G* g
-);
+)
+{
+
+}
 
 /**
  * Returns the degree distribution of a graph.
@@ -60,8 +69,11 @@ template<typename G>
 std::vector<int>
 degree_distribution(
     const G* g
-);
-    
+)
+{
+
+}
+
 /**
  * Returns the degree of a vertex.
  * @param g input graph
@@ -77,10 +89,12 @@ degree(
     const G* g,
     const Vertex* v,
     const EdgeMode mode
-);
+)
+{
     
-    
-} // namespace net
-} // namespace uu
+}
 
-#endif
+
+}
+}
+

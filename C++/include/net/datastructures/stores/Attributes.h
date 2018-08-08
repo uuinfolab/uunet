@@ -34,7 +34,7 @@ class Attributes :
     Attributes();
 
     using AttributeStoreWrapper<OT>::attr_;
-    
+
     /**
      * Returns a short summary of the store, indicating the number of attributes.
      */
@@ -57,19 +57,19 @@ class Attributes :
         const OT* const o
     );
 
-    
+
 
 };
-    
+
 template <typename OT, typename ...Attrs>
 Attributes<OT, Attrs...>::
-    Attributes() :
+Attributes() :
     AttributeStoreWrapper<OT>(std::make_unique<AttributeStore<OT>>()),
     Attrs(attr_.get())...
 {
 }
 
-    
+
 template <typename OT, typename ...Attrs>
 std::string
 Attributes<OT, Attrs...>::

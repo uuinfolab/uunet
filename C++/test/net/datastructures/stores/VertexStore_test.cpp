@@ -29,6 +29,10 @@ TEST_F(net_datastructures_stores_VertexStore, all_functions) {
     // Adding a new vertex
     const uu::net::Vertex* v1_ = vs->add(v1);
     
+    // We can also add a vertex by name, letting the store create it for us
+    // This also returns a const uu::net::Vertex* pointing at the newly created vertex
+    vs->add("Another vertex name");
+    
     // null pointers should be caught
     EXPECT_THROW(vs->add(nullptr), uu::core::NullPtrException)
     << "Should throw an exception when a nullptr is passed";

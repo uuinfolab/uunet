@@ -67,13 +67,14 @@ class AttributeStore :
 
 };
 
-    
-    template <typename OT>
-    std::unique_ptr<AttributeStore<OT>> create_attribute_store()
-    {
-        return std::make_unique<AttributeStore<OT>>();
-    }
-    
+
+template <typename OT>
+std::unique_ptr<AttributeStore<OT>>
+                                 create_attribute_store()
+{
+    return std::make_unique<AttributeStore<OT>>();
+}
+
 template <typename OT>
 AttributeStore<OT>::
 AttributeStore()

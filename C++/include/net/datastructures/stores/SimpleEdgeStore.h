@@ -100,11 +100,11 @@ class SimpleEdgeStore :
     erase(
         const Vertex * const v
     ) override;
-    
+
     std::string
     summary(
     ) const override;
-    
+
   protected:
 
     // Indexes to objects (Component IDX):

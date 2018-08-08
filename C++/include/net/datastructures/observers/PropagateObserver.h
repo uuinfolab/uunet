@@ -49,7 +49,7 @@ class PropagateObserver :
   private:
     /** Internal object store. */
     S* store_;
-    
+
 };
 
 
@@ -58,10 +58,13 @@ template<typename S, typename O>
 PropagateObserver<S, O>::
 PropagateObserver(
     S* store
-                  ) :
+) :
     store_(store)
 {
-    if (!store_) throw core::NullPtrException("store to be registered in the observer");
+    if (!store_)
+    {
+        throw core::NullPtrException("store to be registered in the observer");
+    }
 }
 
 template<typename S, typename O>
@@ -71,7 +74,10 @@ notify_add(
     O* obj
 )
 {
-    if (!obj) throw  core::NullPtrException("object passed to the observer");
+    if (!obj)
+    {
+        throw  core::NullPtrException("object passed to the observer");
+    }
 }
 
 
@@ -82,7 +88,11 @@ notify_erase(
     O* obj
 )
 {
-    if (!obj) throw  core::NullPtrException("object passed to the observer");
+    if (!obj)
+    {
+        throw  core::NullPtrException("object passed to the observer");
+    }
+
     store_->erase(obj);
 }
 

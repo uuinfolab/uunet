@@ -6,14 +6,14 @@ namespace core {
 
 ObjectId Object::max_object_id = 0;
 
-    Object::
-    Object(
-           ) :
+Object::
+Object(
+) :
     id(++Object::max_object_id)
-    {
-        
-    }
-    
+{
+
+}
+
 Object::
 Object(
     const ObjectId& id

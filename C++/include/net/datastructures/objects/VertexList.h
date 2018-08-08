@@ -16,7 +16,7 @@ namespace net {
 using VertexList = core::SortedRandomSet<Vertex const *>;
 
 static const std::unique_ptr<VertexList> kEMPTY_VERTEX_LIST = std::make_unique<VertexList>();
-    
+
 }
 }
 
