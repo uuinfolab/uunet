@@ -22,7 +22,7 @@ maximum_degree(
     const G* g
 )
 {
-
+    return -1;
 }
 
 
@@ -39,7 +39,7 @@ minimum_degree(
     const G* g
 )
 {
-
+    return -1;
 }
 
 /**
@@ -55,7 +55,8 @@ degree_sequence(
     const G* g
 )
 {
-
+    std::vector<int> res;
+    return res;
 }
 
 /**
@@ -71,7 +72,8 @@ degree_distribution(
     const G* g
 )
 {
-
+    std::vector<int> res;
+    return res;
 }
 
 /**
@@ -91,7 +93,7 @@ degree(
     const EdgeMode mode
 )
 {
-    
+    return -1;
 }
 
 
