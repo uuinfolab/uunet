@@ -32,11 +32,18 @@ TEST_F(net_datastructures_graphs_SimpleGraph_test, all_functions) {
                  uu::core::ElementNotFoundException
                  );
     
-    
     // The removal of a vertex propagates to the edges
     g->vertices()->erase(v1);
     EXPECT_EQ(0, g->edges()->size())
     << "Vertex removal was not propagated to the edges";
+    
+    // Checking graph properties
+    
+    EXPECT_FALSE(g->allows_multi_edges())
+    << "Wrong graph type: should not allow multi-edges";
+    
+    EXPECT_FALSE(g->allows_loops())
+    << "Wrong graph type: should not allow loops";
     
     // Uncomment the following line to print a summary of the graph
     // std::cout << g->summary() << std::endl;

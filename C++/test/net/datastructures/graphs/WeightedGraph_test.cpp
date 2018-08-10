@@ -51,6 +51,18 @@ TEST_F(net_datastructures_graphs_WeightedGraph_test, all_functions) {
     EXPECT_EQ(0, g->edges()->size())
     << "Vertex removal was not propagated to the edges";
     
+    
+    // Checking graph properties
+    
+    EXPECT_FALSE(g->allows_multi_edges())
+    << "Wrong graph type: should not allow multi-edges";
+    
+    EXPECT_FALSE(g->allows_loops())
+    << "Wrong graph type: should not allow loops";
+    
+    EXPECT_TRUE(g->is_weighted())
+    << "Wrong graph type: should be weighter";
+    
     // Uncomment the following line to print a summary of the graph
     //std::cout << g->summary() << std::endl;
     

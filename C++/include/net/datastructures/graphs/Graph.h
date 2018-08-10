@@ -9,12 +9,11 @@
 #include <memory>
 #include <string>
 #include "core/exceptions/ElementNotFoundException.h"
+#include "core/exceptions/WrongParameterException.h"
 #include "core/datastructures/observers/ObserverStore.h"
 #include "net/datastructures/observers/AdjVertexCheckObserver.h"
 #include "net/datastructures/observers/PropagateObserver.h"
-//#include "core/datastructures/observers/Subject.h"
-//#include "net/datastructures/objects/Edge.h"
-//#include "net/datastructures/objects/Vertex.h"
+#include "net/datastructures/graphs/GraphType.h"
 
 namespace uu {
 namespace net {
@@ -22,11 +21,15 @@ namespace net {
 /**
  * Graph is a generic class that can be instantiated into several specific types of network.
  *
- * A Graph is instantiated specifying a VertexStore (V) and an EdgeStore (E).
+ * A Graph is instantiated specifying a VertexStore (of type V) and an EdgeStore (of type E).
+ * GT is an object of type GraphType, that provides a number of predicates in the form is_xxx()
+ * that can be used by functions to check whether the graph implements specific features such as
+ * being weighted, allowing user-defined attributes, etc.
  */
 template<typename V, typename E>
 class Graph
-    : public core::ObserverStore
+    :
+    public core::ObserverStore
 {
 
   public:
@@ -42,6 +45,7 @@ class Graph
      */
     Graph(
         const std::string& name,
+        GraphType t,
         std::unique_ptr<V> v,
         std::unique_ptr<E> e
     );
@@ -83,6 +87,47 @@ class Graph
     bool
     is_directed(
     ) const;
+    
+    
+    /**
+     * Checks if the graph is weighted.
+     */
+    bool
+    is_weighted(
+    ) const;
+    
+    
+    /**
+     * Checks if the graph has temporal information on its edges.
+     */
+    bool
+    is_temporal(
+    ) const;
+    
+    
+    /**
+     * Checks if the graph allows users to define their own generic attributes.
+     */
+    bool
+    is_attributed(
+    ) const;
+    
+    
+    /**
+     * Checks if the graph allows multi-edges. If false, only simple edges are allowed.
+     */
+    bool
+    allows_multi_edges(
+    ) const;
+    
+    
+    /**
+     * Checks if the graph allows loops.
+     */
+    bool
+    allows_loops(
+    ) const;
+
 
     /**
      * Returns a string providing a summary of the graph structure.
@@ -96,6 +141,10 @@ class Graph
     const std::string name;
 
   private:
+    
+    /** Graph type. */
+    GraphType type_;
+    
     /** Internal vertex store. */
     std::unique_ptr<V> vertices_;
 
@@ -110,12 +159,16 @@ template<typename V, typename E>
 Graph<V,E>::
 Graph(
     const std::string& name,
+    GraphType t,
     std::unique_ptr<V> v,
     std::unique_ptr<E> e
-) : name(name)
+) : name(name), type_(t)
 {
     vertices_ = std::move(v);
     edges_ = std::move(e);
+    
+    if (edges_->is_directed() != t.is_directed)
+        throw core::WrongParameterException("incompatible graph type directionality and edge store directionality");
     
     // register an observer to propagate the removal of vertices to the edge store
     auto obs1 = std::make_unique<PropagateObserver<E, const Vertex>>(edges());
@@ -174,8 +227,49 @@ Graph<V,E>::
 is_directed(
 ) const
 {
-    return edges_->is_directed();
+    return type_.is_directed();
 }
+
+    
+    template<typename V, typename E>
+bool
+Graph<V,E>::
+    is_weighted() const
+    {
+        return type_.is_weighted;
+    }
+    
+    template<typename V, typename E>
+bool
+Graph<V,E>::
+    is_temporal() const
+    {
+        return type_.is_temporal;
+    }
+    
+    template<typename V, typename E>
+bool
+Graph<V,E>::
+    is_attributed() const
+    {
+        return type_.is_attributed;
+    }
+    
+    template<typename V, typename E>
+bool
+Graph<V,E>::
+    allows_multi_edges() const
+    {
+        return type_.allows_multi_edges;
+    }
+    
+    template<typename V, typename E>
+bool
+Graph<V,E>::
+    allows_loops() const
+    {
+        return type_.allows_loops;
+    }
 
 
 template<typename V, typename E>

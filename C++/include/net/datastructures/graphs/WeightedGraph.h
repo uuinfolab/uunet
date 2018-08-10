@@ -27,7 +27,8 @@ std::unique_ptr<WeightedGraph>
 create_weighted_graph(
     const std::string& name,
     EdgeDir dir = EdgeDir::UNDIRECTED,
-    bool allow_loops = false);
+    bool allow_loops = false
+                      );
 
 }
 }
