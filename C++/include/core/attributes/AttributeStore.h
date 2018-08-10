@@ -424,25 +424,6 @@ class AttributeStore :
         const std::string& attribute_name
     ) const = 0;
 
-  protected:
-
-    /** default value for numeric attributes */
-    double default_numeric_ = 0.0;
-
-    /** default value for double attributes */
-    double default_double_ = 0.0;
-
-    /** default value for int attributes */
-    int default_int_ = 0;
-
-    /** default value for string attributes */
-    std::string default_string_ = "";
-
-    /** default value for time attributes*/
-    Time default_time_ = 0L;
-
-    /** default value for text attributes*/
-    Text default_text_ = Text("");
 } ;
 
 

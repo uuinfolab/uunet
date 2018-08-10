@@ -1047,7 +1047,7 @@ MainMemoryAttributeStore<ID>::get_min_time (
 
         if (index.empty())
         {
-            return Value<Time>(0, true);
+            return Value<Time>();
         }
 
         auto iterator = index.begin();
@@ -1094,7 +1094,7 @@ MainMemoryAttributeStore<ID>::get_max_time (
 
         if (index.empty())
         {
-            return Value<Time>(0, true);
+            return Value<Time>();
         }
 
         auto iterator = index.end();

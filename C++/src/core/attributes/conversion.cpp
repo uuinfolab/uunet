@@ -35,10 +35,8 @@ to_string (
 {
     std::ostringstream ss;
 
-    std::tm time;
-
-    // gmtime interprets the input as UTC
-    time = *gmtime(&v);
+    time_t t = std::chrono::system_clock::to_time_t(v);
+    std::tm time = *gmtime(&t);
 
     ss << std::put_time(&time, format.data());
 
@@ -157,11 +155,13 @@ epoch_to_time (
     int seconds_since_epoch
 )
 {
-    time_t epoch = to_time("1970-01-01 00:00:00", "%Y-%m-%d %H:%M:%S");
-    time_t epoch_plus_one = to_time("1970-01-01 00:00:01", "%Y-%m-%d %H:%M:%S");
-    double one_second = std::difftime(epoch_plus_one, epoch);
-
-    return epoch + one_second*seconds_since_epoch;
+    Time epoch;
+    std::istringstream in1{"1970-01-01 00:00:00 +0000"};
+    in1 >> date::parse(kDEFAULT_TIME_FORMAT, epoch);
+    
+    std::chrono::seconds secs (seconds_since_epoch);
+    
+    return epoch + secs;
 
 }
 
@@ -193,27 +193,12 @@ to_time (
 )
 {
     Time result;
-
-    struct std::tm t = {};
-    std::istringstream time_val(time_as_string);
-
-    time_val >> std::get_time(&t, format.data());
-
-    if (time_val.fail())
-        throw WrongFormatException("Error converting string to time: " +
-                                   time_as_string +
-                                   " with format " +
-                                   format);
-
-    result = core::timegm(&t);
-
-    if (result == (time_t) - 1)
-        throw WrongFormatException("Error converting string to time: " +
-                                   time_as_string);
-
+    std::istringstream in{time_as_string};
+    in >> date::parse(format, result);
+    
     return result;
 }
 
 
-} // namespace core
-} // namespace uu
+}
+}
