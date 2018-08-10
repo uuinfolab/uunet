@@ -9,6 +9,7 @@
 #include <memory>
 #include "core/attributes.h"
 #include "core/datastructures/observers/Observer.h"
+#include "core/exceptions/NullPtrException.h"
 
 namespace uu {
 namespace net {
@@ -100,6 +101,10 @@ notify_erase(
     const OT* object
 )
 {
+    if (!object)
+    {
+        throw core::NullPtrException("AttributeStore::notify_erase()");
+    }
     for (auto att: *this)
     {
         this->reset(object, att->name);
@@ -113,6 +118,10 @@ notify_add(
     const OT* object
 )
 {
+    if (!object)
+    {
+        throw core::NullPtrException("AttributeStore::notify_add()");
+    }
 }
 
 
