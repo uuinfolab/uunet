@@ -82,15 +82,15 @@ TEST_F(net_datastructures_stores_SimpleEdgeStore_test, directed) {
     
     // Retrieving neighbors
     auto vertices = store->neighbors(v3, uu::net::EdgeMode::IN);
-    EXPECT_EQ(1, vertices.size())
+    EXPECT_EQ(1, vertices->size())
     << "Could not retrieve all in-neighbors";
     
     vertices = store->neighbors(v3, uu::net::EdgeMode::OUT);
-    EXPECT_EQ(1, vertices.size())
+    EXPECT_EQ(1, vertices->size())
     << "Could not retrieve all out-neighbors";
     
     vertices = store->neighbors(v3, uu::net::EdgeMode::INOUT);
-    EXPECT_EQ(2, vertices.size())
+    EXPECT_EQ(2, vertices->size())
     << "Could not retrieve all neighbors";
     
     // testing directionality
@@ -187,15 +187,15 @@ TEST_F(net_datastructures_stores_SimpleEdgeStore_test, undirected) {
     // Retrieving neighbors
     
     auto vertices = store->neighbors(v3, uu::net::EdgeMode::IN);
-    EXPECT_EQ(2, vertices.size())
+    EXPECT_EQ(2, vertices->size())
     << "Could not retrieve all in-neighbors";
     
     vertices = store->neighbors(v3, uu::net::EdgeMode::OUT);
-    EXPECT_EQ(2, vertices.size())
+    EXPECT_EQ(2, vertices->size())
     << "Could not retrieve all out-neighbors";
     
     vertices = store->neighbors(v3, uu::net::EdgeMode::INOUT);
-    EXPECT_EQ(2, vertices.size())
+    EXPECT_EQ(2, vertices->size())
     << "Could not retrieve all neighbors";
     
     // testing directionality

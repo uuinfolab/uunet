@@ -16,54 +16,54 @@ namespace net {
 /**
  * Returns the maximum degree (\Delta) of a graph.
  * @param g input graph
+ * @param mode to select IN, OUT, or INOUT degree
  * @return the degree of the vertex with the maximum degree in g
- *
- * @todo NOT IMPLEMENTED
  */
 template<typename G>
-int
+size_t
 maximum_degree(
-    const G* g
+               const G* g,
+               const EdgeMode mode
 );
 
 
 /**
  * Returns the minimum degree (\delta) of a graph.
  * @param g input graph
+ * @param mode to select IN, OUT, or INOUT degree
  * @return the degree of the vertex with the minimum degree in g
- *
- * @todo NOT IMPLEMENTED
  */
 template<typename G>
-int
+size_t
 minimum_degree(
-    const G* g
+               const G* g,
+               const EdgeMode mode
 );
 
 /**
  * Returns the degree sequence of a graph.
  * @param g input graph
+ * @param mode to select IN, OUT, or INOUT degree
  * @return a vector of length n with the ordered sequence of vertex degrees in g
- *
- * @todo NOT IMPLEMENTED
  */
 template<typename G>
-std::vector<int>
+std::vector<size_t>
 degree_sequence(
-    const G* g
+                const G* g,
+                const EdgeMode mode
 );
 
 /**
  * Returns the degree distribution of a graph.
  * @param g input graph
+ * @param mode to select IN, OUT, or INOUT degree
  * @return a vector dd, where dd[i] is the number of vertices having degree i
- *
- * @todo NOT IMPLEMENTED
  */
 template<typename G>
-std::vector<int>
+std::vector<size_t>
 degree_distribution(
-    const G* g
+                    const G* g,
+                    const EdgeMode mode
 );
 
 /**
@@ -72,11 +72,9 @@ degree_distribution(
  * @param v input vertex
  * @param mode to select IN, OUT, or INOUT degree
  * @return the (mode-)degree of v in g
- *
- * @todo NOT IMPLEMENTED
  */
 template<typename G>
-int
+size_t
 degree(
     const G* g,
     const Vertex* v,

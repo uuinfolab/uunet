@@ -81,15 +81,15 @@ TEST_F(net_datastructures_stores_MultiEdgeStore_test, undirected) {
     // Retrieving neighbors
     
     auto vertices1 = store->neighbors(v2, uu::net::EdgeMode::IN);
-    EXPECT_EQ(2, vertices1.size())
+    EXPECT_EQ(2, vertices1->size())
     << "Could not retrieve all in-neighbors";
     
     auto vertices2 = store->neighbors(v2, uu::net::EdgeMode::OUT);
-    EXPECT_EQ(2, vertices2.size())
+    EXPECT_EQ(2, vertices2->size())
     << "Could not retrieve all out-neighbors";
     
     auto vertices3 = store->neighbors(v2, uu::net::EdgeMode::INOUT);
-    EXPECT_EQ(2, vertices3.size())
+    EXPECT_EQ(2, vertices3->size())
     << "Could not retrieve all neighbors";
     
     // testing directionality
@@ -111,7 +111,7 @@ TEST_F(net_datastructures_stores_MultiEdgeStore_test, undirected) {
     // v2 should still have two neighbors, because of e2
     
     auto vertices4 = store->neighbors(v2, uu::net::EdgeMode::INOUT);
-    EXPECT_EQ(2, vertices4.size())
+    EXPECT_EQ(2, vertices4->size())
     << "Could not retrieve all neighbors";
     
     
@@ -122,7 +122,7 @@ TEST_F(net_datastructures_stores_MultiEdgeStore_test, undirected) {
     // v2 should now only have one neighbor
     
     auto vertices5 = store->neighbors(v2, uu::net::EdgeMode::INOUT);
-    EXPECT_EQ(1, vertices5.size())
+    EXPECT_EQ(1, vertices5->size())
     << "Could not retrieve all neighbors";
     
     // Erasing a vertex
@@ -192,15 +192,15 @@ TEST_F(net_datastructures_stores_MultiEdgeStore_test, directed) {
     // Retrieving neighbors
     
     auto vertices = store->neighbors(v3, uu::net::EdgeMode::IN);
-    EXPECT_EQ(1, vertices.size())
+    EXPECT_EQ(1, vertices->size())
     << "Could not retrieve all in-neighbors";
     
     vertices = store->neighbors(v3, uu::net::EdgeMode::OUT);
-    EXPECT_EQ(1, vertices.size())
+    EXPECT_EQ(1, vertices->size())
     << "Could not retrieve all out-neighbors";
     
     vertices = store->neighbors(v3, uu::net::EdgeMode::INOUT);
-    EXPECT_EQ(2, vertices.size())
+    EXPECT_EQ(2, vertices->size())
     << "Could not retrieve all neighbors";
     
     // testing directionality
@@ -221,7 +221,7 @@ TEST_F(net_datastructures_stores_MultiEdgeStore_test, directed) {
     // v3 should still have two neighbors, because of e2
     
     vertices = store->neighbors(v3, uu::net::EdgeMode::INOUT);
-    EXPECT_EQ(2, vertices.size())
+    EXPECT_EQ(2, vertices->size())
     << "Could not retrieve all neighbors";
     
     check = store->erase(e2);

@@ -166,7 +166,7 @@ erase(
 {
     std::unordered_set<const Edge*> to_erase;
 
-    for (const Vertex* neighbor: neighbors(vertex,EdgeMode::OUT))
+    for (const Vertex* neighbor: *neighbors(vertex,EdgeMode::OUT))
     {
         auto edges = get(vertex,neighbor);
 
@@ -176,7 +176,7 @@ erase(
         }
     }
 
-    for (const Vertex* neighbor: neighbors(vertex,EdgeMode::IN))
+    for (const Vertex* neighbor: *neighbors(vertex,EdgeMode::IN))
     {
         auto edges = get(neighbor,vertex);
 

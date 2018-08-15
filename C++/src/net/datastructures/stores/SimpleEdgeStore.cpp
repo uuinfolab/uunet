@@ -178,14 +178,14 @@ erase(
 
     std::unordered_set<const Edge*> to_erase;
 
-    for (const Vertex* neighbor: neighbors(vertex,EdgeMode::OUT))
+    for (const Vertex* neighbor: *neighbors(vertex,EdgeMode::OUT))
     {
         const Edge* e = get(vertex,neighbor);
 
         to_erase.insert(e);
     }
 
-    for (const Vertex* neighbor: neighbors(vertex,EdgeMode::IN))
+    for (const Vertex* neighbor: *neighbors(vertex,EdgeMode::IN))
     {
         to_erase.insert(get(neighbor,vertex));
     }

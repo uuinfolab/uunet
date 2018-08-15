@@ -90,7 +90,7 @@ class EdgeStore :
      * @return the list of neighbors.
      **/
     const
-    VertexList&
+    VertexList*
     neighbors(
         const Vertex* vertex,
         EdgeMode mode

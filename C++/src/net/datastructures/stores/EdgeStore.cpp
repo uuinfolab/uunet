@@ -76,7 +76,7 @@ add(
 
 
 const
-VertexList&
+VertexList*
 EdgeStore::
 neighbors(
     const Vertex* vertex,
@@ -92,30 +92,30 @@ neighbors(
     {
         if (sidx_neighbors_in.count(vertex)==0)
         {
-            return *kEMPTY_VERTEX_LIST;
+            return kEMPTY_VERTEX_LIST.get();
         }
 
-        return *sidx_neighbors_in.at(vertex);
+        return sidx_neighbors_in.at(vertex).get();
     }
 
     else if (mode==EdgeMode::OUT)
     {
         if (sidx_neighbors_out.count(vertex)==0)
         {
-            return *kEMPTY_VERTEX_LIST;
+            return kEMPTY_VERTEX_LIST.get();
         }
 
-        return *sidx_neighbors_out.at(vertex);
+        return sidx_neighbors_out.at(vertex).get();
     }
 
     else if (mode==EdgeMode::INOUT)
     {
         if (sidx_neighbors_all.count(vertex)==0)
         {
-            return *kEMPTY_VERTEX_LIST;
+            return kEMPTY_VERTEX_LIST.get();
         }
 
-        return *sidx_neighbors_all.at(vertex);
+        return sidx_neighbors_all.at(vertex).get();
     }
 
     else
