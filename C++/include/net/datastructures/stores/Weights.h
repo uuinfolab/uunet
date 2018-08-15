@@ -57,10 +57,10 @@ class Weights
      */
     void
     set_weight_attribute(
-               const std::string& name
-               );
+        const std::string& name
+    );
 
-    
+
     /*
     void
     read_attributes(
@@ -112,19 +112,22 @@ get_weight(
     return attr_->get_double(obj, weight_attribute_);
 }
 
-    
-    template <typename OT>
-    void
-    Weights<OT>::
-    set_weight_attribute(
-                         const std::string& name
-                         )
+
+template <typename OT>
+void
+Weights<OT>::
+set_weight_attribute(
+    const std::string& name
+)
+{
+    if (!attr_->get(name))
     {
-        if (!attr_->get(name))
-            throw core::ElementNotFoundException("attribute " + name);
-        weight_attribute_ = name;
+        throw core::ElementNotFoundException("attribute " + name);
     }
-    
+
+    weight_attribute_ = name;
+}
+
 /*
 template <typename OT>
 void

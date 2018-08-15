@@ -23,12 +23,12 @@ create_weighted_graph(
     auto w_attr = std::make_unique<A>();
 
     auto es = std::make_unique<AttributedSimpleEdgeStore<A>>(dir, std::move(w_attr));
-    
+
     GraphType t;
     t.allows_loops = allows_loops;
     t.is_directed = dir==EdgeDir::DIRECTED ? true : false;
     t.is_weighted = true;
-    
+
     auto graph = std::make_unique<WeightedGraph>(name, t, std::move(vs), std::move(es));
 
     if (!allows_loops)
@@ -37,7 +37,7 @@ create_weighted_graph(
         graph->edges()->attach(obs.get());
         graph->register_observer(std::move(obs));
     }
-    
+
     return graph;
 }
 

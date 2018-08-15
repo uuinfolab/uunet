@@ -23,7 +23,7 @@ create_simple_graph(
     t.allows_loops = allows_loops;
     t.is_directed = dir==EdgeDir::DIRECTED ? true : false;
     t.is_weighted = true;
-    
+
     auto graph = std::make_unique<SimpleGraph>(name, t, std::move(vs), std::move(es));
 
     if (!allows_loops)

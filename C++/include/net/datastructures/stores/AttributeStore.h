@@ -105,6 +105,7 @@ notify_erase(
     {
         throw core::NullPtrException("AttributeStore::notify_erase()");
     }
+
     for (auto att: *this)
     {
         this->reset(object, att->name);

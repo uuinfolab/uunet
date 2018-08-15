@@ -99,7 +99,7 @@ TEST_F(core_attributes_MainMemoryAttributeStore_test, set_get_as_string)
 
     EXPECT_THROW(att_store->set_as_string(id0, "w_att", "t"),
                  uu::core::ElementNotFoundException);
-    
+
     EXPECT_THROW(att_store->set_as_string(id0, "i_att", "not an int"),
                  uu::core::WrongFormatException);
 
@@ -127,10 +127,10 @@ TEST_F(core_attributes_MainMemoryAttributeStore_test, min_max)
 
     EXPECT_THROW(att_store->get_min_int("w_att"),
                  uu::core::ElementNotFoundException);
-    
+
     EXPECT_THROW(att_store->get_max_int("w_att"),
                  uu::core::ElementNotFoundException);
-    
+
 }
 
 
@@ -182,7 +182,7 @@ TEST_F(core_attributes_MainMemoryAttributeStore_test, indexing)
     std::vector<int> test = {id1, id2};
     std::vector<int> values = att_store->range_query_int("i_att",1,2);
     EXPECT_TRUE(test == values);
-    
+
 }
 
 

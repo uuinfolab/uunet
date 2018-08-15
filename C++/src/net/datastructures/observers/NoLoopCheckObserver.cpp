@@ -26,7 +26,7 @@ notify_add(
     {
         throw core::NullPtrException("edge passed to the observer");
     }
-    
+
     if (e->v1 == e->v2)
     {
         throw core::WrongParameterException("loops are not allowed");
@@ -35,7 +35,7 @@ notify_add(
 
 
 void
-    NoLoopCheckObserver::
+NoLoopCheckObserver::
 notify_erase(
     const Edge* e
 )

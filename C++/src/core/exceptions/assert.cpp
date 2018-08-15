@@ -3,20 +3,20 @@
 namespace uu {
 namespace core {
 
-    void
-    assert(
-           void* ptr,
-           std::string function,
-           std::string param
-           )
+void
+assert(
+    void* ptr,
+    std::string function,
+    std::string param
+)
+{
+    if (!ptr)
     {
-        if (!ptr)
-        {
-            std::string msg = "function " + function +
-            ", parameter " + param;
-            throw NullPtrException(msg);
-        }
+        std::string msg = "function " + function +
+                          ", parameter " + param;
+        throw NullPtrException(msg);
     }
+}
 
 }
 }

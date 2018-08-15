@@ -87,40 +87,40 @@ class Graph
     bool
     is_directed(
     ) const;
-    
-    
+
+
     /**
      * Checks if the graph is weighted.
      */
     bool
     is_weighted(
     ) const;
-    
-    
+
+
     /**
      * Checks if the graph has temporal information on its edges.
      */
     bool
     is_temporal(
     ) const;
-    
-    
+
+
     /**
      * Checks if the graph allows users to define their own generic attributes.
      */
     bool
     is_attributed(
     ) const;
-    
-    
+
+
     /**
      * Checks if the graph allows multi-edges. If false, only simple edges are allowed.
      */
     bool
     allows_multi_edges(
     ) const;
-    
-    
+
+
     /**
      * Checks if the graph allows loops.
      */
@@ -141,10 +141,10 @@ class Graph
     const std::string name;
 
   private:
-    
+
     /** Graph type. */
     GraphType type_;
-    
+
     /** Internal vertex store. */
     std::unique_ptr<V> vertices_;
 
@@ -166,15 +166,17 @@ Graph(
 {
     vertices_ = std::move(v);
     edges_ = std::move(e);
-    
+
     if (edges_->is_directed() != t.is_directed)
+    {
         throw core::WrongParameterException("incompatible graph type directionality and edge store directionality");
-    
+    }
+
     // register an observer to propagate the removal of vertices to the edge store
     auto obs1 = std::make_unique<PropagateObserver<E, const Vertex>>(edges());
     vertices()->attach(obs1.get());
     register_observer(std::move(obs1));
-    
+
     // register an observer to check that the end vertices of a newly inserted graph exist
     auto obs2 = std::make_unique<AdjVertexCheckObserver<V>>(vertices());
     edges()->attach(obs2.get());
@@ -230,46 +232,46 @@ is_directed(
     return type_.is_directed();
 }
 
-    
-    template<typename V, typename E>
+
+template<typename V, typename E>
 bool
 Graph<V,E>::
-    is_weighted() const
-    {
-        return type_.is_weighted;
-    }
-    
-    template<typename V, typename E>
+is_weighted() const
+{
+    return type_.is_weighted;
+}
+
+template<typename V, typename E>
 bool
 Graph<V,E>::
-    is_temporal() const
-    {
-        return type_.is_temporal;
-    }
-    
-    template<typename V, typename E>
+is_temporal() const
+{
+    return type_.is_temporal;
+}
+
+template<typename V, typename E>
 bool
 Graph<V,E>::
-    is_attributed() const
-    {
-        return type_.is_attributed;
-    }
-    
-    template<typename V, typename E>
+is_attributed() const
+{
+    return type_.is_attributed;
+}
+
+template<typename V, typename E>
 bool
 Graph<V,E>::
-    allows_multi_edges() const
-    {
-        return type_.allows_multi_edges;
-    }
-    
-    template<typename V, typename E>
+allows_multi_edges() const
+{
+    return type_.allows_multi_edges;
+}
+
+template<typename V, typename E>
 bool
 Graph<V,E>::
-    allows_loops() const
-    {
-        return type_.allows_loops;
-    }
+allows_loops() const
+{
+    return type_.allows_loops;
+}
 
 
 template<typename V, typename E>

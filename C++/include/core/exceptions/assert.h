@@ -18,12 +18,12 @@ namespace core {
  * @param par the name of the function parameter
  * with the second parameter as a message.
  */
-    void
-    assert(
-           void* ptr,
-           std::string function,
-           std::string par
-    );
+void
+assert(
+    void* ptr,
+    std::string function,
+    std::string par
+);
 
 }
 }

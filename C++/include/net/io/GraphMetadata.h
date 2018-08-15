@@ -21,6 +21,6 @@ struct GraphMetadata
 };
 
 }
-} 
+}
 
 #endif

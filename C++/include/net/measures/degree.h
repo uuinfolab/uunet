@@ -22,8 +22,8 @@ namespace net {
 template<typename G>
 size_t
 maximum_degree(
-               const G* g,
-               const EdgeMode mode
+    const G* g,
+    const EdgeMode mode
 );
 
 
@@ -36,8 +36,8 @@ maximum_degree(
 template<typename G>
 size_t
 minimum_degree(
-               const G* g,
-               const EdgeMode mode
+    const G* g,
+    const EdgeMode mode
 );
 
 /**
@@ -49,8 +49,8 @@ minimum_degree(
 template<typename G>
 std::vector<size_t>
 degree_sequence(
-                const G* g,
-                const EdgeMode mode
+    const G* g,
+    const EdgeMode mode
 );
 
 /**
@@ -62,8 +62,8 @@ degree_sequence(
 template<typename G>
 std::vector<size_t>
 degree_distribution(
-                    const G* g,
-                    const EdgeMode mode
+    const G* g,
+    const EdgeMode mode
 );
 
 /**

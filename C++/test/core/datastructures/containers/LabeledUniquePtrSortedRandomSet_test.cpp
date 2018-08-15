@@ -7,11 +7,11 @@ TEST(core_datastructures_containers_LabeledUniquePtrSortedRandomSet_test, all_fu
 {
     class Elem
     {
-    public:
+      public:
         std::string name;
         Elem(std::string name) : name(name) {}
     };
-    
+
     uu::core::LabeledUniquePtrSortedRandomSet<const Elem> set;
 
     std::unique_ptr<const Elem> e1 = std::make_unique<Elem>("1");
@@ -22,51 +22,52 @@ TEST(core_datastructures_containers_LabeledUniquePtrSortedRandomSet_test, all_fu
     const Elem* e3_copy = e3.get();
     std::unique_ptr<const Elem> e4 = std::make_unique<Elem>("4");
     const Elem* e4_copy = e4.get();
-    
+
     EXPECT_TRUE(set.add(std::move(e1)))
-    << "Insertion of a new element should return true";
+            << "Insertion of a new element should return true";
     EXPECT_TRUE(set.add(std::move(e2)))
-    << "Insertion of a new element should return true";
+            << "Insertion of a new element should return true";
     EXPECT_TRUE(set.add(std::move(e3)))
-    << "Insertion of a new element should return true";
-    
+            << "Insertion of a new element should return true";
+
     EXPECT_EQ(set.size(), 3)
-    << "Inserted 3 elements, but size != 3";
-    
+            << "Inserted 3 elements, but size != 3";
+
 
     EXPECT_TRUE(set.contains(e3_copy))
-    << "contains method cannot find existing element";
+            << "contains method cannot find existing element";
     EXPECT_FALSE(set.contains(e4_copy))
-    << "contains method finds non-existing element";
-    
+            << "contains method finds non-existing element";
+
     EXPECT_EQ(e1_copy, set.get_at_index(set.get_index(e1_copy)))
-    << "get_index and get_at_index not aligned";
+            << "get_index and get_at_index not aligned";
     EXPECT_EQ(e2_copy, set.get_at_index(set.get_index(e2_copy)))
-    << "get_index and get_at_index not aligned";
+            << "get_index and get_at_index not aligned";
     EXPECT_EQ(e3_copy, set.get_at_index(set.get_index(e3_copy)))
-    << "get_index and get_at_index not aligned";
-    
+            << "get_index and get_at_index not aligned";
+
     set.get_at_random(); // cannot test this, as it is random... :)
-    
+
     EXPECT_FALSE(set.erase(e4_copy))
-    << "Erasing a non-existing element should return false";
+            << "Erasing a non-existing element should return false";
     EXPECT_TRUE(set.erase(e2_copy))
-    << "Erasing an existing element should return true";
-    
+            << "Erasing an existing element should return true";
+
     EXPECT_EQ(set.size(), 2)
-    << "Inserted 3 elements and erased 1, but size != 2";
-    
+            << "Inserted 3 elements and erased 1, but size != 2";
+
     size_t number_of_elements = 0;
+
     for (const Elem* el: set)
     {
         EXPECT_TRUE(set.contains(el))
-        << "Iterator returns something not in the set";
-        
+                << "Iterator returns something not in the set";
+
         number_of_elements++;
     }
-    
+
     EXPECT_EQ(number_of_elements, 2)
-    << "Iterator does not return the correct number of elements";
-    
+            << "Iterator does not return the correct number of elements";
+
 }
 

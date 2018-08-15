@@ -10,21 +10,21 @@ TEST(core_datastructures_propertymatrix_PropertyMatrix_test, bool_values)
     P.set(2,1,false);
     P.set(3,0,false);
     P.set(3,1,false);
-    
+
     // retrieving values
     EXPECT_EQ(P.get(0,0).value,false)
-    << "Wrong value for field 0,0";
+            << "Wrong value for field 0,0";
     EXPECT_EQ(P.get(2,1).value,false)
             << "Wrong value for field 2,1";
     EXPECT_EQ(P.get(0,1).value,true)
             << "Wrong default value for field 0,1";
-    
+
     // metadata
     EXPECT_EQ(P.structures().size(),3)
             << "Wrong number of structures";
     EXPECT_EQ(P.contexts().size(),2)
             << "Wrong number of contexts";
-    
+
     // comparison functions
     EXPECT_EQ(uu::core::russell_rao(P,0,1),1.0/4)
             << "Wrong function: russell_rao";

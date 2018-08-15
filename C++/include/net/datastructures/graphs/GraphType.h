@@ -11,14 +11,14 @@ namespace net {
 
 struct GraphType
 {
-    
+
     bool is_directed = false;
     bool is_weighted = false;
     bool is_temporal = false;
     bool is_attributed = false;
     bool allows_multi_edges = false;
     bool allows_loops = false;
-    
+
 };
 
 }

@@ -158,9 +158,9 @@ epoch_to_time (
     Time epoch;
     std::istringstream in1{"1970-01-01 00:00:00 +0000"};
     in1 >> date::parse(kDEFAULT_TIME_FORMAT, epoch);
-    
+
     std::chrono::seconds secs (seconds_since_epoch);
-    
+
     return epoch + secs;
 
 }
@@ -195,7 +195,7 @@ to_time (
     Time result;
     std::istringstream in{time_as_string};
     in >> date::parse(format, result);
-    
+
     return result;
 }
 

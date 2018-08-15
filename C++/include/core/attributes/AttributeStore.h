@@ -36,9 +36,10 @@ class AttributeStore :
     using super::erase;
     using super::get;
 
-    const Attribute* add(
-                         std::string name,
-                         AttributeType t
+    const Attribute*
+    add(
+        std::string name,
+        AttributeType t
     );
 
     /**
@@ -476,21 +477,21 @@ set_as_string(
     }
 }
 
-    
-    template <typename ID>
-    const Attribute*
-    AttributeStore<ID>::
-    add(
-                         std::string name,
-                         AttributeType t
-                         )
-    {
-        std::unique_ptr<Attribute> a = std::make_unique<Attribute>(name, t);
-        const Attribute* a_ptr = a.get();
-        add(std::move(a));
-        return a_ptr;
-    }
-    
+
+template <typename ID>
+const Attribute*
+AttributeStore<ID>::
+add(
+    std::string name,
+    AttributeType t
+)
+{
+    std::unique_ptr<Attribute> a = std::make_unique<Attribute>(name, t);
+    const Attribute* a_ptr = a.get();
+    add(std::move(a));
+    return a_ptr;
+}
+
 template <typename ID>
 Value<std::string>
 AttributeStore<ID>::
