@@ -1,4 +1,6 @@
 /**
+ * 
+ *
  * History:
  * - 2018.03.09 file created, following a restructuring of the previous library.
  */
@@ -9,7 +11,7 @@
 #include <string>
 #include <memory>
 #include "net/datastructures/graphs/WeightedGraph.h"
-#include "net/io/read_graph.h"
+#include "net/io/read_common.h"
 
 namespace uu {
 namespace net {

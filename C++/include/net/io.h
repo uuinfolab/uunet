@@ -1,19 +1,24 @@
 /**
- * net/io.h
+ * This module defines functions to read/write graphs from/to disk.
  *
- * Author: Matteo Magnani <matteo.magnani@it.uu.se>
- * Created: 2017-09-26
- *
- * Methods to read/write a network from/to file.
- *
+ 
  * This is the complete file format:
  *
  * -------------------------------------------
  * -- comment lines start with two dashes (--)
  *
  * #TYPE
- * UNDIRECTED
- * -- Or: DIRECTED
+ * -- Not case sensitive:
+ * DIRECTED
+ * -- Or: UNDIRECTED (default)
+ * WEIGHTED
+ * -- Or: UNWEIGHTED (default)
+ * MULTI
+ * -- Or: SIMPLE (default)
+ * TEMPORAL
+ * -- Or: STATIC (default)
+ * LOOPS
+ * -- Or: NO LOOPS (default)
  *
  * #VERTEX ATTRIBUTES
  * AttributeName,AttributeType
@@ -24,11 +29,11 @@
  * -- etc.
  *
  * #VERTICES
- * ActorName,AttributeValueList...
+ * VertexName,AttributeValueList...
  * -- etc.
  *
  * #EDGES
- * ActorName,ActorName,AttributeValueList...
+ * VertexName,VertexName,AttributeValueList...
  * -------------------------------------------
  *
  * If #TYPE is not present, edges are by default undirected.
@@ -47,22 +52,23 @@
  * Matteo,Mark
  * ...
  * -------------------------------------------
+ * Please notice that the AttributeValueList depends on the type of graph.
+ * If the graph has special attributes, they do not need to be defined in a
+ * #XXX ATTRIBUTES section. For example, if a graph is weighted, the library
+ * will expect a double (representing the weight) as the first attribute of the
+ * AttributeValueList.
+ *
+ * History:
+ * - 2018.03.20 file created
  */
 
-#ifndef UU_NET_IO_READGRAPH_H_
-#define UU_NET_IO_READGRAPH_H_
+#ifndef UU_NET_IO_H_
+#define UU_NET_IO_H_
 
-#include <string>
-#include <vector>
-#include "core/attributes/Attribute.h"
+#include "net/io/GraphIOFileSection.h"
+#include "net/io/GraphMetadata.h"
 #include "net/io/read_common.h"
-
-
-namespace uu {
-namespace net {
-
-}
-}
-
+#include "net/io/read_weighted_graph.h"
+#include "net/io/write_common.h"
 
 #endif

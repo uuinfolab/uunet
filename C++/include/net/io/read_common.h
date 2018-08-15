@@ -59,16 +59,16 @@ read_data(
     const std::string& infile,
     char separator
 );
+    
 /**
  * Utility function to read ...
- * @param
- * @param fields a vector of strings where the attribute values are stores
+ * @param input the line of the file where the version is indicated
  * @param line_number current line in the input file, for error management
+ * @return the version of the file format (2.0 or 1.0 for the previous version)
  */
-void
+std::string
 read_version(
-    const std::vector<std::string>& fields,
-    std::string& version,
+    const std::string& input,
     size_t line_number
 );
 
