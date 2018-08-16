@@ -15,7 +15,7 @@
  * for example include/net/datastructures/stores/Weighted.h).
  *
  * Finally, you may want to create a read_xxx_graph function. See for example
- * include/net/io/read_weigthed_graph.h.
+ * include/net/io/read_weigthed_graph.h and src/net/io/read_weigthed_graph.cpp.
  *
  * History:
  * - 2018.03.20 file created
