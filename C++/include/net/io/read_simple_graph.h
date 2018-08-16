@@ -1,5 +1,5 @@
 /**
- * 
+ *
  *
  * History:
  * - 2018.03.09 file created, following a restructuring of the previous library.
@@ -41,8 +41,8 @@ read_edge(
     const std::vector<core::Attribute>& edge_attributes,
     size_t line_number
 );
-    
-    
+
+
 }
 }
 

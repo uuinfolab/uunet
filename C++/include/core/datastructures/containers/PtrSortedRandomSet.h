@@ -9,7 +9,7 @@
 
 #include <memory>
 #include "core/datastructures/containers/SortedRandomSet.h"
-#include "core/exceptions/NullPtrException.h"
+#include "core/exceptions/assert_not_null.h"
 
 namespace uu {
 namespace core {
@@ -184,10 +184,7 @@ erase(
     E * const element
 )
 {
-    if (!element)
-    {
-        throw NullPtrException("element to be erased from the store");
-    }
+    core::assert_not_null(element, "erase", "e");
 
     return set.template erase<E*,PtrLT,PtrEQ>(element);
 }
@@ -291,10 +288,8 @@ contains(
     E* search_value
 ) const
 {
-    if (!search_value)
-    {
-        throw NullPtrException("element to be looked up in the store");
-    }
+
+    core::assert_not_null(search_value, "contains", "search_value");
 
     return set.template contains<E*,PtrLT,PtrEQ>(search_value);
 }
@@ -306,10 +301,8 @@ get_index(
     E* search_value
 ) const
 {
-    if (!search_value)
-    {
-        throw NullPtrException("element to be looked up in the store");
-    }
+
+    core::assert_not_null(search_value, "get_index", "search_value");
 
     return set.template get_index<E*,PtrLT,PtrEQ>(search_value);
 }

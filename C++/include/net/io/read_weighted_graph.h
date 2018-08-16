@@ -1,5 +1,5 @@
 /**
- * 
+ *
  *
  * History:
  * - 2018.03.09 file created, following a restructuring of the previous library.

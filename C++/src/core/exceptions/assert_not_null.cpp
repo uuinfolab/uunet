@@ -1,11 +1,11 @@
-#include "core/exceptions/assert.h"
+#include "core/exceptions/assert_not_null.h"
 
 namespace uu {
 namespace core {
 
 void
-assert(
-    void* ptr,
+assert_not_null(
+    const void* ptr,
     std::string function,
     std::string param
 )

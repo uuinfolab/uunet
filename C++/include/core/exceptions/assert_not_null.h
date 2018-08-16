@@ -19,8 +19,8 @@ namespace core {
  * with the second parameter as a message.
  */
 void
-assert(
-    void* ptr,
+assert_not_null(
+    const void* ptr,
     std::string function,
     std::string par
 );

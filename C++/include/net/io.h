@@ -1,7 +1,7 @@
 /**
  * This module defines functions to read/write graphs from/to disk.
  *
- 
+
  * This is the complete file format:
  *
  * -------------------------------------------

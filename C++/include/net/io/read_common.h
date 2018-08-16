@@ -59,7 +59,7 @@ read_data(
     const std::string& infile,
     char separator
 );
-    
+
 /**
  * Utility function to read ...
  * @param input the line of the file where the version is indicated

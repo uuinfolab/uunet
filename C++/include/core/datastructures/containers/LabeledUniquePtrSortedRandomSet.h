@@ -10,7 +10,7 @@
 #include <string>
 #include <unordered_map>
 #include "core/datastructures/containers/UniquePtrSortedRandomSet.h"
-#include "core/exceptions/NullPtrException.h"
+#include "core/exceptions/assert_not_null.h"
 
 namespace uu {
 namespace core {
@@ -92,10 +92,7 @@ add(
     std::unique_ptr<E> element
 )
 {
-    if (!element.get())
-    {
-        throw NullPtrException("element to be added to the store");
-    }
+    core::assert_not_null(element.get(), "add", "element");
 
     // Return false if an element with this name exists.
     auto search = cidx_element_by_name.find(element->name);
@@ -140,10 +137,8 @@ erase(
     E * const element
 )
 {
-    if (!element)
-    {
-        throw NullPtrException("element to be erased from the store");
-    }
+
+    core::assert_not_null(element, "erase", "element");
 
     auto search = cidx_element_by_name.find(element->name);
 
