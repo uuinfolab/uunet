@@ -27,6 +27,5 @@
 #include "net/datastructures/graphs/Graph.h"
 #include "net/datastructures/graphs/SimpleGraph.h"
 #include "net/datastructures/graphs/MultiGraph.h"
-#include "net/datastructures/graphs/WeightedGraph.h"
 
 #endif

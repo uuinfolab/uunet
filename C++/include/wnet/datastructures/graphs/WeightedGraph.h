@@ -3,8 +3,8 @@
  * - 2018.03.09 file created, following a restructuring of the previous library.
  */
 
-#ifndef UU_NET_DATASTRUCTURE_GRAPHS_WEIGHTEDGRAPH_H_
-#define UU_NET_DATASTRUCTURE_GRAPHS_WEIGHTEDGRAPH_H_
+#ifndef UU_WNET_DATASTRUCTURE_GRAPHS_WEIGHTEDGRAPH_H_
+#define UU_WNET_DATASTRUCTURE_GRAPHS_WEIGHTEDGRAPH_H_
 
 #include <memory>
 #include <string>
@@ -12,7 +12,7 @@
 #include "net/datastructures/stores/VertexStore.h"
 #include "net/datastructures/stores/AttributedSimpleEdgeStore.h"
 #include "net/datastructures/stores/Attributes.h"
-#include "net/datastructures/stores/Weights.h"
+#include "wnet/datastructures/stores/Weights.h"
 
 namespace uu {
 namespace net {

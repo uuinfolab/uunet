@@ -38,5 +38,7 @@ include_directories(
 
 add_subdirectory (core)
 add_subdirectory (net)
+add_subdirectory (wnet)
+add_subdirectory (tnet)
 
 

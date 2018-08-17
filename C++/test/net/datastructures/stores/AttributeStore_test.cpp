@@ -2,7 +2,6 @@
 
 #include "net/datastructures/stores/AttributeStore.h"
 #include "net/datastructures/stores/Attributes.h"
-#include "net/datastructures/stores/Weights.h"
 #include "net/datastructures/objects/Vertex.h"
 #include "core/exceptions/NullPtrException.h"
 

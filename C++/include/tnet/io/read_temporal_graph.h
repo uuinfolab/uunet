@@ -5,12 +5,12 @@
  * - 2018.03.09 file created, following a restructuring of the previous library.
  */
 
-#ifndef UU_NET_IO_READWEIGHTEDGRAPH_H_
-#define UU_NET_IO_READWEIGHTEDGRAPH_H_
+#ifndef UU_NET_IO_READTEMPORALGRAPH_H_
+#define UU_NET_IO_READTEMPORALGRAPH_H_
 
 #include <string>
 #include <memory>
-#include "net/datastructures/graphs/WeightedGraph.h"
+#include "tnet/datastructures/graphs/TemporalGraph.h"
 #include "net/io/read_common.h"
 
 namespace uu {
@@ -22,7 +22,7 @@ namespace net {
  * @param name name of the new graph
  * @param separator character used in the input file to separate fields
  */
-std::unique_ptr<WeightedGraph>
+std::unique_ptr<TemporalGraph>
 read_weighted_graph(
     const std::string& infile,
     const std::string& name,
@@ -41,7 +41,7 @@ read_weighted_graph(
 template <>
 void
 read_vertex(
-    WeightedGraph* g,
+    TemporalGraph* g,
     const std::vector<std::string>& fields,
     const std::vector<core::Attribute>& vertex_attributes,
     size_t line_number
@@ -61,7 +61,7 @@ read_vertex(
 template <>
 void
 read_edge(
-    WeightedGraph* g,
+    TemporalGraph* g,
     const std::vector<std::string>& fields,
     const std::vector<core::Attribute>& edge_attributes,
     size_t line_number

@@ -2,7 +2,7 @@
 
 #include "net/datastructures/stores/AttributedVertexStore.h"
 #include "net/datastructures/stores/Attributes.h"
-#include "net/datastructures/stores/Weights.h"
+#include "net/datastructures/stores/UserDefinedAttrs.h"
 
 /**
  * All the classes tested in this file are not supposed to be used directly,
@@ -29,7 +29,7 @@ class net_datastructures_stores_AttributedVertexStore_test : public ::testing::T
 TEST_F(net_datastructures_stores_AttributedVertexStore_test, access_attributes)
 {
 
-    using A = uu::net::Attributes<uu::net::Vertex, uu::net::Weights<uu::net::Vertex>>;
+    using A = uu::net::Attributes<uu::net::Vertex, uu::net::UserDefinedAttrs<uu::net::Vertex>>;
     std::unique_ptr<A> attr;
     attr = std::make_unique<A>();
 
@@ -42,14 +42,15 @@ TEST_F(net_datastructures_stores_AttributedVertexStore_test, access_attributes)
     // (2) the two stores are connected, that is, vertex removals also affects the attributes.
 
     store->add(v1);
-    store->attr()->set_weight(v1, 3.4);
-    EXPECT_EQ(3.4, store->attr()->get_weight(v1).value)
-            << "Weight not set correctly";
-
+    store->attr()->add("a1", uu::core::AttributeType::DOUBLE);
+    store->attr()->set_double(v1, "a1", 3.4);
+    EXPECT_EQ(3.4, store->attr()->get_double(v1, "a1").value)
+    << "Attribute value not set correctly";
+    
     // Propagation
     store->erase(v1);
-    EXPECT_TRUE(store->attr()->get_weight(v1).null)
-            << "Vertex removal not propagated to its attributes";
+    EXPECT_TRUE(store->attr()->get_double(v1, "a1").null)
+    << "Vertex removal not propagated to its attributes";
 
 }
 

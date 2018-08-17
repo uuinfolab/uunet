@@ -2,7 +2,7 @@
 
 #include "net/datastructures/stores/AttributedSimpleEdgeStore.h"
 #include "net/datastructures/stores/Attributes.h"
-#include "net/datastructures/stores/Weights.h"
+#include "net/datastructures/stores/UserDefinedAttrs.h"
 
 /**
  * All the classes tested in this file are not supposed to be used directly,
@@ -34,7 +34,7 @@ class net_datastructures_stores_AttributedSimpleEdgeStore_test : public ::testin
 TEST_F(net_datastructures_stores_AttributedSimpleEdgeStore_test, access_attributes)
 {
 
-    using A = uu::net::Attributes<uu::net::Edge, uu::net::Weights<uu::net::Edge>>;
+    using A = uu::net::Attributes<uu::net::Edge, uu::net::UserDefinedAttrs<uu::net::Edge>>;
     std::unique_ptr<A> attr;
     attr = std::make_unique<A>();
 
@@ -47,14 +47,15 @@ TEST_F(net_datastructures_stores_AttributedSimpleEdgeStore_test, access_attribut
     // (2) the two stores are connected, that is, edge removals also affects the attributes.
 
     const uu::net::Edge* e = store->add(v1,v2);
-    store->attr()->set_weight(e, 3.4);
-    EXPECT_EQ(3.4, store->attr()->get_weight(e).value)
-            << "Weight not set correctly";
-
+    store->attr()->add("a1", uu::core::AttributeType::DOUBLE);
+    store->attr()->set_double(e, "a1", 3.4);
+    EXPECT_EQ(3.4, store->attr()->get_double(e, "a1").value)
+    << "Attribute value not set correctly";
+    
     // Propagation
     store->erase(e);
-    EXPECT_TRUE(store->attr()->get_weight(e).null)
-            << "Vertex removal not propagated to its attributes";
+    EXPECT_TRUE(store->attr()->get_double(e, "a1").null)
+    << "Edge removal not propagated to its attributes";
 
 }
 

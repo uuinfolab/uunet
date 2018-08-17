@@ -44,7 +44,7 @@ TEST_F(net_datastructures_graphs_MultiGraph_test, all_functions)
     // The removal of a vertex propagates to the edges
     g->vertices()->erase(v1);
     EXPECT_EQ(0, g->edges()->size())
-            << "Vertex removal was not propagated to the edges";
+    << "Vertex removal was not propagated to the edges";
 
     // Checking graph properties
 

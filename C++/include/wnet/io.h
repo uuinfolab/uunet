@@ -1,7 +1,6 @@
 /**
- * This module defines functions to read/write graphs from/to disk.
+ * This module defines functions to read/write weighted graphs from/to disk.
  *
-
  * This is the complete file format:
  *
  * -------------------------------------------
@@ -62,12 +61,9 @@
  * - 2018.03.20 file created
  */
 
-#ifndef UU_NET_IO_H_
-#define UU_NET_IO_H_
+#ifndef UU_WNET_IO_H_
+#define UU_WNET_IO_H_
 
-#include "net/io/GraphIOFileSection.h"
-#include "net/io/GraphMetadata.h"
-#include "net/io/read_common.h"
-#include "net/io/write_common.h"
+#include "wnet/io/read_weighted_graph.h"
 
 #endif
