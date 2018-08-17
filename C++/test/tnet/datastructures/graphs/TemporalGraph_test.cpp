@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "net/datastructures/graphs/TemporalGraph.h"
+#include "tnet/datastructures/graphs/TemporalGraph.h"
 
 class net_datastructures_graphs_TemporalGraph_test : public ::testing::Test
 {

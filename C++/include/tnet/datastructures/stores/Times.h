@@ -76,7 +76,7 @@ Times(AttributeStore<OT>* attr)
 {
     attr_ = attr;
     time_attribute_ = kDEFAULT_TIME_ATTRIBUTE_NAME;
-    attr_->add(core::Attribute::create(time_attribute_, core::AttributeType::DOUBLE));
+    attr_->add(time_attribute_, core::AttributeType::TIME);
 }
 
 

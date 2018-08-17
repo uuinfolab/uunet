@@ -41,6 +41,13 @@ read_vertex(
     size_t line_number
 )
 {
+    assert_not_null(g, "read_vertex", "g");
+    
+    if (vertex_attributes.size()>0)
+    {
+        throw core::WrongParameterException("No user-defined attributes expected");
+    }
+    
     if (fields.size()>1)
     {
         throw core::WrongFormatException("Line " +
@@ -69,6 +76,13 @@ read_edge(
     size_t line_number
 )
 {
+    assert_not_null(g, "read_edge", "g");
+    
+    if (edge_attributes.size()>0)
+    {
+        throw core::WrongParameterException("No user-defined attributes expected");
+    }
+    
     if (fields.size()!=2)
     {
         throw core::WrongFormatException("Line " +

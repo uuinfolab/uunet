@@ -6,7 +6,6 @@
 #include <vector>
 
 #include "net/io/read_common.h"
-#include "net/io/read_weighted_graph.h"
 
 class net_io_read_common_test : public ::testing::Test
 {
