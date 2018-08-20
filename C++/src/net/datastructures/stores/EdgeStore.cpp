@@ -158,7 +158,7 @@ neighbors(
     const
     EdgeList*
     EdgeStore::
-    incidence(
+    incident(
               const Vertex* vertex,
               EdgeMode mode
               ) const

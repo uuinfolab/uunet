@@ -105,7 +105,7 @@ strength(
     }
     
     double s = 0;
-    for (auto edge: *g->edges()->incidence(v, mode))
+    for (auto edge: *g->edges()->incident(v, mode))
     {
         auto w = g->edges()->attr()->get_weight(edge);
         if (!w.null)

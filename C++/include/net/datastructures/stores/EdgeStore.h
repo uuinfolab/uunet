@@ -105,7 +105,7 @@ class EdgeStore :
      **/
     const
     EdgeList*
-    incidence(
+    incident(
               const Vertex* vertex,
               EdgeMode mode
               ) const;

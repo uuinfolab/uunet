@@ -126,8 +126,11 @@ erase(
     }
 
     cidx_edge_by_vertexes[edge->v1].erase(edge->v2);
+    
     sidx_neighbors_in[edge->v2]->erase(edge->v1);
     sidx_neighbors_out[edge->v1]->erase(edge->v2);
+    sidx_incident_in[edge->v2]->erase(edge);
+    sidx_incident_out[edge->v1]->erase(edge);
 
     
     // if the edge is directed, we erase neighbors only if there isn't
@@ -138,16 +141,23 @@ erase(
         {
             sidx_neighbors_all[edge->v2]->erase(edge->v1);
             sidx_neighbors_all[edge->v1]->erase(edge->v2);
+            sidx_incident_all[edge->v2]->erase(edge);
+            sidx_incident_all[edge->v1]->erase(edge);
         }
     }
 
     else
     {
         cidx_edge_by_vertexes[edge->v2].erase(edge->v1);
+        
         sidx_neighbors_in[edge->v1]->erase(edge->v2);
         sidx_neighbors_out[edge->v2]->erase(edge->v1);
         sidx_neighbors_all[edge->v1]->erase(edge->v2);
         sidx_neighbors_all[edge->v2]->erase(edge->v1);
+        sidx_incident_in[edge->v1]->erase(edge);
+        sidx_incident_out[edge->v2]->erase(edge);
+        sidx_incident_all[edge->v1]->erase(edge);
+        sidx_incident_all[edge->v2]->erase(edge);
     }
 
     return core::SharedPtrSortedRandomSet<const Edge>::erase(edge);

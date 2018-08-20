@@ -26,6 +26,7 @@ create_temporal_graph(
 
     GraphType t;
     t.allows_loops = allows_loops;
+    t.allows_multi_edges = true;
     t.is_directed = dir==EdgeDir::DIRECTED ? true : false;
     t.is_temporal = true;
 

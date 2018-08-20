@@ -71,11 +71,11 @@ TEST_F(net_datastructures_stores_SimpleEdgeStore_test, directed)
 
     // Retrieving all edges
     size_t num_edges=0;
-    std::unordered_set<const uu::net::Edge*> edges({e1, e2, e3});
+    std::unordered_set<const uu::net::Edge*> all_edges({e1, e2, e3});
 
     for (auto edge: *store)
     {
-        EXPECT_TRUE(edges.count(edge))
+        EXPECT_TRUE(all_edges.count(edge))
                 << "Retrieved wrong edge via the iterator";
         num_edges++;
     }
@@ -86,18 +86,27 @@ TEST_F(net_datastructures_stores_SimpleEdgeStore_test, directed)
             << "Wrong edge size";
 
 
-    // Retrieving neighbors
+    // Retrieving neighbors & incident edges
     auto vertices = store->neighbors(v3, uu::net::EdgeMode::IN);
     EXPECT_EQ(1, vertices->size())
             << "Could not retrieve all in-neighbors";
+    auto edges = store->incident(v3, uu::net::EdgeMode::IN);
+    EXPECT_EQ(1, edges->size())
+    << "Could not retrieve all in-incident edges";
 
     vertices = store->neighbors(v3, uu::net::EdgeMode::OUT);
     EXPECT_EQ(1, vertices->size())
             << "Could not retrieve all out-neighbors";
+    edges = store->incident(v3, uu::net::EdgeMode::OUT);
+    EXPECT_EQ(1, edges->size())
+    << "Could not retrieve all out-incident edges";
 
     vertices = store->neighbors(v3, uu::net::EdgeMode::INOUT);
     EXPECT_EQ(2, vertices->size())
             << "Could not retrieve all neighbors";
+    edges = store->incident(v3, uu::net::EdgeMode::INOUT);
+    EXPECT_EQ(2, edges->size())
+    << "Could not retrieve all incident edges";
 
     // testing directionality
 
@@ -176,11 +185,11 @@ TEST_F(net_datastructures_stores_SimpleEdgeStore_test, undirected)
 
     // Retrieving all edges
     size_t num_edges=0;
-    std::unordered_set<const uu::net::Edge*> edges({e1, e2, e3});
+    std::unordered_set<const uu::net::Edge*> all_edges({e1, e2, e3});
 
     for (auto edge: *store)
     {
-        EXPECT_TRUE(edges.count(edge))
+        EXPECT_TRUE(all_edges.count(edge))
                 << "Retrieved wrong edge via the iterator";
         num_edges++;
     }
@@ -190,19 +199,29 @@ TEST_F(net_datastructures_stores_SimpleEdgeStore_test, undirected)
     EXPECT_EQ(3, store->size())
             << "Wrong edge size";
 
-    // Retrieving neighbors
+    // Retrieving neighbors and incident edges
 
     auto vertices = store->neighbors(v3, uu::net::EdgeMode::IN);
     EXPECT_EQ(2, vertices->size())
             << "Could not retrieve all in-neighbors";
+    auto edges = store->incident(v3, uu::net::EdgeMode::IN);
+    EXPECT_EQ(2, edges->size())
+    << "Could not retrieve all in-incident edges";
+
 
     vertices = store->neighbors(v3, uu::net::EdgeMode::OUT);
     EXPECT_EQ(2, vertices->size())
             << "Could not retrieve all out-neighbors";
+    edges = store->incident(v3, uu::net::EdgeMode::OUT);
+    EXPECT_EQ(2, edges->size())
+    << "Could not retrieve all out-incident edges";
 
     vertices = store->neighbors(v3, uu::net::EdgeMode::INOUT);
     EXPECT_EQ(2, vertices->size())
             << "Could not retrieve all neighbors";
+    edges = store->incident(v3, uu::net::EdgeMode::INOUT);
+    EXPECT_EQ(2, edges->size())
+    << "Could not retrieve all incident edges";
 
     // testing directionality
 

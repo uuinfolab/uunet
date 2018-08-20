@@ -5,8 +5,8 @@
  * - 2018.03.09 file created, following a restructuring of the previous library.
  */
 
-#ifndef UU_NET_IO_READTEMPORALGRAPH_H_
-#define UU_NET_IO_READTEMPORALGRAPH_H_
+#ifndef UU_TNET_IO_READTEMPORALGRAPH_H_
+#define UU_TNET_IO_READTEMPORALGRAPH_H_
 
 #include <string>
 #include <memory>
@@ -23,7 +23,7 @@ namespace net {
  * @param separator character used in the input file to separate fields
  */
 std::unique_ptr<TemporalGraph>
-read_weighted_graph(
+read_temporal_graph(
     const std::string& infile,
     const std::string& name,
     char separator

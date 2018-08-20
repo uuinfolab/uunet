@@ -64,8 +64,8 @@ TEST_F(net_datastructures_graphs_TemporalGraph_test, all_functions)
     EXPECT_TRUE(g->allows_multi_edges())
     << "Wrong graph type: should allow multi-edges";
 
-    EXPECT_TRUE(g->allows_loops())
-    << "Wrong graph type: should allow loops";
+    EXPECT_FALSE(g->allows_loops())
+    << "Wrong graph type: should not allow loops";
 
     EXPECT_FALSE(g->is_weighted())
     << "Wrong graph type: should not be weighted";
