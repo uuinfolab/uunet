@@ -60,25 +60,12 @@ add(
     cidx_edges_by_vertices[e->v1][e->v2].insert(new_edge);
 
     /// DIR SPECIFIC.
-    if (edge_directionality==EdgeDir::UNDIRECTED)
+
+    if (!is_directed())
     {
         cidx_edges_by_vertices[e->v2][e->v1].insert(new_edge);
-
-        if (sidx_neighbors_out.count(e->v2)==0)
-        {
-            sidx_neighbors_out[e->v2] = std::make_unique<VertexList>();
-        }
-
-        sidx_neighbors_out[e->v2]->add(e->v1);
-
-        if (sidx_neighbors_in.count(e->v1)==0)
-        {
-            sidx_neighbors_in[e->v1] = std::make_unique<VertexList>();
-        }
-
-        sidx_neighbors_in[e->v1]->add(e->v2);
+        
     }
-
 
     return new_edge;
 }

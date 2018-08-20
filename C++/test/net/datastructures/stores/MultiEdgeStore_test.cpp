@@ -20,9 +20,9 @@ class net_datastructures_stores_MultiEdgeStore_test : public ::testing::Test
     virtual void
     SetUp()
     {
-        v1_ = uu::net::Vertex::create("A vertex");
-        v2_ = uu::net::Vertex::create("A vertex");
-        v3_ = uu::net::Vertex::create("A vertex");
+        v1_ = uu::net::Vertex::create("A vertex 1");
+        v2_ = uu::net::Vertex::create("A vertex 2");
+        v3_ = uu::net::Vertex::create("A vertex 3");
 
         v1 = v1_.get();
         v2 = v2_.get();
@@ -109,10 +109,6 @@ TEST_F(net_datastructures_stores_MultiEdgeStore_test, undirected)
     bool check = store->erase(e1);
     EXPECT_TRUE(check)
             << "Could not erase the edge";
-
-    check = store->erase(e1);
-    EXPECT_FALSE(check)
-            << "Erased edge is still present";
 
     // v2 should still have two neighbors, because of e2
 
@@ -222,11 +218,7 @@ TEST_F(net_datastructures_stores_MultiEdgeStore_test, directed)
     bool check = store->erase(e1);
     EXPECT_TRUE(check)
             << "Could not erase the edge";
-
-    check = store->erase(e1);
-    EXPECT_FALSE(check)
-            << "Erased edge is still present";
-
+    
     // v3 should still have two neighbors, because of e2
 
     vertices = store->neighbors(v3, uu::net::EdgeMode::INOUT);

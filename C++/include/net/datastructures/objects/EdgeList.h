@@ -12,6 +12,9 @@ namespace uu {
 namespace net {
 
 using EdgeList = core::SortedRandomSet<const Edge*>;
+    
+    static const std::unique_ptr<EdgeList> kEMPTY_EDGE_LIST = std::make_unique<EdgeList>();
+
 
 }
 }

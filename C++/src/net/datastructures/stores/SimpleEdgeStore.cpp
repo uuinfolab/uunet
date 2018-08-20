@@ -64,23 +64,12 @@ add(
 
     cidx_edge_by_vertexes[e->v1][e->v2] = new_edge;
 
+
+
     if (!is_directed())
     {
         cidx_edge_by_vertexes[e->v2][e->v1] = new_edge;
-
-        if (sidx_neighbors_out.count(e->v2)==0)
-        {
-            sidx_neighbors_out[e->v2] = std::make_unique<VertexList>();
-        }
-
-        sidx_neighbors_out[e->v2]->add(e->v1);
-
-        if (sidx_neighbors_in.count(e->v1)==0)
-        {
-            sidx_neighbors_in[e->v1] = std::make_unique<VertexList>();
-        }
-
-        sidx_neighbors_in[e->v1]->add(e->v2);
+        
     }
 
     return new_edge;
@@ -125,6 +114,7 @@ erase(
     const Edge* edge
 )
 {
+    //std::cout << "SE " << edge << std::endl;
     if (!edge)
     {
         throw core::NullPtrException("edge in erase(edge)");
@@ -139,6 +129,7 @@ erase(
     sidx_neighbors_in[edge->v2]->erase(edge->v1);
     sidx_neighbors_out[edge->v1]->erase(edge->v2);
 
+    
     // if the edge is directed, we erase neighbors only if there isn't
     // an edge in the other direction keeping them neighbors
     if (is_directed())

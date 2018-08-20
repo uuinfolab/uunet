@@ -72,14 +72,12 @@ erase(
         obs->notify_erase(vertex);
     }
 
-    // Return a nullptr if a vertex with this name exists.
     bool res = super::erase(vertex);
 
     if (!res)
     {
         return false;
     }
-
 
     return true;
 }

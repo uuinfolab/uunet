@@ -12,6 +12,7 @@
 #include "core/datastructures/observers/Subject.h"
 #include "net/datastructures/objects/Edge.h"
 #include "net/datastructures/objects/EdgeMode.h"
+#include "net/datastructures/objects/EdgeList.h"
 #include "net/datastructures/objects/Vertex.h"
 #include "net/datastructures/objects/VertexList.h"
 #include "core/exceptions/OperationNotSupportedException.h"
@@ -96,6 +97,20 @@ class EdgeStore :
         EdgeMode mode
     ) const;
 
+    /**
+     * @brief Returns the nodes with an edge from/to the input vertex.
+     * @param node pointer to the node.
+     * @param mode IN, OUT or INOUT.
+     * @return the list of neighbors.
+     **/
+    const
+    EdgeList*
+    incidence(
+              const Vertex* vertex,
+              EdgeMode mode
+              ) const;
+
+    
     bool
     is_directed(
     );
@@ -115,6 +130,10 @@ class EdgeStore :
     std::unordered_map<const Vertex*, std::unique_ptr<VertexList>> sidx_neighbors_out;
     std::unordered_map<const Vertex*, std::unique_ptr<VertexList>> sidx_neighbors_in;
     std::unordered_map<const Vertex*, std::unique_ptr<VertexList>> sidx_neighbors_all;
+    
+    std::unordered_map<const Vertex*, std::unique_ptr<EdgeList>> sidx_incident_out;
+    std::unordered_map<const Vertex*, std::unique_ptr<EdgeList>> sidx_incident_in;
+    std::unordered_map<const Vertex*, std::unique_ptr<EdgeList>> sidx_incident_all;
 
 };
 

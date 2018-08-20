@@ -5,7 +5,7 @@
  * History: created on 2018-08-06.
  */
 
-#include "net/datastructures/graphs/WeightedGraph.h"
+#include "wnet/datastructures/graphs/WeightedGraph.h"
 
 int
 main()
