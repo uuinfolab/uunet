@@ -69,7 +69,7 @@ add(
     if (!is_directed())
     {
         cidx_edge_by_vertexes[e->v2][e->v1] = new_edge;
-        
+
     }
 
     return new_edge;
@@ -126,13 +126,13 @@ erase(
     }
 
     cidx_edge_by_vertexes[edge->v1].erase(edge->v2);
-    
+
     sidx_neighbors_in[edge->v2]->erase(edge->v1);
     sidx_neighbors_out[edge->v1]->erase(edge->v2);
     sidx_incident_in[edge->v2]->erase(edge);
     sidx_incident_out[edge->v1]->erase(edge);
 
-    
+
     // if the edge is directed, we erase neighbors only if there isn't
     // an edge in the other direction keeping them neighbors
     if (is_directed())
@@ -149,7 +149,7 @@ erase(
     else
     {
         cidx_edge_by_vertexes[edge->v2].erase(edge->v1);
-        
+
         sidx_neighbors_in[edge->v1]->erase(edge->v2);
         sidx_neighbors_out[edge->v2]->erase(edge->v1);
         sidx_neighbors_all[edge->v1]->erase(edge->v2);

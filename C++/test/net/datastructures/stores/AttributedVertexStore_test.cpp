@@ -45,12 +45,12 @@ TEST_F(net_datastructures_stores_AttributedVertexStore_test, access_attributes)
     store->attr()->add("a1", uu::core::AttributeType::DOUBLE);
     store->attr()->set_double(v1, "a1", 3.4);
     EXPECT_EQ(3.4, store->attr()->get_double(v1, "a1").value)
-    << "Attribute value not set correctly";
-    
+            << "Attribute value not set correctly";
+
     // Propagation
     store->erase(v1);
     EXPECT_TRUE(store->attr()->get_double(v1, "a1").null)
-    << "Vertex removal not propagated to its attributes";
+            << "Vertex removal not propagated to its attributes";
 
 }
 

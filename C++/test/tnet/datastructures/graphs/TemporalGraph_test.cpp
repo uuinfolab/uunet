@@ -33,18 +33,18 @@ TEST_F(net_datastructures_graphs_TemporalGraph_test, all_functions)
     // Setting/getting weights
     g->edges()->attr()->set_time(e1, uu::core::epoch_to_time(1365));
     EXPECT_EQ(uu::core::epoch_to_time(1365), g->edges()->attr()->get_time(e1).value)
-    << "Weight not set correctly";
+            << "Weight not set correctly";
 
     EXPECT_TRUE(g->edges()->attr()->get_time(e2).null)
-    << "Attribute should not be set";
+            << "Attribute should not be set";
 
     EXPECT_TRUE(g->edges()->attr()->get_time(e3).null)
-    << "Attribute should not be set";
+            << "Attribute should not be set";
 
     // Propagation
     g->edges()->erase(e1);
     EXPECT_TRUE(g->edges()->attr()->get_time(e1).null)
-    << "Vertex removal not propagated to its attributes";
+            << "Vertex removal not propagated to its attributes";
 
     // Adding an edge to a vertex that is not in the graph produces an exception
     std::shared_ptr<const uu::net::Vertex> v = uu::net::Vertex::create("biribu");
@@ -62,17 +62,17 @@ TEST_F(net_datastructures_graphs_TemporalGraph_test, all_functions)
     // Checking graph properties
 
     EXPECT_TRUE(g->allows_multi_edges())
-    << "Wrong graph type: should allow multi-edges";
+            << "Wrong graph type: should allow multi-edges";
 
     EXPECT_FALSE(g->allows_loops())
-    << "Wrong graph type: should not allow loops";
+            << "Wrong graph type: should not allow loops";
 
     EXPECT_FALSE(g->is_weighted())
-    << "Wrong graph type: should not be weighted";
+            << "Wrong graph type: should not be weighted";
 
     EXPECT_TRUE(g->is_temporal())
-    << "Wrong graph type: should be temporal";
-    
+            << "Wrong graph type: should be temporal";
+
     // Uncomment the following line to print a summary of the graph
     //std::cout << g->summary() << std::endl;
 

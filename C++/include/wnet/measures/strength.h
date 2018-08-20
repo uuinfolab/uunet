@@ -99,18 +99,24 @@ strength(
 {
     core::assert_not_null(g, "degree", "g");
     core::assert_not_null(g, "degree", "v");
+
     if (!g->is_weighted())
     {
         throw core::WrongParameterException("strength can only be computed on weighted graphs");
     }
-    
+
     double s = 0;
+
     for (auto edge: *g->edges()->incident(v, mode))
     {
         auto w = g->edges()->attr()->get_weight(edge);
+
         if (!w.null)
+        {
             s += w.value;
+        }
     }
+
     return s;
 }
 

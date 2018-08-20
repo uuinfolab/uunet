@@ -64,7 +64,7 @@ add(
     if (!is_directed())
     {
         cidx_edges_by_vertices[e->v2][e->v1].insert(new_edge);
-        
+
     }
 
     return new_edge;

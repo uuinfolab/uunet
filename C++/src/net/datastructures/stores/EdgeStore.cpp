@@ -41,7 +41,7 @@ add(
     {
         return nullptr;
     }
-    
+
     if (sidx_neighbors_out.count(e->v1)==0)
     {
         sidx_neighbors_out[e->v1] = std::make_unique<VertexList>();
@@ -80,27 +80,27 @@ add(
 
     if (!is_directed())
     {
-        
+
         if (sidx_neighbors_out.count(e->v2)==0)
         {
             sidx_neighbors_out[e->v2] = std::make_unique<VertexList>();
             sidx_incident_out[e->v2] = std::make_unique<EdgeList>();
         }
-        
+
         sidx_neighbors_out[e->v2]->add(e->v1);
         sidx_incident_out[e->v2]->add(new_edge);
-        
+
         if (sidx_neighbors_in.count(e->v1)==0)
         {
             sidx_neighbors_in[e->v1] = std::make_unique<VertexList>();
             sidx_incident_in[e->v1] = std::make_unique<EdgeList>();
         }
-        
+
         sidx_neighbors_in[e->v1]->add(e->v2);
         sidx_incident_in[e->v1]->add(new_edge);
     }
 
-    
+
     return new_edge;
 }
 
@@ -155,56 +155,56 @@ neighbors(
     }
 }
 
-    const
-    EdgeList*
-    EdgeStore::
-    incident(
-              const Vertex* vertex,
-              EdgeMode mode
-              ) const
+const
+EdgeList*
+EdgeStore::
+incident(
+    const Vertex* vertex,
+    EdgeMode mode
+) const
+{
+    if (!vertex)
     {
-        if (!vertex)
-        {
-            throw core::NullPtrException("input vertex, to find its incident edges");
-        }
-        
-        if (mode==EdgeMode::IN)
-        {
-            if (sidx_incident_in.count(vertex)==0)
-            {
-                return kEMPTY_EDGE_LIST.get();
-            }
-            
-            return sidx_incident_in.at(vertex).get();
-        }
-        
-        else if (mode==EdgeMode::OUT)
-        {
-            if (sidx_incident_out.count(vertex)==0)
-            {
-                return kEMPTY_EDGE_LIST.get();
-            }
-            
-            return sidx_incident_out.at(vertex).get();
-        }
-        
-        else if (mode==EdgeMode::INOUT)
-        {
-            if (sidx_incident_all.count(vertex)==0)
-            {
-                return kEMPTY_EDGE_LIST.get();
-            }
-            
-            return sidx_incident_all.at(vertex).get();
-        }
-        
-        else
-        {
-            throw core::WrongParameterException("neighborhood mode");
-        }
+        throw core::NullPtrException("input vertex, to find its incident edges");
     }
 
-    
+    if (mode==EdgeMode::IN)
+    {
+        if (sidx_incident_in.count(vertex)==0)
+        {
+            return kEMPTY_EDGE_LIST.get();
+        }
+
+        return sidx_incident_in.at(vertex).get();
+    }
+
+    else if (mode==EdgeMode::OUT)
+    {
+        if (sidx_incident_out.count(vertex)==0)
+        {
+            return kEMPTY_EDGE_LIST.get();
+        }
+
+        return sidx_incident_out.at(vertex).get();
+    }
+
+    else if (mode==EdgeMode::INOUT)
+    {
+        if (sidx_incident_all.count(vertex)==0)
+        {
+            return kEMPTY_EDGE_LIST.get();
+        }
+
+        return sidx_incident_all.at(vertex).get();
+    }
+
+    else
+    {
+        throw core::WrongParameterException("neighborhood mode");
+    }
+}
+
+
 bool
 EdgeStore::
 is_directed(

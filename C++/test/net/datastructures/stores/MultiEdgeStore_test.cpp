@@ -218,7 +218,7 @@ TEST_F(net_datastructures_stores_MultiEdgeStore_test, directed)
     bool check = store->erase(e1);
     EXPECT_TRUE(check)
             << "Could not erase the edge";
-    
+
     // v3 should still have two neighbors, because of e2
 
     vertices = store->neighbors(v3, uu::net::EdgeMode::INOUT);

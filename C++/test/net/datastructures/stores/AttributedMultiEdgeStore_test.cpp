@@ -50,12 +50,12 @@ TEST_F(net_datastructures_stores_AttributedMultiEdgeStore_test, access_attribute
     store->attr()->add("a1", uu::core::AttributeType::DOUBLE);
     store->attr()->set_double(e, "a1", 3.4);
     EXPECT_EQ(3.4, store->attr()->get_double(e, "a1").value)
-    << "Attribute value not set correctly";
+            << "Attribute value not set correctly";
 
     // Propagation
     store->erase(e);
     EXPECT_TRUE(store->attr()->get_double(e, "a1").null)
-    << "Vertex removal not propagated to its attributes";
+            << "Vertex removal not propagated to its attributes";
 
 }
 
