@@ -29,7 +29,7 @@ read_graph_type(
     {
     }
 
-    if (feat=="DIRECTED")
+    else if (feat=="DIRECTED")
     {
         meta.features.is_directed=true;
     }
@@ -42,6 +42,12 @@ read_graph_type(
     {
         meta.features.is_weighted=true;
     }
+
+    else if (feat=="PROBABILISTIC")
+    {
+        meta.features.is_probabilistic=true;
+    }
+
 
     else if (feat=="UNWEIGHTED")
     {
