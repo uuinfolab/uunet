@@ -163,7 +163,7 @@ minimum_eta_degree(
 
 /** DEFINITIONS */
 
-/*
+
 template<typename G>
 double
 expected_degree(
@@ -194,7 +194,7 @@ expected_degree(
 
     return e;
 }
-*/
+
 
 
 /*
