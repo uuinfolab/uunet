@@ -10,6 +10,7 @@
 #include<complex>
 #include<vector>
 #include<cmath>
+#include "core/utils/Counter.h"
 
 #include "net/datastructures/objects/Vertex.h"
 #include "net/datastructures/objects/EdgeMode.h"
@@ -24,7 +25,7 @@ namespace net {
  * @return the expected degree of the vertex with the maximum expected degree in g
  */
 template<typename G>
-size_t
+double                                                                              
 maximum_expected_degree(
                const G* g,
                const EdgeMode mode                                             
@@ -38,7 +39,7 @@ maximum_expected_degree(
  * @return the expected degree of the vertex with the minimum expected degree in g
  */
 template<typename G>
-size_t
+double
 minimum_expected_degree(
                const G* g,
                const EdgeMode mode
@@ -53,7 +54,7 @@ minimum_expected_degree(
  * @return the degree distribution of the vertex v in g
  */
 template<typename G>
-std::vector<double>                                                                                                   // core::Prob
+std::vector<double>                                                                                      
 vertex_degree_distribution(
                const G* g,
                const Vertex* v,
@@ -102,11 +103,11 @@ expected_degree(
  * @return the (mode-) (\eta)-degree of v in g
  */
 template<typename G>
-size_t
+int
 eta_degree(
     const G* g,
     const Vertex* v,
-    const double eta,												                    // prob has to be defined as a datatype 0 < x <= 1
+    const double eta,												                    
     const EdgeMode mode
 );
 
@@ -119,7 +120,7 @@ eta_degree(
  * @return the (mode-) (\eta)-degree distribution of g
  */
 template<typename G>
-std::vector<size_t>
+std::vector<int>
 eta_degree_distribution(
     const G* g,
     const double eta,												     
@@ -135,7 +136,7 @@ eta_degree_distribution(
  * @return the (\eta)-degree of the vertex with the maximum expected degree in g
  */
 template<typename G>
-size_t
+int
 maximum_eta_degree(
                const G* g,
 	       const double eta,												     
@@ -151,12 +152,47 @@ maximum_eta_degree(
  * @return the (\eta)-degree of the vertex with the minimum expected degree in g
  */
 template<typename G>
-size_t
+int
 minimum_eta_degree(
                const G* g,
 	       const double eta,												     
                const EdgeMode mode                                             
 );
+
+
+/**
+ * Returns the average expected degree of graph.
+ * @param g input graph
+ * @param mode to select IN, OUT, or INOUT expected degree
+ * @return the average expected degree of g
+ */
+template<typename G>
+double
+average_expected_degree(
+               const G* g,
+               const EdgeMode mode
+);
+
+
+/**
+ * Returns the average eta-degree of graph.
+ * @param g input graph
+ * @param eta input (\eta)
+ * @param mode to select IN, OUT, or INOUT (\eta)-degree
+ * @return the average expected degree of g
+ */
+template<typename G>
+double
+average_eta_degree(
+               const G* g,
+               const double eta,
+               const EdgeMode mode
+);
+
+
+
+
+
 
 
 
@@ -181,7 +217,6 @@ expected_degree(
     }
 
     double e = 0;
-
     for (auto edge: *g->edges()->incident(v, mode))
     {
         auto p = g->edges()->attr()->get_probability(edge);
@@ -197,11 +232,8 @@ expected_degree(
 
 
 
-/*
-
-
 template<typename G>
-size_t
+double
 maximum_expected_degree(
                const G* g,
                const EdgeMode mode                                             
@@ -213,6 +245,7 @@ maximum_expected_degree(
     {
         throw core::WrongParameterException("Expected Degree can only be computed on probabilistic graphs");
     }
+
 
     double max_e = 0;
     for (auto vertex: *g->vertices())
@@ -228,7 +261,6 @@ maximum_expected_degree(
             }
         }
         max_e = std::max(max_e,e);
-
     }
 
     return max_e;
@@ -241,7 +273,7 @@ maximum_expected_degree(
 
 
 template<typename G>
-size_t
+double
 minimum_expected_degree(
                const G* g,
                const EdgeMode mode                                             
@@ -254,7 +286,7 @@ minimum_expected_degree(
         throw core::WrongParameterException("Expected Degree can only be computed on probabilistic graphs");
     }
 
-    double min_e = 1000000000;           // std::numeric_limits<double>::infinity()     (I have to check for C++14)
+    double min_e = 1000000000;           // std::numeric_limits<double>::infinity()       (I have to check for C++14)
     for (auto vertex: *g->vertices())
     {
         double e = 0;
@@ -274,9 +306,9 @@ minimum_expected_degree(
     return min_e;
 }
 
-*/
 
-/*
+
+
 template<typename G>
 std::vector<double>                                                                                                  
 vertex_degree_distribution(
@@ -285,8 +317,9 @@ vertex_degree_distribution(
                const EdgeMode mode
 )
 {
-    core::assert_not_null(g, "degree", "g");              // to check the graph
-    core::assert_not_null(g, "degree", "v");              // to check the vertex
+    using namespace std;
+    core::assert_not_null(g, "degree", "g");              
+    core::assert_not_null(g, "degree", "v");              
 
     if (!g->is_probabilistic())
     {
@@ -294,38 +327,37 @@ vertex_degree_distribution(
     }
 
 
-    auto i_edges = *g->edges()->incident(v, mode);
-    auto n_edges = size(i_edges);
-    double P[n_edges] = 0;
 
-
-    for (int j = 0; j < n_edges ; j++)
+    vector<double> P;
+    for (auto edge: *g->edges()->incident(v, mode))
     {
-        if (!g->edges()->attr()->get_probability(i_edges[j]).null)
+        auto p = g->edges()->attr()->get_probability(edge);
+
+        if (!p.null)
         {
-            P[j] = g->edges()->attr()->get_probability(i_edges[j]);
+            P.push_back(p.value);
         }
     }
 
-    std::complex<double> dd[n_edges+1];
-    std::complex<double> Nc = {n_edges+1,0};
+    std::complex<double> dd[P.size()+1];
+    std::complex<double> Nc = {P.size()+1,0};
     std::complex<double> PI = 3.14159265358979323846;
 
-    for(int j = 0 ; j <= n_edges ; j++)        // initializing degree distribution
+    for(unsigned int j = 0 ; j <= P.size() ; j++)        // initializing degree distribution
     {
 	dd[j] = {0,0};
     } 
 
 
-    for(int m = 0; m <= n_edges; m++)
+    for(unsigned m = 0; m <= P.size(); m++)
     {   
         std::complex<double> mc = {m,0};
-	for(int n = 0; n <= n_edges ; n++)
+	for(unsigned int n = 0; n <= P.size() ; n++)
 	{
             std::complex<double> nc = {n,0};
 	    std::complex<double> T = 1;
 
-	    for(int k = 0; k < n_edges; k++)
+	    for(unsigned  int k = 0; k < P.size(); k++)
 	    {
 		T = T * (1 - P[k]+P[k]*exp((2i*PI*nc)/Nc));
 	    }
@@ -333,33 +365,202 @@ vertex_degree_distribution(
 	}
     }
 
-
-    for(int j = 0 ; j <= n_edges ; j++)
+    vector<double> DD;    
+    for(unsigned int j = 0 ; j <= P.size() ; j++)
     {
 	dd[j] = dd[j]/Nc;
 	dd[j] = abs(real(dd[j]));
-        dd[j] = round(real(dd[j])*10000)/10000;
+        DD.push_back(round(real(dd[j])*10000)/10000);
     }
 
-    //std::vector<double> deg_dist;
-    //deg_dist.insert(deg_dist.begin(),std::begin(dd),std::end(dd));
+    return DD;
+}
 
-    return dd;
+
+template<typename G>
+int
+eta_degree(
+    const G* g,
+    const Vertex* v,
+    const double eta,	
+    const EdgeMode mode
+)
+{
+
+   core::assert_not_null(g, "degree", "g");              
+
+    if (!g->is_probabilistic())
+    {
+        throw core::WrongParameterException("Expected Degree can only be computed on probabilistic graphs");
+    }
+
+
+
+    auto D = uu::net::vertex_degree_distribution(g,v,mode);
+    int N = D.size();
+    double sum = D[N-1];
+
+    int k = N-2;
+    while(sum < eta && k >= 0)
+    {
+        sum+=D[k];
+        k--;
+    }
+    return ++k;
+}
+
+
+template<typename G>
+int
+maximum_eta_degree(
+               const G* g,
+	       const double eta,												     
+               const EdgeMode mode                                             
+)
+{
+    core::assert_not_null(g, "degree", "g");              
+
+    if (!g->is_probabilistic())
+    {
+        throw core::WrongParameterException("Expected Degree can only be computed on probabilistic graphs");
+    }
+
+
+    int max_e = 0;
+    for (auto vertex: *g->vertices())
+    {
+	auto e = eta_degree(g,vertex,eta,mode);
+        max_e = std::max(max_e,e);
+    }
+
+    return max_e;
+
+}
+
+
+template<typename G>
+int
+minimum_eta_degree(
+               const G* g,
+	       const double eta,												     
+               const EdgeMode mode                                             
+)
+{
+    core::assert_not_null(g, "degree", "g");              
+
+    if (!g->is_probabilistic())
+    {
+        throw core::WrongParameterException("Expected Degree can only be computed on probabilistic graphs");
+    }
+
+
+    int min_e = 1000000000;
+    for (auto vertex: *g->vertices())
+    {
+	auto e = eta_degree(g,vertex,eta,mode);
+        min_e = std::min(min_e,e);
+    }
+
+    return min_e;
+
+}
+
+
+
+template<typename G>
+std::vector<int>
+eta_degree_distribution(
+    const G* g,
+    const double eta,												     
+    const EdgeMode mode
+)
+{
+    core::assert_not_null(g, "degree_distribution", "g");  
+    core::Counter<int> edd;
+
+    int max = 0;
+    int ed;
+
+    for (auto v: *g->vertices())
+    {
+        ed = eta_degree(g, v, eta, mode);
+        edd.inc(ed);
+
+        if (ed > max)
+        {
+            max = ed;
+        }
+    }
+
+    std::vector<int> res;
+    res.reserve(max+1);
+
+    for (ed = 0; ed <= max; ed++)
+    {
+        res.push_back(edd.count(ed));
+    }
+
+    return res;
+}
+
+/*
+
+template<typename G>
+std::double
+average_expected_degree(
+               const G* g,
+               const EdgeMode mode
+)
+{
+    core::assert_not_null(g, "degree", "g");              
+
+    if (!g->is_probabilistic())
+    {
+        throw core::WrongParameterException("Expected Degree can only be computed on probabilistic graphs");
+    }
+
+
+    double avg = 0;
+    for (auto vertex: *g->vertices())
+    {
+	auto e = expected_degree(g,vertex,mode);
+        avg += e;
+    }
+
+    return avg/g->vertices()->size();
+
 }
 */
 
 
+/*
+template<typename G>
+std::double
+average_eta_degree(
+               const G* g,
+               const double eta,
+               const EdgeMode mode
+)
+{
+    core::assert_not_null(g, "degree", "g");              
+
+    if (!g->is_probabilistic())
+    {
+        throw core::WrongParameterException("eta Degree can only be computed on probabilistic graphs");
+    }
 
 
+    double avg = 0;
+    for (auto vertex: *g->vertices())
+    {
+	auto e = eta_degree(g,eta,vertex,mode);
+        avg += e;
+    }
 
+    return avg/g->vertices()->size();
 
-
-
-
-
-
-
-
+}
+*/
 
 
 }

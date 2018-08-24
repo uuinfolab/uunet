@@ -8,7 +8,7 @@
 #include "pnet/io/read_probabilistic_graph.h"
 #include "pnet/measures/degree.h"
 
-class net_measures_degree_test : public ::testing::Test
+class pnet_measures_degree_test : public ::testing::Test
 {
   protected:
 
@@ -39,21 +39,21 @@ class net_measures_degree_test : public ::testing::Test
         test_file << "v0                 " << std::endl;
         test_file << "                   " << std::endl;
         test_file << "#EDGES             " << std::endl;
-        test_file << "v1,v2,0.5           " << std::endl;
-        test_file << "v1,v3,0.6           " << std::endl;
-        test_file << "v2,v3,0.7           " << std::endl;
-        test_file << "v2,v4,0.7           " << std::endl;
-        test_file << "v2,v5,0.7           " << std::endl;
-        test_file << "v2,v6,0.7           " << std::endl;
-        test_file << "v3,v5,0.2           " << std::endl;
-        test_file << "v3,v6,0.2           " << std::endl;
-        test_file << "v4,v5,0.2           " << std::endl;
-        test_file << "v5,v6,0.2           " << std::endl;
-        test_file << "v5,v7,0.2           " << std::endl;
-        test_file << "v6,v7,0.2           " << std::endl;
-        test_file << "v7,v8,0.2           " << std::endl;
-        test_file << "v7,v9,0.2           " << std::endl;
-        test_file << "v8,v9,0.2           " << std::endl;
+        test_file << "v1,v2,0.1           " << std::endl;
+        test_file << "v1,v3,0.1           " << std::endl;
+        test_file << "v2,v3,0.1           " << std::endl;
+        test_file << "v2,v4,0.1           " << std::endl;
+        test_file << "v2,v5,0.1           " << std::endl;
+        test_file << "v2,v6,0.1           " << std::endl;
+        test_file << "v3,v5,0.1           " << std::endl;
+        test_file << "v3,v6,0.1           " << std::endl;
+        test_file << "v4,v5,0.1           " << std::endl;
+        test_file << "v5,v6,0.1           " << std::endl;
+        test_file << "v5,v7,0.1           " << std::endl;
+        test_file << "v6,v7,0.1           " << std::endl;
+        test_file << "v7,v8,0.1           " << std::endl;
+        test_file << "v7,v9,0.1           " << std::endl;
+        test_file << "v8,v9,0.1           " << std::endl;
         test_file.close();
 
         g = uu::net::read_probabilistic_graph(test_file_name, "g", ',');
@@ -68,19 +68,96 @@ class net_measures_degree_test : public ::testing::Test
 
 };
 
-TEST_F(net_measures_degree_test, expected_degree)
+TEST_F(pnet_measures_degree_test, expected_degree)
 {
     auto v0 = g->vertices()->get("v0");
     double e0 = uu::net::expected_degree(g.get(), v0, uu::net::EdgeMode::INOUT);
     EXPECT_EQ(0, e0)
             << "wrong expected degree, vertex v0";
 
-
     auto v1 = g->vertices()->get("v1");
     double e1 = uu::net::expected_degree(g.get(), v1, uu::net::EdgeMode::INOUT);
-    EXPECT_EQ(1.1, e1)
+    EXPECT_EQ(0.2, e1)
+            << "wrong expected degree, vertex v1";
+
+    auto v2 = g->vertices()->get("v2");
+    double e2 = uu::net::expected_degree(g.get(), v2, uu::net::EdgeMode::INOUT);
+    EXPECT_EQ(0.5, e2)
             << "wrong expecte degree, vertex v1";
-
-
 }
+
+
+TEST_F(pnet_measures_degree_test,maximum_expected_degree)
+{
+    double e = uu::net::maximum_expected_degree(g.get(), uu::net::EdgeMode::INOUT);
+    EXPECT_EQ(0.5, e)
+            << "wrong maximum expected degree";
+}
+
+
+TEST_F(pnet_measures_degree_test,minimum_expected_degree)
+{
+    double e = uu::net::minimum_expected_degree(g.get(), uu::net::EdgeMode::INOUT);
+    EXPECT_EQ(0, e)
+            << "wrong minimum expected degree";
+}
+
+
+
+TEST_F(pnet_measures_degree_test,vertex_degree_distribution)
+{
+    std::vector<double> ans;
+    ans.push_back(0.81);
+    ans.push_back(0.18);
+    ans.push_back(0.01);
+
+    auto v1 = g->vertices()->get("v1");
+    auto e1 = uu::net::vertex_degree_distribution(g.get(), v1, uu::net::EdgeMode::INOUT);
+
+    EXPECT_EQ(ans, e1)
+            << "wrong degree distribution";
+}
+
+TEST_F(pnet_measures_degree_test,eta_degree)
+{
+    auto v1 = g->vertices()->get("v1");
+    auto d =  uu::net::eta_degree(g.get(), v1, 0.04, uu::net::EdgeMode::INOUT);
+
+    EXPECT_EQ(1, d)
+            << "wrong eta degree";
+}
+
+
+TEST_F(pnet_measures_degree_test,maximum_eta_degree)
+{
+    auto d =  uu::net::maximum_eta_degree(g.get(), 0.04, uu::net::EdgeMode::INOUT);
+
+    EXPECT_EQ(2, d)
+            << "wrong maximum eta degree";
+}
+
+
+TEST_F(pnet_measures_degree_test,minimum_eta_degree)
+{
+    auto d =  uu::net::minimum_eta_degree(g.get(), 0.04, uu::net::EdgeMode::INOUT);
+
+    EXPECT_EQ(0, d)
+            << "wrong minimum eta degree";
+}
+
+
+TEST_F(pnet_measures_degree_test,eta_degree_distribution)
+{
+    std::vector<int> ans;
+    ans.push_back(1);
+    ans.push_back(4);
+    ans.push_back(5);
+
+    auto edd = uu::net::eta_degree_distribution(g.get(), 0.04, uu::net::EdgeMode::INOUT);
+
+    EXPECT_EQ(ans, edd)
+            << "wrong eta degree distribution";
+}
+
+
 
