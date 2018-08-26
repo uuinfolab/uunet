@@ -96,6 +96,13 @@ class Graph
     is_weighted(
     ) const;
 
+    /**
+     * Checks if the graph is probabilistic.
+     */
+    bool
+    is_probabilistic(
+    ) const;
+
 
     /**
      * Checks if the graph has temporal information on its edges.
@@ -240,6 +247,16 @@ is_weighted() const
 {
     return type_.is_weighted;
 }
+
+
+template<typename V, typename E>
+bool
+Graph<V,E>::
+is_probabilistic() const
+{
+    return type_.is_probabilistic;
+}
+
 
 template<typename V, typename E>
 bool

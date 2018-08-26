@@ -121,7 +121,7 @@ class EdgeStore :
     ) const;
 
 
-  protected:
+    protected:
 
     /** Edge directionality */
     EdgeDir edge_directionality;
