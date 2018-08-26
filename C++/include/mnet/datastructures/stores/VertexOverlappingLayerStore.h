@@ -6,11 +6,7 @@
 #define UU_MNET_DATASTRUCTURES_STORES_VERTEXOVERLAPPINGLAYERSTORE_H_
 
 #include <unordered_set>
-#include "core/attributes.h"
-#include "core/datastructures.h"
 #include "core/datastructures/containers/LabeledUniquePtrSortedRandomSet.h"
-#include "net/datastructures.h"
-#include "mnet/datastructures/MultiplexNetwork.h"
 
 namespace uu {
 namespace net {
@@ -27,7 +23,8 @@ class VertexOverlappingLayerStore :
 
   public:
 
-    VertexOverlappingLayerStore();
+    VertexOverlappingLayerStore()
+    {}
 
     using super::size;
 

@@ -14,11 +14,11 @@
 
 
 #include "net/datastructures/stores/AttributeStore.h"
-#include "net/datastructures/stores/EmptyAttributeStore.h"
 #include "net/datastructures/stores/VertexStore.h"
-#include "net/datastructures/stores/AttrVertexStore.h"
+#include "net/datastructures/stores/AttributedVertexStore.h"
 #include "net/datastructures/stores/EdgeStore.h"
 #include "net/datastructures/stores/MultiEdgeStore.h"
 #include "net/datastructures/stores/SimpleEdgeStore.h"
+#include "net/datastructures/stores/EmptyEdgeStore.h"
 
 #endif

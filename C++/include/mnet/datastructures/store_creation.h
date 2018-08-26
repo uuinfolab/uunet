@@ -13,7 +13,7 @@
 
 namespace uu {
 namespace net {
-
+/*
 template <size_t N>
 std::unique_ptr<SimpleMultilayerEdgeStore<N>>
         create_simple_multilayer_edge_store();
@@ -38,7 +38,7 @@ std::unique_ptr<SimpleMultilayerEdgeStore<N>>
 
     return std::make_unique<SimpleMultilayerEdgeStore<N>>(std::move(init), std::move(attr));
 }
-
+*/
 
 } // namespace net
 } // namespace uu
