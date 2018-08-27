@@ -7,6 +7,18 @@
 namespace uu {
 namespace net {
 
+	
+	MultiplexNetwork::
+	MultiplexNetwork(
+					 const std::string& name,
+					 std::unique_ptr<VertexStore> v,
+					 std::unique_ptr<VertexOverlappingLayerStore<SimpleGraph>> l,
+					 std::unique_ptr<EmptyEdgeStore> e
+					 ) :
+					super(name, std::move(v), std::move(l), std::move(e))
+	{
+	}
+	
 std::string
 MultiplexNetwork::
 summary(

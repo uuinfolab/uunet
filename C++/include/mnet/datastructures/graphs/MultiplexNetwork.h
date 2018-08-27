@@ -45,9 +45,14 @@ class
 
   public:
 
-    using super::super;
+    //using super::super;
     
-    MultiplexNetwork(const MultiplexNetwork&) = delete;
+	MultiplexNetwork(
+					 const std::string& name,
+					 std::unique_ptr<VertexStore> v,
+					 std::unique_ptr<VertexOverlappingLayerStore<SimpleGraph>> l,
+					 std::unique_ptr<EmptyEdgeStore> e
+	);
     
     std::string
     summary(
