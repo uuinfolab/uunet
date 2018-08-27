@@ -5,7 +5,7 @@
 #include <fstream>
 #include <vector>
 
-#include "net/measures/components.h"
+#include "net/algorithms/components.h"
 #include "net/io/read_simple_graph.h"
 
 class net_measures_components_test : public ::testing::Test

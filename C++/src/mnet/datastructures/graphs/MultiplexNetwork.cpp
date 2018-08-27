@@ -12,10 +12,16 @@ MultiplexNetwork::
 summary(
 ) const
 {
+    size_t num_edges = 0;
+    for (auto layer: *layers_)
+    {
+        num_edges += layer->edges()->size();
+    }
     std::string summary =
         "MultiplexNetwork (" +
         vertices_->summary() + ", " +
-        layers_->summary() + ")";
+    layers_->summary() + ", " +
+    std::to_string(num_edges) + " edges)";
     return summary;
 }
 
@@ -33,8 +39,7 @@ create_multiplex_network(
 
     // Add observers @todo
 
-    return nullptr;
-    //return std::make_unique<MultiplexNetwork>(name, std::move(vs), std::move(ls), std::move(es));
+    return std::make_unique<MultiplexNetwork>(name, std::move(vs), std::move(ls), std::move(es));
 
 }
 

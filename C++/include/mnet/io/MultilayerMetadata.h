@@ -17,7 +17,8 @@ struct MultilayerMetadata
 {
     GraphType features;
     std::vector<core::Attribute> vertex_attributes;
-    std::vector<core::Attribute> edge_attributes;
+    std::vector<std::vector<core::Attribute>> intralayer_attributes;
+    std::vector<std::vector<core::Attribute>> intralayer_edge_attributes;
 };
 
 }

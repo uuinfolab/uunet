@@ -45,10 +45,10 @@ read_multilayer_metadata(
 );
 
 
-template <typename M>
+template <typename ML>
 void
 read_multilayer_data(
-    M* g,
+    ML* ml,
     const MultilayerMetadata& meta,
     const std::string& infile,
     char separator
@@ -85,19 +85,19 @@ read_edge(
     const std::vector<core::Attribute>& edge_attributes,
     size_t line_number
 );
+*/
 
-
-template <typename G>
+template <typename ML>
 void
-read_data(
-    G* g,
-    GraphMetadata meta,
+read_multilayer_data(
+    ML* g,
+ const MultilayerMetadata& meta,
     const std::string& infile,
     char separator
 )
 {
 
-    // PASS 2: read the graph data
+    // PASS 2: read the data
 
     core::CSVReader csv;
     csv.trim_fields(true);
@@ -105,7 +105,7 @@ read_data(
     csv.set_comment("--");
     csv.open(infile);
 
-    GraphIOFileSection section = GraphIOFileSection::EDGES;
+    MultilayerIOFileSection section = MultilayerIOFileSection::INTRALAYER_VERTICES;
 
     while (csv.has_next())
     {
@@ -122,23 +122,29 @@ read_data(
 
 
         // if new section starts here, set the current section and proceed
-        if (new_section_start(line))
+        if (new_multilayer_section_start(line))
         {
-            section = get_section(line);
+            section = get_multilayer_section(line);
             fields = csv.get_next();
         }
 
         switch (section)
         {
-        case GraphIOFileSection::VERTICES:
+        case MultilayerIOFileSection::VERTICES:
         {
-            read_vertex(g, fields, meta.vertex_attributes, csv.row_num());
+            read_vertex(g, fields, meta, csv.row_num());
             break;
         }
 
-        case GraphIOFileSection::EDGES:
+            case MultilayerIOFileSection::INTRALAYER_VERTICES:
+            {
+                read_intralayer_vertex(g, fields, meta, csv.row_num());
+                break;
+            }
+                
+        case MultilayerIOFileSection::INTRALAYER_EDGES:
         {
-            read_edge(g, fields, meta.edge_attributes, csv.row_num());
+            read_intralayer_edge(g, fields, meta, csv.row_num());
             break;
         }
 
@@ -149,33 +155,69 @@ read_data(
 
 }
 
+ 
 
-template <typename G>
+    template <typename ML, typename G>
+    const G*
+    read_layer(
+                ML* ml,
+                const std::vector<std::string>& fields,
+                size_t from_idx,
+                size_t line_number
+    )
+    {
+        throw core::OperationNotSupportedException("Network type not supported (IO)");
+    }
+
+    template <typename ML>
+    void
+    read_vertex(
+                           ML* ml,
+                           const std::vector<std::string>& fields,
+                const MultilayerMetadata& meta,
+                           size_t line_number
+                           )
+    {
+        throw core::OperationNotSupportedException("Network type not supported (IO)");
+    }
+
+template <typename ML>
 void
-read_vertex(
-    G* g,
+read_intralayer_vertex(
+    ML* ml,
     const std::vector<std::string>& fields,
-    const std::vector<core::Attribute>& vertex_attributes,
+                       const MultilayerMetadata& meta,
     size_t line_number
 )
 {
-    throw core::OperationNotSupportedException("Graph type not supported (IO)");
+    throw core::OperationNotSupportedException("Network type not supported (IO)");
 }
+    
+    template <typename ML>
+    void
+    read_intralayer_edge(
+                         ML* ml,
+                         const std::vector<std::string>& fields,
+                         const MultilayerMetadata& meta,
+                         size_t line_number
+                         )
+    {
+        throw core::OperationNotSupportedException("Network type not supported (IO)");
+    }
+    
+    template <typename ML>
+    void
+    read_interlayer_edge(
+                         ML* ml,
+                         const std::vector<std::string>& fields,
+                         const MultilayerMetadata& meta,
+                         size_t line_number
+                         )
+    {
+        throw core::OperationNotSupportedException("Network type not supported (IO)");
+    }
 
 
-template <typename G>
-void
-read_edge(
-    G* g,
-    const std::vector<std::string>& fields,
-    const std::vector<core::Attribute>& edge_attributes,
-    size_t line_number
-)
-{
-    throw core::OperationNotSupportedException("Graph type not supported (IO)");
-}
-
- */
 }
 }
 

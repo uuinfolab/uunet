@@ -1,25 +1,10 @@
 #include "mnet/io/read_common.h"
 #include "net/io/read_common.h"
-//#include "core/exceptions.h"
-
-//#include <algorithm>
-//#include <cctype>
+#include "core/utils/string.h"
 #include <iostream>
-//#include <vector>
 
 namespace uu {
 namespace net {
-
-/*
-void
-to_upper_case2(std::string& s)
-{
-/***************************
-// C(++), I hate you...
-int (*touppercase)(int) = std::toupper;
-/***************************
-std::transform(s.begin(),s.end(),s.begin(),touppercase);
-}*/
 
 bool
 new_multilayer_section_start(const std::string& line)
@@ -30,7 +15,7 @@ new_multilayer_section_start(const std::string& line)
     }
 
     std::string line_copy = line;
-    to_upper_case(line_copy);
+    core::to_upper_case(line_copy);
 
     if (
         line_copy=="#VERSION" ||
@@ -61,7 +46,7 @@ get_multilayer_section(
 )
 {
     std::string line_copy = line;
-    to_upper_case(line_copy);
+    core::to_upper_case(line_copy);
 
     if (line_copy=="#VERSION")
     {
@@ -131,8 +116,6 @@ get_multilayer_section(
 }
 
 
-/*
-
 MultilayerMetadata
 read_multilayer_metadata(
               const std::string& infile,
@@ -142,7 +125,7 @@ read_multilayer_metadata(
 
     MultilayerMetadata meta;
 
-        // Set up CSV Reader
+    // Set up CSV Reader
 
     core::CSVReader csv;
     csv.trim_fields(true);
@@ -159,7 +142,7 @@ read_multilayer_metadata(
     {
         std::vector<std::string> fields = csv.get_next();
         std::string line = csv.get_current_raw_line();
-            // remove trailing spaces
+        // remove trailing spaces
         line.erase(line.find_last_not_of(" \t")+1);
         line.erase(0,line.find_first_not_of(" \t"));
 
@@ -169,12 +152,12 @@ read_multilayer_metadata(
         }
 
 
-        if (new_section_start(line))
+        if (new_multilayer_section_start(line))
         {
-            section = get_section(line);
+            section = get_multilayer_section(line);
             fields = csv.get_next();
             line = csv.get_current_raw_line();
-                // remove trailing spaces
+            // remove trailing spaces
             line.erase(line.find_last_not_of(" \t")+1);
             line.erase(0,line.find_first_not_of(" \t"));
         }
@@ -184,31 +167,52 @@ read_multilayer_metadata(
         {
             case MultilayerIOFileSection::VERSION:
             {
+                std::cout << "VERSION" << std::endl;
                 version = read_version(line, csv.row_num());
                 break;
             }
 
             case MultilayerIOFileSection::TYPE:
             {
-                read_graph_type(line, meta, csv.row_num());
+                
+                std::cout << "TYPE" << std::endl;
+                //read_graph_type(line, meta, csv.row_num());
+                break;
+            }
+
+                
+            case MultilayerIOFileSection::LAYERS:
+            {
+                
+                std::cout << "LAYERS" << std::endl;
+                /*
+                 size_t from_idx = 0;
+                 core::Attribute vertex_att = read_attr_def(fields, from_idx, csv.row_num());
+                 meta.vertex_attributes.push_back(vertex_att);
+                 */
                 break;
             }
 
             case MultilayerIOFileSection::VERTEX_ATTRIBUTES:
             {
+                
+                std::cout << "VERTEX_ATTRIBUTES" << std::endl;
                 /*
                 size_t from_idx = 0;
                 core::Attribute vertex_att = read_attr_def(fields, from_idx, csv.row_num());
                 meta.vertex_attributes.push_back(vertex_att);
-                 *  /
+                 */
                 break;
             }
 
             case MultilayerIOFileSection::EDGE_ATTRIBUTES:
             {
+                std::cout << "EDGE_ATTRIBUTES" << std::endl;
+                /*
                 size_t from_idx = 0;
                 core::Attribute edge_att = read_attr_def(fields, from_idx, csv.row_num());
                 meta.edge_attributes.push_back(edge_att);
+                 */
                 break;
             }
 
@@ -219,7 +223,7 @@ read_multilayer_metadata(
 
     csv.close();
     return meta;
-}*/
+}
 
 }
 }
