@@ -19,6 +19,8 @@ summary(
     return summary;
 }
 
+
+    
 std::unique_ptr<MultiplexNetwork>
 create_multiplex_network(
     const std::string& name
@@ -31,7 +33,8 @@ create_multiplex_network(
 
     // Add observers @todo
 
-    return std::make_unique<MultiplexNetwork>(name, std::move(vs), std::move(ls), std::move(es));
+    return nullptr;
+    //return std::make_unique<MultiplexNetwork>(name, std::move(vs), std::move(ls), std::move(es));
 
 }
 

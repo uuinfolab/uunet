@@ -18,6 +18,7 @@ class mnet_datastructures_graphs_MultiplexNetwork_test : public ::testing::Test
 
 TEST_F(mnet_datastructures_graphs_MultiplexNetwork_test, creation)
 {
+    /*
     // Creating an empty multiplex network
 
     auto net = uu::net::create_multiplex_network("a mpx net");
@@ -51,6 +52,7 @@ TEST_F(mnet_datastructures_graphs_MultiplexNetwork_test, creation)
     layer1->edges()->add(v1, v2);
 
     std::cout << net->summary() << std::endl;
+     */
 
 }
 

@@ -45,8 +45,8 @@ class
 
   public:
 
-    using super::super;
-
+    //using super::super;
+    
     std::string
     summary(
     ) const;
