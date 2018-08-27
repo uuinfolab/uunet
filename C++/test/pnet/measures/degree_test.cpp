@@ -7,6 +7,7 @@
 
 #include "pnet/io/read_probabilistic_graph.h"
 #include "pnet/measures/degree.h"
+#include "net/measures/degree.h"
 
 class pnet_measures_degree_test : public ::testing::Test
 {
@@ -160,4 +161,32 @@ TEST_F(pnet_measures_degree_test,eta_degree_distribution)
 }
 
 
+TEST_F(pnet_measures_degree_test,average_eta_degree)
+{
+    double ans = 1.4;
+    auto avgeta1 = uu::net::average_eta_degree(g.get(), 0.04, uu::net::EdgeMode::INOUT);
+    EXPECT_EQ(ans, avgeta1)
+            << "wrong average eta degree";
+
+    ans = 0;
+    auto avgeta2 = uu::net::average_eta_degree(g.get(), 0.5, uu::net::EdgeMode::INOUT);
+    EXPECT_EQ(ans, avgeta2)
+            << "wrong average eta degree";
+}
+
+TEST_F(pnet_measures_degree_test,average_expected_degree)
+{
+    double ans = 0.3;
+    auto avgexp = uu::net::average_expected_degree(g.get(), uu::net::EdgeMode::INOUT);
+    EXPECT_EQ(ans, avgexp)
+            << "wrong average expected degree";
+}
+
+TEST_F(pnet_measures_degree_test,average_degree)
+{
+    int ans = 3;
+    auto avgdeg = uu::net::average_degree(g.get(), uu::net::EdgeMode::INOUT);
+    EXPECT_EQ(ans, avgdeg)
+            << "wrong average degree";
+}
 

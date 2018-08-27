@@ -69,6 +69,7 @@ degree_distribution(
     const EdgeMode mode
 );
 
+
 /**
  * Returns the degree of a vertex.
  * @param g input graph
@@ -84,6 +85,19 @@ degree(
     const EdgeMode mode
 );
 
+
+/**
+ * Returns the average degree of a graph.
+ * @param g input graph
+ * @param mode to select IN, OUT, or INOUT degree
+ * @return the (mode-)degree in g
+ */
+template<typename G>
+double
+average_degree(
+    const G* g,
+    const EdgeMode mode
+);
 
 /** DEFINITIONS */
 
@@ -227,6 +241,28 @@ degree(
     core::assert_not_null(g, "degree", "v");
     return g->edges()->neighbors(v, mode)->size();
 }
+
+
+template<typename G>
+double
+average_degree(
+    const G* g,
+    const EdgeMode mode
+)
+{
+    core::assert_not_null(g, "degree", "g");
+    core::assert_not_null(g, "degree", "v");
+    
+    int d = 0;
+    for (auto v: *g->vertices())
+    {
+        d += degree(g, v, mode);
+
+    }
+
+    return d/g->vertices()->size();
+}
+
 
 
 }

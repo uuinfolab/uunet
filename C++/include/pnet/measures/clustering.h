@@ -103,9 +103,6 @@ expected_clustering_coefficient(
         }
     }
 
-     std::cout << "nominator:    " << nominator << std::endl;
-     std::cout << "denominator:  " << denominator << std::endl;
-
      return nominator/denominator;
 }
 

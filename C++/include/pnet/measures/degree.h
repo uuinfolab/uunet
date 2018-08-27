@@ -179,7 +179,7 @@ average_expected_degree(
  * @param g input graph
  * @param eta input (\eta)
  * @param mode to select IN, OUT, or INOUT (\eta)-degree
- * @return the average expected degree of g
+ * @return the average eta degree of g
  */
 template<typename G>
 double
@@ -503,10 +503,10 @@ eta_degree_distribution(
     return res;
 }
 
-/*
+
 
 template<typename G>
-std::double
+double
 average_expected_degree(
                const G* g,
                const EdgeMode mode
@@ -530,12 +530,12 @@ average_expected_degree(
     return avg/g->vertices()->size();
 
 }
-*/
 
 
-/*
+
+
 template<typename G>
-std::double
+double
 average_eta_degree(
                const G* g,
                const double eta,
@@ -553,14 +553,14 @@ average_eta_degree(
     double avg = 0;
     for (auto vertex: *g->vertices())
     {
-	auto e = eta_degree(g,eta,vertex,mode);
+	auto e = eta_degree(g,vertex,eta,mode);
         avg += e;
     }
 
     return avg/g->vertices()->size();
 
 }
-*/
+
 
 
 }
