@@ -45,7 +45,9 @@ class
 
   public:
 
-    //using super::super;
+    using super::super;
+    
+    MultiplexNetwork(const MultiplexNetwork&) = delete;
     
     std::string
     summary(
