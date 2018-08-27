@@ -1,5 +1,7 @@
 #include "core/utils/string.h"
 
+#include <algorithm>
+
 namespace uu {
 namespace core {
 
