@@ -71,8 +71,9 @@ class pnet_measures_entropy_test : public ::testing::Test
 
 TEST_F(pnet_measures_entropy_test, graph_entropy)
 {
+    double x = 15*(-(0.1)*log10(0.1)-(0.9)*log10(0.9));
     double e = uu::net::graph_entropy(g.get());
-    EXPECT_EQ(2.117726, e)
+    EXPECT_EQ(x,e)
             << "wrong entropy";
 
    
