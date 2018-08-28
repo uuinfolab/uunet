@@ -1,5 +1,4 @@
-file (GLOB_RECURSE SOURCES_TEST 
-	../core/*.cpp
+file (GLOB_RECURSE SOURCES_TEST
 	*.cpp)
 
 add_executable (mnet-tests ${SOURCES_TEST})

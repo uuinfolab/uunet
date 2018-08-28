@@ -11,7 +11,6 @@
 #include "net/datastructures/stores/VertexStore.h"
 #include "net/datastructures/stores/SimpleEdgeStore.h"
 #include "net/datastructures/stores/AttributeStore.h"
-#include "net/datastructures/stores/EmptyAttributeStore.h"
 #include "mnet/datastructures/UnionVertexStore.h"
 #include "mnet/datastructures/MultilayerEdgeStore.h"
 
@@ -21,8 +20,9 @@ namespace net {
 using SimpleUnionVertexStore = UnionVertexStore;
 
 // @todo change Directed
+/*
 template <size_t N>
-using SimpleMultilayerEdgeStore = MultilayerEdgeStore<SimpleEdgeStore, N, EmptyAttributeStore<const Edge>>;
+using SimpleMultilayerEdgeStore = MultilayerEdgeStore<SimpleEdgeStore, N, EmptyAttributeStore<const Edge>>; */
 
 /*
 template<typename V, typename E>

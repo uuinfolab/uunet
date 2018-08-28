@@ -18,12 +18,15 @@ namespace uu {
 namespace net {
 
 /**
- * MultilayerNetwork is a generic class that can be instantiated into several specific types of network.
+ * MultilayerNetwork is a generic class that can be instantiated into several specific types of
+ * network whose vertices/edges are organized into layers.
  *
- * A MultilayerNetwork is instantiated by specifying a VertexStore (V) and an EdgeStore (E).
+ * A MultilayerNetwork is instantiated by specifying a VertexStore (V), containing all the vertices
+ * in the network, a LayerStore (L) handling the individual layers (each corresponding to a graphs
+ * ever the vertices in V), and an EdgeStore (E) for inter-layer edges.
  */
 template <typename V, typename L, typename E>
-class MultilayerNetwork : ObserverStore
+class MultilayerNetwork : core::ObserverStore
 {
 
   public:
@@ -72,7 +75,7 @@ class MultilayerNetwork : ObserverStore
      * Returns a pointer to the network's edge store.
      */
     E*
-    edges(
+    interlayer_edges(
     );
 
 
@@ -80,7 +83,7 @@ class MultilayerNetwork : ObserverStore
      * Returns a pointer to the network's (const) edge store.
      */
     const E*
-    edges(
+    interlayer_edges(
     ) const;
 
     /**
@@ -94,7 +97,7 @@ class MultilayerNetwork : ObserverStore
 
     const std::string name;
 
-  private:
+  protected:
     /** Internal vertex store. */
     std::unique_ptr<V> vertices_;
 
@@ -123,7 +126,6 @@ MultilayerNetwork(
     vertices_ = std::move(v);
     layers_ = std::move(l);
     edges_ = std::move(e);
-
 }
 
 
@@ -150,7 +152,7 @@ vertices(
 template <typename V, typename L, typename E>
 E*
 MultilayerNetwork<V,L,E>::
-edges(
+interlayer_edges(
 )
 {
     return edges_.get();
@@ -160,7 +162,7 @@ edges(
 template <typename V, typename L, typename E>
 const E*
 MultilayerNetwork<V,L,E>::
-edges(
+interlayer_edges(
 ) const
 {
     return edges_.get();

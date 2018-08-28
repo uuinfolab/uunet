@@ -27,26 +27,6 @@ namespace net {
  */
 
 
-std::unique_ptr<SimpleMultiplexNetwork>
-create_simple_multiplex_network(
-    const std::string& name
-)
-{
-
-    using V = VertexStore;
-    using LAttr = AttributeStore<SimpleGraph>;
-    using L = VertexOverlappingLayerStore<SimpleGraph,LAttr>;
-
-    std::unique_ptr<V> vs;
-    vs = std::make_unique<V>();
-
-    std::unique_ptr<LAttr> l_attr = std::make_unique<LAttr>();
-    std::unique_ptr<L> ls;
-    ls = std::make_unique<L>(std::move(l_attr));
-
-    return std::make_unique<SimpleMultiplexNetwork>(name, std::move(vs), std::move(ls));
-
-}
 
 
 

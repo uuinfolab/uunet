@@ -21,7 +21,7 @@ target_link_libraries (wnet-tests
 add_custom_command(TARGET wnet-tests
 	POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy_directory
-	${CMAKE_SOURCE_DIR}/data $<TARGET_FILE_DIR:net-tests>
+	${CMAKE_SOURCE_DIR}/data $<TARGET_FILE_DIR:wnet-tests>
 	COMMENT "Copying testing datasets"
 	VERBATIM
 )

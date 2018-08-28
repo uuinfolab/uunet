@@ -21,27 +21,9 @@
 namespace uu {
 namespace net {
 
-void
-to_upper_case(std::string& s);
-
 /** Default edge directionality (undirected). */
 const EdgeDir kDEFAULT_EDGE_DIRECTIONALITY = EdgeDir::UNDIRECTED;
 
-/**
- * Checks if the input line indicates the start of a new section.
- */
-bool
-new_section_start(
-    const std::string& line
-);
-
-/**
- * Returns the new section starting on this input line.
- */
-GraphIOFileSection
-get_section(
-    const std::string& line
-);
 
 
 GraphMetadata
@@ -85,7 +67,7 @@ read_graph_type(
 );
 
 /**
- * Utility function to read attribute definitions.
+ * Utility function to read an attribute definition.
  * @param store attribute store where the attribute values are saved
  * @param id identifier of the object for which the attributes should be read
  * @param attr_types vector with the expected types of attributes
@@ -101,7 +83,24 @@ read_attr_def(
     size_t line_number
 );
 
-
+    template <typename G>
+    const Vertex*
+    read_vertex(
+                G* g,
+                const std::vector<std::string>& fields,
+                size_t from_idx,
+                size_t line_number
+                );
+    
+    template <typename G>
+    const Edge*
+    read_edge(
+                G* g,
+                const std::vector<std::string>& fields,
+                size_t from_idx,
+                size_t line_number
+                );
+    
 template <typename G>
 void
 read_vertex(
@@ -185,6 +184,64 @@ read_data(
 }
 
 
+    template <typename G>
+    const Vertex*
+    read_vertex(
+                G* g,
+                const std::vector<std::string>& fields,
+                size_t from_idx,
+                size_t line_number
+                )
+    {
+        assert_not_null(g, "read_vertex", "g");
+        
+        std::string vertex_name = fields.at(from_idx);
+        
+        auto vertex = g->vertices()->add(vertex_name);
+        
+        if (!vertex)
+        {
+            vertex = g->vertices()->get(vertex_name);
+        }
+        
+        return vertex;
+    }
+    
+    template <typename G>
+    const Edge*
+    read_edge(
+              G* g,
+              const std::vector<std::string>& fields,
+              size_t from_idx,
+              size_t line_number
+              )
+    {
+        assert_not_null(g, "read_edge", "g");
+        
+        std::string from_vertex = fields.at(from_idx);
+        std::string to_vertex = fields.at(from_idx+1);
+        
+        auto vertex1 = g->vertices()->add(from_vertex);
+        if (!vertex1)
+        {
+            vertex1 = g->vertices()->get(from_vertex);
+        }
+        
+        auto vertex2 = g->vertices()->add(to_vertex);
+        if (!vertex2)
+        {
+            vertex2 = g->vertices()->get(to_vertex);
+        }
+        
+        auto edge = g->edges()->add(vertex1,vertex2);
+        if (!edge)
+        {
+            edge = g->edges()->get(vertex1,vertex2);
+        }
+        
+        return edge;
+    }
+    
 template <typename G>
 void
 read_vertex(

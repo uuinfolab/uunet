@@ -40,36 +40,14 @@ read_vertex(
     size_t line_number
 )
 {
-    assert_not_null(g, "read_vertex", "g");
-
-    if (vertex_attributes.size()>0)
-    {
-        throw core::WrongParameterException("No user-defined attributes expected");
-    }
-
     if (fields.size()>1)
     {
         throw core::WrongFormatException("Line " +
                                          std::to_string(line_number) +
                                          ": Only vertex name expected");
     }
-
-    std::string vertex_name = fields[0];
-
-    auto vertex = g->vertices()->add(vertex_name);
-
-    if (!vertex)
-    {
-        vertex = g->vertices()->get(vertex_name);
-    }
-
-    /*
-     size_t attr_idx = 1;
-     for (auto att: vertex_attributes)
-     {
-     g->vertices()->attr()->set_as_string(vertex, att.name, fields[attr_idx]);
-     attr_idx++;
-     }*/
+    
+    read_vertex(g, fields, 0, line_number);
 }
 
 
@@ -82,8 +60,7 @@ read_edge(
     size_t line_number
 )
 {
-    assert_not_null(g, "read_edge", "g");
-
+    
     if (fields.size()!=3)
     {
         throw core::WrongFormatException("Line " +
@@ -92,45 +69,12 @@ read_edge(
                                          "be specified for each edge");
     }
 
-    std::string from_vertex = fields[0];
-    std::string to_vertex = fields[1];
     std::string weight = fields[2];
 
-    auto vertex1 = g->vertices()->add(from_vertex);
-
-    if (!vertex1)
-    {
-        vertex1 = g->vertices()->get(from_vertex);
-    }
-
-    auto vertex2 = g->vertices()->add(to_vertex);
-
-    if (!vertex2)
-    {
-        vertex2 = g->vertices()->get(to_vertex);
-    }
-
-    auto edge = g->edges()->add(vertex1,vertex2);
-
-    if (!edge)
-    {
-        edge = g->edges()->get(vertex1,vertex2);
-        throw core::DuplicateElementException("Line " +
-                                              std::to_string(line_number) +
-                                              ": duplicate edge " +
-                                              edge->to_string());
-    }
-
+    auto edge = read_edge(g, fields, 0, line_number);
+    
     g->edges()->attr()->set_weight(edge, core::to_double(weight));
 
-    /*
-     size_t attr_idx = 1;
-     for (auto att: edge_attributes)
-     {
-     g->edges()->attr()->set_as_string(edge, att.name, fields[attr_idx]);
-     attr_idx++;
-     }
-     */
 }
 
 }
