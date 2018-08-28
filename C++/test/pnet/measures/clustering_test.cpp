@@ -77,24 +77,32 @@ TEST_F(pnet_measures_clustering_test, expected_clustering_coefficient)
     auto v0 = g->vertices()->get("v0");
     double c0 = uu::net::expected_clustering_coefficient(g.get(), v0);
     EXPECT_EQ(x, c0)
-            << "wrong clustering coefficient, vertex v0";
+            << "wrong expected clustering coefficient, vertex v0";
 
     x = 0.1;
     auto v1 = g->vertices()->get("v1");
     double c1 = uu::net::expected_clustering_coefficient(g.get(), v1);
     EXPECT_EQ(x, c1)
-            << "wrong clustering coefficient, vertex v1";
+            << "wrong expected clustering coefficient, vertex v1";
 
     x = 0.4/6;
     auto v6 = g->vertices()->get("v6");
     double c6 = uu::net::expected_clustering_coefficient(g.get(), v6);
     EXPECT_EQ(x, c6)
-        << "wrong clustering coefficient, vertex v6";
+            << "wrong expected clustering coefficient, vertex v6";
 
     //x = 0.05;
     //auto v2 = g->vertices()->get("v2");
     //double c2 = uu::net::expected_clustering_coefficient(g.get(), v2);
     //EXPECT_EQ(x, c2)
     //    << "wrong clustering coefficient, vertex v2";    
+}
+
+TEST_F(pnet_measures_clustering_test, average_expected_clustering_coefficient)
+{
+    double x = 0.0666667;
+    double avgc = uu::net::average_expected_clustering_coefficient(g.get());
+    EXPECT_EQ(x, avgc)
+            << "wrong average expected clustering coefficient";
 }
 

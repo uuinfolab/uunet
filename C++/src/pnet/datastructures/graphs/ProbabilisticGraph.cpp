@@ -2,7 +2,7 @@
  * History:
  * - 2018.08.17 file created.
  */
-#include "pnet/datastructures/graphs/ProbabilisticGraph.h"                                                        // changed
+#include "pnet/datastructures/graphs/ProbabilisticGraph.h"                                                        
 #include "net/datastructures/observers/AdjVertexCheckObserver.h"          
 #include "net/datastructures/observers/PropagateObserver.h"
 #include "net/datastructures/observers/NoLoopCheckObserver.h"
@@ -27,7 +27,7 @@ create_probabilistic_graph(
     GraphType t;
     t.allows_loops = allows_loops;
     t.is_directed = dir==EdgeDir::DIRECTED ? true : false;
-    t.is_probabilistic = true;                                                                                    // t.is_weighted               to            t.is_probabiliostic             change in GraphType.h
+    t.is_probabilistic = true;                                                                                   
 
     auto graph = std::make_unique<ProbabilisticGraph>(name, t, std::move(vs), std::move(es));
 

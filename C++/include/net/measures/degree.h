@@ -253,7 +253,7 @@ average_degree(
     core::assert_not_null(g, "degree", "g");
     core::assert_not_null(g, "degree", "v");
     
-    int d = 0;
+    double d = 0;
     for (auto v: *g->vertices())
     {
         d += degree(g, v, mode);

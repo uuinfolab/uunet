@@ -33,6 +33,19 @@ expected_clustering_coefficient(
 
 
 /**
+ * Returns the average of the expected clustering coefficients in graph.
+ * @param g input graph
+ * @return the the average of the expected clustering coefficients in g
+ */
+template<typename G>
+double
+average_expected_clustering_coefficient_distribution(
+               const G* g
+);
+
+
+
+/**
  * Returns the distribution of the expected clustering coefficient in graph.
  * @param g input graph
  * @return the the distribution of the expected clustering coefficient in g
@@ -66,7 +79,7 @@ expected_clustering_coefficient(
     
     // neighbors of v
     auto nghb = g->edges()->neighbors(v,uu::net::EdgeMode::INOUT);
-    if(nghb->size()==0)
+    if(nghb->size()==0 || nghb->size()==1)
     {
         return 0;
     }
@@ -107,13 +120,32 @@ expected_clustering_coefficient(
 }
 
 
+template<typename G>
+double
+average_expected_clustering_coefficient(
+               const G* g
+)
+{
+    core::assert_not_null(g, "degree", "g");              
+
+    if (!g->is_probabilistic())
+    {
+        throw core::WrongParameterException("Expected Degree can only be computed on probabilistic graphs");
+    }
+
+    double i = 0;
+    double avg = 0;
+    for (auto vertex: *g->vertices())
+    {
+	auto e = expected_clustering_coefficient(g,vertex);
+        avg += e;
+        i++;
+    }
 
 
+    return avg/i;
 
-
-
-
-
+}
 
 
 
