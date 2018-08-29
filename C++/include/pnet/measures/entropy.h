@@ -1,10 +1,10 @@
 /**
  * History:
- * - 2018.08.16 file created.
+ * - 2018.08.28 file created.
  */
 
-#ifndef UU_PNET_MEASURES_DEGREE_H_
-#define UU_PNET_MEASURES_DEGREE_H_
+#ifndef UU_PNET_MEASURES_ENTROPY_H_
+#define UU_PNET_MEASURES_ENTROPY_H_
 
 #include<iostream>
 #include<complex>

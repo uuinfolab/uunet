@@ -14,6 +14,9 @@
 
 #include "net/datastructures/objects/Vertex.h"
 #include "net/datastructures/objects/EdgeMode.h"
+#include "core/exceptions/assert_not_null.h"
+
+
 
 namespace uu {
 namespace net {
@@ -188,9 +191,6 @@ average_eta_degree(
                const double eta,
                const EdgeMode mode
 );
-
-
-
 
 
 
@@ -560,6 +560,7 @@ average_eta_degree(
     return avg/g->vertices()->size();
 
 }
+
 
 
 

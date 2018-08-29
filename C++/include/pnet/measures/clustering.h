@@ -13,6 +13,7 @@
 #include "net/datastructures/objects/EdgeMode.h"
 #include "core/exceptions/assert_not_null.h"
 #include "core/utils/Counter.h"
+#include "pnet/measures/basic.h"
 
 
 namespace uu {
@@ -84,39 +85,25 @@ expected_clustering_coefficient(
         return 0;
     }
 
-    // probability of edges incident to v.
-    vector<double> P;
-    for (auto edge: *g->edges()->incident(v,uu::net::EdgeMode::INOUT))
-    {
-        auto p = g->edges()->attr()->get_probability(edge);
-        if (!p.null)
-        {
-            P.push_back(p.value);
-        }
-    }
 
     double denominator = 0;             // expected number of coexisting pairs
     double nominator =0;                // expected number of triangles
+    double p;
 
     for (unsigned int i = 0 ; i < nghb->size() ; i++)
     {
-        auto n = g->edges()->neighbors(nghb->get_at_index(i),uu::net::EdgeMode::INOUT);
         for (unsigned int j = i+1 ; j < nghb->size() ; j++)
         {
-            denominator += P[i]*P[j];
-            auto pos = n->get_index(nghb->get_at_index(j));
-            //std::cout << "Position of nghb   " << j << "   in neighbors of nghb   " << i << "   is: " << pos << std::endl;
-            if (pos != -1)
+            denominator += is_neighbor(g,v,nghb->get_at_index(i),uu::net::EdgeMode::INOUT)*is_neighbor(g,v,nghb->get_at_index(j),uu::net::EdgeMode::INOUT);
+            p = is_neighbor(g,nghb->get_at_index(i),nghb->get_at_index(j),uu::net::EdgeMode::INOUT);
+            if (p)
             {	
-                auto e = g->edges()->incident(nghb->get_at_index(i),uu::net::EdgeMode::INOUT);
-                auto p = g->edges()->attr()->get_probability(e->get_at_index(pos));
-                //std::cout << " probability is: " << p.value << std::endl; 
-                nominator += P[i]*P[j]*p.value;
+                nominator += is_neighbor(g,v,nghb->get_at_index(i),uu::net::EdgeMode::INOUT)*is_neighbor(g,v,nghb->get_at_index(j),uu::net::EdgeMode::INOUT)*p;
             }
         }
     }
-
-     return nominator/denominator;
+    
+    return nominator/denominator;
 }
 
 

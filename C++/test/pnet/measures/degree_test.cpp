@@ -69,6 +69,7 @@ class pnet_measures_degree_test : public ::testing::Test
 
 };
 
+
 TEST_F(pnet_measures_degree_test, expected_degree)
 {
     auto v0 = g->vertices()->get("v0");
@@ -189,4 +190,5 @@ TEST_F(pnet_measures_degree_test,average_degree)
     EXPECT_EQ(ans, avgdeg)
             << "wrong average degree";
 }
+
 
