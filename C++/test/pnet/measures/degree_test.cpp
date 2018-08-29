@@ -85,7 +85,7 @@ TEST_F(pnet_measures_degree_test, expected_degree)
     auto v2 = g->vertices()->get("v2");
     double e2 = uu::net::expected_degree(g.get(), v2, uu::net::EdgeMode::INOUT);
     EXPECT_EQ(0.5, e2)
-            << "wrong expecte degree, vertex v1";
+            << "wrong expected degree, vertex v1";
 }
 
 
@@ -179,7 +179,7 @@ TEST_F(pnet_measures_degree_test,average_expected_degree)
 {
     double ans = 0.3;
     auto avgexp = uu::net::average_expected_degree(g.get(), uu::net::EdgeMode::INOUT);
-    EXPECT_EQ(ans, avgexp)
+    EXPECT_NEAR(ans, avgexp,0.0000001)
             << "wrong average expected degree";
 }
 
@@ -187,7 +187,7 @@ TEST_F(pnet_measures_degree_test,average_degree)
 {
     int ans = 3;
     auto avgdeg = uu::net::average_degree(g.get(), uu::net::EdgeMode::INOUT);
-    EXPECT_EQ(ans, avgdeg)
+    EXPECT_NEAR(ans, avgdeg,0.0000001)
             << "wrong average degree";
 }
 

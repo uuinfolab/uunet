@@ -73,7 +73,7 @@ TEST_F(pnet_measures_entropy_test, graph_entropy)
 {
     double x = 15*(-(0.1)*log10(0.1)-(0.9)*log10(0.9));
     double e = uu::net::graph_entropy(g.get());
-    EXPECT_EQ(x,e)
+    EXPECT_NEAR(x,e,0.0000001)
             << "wrong entropy";
 
    

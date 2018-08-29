@@ -45,12 +45,13 @@ graph_entropy(
         throw core::WrongParameterException("Entropy can only be computed on probabilistic graphs");
     }
 
+
     double E = 0;      
     for (auto edge: *g->edges())
     {
         auto p = g->edges()->attr()->get_probability(edge);
 
-        if (!p.null)
+        if (!p.null && p.value != 1)
         {
             E += -p.value*log10(p.value)-(1-p.value)*log10(1-p.value);
         }
