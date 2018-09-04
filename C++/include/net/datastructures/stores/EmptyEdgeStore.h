@@ -14,18 +14,18 @@
 namespace uu {
 namespace net {
 
-    class EmptyEdgeStore :
+class EmptyEdgeStore :
     public core::Subject<const Edge>
 {
 
   public:
 
     EmptyEdgeStore() {};
-    
+
     bool
     is_directed(
     ) const;
-    
+
     void
     erase(
         const Vertex* v

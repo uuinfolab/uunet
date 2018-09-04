@@ -141,6 +141,7 @@ read_metadata(
             {
                 read_graph_type(graph_characteristic, meta.features, csv.row_num());
             }
+
             break;
         }
 

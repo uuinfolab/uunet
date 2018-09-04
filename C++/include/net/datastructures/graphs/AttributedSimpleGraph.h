@@ -23,7 +23,7 @@ namespace net {
  * In this library that is the default setting for simple graphs, but we can also have directed
  * edges and loops if specified in the creation function.
  */
-    
+
 using AttributedSimpleGraph =
     Graph<
     AttributedVertexStore<Attributes<Vertex, UserDefinedAttrs<Vertex>>>,

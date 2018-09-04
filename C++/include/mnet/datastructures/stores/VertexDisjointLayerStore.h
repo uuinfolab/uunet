@@ -30,19 +30,19 @@ class VertexDisjointLayerStore
     template <int N>
     typename std::tuple_element< N, std::tuple<GraphTypes*...>>::type
             get(
-    )
+            )
     {
         return std::get<N>(layers).get();
     }
 
     template <int N>
     typename std::tuple_element< N, std::tuple<GraphTypes*...>>::type
-    get(
-    ) const
+            get(
+            ) const
     {
         return std::get<N>(layers).get();
     }
-    
+
     size_t
     pos(
         const std::string& layer_name

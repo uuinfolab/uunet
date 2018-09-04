@@ -18,16 +18,16 @@ class mnet_datastructures_graphs_MultiplexNetwork_test : public ::testing::Test
 
 TEST_F(mnet_datastructures_graphs_MultiplexNetwork_test, creation)
 {
-    
+
     // Creating an empty multiplex network
 
     auto net = uu::net::create_multiplex_network("a mpx net");
-    
+
     // Adding vertices
 
     const uu::net::Vertex* v1 = net->vertices()->add("miao");
     const uu::net::Vertex* v2 = net->vertices()->add("bau");
-    
+
     // Adding layers
 
     auto ptr = uu::net::create_simple_graph("layer1", uu::net::EdgeDir::DIRECTED);

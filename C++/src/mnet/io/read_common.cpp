@@ -118,9 +118,9 @@ get_multilayer_section(
 
 MultilayerMetadata
 read_multilayer_metadata(
-              const std::string& infile,
-              char separator
-              )
+    const std::string& infile,
+    char separator
+)
 {
 
     MultilayerMetadata meta;
@@ -165,98 +165,107 @@ read_multilayer_metadata(
 
         switch (section)
         {
-            case MultilayerIOFileSection::VERSION:
+        case MultilayerIOFileSection::VERSION:
+        {
+            version = read_version(line, csv.row_num());
+            break;
+        }
+
+
+        case MultilayerIOFileSection::LAYERS:
+        {
+            //@todo sanity check
+            std::string layer_name = fields.at(0);
+
+            for (size_t idx = 1; idx<fields.size(); idx++)
             {
-                version = read_version(line, csv.row_num());
-                break;
+                read_graph_type(fields.at(idx), meta.layers[layer_name], csv.row_num());
             }
 
-                
-            case MultilayerIOFileSection::LAYERS:
+            break;
+        }
+
+        case MultilayerIOFileSection::TYPE:
+        {
+            std::cout << "TYPE" << std::endl;
+            //read_multilayer_type(line, meta, csv.row_num());
+            // @todo
+            break;
+        }
+
+        case MultilayerIOFileSection::VERTEX_ATTRIBUTES:
+        {
+
+            // global vertex attributes
+            if (fields.size()==2)
             {
-                //@todo sanity check
-                std::string layer_name = fields.at(0);
-                for (size_t idx = 1; idx<fields.size(); idx++)
+                size_t from_idx = 0;
+                core::Attribute vertex_att = read_attr_def(fields, from_idx, csv.row_num());
+                meta.vertex_attributes.push_back(vertex_att);
+            }
+
+            // intralayer vertex attributes
+            else if (fields.size()==3)
+            {
+                // add layer if not previously defined
+                std::string layer_name = fields[0];
+
+                if (meta.layers.find(layer_name) == meta.layers.end())
                 {
-                    read_graph_type(fields.at(idx), meta.layers[layer_name], csv.row_num());
+                    GraphType gt;
+                    meta.layers[layer_name] = gt;
                 }
-                break;
+
+                // read attribute
+                size_t from_idx = 1;
+                core::Attribute vertex_att = read_attr_def(fields, from_idx, csv.row_num());
+                meta.intralayer_vertex_attributes[layer_name].push_back(vertex_att);
             }
-                
-            case MultilayerIOFileSection::TYPE:
+
+            else
             {
-                std::cout << "TYPE" << std::endl;
-                    //read_multilayer_type(line, meta, csv.row_num());
-                    // @todo
-                break;
+                // @todo throw wrong format exception
             }
 
-            case MultilayerIOFileSection::VERTEX_ATTRIBUTES:
+            break;
+        }
+
+        case MultilayerIOFileSection::EDGE_ATTRIBUTES:
+        {
+            if (fields.size()==2)
             {
-                
-                // global vertex attributes
-                if (fields.size()==2)
-                {
-                    size_t from_idx = 0;
-                    core::Attribute vertex_att = read_attr_def(fields, from_idx, csv.row_num());
-                    meta.vertex_attributes.push_back(vertex_att);
-                }
-                
-                // intralayer vertex attributes
-                else if (fields.size()==3)
-                {
-                    // add layer if not previously defined
-                    std::string layer_name = fields[0];
-                    if (meta.layers.find(layer_name) == meta.layers.end())
-                    {
-                        GraphType gt;
-                        meta.layers[layer_name] = gt;
-                    }
-                    // read attribute
-                    size_t from_idx = 1;
-                    core::Attribute vertex_att = read_attr_def(fields, from_idx, csv.row_num());
-                    meta.intralayer_vertex_attributes[layer_name].push_back(vertex_att);
-                }
-                else
-                {
-                    // @todo throw wrong format exception
-                }
-                break;
+                int from_idx = 0;
+                core::Attribute edge_att = read_attr_def(fields, from_idx, csv.row_num());
+                meta.edge_attributes.push_back(edge_att);
             }
 
-            case MultilayerIOFileSection::EDGE_ATTRIBUTES:
+            else if (fields.size()==3)
             {
-                if (fields.size()==2)
-                 {
-                 int from_idx = 0;
-                 core::Attribute edge_att = read_attr_def(fields, from_idx, csv.row_num());
-                 meta.edge_attributes.push_back(edge_att);
-                 }
-                 
-                 else if (fields.size()==3)
-                 {
-                         // add layer if not previously defined
-                     std::string layer_name = fields[0];
-                     if (meta.layers.find(layer_name) == meta.layers.end())
-                     {
-                         GraphType gt;
-                         meta.layers[layer_name] = gt;
-                     }
-                         // read attribute
-                 int from_idx = 1;
-                 core::Attribute edge_att = read_attr_def(fields, from_idx, csv.row_num());
-                 meta.intralayer_edge_attributes[layer_name].push_back(edge_att);
-                 }
-                 else
-                 {
-                         // @todo throw wrong format exception
-                 }
+                // add layer if not previously defined
+                std::string layer_name = fields[0];
 
-                break;
+                if (meta.layers.find(layer_name) == meta.layers.end())
+                {
+                    GraphType gt;
+                    meta.layers[layer_name] = gt;
+                }
+
+                // read attribute
+                int from_idx = 1;
+                core::Attribute edge_att = read_attr_def(fields, from_idx, csv.row_num());
+                meta.intralayer_edge_attributes[layer_name].push_back(edge_att);
             }
 
-            default:
-                break;
+            else
+            {
+                // @todo throw wrong format exception
+            }
+
+            break;
+        }
+
+        default:
+            break;
         }
     }
 

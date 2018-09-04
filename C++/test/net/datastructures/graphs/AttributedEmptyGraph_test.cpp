@@ -24,12 +24,12 @@ TEST_F(net_datastructures_graphs_AttributedEmptyGraph_test, all_functions)
     g->vertices()->add(uu::net::Vertex::create("coucou"));
 
     // Attributes
-    
+
     g->vertices()->attr()->add("a1", uu::core::AttributeType::DOUBLE);
     g->vertices()->attr()->set_double(v1, "a1", 3.4);
     EXPECT_EQ(3.4, g->vertices()->attr()->get_double(v1, "a1").value)
-    << "Attribute value not set correctly (vertex)";
-    
+            << "Attribute value not set correctly (vertex)";
+
     // Checking graph properties
 
     EXPECT_FALSE(g->allows_multi_edges())
@@ -39,7 +39,7 @@ TEST_F(net_datastructures_graphs_AttributedEmptyGraph_test, all_functions)
             << "Wrong graph type: should not allow loops";
 
     // Uncomment the following line to print a summary of the graph
-    
+
     std::cout << g->summary() << std::endl;
 
 }

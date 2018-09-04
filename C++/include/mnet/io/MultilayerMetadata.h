@@ -17,9 +17,9 @@ namespace net {
 struct MultilayerMetadata
 {
     GraphType features;
-    
+
     std::unordered_map<std::string, GraphType> layers;
-    
+
     std::vector<core::Attribute> vertex_attributes;
     std::vector<core::Attribute> edge_attributes;
     std::unordered_map<std::string, std::vector<core::Attribute>> intralayer_vertex_attributes;

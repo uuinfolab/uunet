@@ -29,18 +29,18 @@ TEST_F(net_datastructures_graphs_AttributedSimpleGraph_test, all_functions)
     g->edges()->add(uu::net::Edge::create(v1, v3, uu::net::EdgeDir::DIRECTED));
 
     // Attributes
-    
+
     g->vertices()->attr()->add("a1", uu::core::AttributeType::DOUBLE);
     g->vertices()->attr()->set_double(v1, "a1", 3.4);
     EXPECT_EQ(3.4, g->vertices()->attr()->get_double(v1, "a1").value)
-    << "Attribute value not set correctly (vertex)";
-    
+            << "Attribute value not set correctly (vertex)";
+
     g->edges()->attr()->add("a1", uu::core::AttributeType::DOUBLE);
     g->edges()->attr()->set_double(e, "a1", 3.4);
     EXPECT_EQ(3.4, g->edges()->attr()->get_double(e, "a1").value)
-    << "Attribute value not set correctly (edge)";
-    
-    
+            << "Attribute value not set correctly (edge)";
+
+
     // Adding an edge to a vertex that is not in the graph produces an exception
     std::shared_ptr<const uu::net::Vertex> v = uu::net::Vertex::create("biribu");
     EXPECT_THROW(
@@ -48,7 +48,7 @@ TEST_F(net_datastructures_graphs_AttributedSimpleGraph_test, all_functions)
         uu::core::ElementNotFoundException
     );
 
-    
+
     // The removal of a vertex propagates to the edges
     g->vertices()->erase(v1);
     EXPECT_EQ(0, g->edges()->size())
@@ -63,7 +63,7 @@ TEST_F(net_datastructures_graphs_AttributedSimpleGraph_test, all_functions)
             << "Wrong graph type: should not allow loops";
 
     // Uncomment the following line to print a summary of the graph
-    
+
     std::cout << g->summary() << std::endl;
 
 }

@@ -27,21 +27,21 @@ class
 {
     typedef MultilayerNetwork<
     AttributedVertexStore<Attributes<Vertex, UserDefinedAttrs<Vertex>>>,
-    VertexOverlappingLayerStore<AttributedSimpleGraph>,
-    EmptyEdgeStore
-    > super;
+                          VertexOverlappingLayerStore<AttributedSimpleGraph>,
+                          EmptyEdgeStore
+                          > super;
 
   public:
 
     //using super::super;
-    
-	AttributedMultiplexNetwork(
-					 const std::string& name,
-					 std::unique_ptr<AttributedVertexStore<Attributes<Vertex, UserDefinedAttrs<Vertex>>>> v,
-					 std::unique_ptr<VertexOverlappingLayerStore<AttributedSimpleGraph>> l,
-					 std::unique_ptr<EmptyEdgeStore> e
-	);
-    
+
+    AttributedMultiplexNetwork(
+        const std::string& name,
+        std::unique_ptr<AttributedVertexStore<Attributes<Vertex, UserDefinedAttrs<Vertex>>>> v,
+        std::unique_ptr<VertexOverlappingLayerStore<AttributedSimpleGraph>> l,
+        std::unique_ptr<EmptyEdgeStore> e
+    );
+
     std::string
     summary(
     ) const;

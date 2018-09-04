@@ -16,22 +16,22 @@ is_directed(
 {
     return false;
 }
-    
-    void
-    EmptyEdgeStore::
-    erase(
-          const Vertex* v
-          )
-    {
-        
-    }
 
-    std::string
-    EmptyEdgeStore::
-    summary(
-    ) const
-    {
-        return "0 edges";
-    }
+void
+EmptyEdgeStore::
+erase(
+    const Vertex* v
+)
+{
+
+}
+
+std::string
+EmptyEdgeStore::
+summary(
+) const
+{
+    return "0 edges";
+}
 }
 }

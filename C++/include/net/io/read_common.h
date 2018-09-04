@@ -81,36 +81,36 @@ read_attr_def(
     size_t line_number
 );
 
-    template <typename ASPtr, typename EPtr>
-    void
-    read_attr_values(
-                  ASPtr store,
-                  EPtr element,
-                  const std::vector<core::Attribute>& attributes,
-                  const std::vector<std::string>& line,
-                  size_t from_idx,
-                  size_t line_number
-                  );
+template <typename ASPtr, typename EPtr>
+void
+read_attr_values(
+    ASPtr store,
+    EPtr element,
+    const std::vector<core::Attribute>& attributes,
+    const std::vector<std::string>& line,
+    size_t from_idx,
+    size_t line_number
+);
 
-    
-    template <typename G>
-    const Vertex*
-    read_vertex(
-                G* g,
-                const std::vector<std::string>& fields,
-                size_t from_idx,
-                size_t line_number
-                );
-    
-    template <typename G>
-    const Edge*
-    read_edge(
-                G* g,
-                const std::vector<std::string>& fields,
-                size_t from_idx,
-                size_t line_number
-                );
-    
+
+template <typename G>
+const Vertex*
+read_vertex(
+    G* g,
+    const std::vector<std::string>& fields,
+    size_t from_idx,
+    size_t line_number
+);
+
+template <typename G>
+const Edge*
+read_edge(
+    G* g,
+    const std::vector<std::string>& fields,
+    size_t from_idx,
+    size_t line_number
+);
+
 template <typename G>
 void
 read_vertex(
@@ -158,7 +158,7 @@ read_data(
         // remove trailing spaces
         line.erase(line.find_last_not_of(" \t")+1);
         line.erase(0,line.find_first_not_of(" \t"));
-        
+
 
         if (line.size()==0)
         {
@@ -195,64 +195,67 @@ read_data(
 }
 
 
-    template <typename G>
-    const Vertex*
-    read_vertex(
-                G* g,
-                const std::vector<std::string>& fields,
-                size_t from_idx,
-                size_t line_number
-                )
+template <typename G>
+const Vertex*
+read_vertex(
+    G* g,
+    const std::vector<std::string>& fields,
+    size_t from_idx,
+    size_t line_number
+)
+{
+    assert_not_null(g, "read_vertex", "g");
+
+    std::string vertex_name = fields.at(from_idx);
+
+    auto vertex = g->vertices()->add(vertex_name);
+
+    if (!vertex)
     {
-        assert_not_null(g, "read_vertex", "g");
-        
-        std::string vertex_name = fields.at(from_idx);
-        
-        auto vertex = g->vertices()->add(vertex_name);
-        
-        if (!vertex)
-        {
-            vertex = g->vertices()->get(vertex_name);
-        }
-        
-        return vertex;
+        vertex = g->vertices()->get(vertex_name);
     }
-    
-    template <typename G>
-    const Edge*
-    read_edge(
-              G* g,
-              const std::vector<std::string>& fields,
-              size_t from_idx,
-              size_t line_number
-              )
+
+    return vertex;
+}
+
+template <typename G>
+const Edge*
+read_edge(
+    G* g,
+    const std::vector<std::string>& fields,
+    size_t from_idx,
+    size_t line_number
+)
+{
+    assert_not_null(g, "read_edge", "g");
+
+    std::string from_vertex = fields.at(from_idx);
+    std::string to_vertex = fields.at(from_idx+1);
+
+    auto vertex1 = g->vertices()->add(from_vertex);
+
+    if (!vertex1)
     {
-        assert_not_null(g, "read_edge", "g");
-        
-        std::string from_vertex = fields.at(from_idx);
-        std::string to_vertex = fields.at(from_idx+1);
-        
-        auto vertex1 = g->vertices()->add(from_vertex);
-        if (!vertex1)
-        {
-            vertex1 = g->vertices()->get(from_vertex);
-        }
-        
-        auto vertex2 = g->vertices()->add(to_vertex);
-        if (!vertex2)
-        {
-            vertex2 = g->vertices()->get(to_vertex);
-        }
-        
-        auto edge = g->edges()->add(vertex1,vertex2);
-        if (!edge)
-        {
-            edge = g->edges()->get(vertex1,vertex2);
-        }
-        
-        return edge;
+        vertex1 = g->vertices()->get(from_vertex);
     }
-    
+
+    auto vertex2 = g->vertices()->add(to_vertex);
+
+    if (!vertex2)
+    {
+        vertex2 = g->vertices()->get(to_vertex);
+    }
+
+    auto edge = g->edges()->add(vertex1,vertex2);
+
+    if (!edge)
+    {
+        edge = g->edges()->get(vertex1,vertex2);
+    }
+
+    return edge;
+}
+
 template <typename G>
 void
 read_vertex(
@@ -278,26 +281,26 @@ read_edge(
     throw core::OperationNotSupportedException("Graph type not supported (IO)");
 }
 
-    
-    /* This function assumes that all the attribute values are present. */
-    template <typename ASPtr, typename EPtr>
-    void
-    read_attr_values(
-                     ASPtr store,
-                     EPtr element,
-                     const std::vector<core::Attribute>& attributes,
-                     const std::vector<std::string>& line,
-                     size_t from_idx,
-                     size_t line_number
-                     )
+
+/* This function assumes that all the attribute values are present. */
+template <typename ASPtr, typename EPtr>
+void
+read_attr_values(
+    ASPtr store,
+    EPtr element,
+    const std::vector<core::Attribute>& attributes,
+    const std::vector<std::string>& line,
+    size_t from_idx,
+    size_t line_number
+)
+{
+
+    for (size_t i=from_idx; i<from_idx+attributes.size(); i++)
     {
-        
-        for (size_t i=from_idx; i<from_idx+attributes.size(); i++)
-        {
-            store->set_as_string(element, attributes.at(i-from_idx).name, line.at(i));
-        }
+        store->set_as_string(element, attributes.at(i-from_idx).name, line.at(i));
     }
-    
+}
+
 }
 }
 

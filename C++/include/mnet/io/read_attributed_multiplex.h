@@ -23,42 +23,42 @@ read_attributed_multiplex(
     char separator
 );
 
-    
-    template <>
-    AttributedSimpleGraph*
-    read_layer(
-               AttributedMultiplexNetwork* ml,
-               const std::vector<std::string>& fields,
-               size_t from_idx,
-               size_t line_number
-               );
-    
-    template <>
-    void
-    read_vertex(
-                AttributedMultiplexNetwork* ml,
-                const std::vector<std::string>& fields,
-                const MultilayerMetadata& meta,
-                size_t line_number
-                );
-    
-    template <>
-    void
-    read_intralayer_vertex(
-                           AttributedMultiplexNetwork* ml,
-                           const std::vector<std::string>& fields,
-                           const MultilayerMetadata& meta,
-                           size_t line_number
-                           );
-    
-    template <>
-    void
-    read_intralayer_edge(
-                         AttributedMultiplexNetwork* ml,
-                         const std::vector<std::string>& fields,
-                         const MultilayerMetadata& meta,
-                         size_t line_number
-                         );
+
+template <>
+AttributedSimpleGraph*
+read_layer(
+    AttributedMultiplexNetwork* ml,
+    const std::vector<std::string>& fields,
+    size_t from_idx,
+    size_t line_number
+);
+
+template <>
+void
+read_vertex(
+    AttributedMultiplexNetwork* ml,
+    const std::vector<std::string>& fields,
+    const MultilayerMetadata& meta,
+    size_t line_number
+);
+
+template <>
+void
+read_intralayer_vertex(
+    AttributedMultiplexNetwork* ml,
+    const std::vector<std::string>& fields,
+    const MultilayerMetadata& meta,
+    size_t line_number
+);
+
+template <>
+void
+read_intralayer_edge(
+    AttributedMultiplexNetwork* ml,
+    const std::vector<std::string>& fields,
+    const MultilayerMetadata& meta,
+    size_t line_number
+);
 
 }
 }

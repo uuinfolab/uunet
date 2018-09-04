@@ -35,7 +35,7 @@ using AttributedEmptyGraph =
 std::unique_ptr<AttributedEmptyGraph>
 create_attributed_empty_graph(
     const std::string& name
-    );
+);
 
 }
 }

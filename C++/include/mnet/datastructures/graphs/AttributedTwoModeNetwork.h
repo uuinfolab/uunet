@@ -38,30 +38,30 @@ class
   public:
 
     //using super::super;
-    
-	AttributedTwoModeNetwork(
-					 const std::string& name,
-					 std::unique_ptr<UnionVertexStore> v,
-					 std::unique_ptr<VertexDisjointLayerStore<AttributedEmptyGraph, AttributedEmptyGraph>> l,
-					 std::unique_ptr<InterlayerEdgeStore<AttributedSimpleEdgeStore<Attributes<Edge, UserDefinedAttrs<Edge>>>,2>> e
-	);
-    
+
+    AttributedTwoModeNetwork(
+        const std::string& name,
+        std::unique_ptr<UnionVertexStore> v,
+        std::unique_ptr<VertexDisjointLayerStore<AttributedEmptyGraph, AttributedEmptyGraph>> l,
+        std::unique_ptr<InterlayerEdgeStore<AttributedSimpleEdgeStore<Attributes<Edge, UserDefinedAttrs<Edge>>>,2>> e
+    );
+
     AttributedEmptyGraph*
     top(
     );
-    
+
     const AttributedEmptyGraph*
     top(
     ) const;
-    
+
     AttributedEmptyGraph*
     bottom(
     );
-    
+
     const AttributedEmptyGraph*
     bottom(
     ) const;
-    
+
     std::string
     summary(
     ) const;

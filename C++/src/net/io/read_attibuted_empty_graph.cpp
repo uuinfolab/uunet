@@ -23,6 +23,7 @@ read_attributed_empty_graph(
     // create graph
     // and add attributes
     auto g = create_attributed_empty_graph(name);
+
     for (auto attr: meta.vertex_attributes)
     {
         g->vertices()->attr()->add(attr.name, attr.type);
@@ -45,21 +46,21 @@ read_vertex(
     size_t line_number
 )
 {
-    
-    
+
+
     if (fields.size()>1+vertex_attributes.size())
     {
         throw core::WrongFormatException("Line " +
                                          std::to_string(line_number) +
                                          ": wrong number of attributes");
     }
-    
+
     auto v = read_vertex(g, fields, 0, line_number);
-    
-    
+
+
     read_attr_values(g->vertices()->attr(), v, vertex_attributes, fields, 1, line_number);
-    
-    
+
+
 }
 
 
@@ -72,10 +73,10 @@ read_edge(
     size_t line_number
 )
 {
-    
+
     throw core::WrongFormatException("Line " +
-                                         std::to_string(line_number) +
-                                         ": There cannot be edges in an empty graph");
+                                     std::to_string(line_number) +
+                                     ": There cannot be edges in an empty graph");
 }
 
 }

@@ -23,7 +23,7 @@ class mnet_io_read_common_test : public ::testing::Test
         if (!test_file.is_open())
         {
             FAIL()
-            << "Could not create temporary file. Test not executed.";
+                    << "Could not create temporary file. Test not executed.";
         }
 
         test_file << "#VERSION             " << std::endl;
@@ -80,23 +80,23 @@ TEST_F(mnet_io_read_common_test, read_metadata)
             << "wrong feature: WEIGHTED";
      */
     ASSERT_EQ(3, meta.layers.size())
-    << "wrong number of layers read";
-    
+            << "wrong number of layers read";
+
     EXPECT_TRUE(meta.layers.at("l1").is_directed)
-    << "wrong layer feature: DIRECTED";
+            << "wrong layer feature: DIRECTED";
     EXPECT_FALSE(meta.layers.at("l2").is_directed)
-    << "wrong layer feature: UNDIRECTED";
+            << "wrong layer feature: UNDIRECTED";
     EXPECT_FALSE(meta.layers.at("l3").is_directed)
-    << "wrong layer feature: UNDIRECTED";
-    
+            << "wrong layer feature: UNDIRECTED";
+
     EXPECT_EQ(1, meta.vertex_attributes.size())
             << "wrong number of vertex attributes read";
     //EXPECT_EQ(1, meta.edge_attributes.size())
     //        << "wrong number of vertex attributes read";
     EXPECT_EQ(1, meta.intralayer_edge_attributes.at("l1").size())
-    << "wrong number of vertex attributes read";
+            << "wrong number of vertex attributes read";
 
 
-    
+
 }
 

@@ -7,38 +7,40 @@
 namespace uu {
 namespace net {
 
-	
-	AttributedMultiplexNetwork::
-	AttributedMultiplexNetwork(
-					 const std::string& name,
-					 std::unique_ptr<AttributedVertexStore<Attributes<Vertex, UserDefinedAttrs<Vertex>>>> v,
-					 std::unique_ptr<VertexOverlappingLayerStore<AttributedSimpleGraph>> l,
-					 std::unique_ptr<EmptyEdgeStore> e
-					 ) :
-					super(name, std::move(v), std::move(l), std::move(e))
-	{
-	}
-	
+
+AttributedMultiplexNetwork::
+AttributedMultiplexNetwork(
+    const std::string& name,
+    std::unique_ptr<AttributedVertexStore<Attributes<Vertex, UserDefinedAttrs<Vertex>>>> v,
+    std::unique_ptr<VertexOverlappingLayerStore<AttributedSimpleGraph>> l,
+    std::unique_ptr<EmptyEdgeStore> e
+) :
+    super(name, std::move(v), std::move(l), std::move(e))
+{
+}
+
 std::string
 AttributedMultiplexNetwork::
 summary(
 ) const
 {
     size_t num_edges = 0;
+
     for (auto layer: *layers_)
     {
         num_edges += layer->edges()->size();
     }
+
     std::string summary =
         "MultiplexNetwork (" +
         vertices_->summary() + ", " +
-    layers_->summary() + ", " +
-    std::to_string(num_edges) + (num_edges==1?" edge)":" edges)");
+        layers_->summary() + ", " +
+        std::to_string(num_edges) + (num_edges==1?" edge)":" edges)");
     return summary;
 }
 
 
-    
+
 std::unique_ptr<AttributedMultiplexNetwork>
 create_attributed_multiplex_network(
     const std::string& name
