@@ -2,22 +2,22 @@
  *
  *
  * History:
- * - 2018.08.17 file created.
+ * - 2018.03.09 file created, following a restructuring of the previous library.
  */
 
-#ifndef UU_PNET_IO_READPROBABILISTICGRAPH_H_
-#define UU_PNET_IO_READPROBABILISTICGRAPH_H_
+#ifndef UU_NET_IO_READATTRIBUTEDSIMPLEGRAPH_H_
+#define UU_NET_IO_READATTRIBUTEDSIMPLEGRAPH_H_
 
 #include <string>
 #include <memory>
-#include "pnet/datastructures/graphs/ProbabilisticGraph.h"
+#include "net/datastructures/graphs/AttributedSimpleGraph.h"
 #include "net/io/read_common.h"
 
 namespace uu {
 namespace net {
 
-std::unique_ptr<ProbabilisticGraph>
-read_probabilistic_graph(
+std::unique_ptr<AttributedSimpleGraph>
+read_attributed_simple_graph(
     const std::string& infile,
     const std::string& name,
     char separator
@@ -26,7 +26,7 @@ read_probabilistic_graph(
 template <>
 void
 read_vertex(
-    ProbabilisticGraph* g,
+    AttributedSimpleGraph* g,
     const std::vector<std::string>& fields,
     const std::vector<core::Attribute>& vertex_attributes,
     size_t line_number
@@ -36,7 +36,7 @@ read_vertex(
 template <>
 void
 read_edge(
-    ProbabilisticGraph* g,
+    AttributedSimpleGraph* g,
     const std::vector<std::string>& fields,
     const std::vector<core::Attribute>& edge_attributes,
     size_t line_number

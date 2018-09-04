@@ -3,12 +3,12 @@
  * - 2018.03.09 file created, following a restructuring of the previous library.
  */
 
-#ifndef UU_NET_DATASTRUCTURES_MULTILAYEREDGESTORE_H_
-#define UU_NET_DATASTRUCTURES_MULTILAYEREDGESTORE_H_
+#ifndef UU_NET_DATASTRUCTURES_STORES_INTERLAYEREDGESTORE_H_
+#define UU_NET_DATASTRUCTURES_STORES_INTERLAYEREDGESTORE_H_
 
 #include <unordered_set>
 #include "core/exceptions/WrongParameterException.h"
-#include "net/datastructures/stores/Attributed.h"
+//#include "net/datastructures/stores/Attributed.h"
 #include "core/datastructures.h"
 //#include "net/datastructures/Edge.h"
 //#include "net/datastructures/EmptyAttributeStore.h"
@@ -17,9 +17,8 @@
 namespace uu {
 namespace net {
 
-template <typename E, size_t N, typename A>
-class MultilayerEdgeStore :
-    public core::Attributed<A>
+template <typename E, size_t N>
+class InterlayerEdgeStore
 {
 
   protected:
@@ -30,9 +29,8 @@ class MultilayerEdgeStore :
      */
 
 
-    MultilayerEdgeStore(
-        std::array<std::unique_ptr<E>,N*(N-1)/2> init,
-        std::unique_ptr<A> attr
+    InterlayerEdgeStore(
+        std::array<std::unique_ptr<E>,N*(N-1)/2> init
     );
 
     template <size_t N1, size_t N2>
@@ -71,13 +69,11 @@ class MultilayerEdgeStore :
 };
 
 
-template <typename E, size_t N, typename A>
-MultilayerEdgeStore<E,N,A>::
-MultilayerEdgeStore(
-    std::array<std::unique_ptr<E>,N*(N-1)/2> init,
-    std::unique_ptr<A> attr
-) :
-    core::Attributed<A>(std::move(attr))
+template <typename E, size_t N>
+InterlayerEdgeStore<E,N>::
+InterlayerEdgeStore(
+    std::array<std::unique_ptr<E>,N*(N-1)/2> init
+)
 {
     size_t idx = 0;
 
@@ -91,9 +87,9 @@ MultilayerEdgeStore(
 }
 
 
-template <typename E, size_t N, typename A>
+template <typename E, size_t N>
 std::string
-MultilayerEdgeStore<E,N,A>::
+InterlayerEdgeStore<E,N>::
 summary(
 ) const
 {

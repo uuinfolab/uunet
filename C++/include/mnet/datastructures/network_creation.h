@@ -62,7 +62,6 @@ create_simple_bipartite_graph(
               std::move(ls),
               create_simple_multilayer_edge_store<2>());
 
-
     /*
     std::unique_ptr<NoOpObserver<const Vertex>> o1 = std::make_unique<NoOpObserver<const Vertex>>();
     net->vertices().attach(o1.get());

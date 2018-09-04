@@ -24,8 +24,6 @@ namespace net {
 /** Default edge directionality (undirected). */
 const EdgeDir kDEFAULT_EDGE_DIRECTIONALITY = EdgeDir::UNDIRECTED;
 
-
-
 GraphMetadata
 read_metadata(
     const std::string& infile,
@@ -62,7 +60,7 @@ read_version(
 void
 read_graph_type(
     const std::string& graph_type,
-    GraphMetadata& meta,
+    GraphType& meta,
     size_t line_number
 );
 
@@ -83,6 +81,18 @@ read_attr_def(
     size_t line_number
 );
 
+    template <typename ASPtr, typename EPtr>
+    void
+    read_attr_values(
+                  ASPtr store,
+                  EPtr element,
+                  const std::vector<core::Attribute>& attributes,
+                  const std::vector<std::string>& line,
+                  size_t from_idx,
+                  size_t line_number
+                  );
+
+    
     template <typename G>
     const Vertex*
     read_vertex(
@@ -148,6 +158,7 @@ read_data(
         // remove trailing spaces
         line.erase(line.find_last_not_of(" \t")+1);
         line.erase(0,line.find_first_not_of(" \t"));
+        
 
         if (line.size()==0)
         {
@@ -267,6 +278,26 @@ read_edge(
     throw core::OperationNotSupportedException("Graph type not supported (IO)");
 }
 
+    
+    /* This function assumes that all the attribute values are present. */
+    template <typename ASPtr, typename EPtr>
+    void
+    read_attr_values(
+                     ASPtr store,
+                     EPtr element,
+                     const std::vector<core::Attribute>& attributes,
+                     const std::vector<std::string>& line,
+                     size_t from_idx,
+                     size_t line_number
+                     )
+    {
+        
+        for (size_t i=from_idx; i<from_idx+attributes.size(); i++)
+        {
+            store->set_as_string(element, attributes.at(i-from_idx).name, line.at(i));
+        }
+    }
+    
 }
 }
 

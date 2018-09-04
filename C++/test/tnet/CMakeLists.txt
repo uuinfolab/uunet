@@ -1,5 +1,4 @@
 file (GLOB_RECURSE SOURCES_TEST
-	../core/*.cpp
 	*.cpp
 )
 

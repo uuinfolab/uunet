@@ -23,15 +23,11 @@ TEST_F(mnet_datastructures_graphs_MultiplexNetwork_test, creation)
 
     auto net = uu::net::create_multiplex_network("a mpx net");
     
-    std::cout << net->summary() << std::endl;
-
     // Adding vertices
 
     const uu::net::Vertex* v1 = net->vertices()->add("miao");
     const uu::net::Vertex* v2 = net->vertices()->add("bau");
     
-    std::cout << net->summary() << std::endl;
-
     // Adding layers
 
     auto ptr = uu::net::create_simple_graph("layer1", uu::net::EdgeDir::DIRECTED);
@@ -43,8 +39,6 @@ TEST_F(mnet_datastructures_graphs_MultiplexNetwork_test, creation)
     ptr = uu::net::create_simple_graph("layer3", uu::net::EdgeDir::UNDIRECTED);
     uu::net::SimpleGraph* layer3 = net->layers()->add(std::move(ptr));
 
-    std::cout << net->summary() << std::endl;
-    
     // Adding "nodes", that is, vertices to layers
 
     layer1->vertices()->add(v1);
@@ -53,13 +47,12 @@ TEST_F(mnet_datastructures_graphs_MultiplexNetwork_test, creation)
     layer1->vertices()->add(v2);
     layer3->vertices()->add(v2);
 
-    std::cout << net->summary() << std::endl;
-    
     // and edges
 
     layer1->edges()->add(v1, v2);
 
-    std::cout << net->summary() << std::endl;
+    // Uncomment to print a summary of the network
+    //std::cout << net->summary() << std::endl;
 
 }
 

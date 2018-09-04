@@ -90,7 +90,7 @@ read_edge(
 template <typename ML>
 void
 read_multilayer_data(
-    ML* g,
+    ML* ml,
  const MultilayerMetadata& meta,
     const std::string& infile,
     char separator
@@ -132,19 +132,19 @@ read_multilayer_data(
         {
         case MultilayerIOFileSection::VERTICES:
         {
-            read_vertex(g, fields, meta, csv.row_num());
+            read_vertex(ml, fields, meta, csv.row_num());
             break;
         }
 
             case MultilayerIOFileSection::INTRALAYER_VERTICES:
             {
-                read_intralayer_vertex(g, fields, meta, csv.row_num());
+                read_intralayer_vertex(ml, fields, meta, csv.row_num());
                 break;
             }
                 
         case MultilayerIOFileSection::INTRALAYER_EDGES:
         {
-            read_intralayer_edge(g, fields, meta, csv.row_num());
+            read_intralayer_edge(ml, fields, meta, csv.row_num());
             break;
         }
 
@@ -158,11 +158,23 @@ read_multilayer_data(
  
 
     template <typename ML, typename G>
-    const G*
+    G*
+    read_layer(
+               ML* ml,
+               const std::vector<std::string>& fields,
+               size_t from_idx,
+               size_t line_number
+               )
+    {
+        throw core::OperationNotSupportedException("Network type not supported (IO)");
+    }
+    
+    template <typename ML, typename G>
+    G*
     read_layer(
                 ML* ml,
                 const std::vector<std::string>& fields,
-                size_t from_idx,
+               const MultilayerMetadata& meta,
                 size_t line_number
     )
     {

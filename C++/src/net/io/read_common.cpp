@@ -13,17 +13,17 @@ namespace net {
 
 void
 read_graph_type(
-    const std::string& graph_type,
-    GraphMetadata& meta,
+    const std::string& graph_type_spec,
+    GraphType& graph_type,
     size_t line_number
 )
 {
-    std::string feat = graph_type;
+    std::string feat = graph_type_spec;
     core::to_upper_case(feat);
 
     if (feat=="MULTI")
     {
-        meta.features.allows_multi_edges=true;
+        graph_type.allows_multi_edges=true;
     }
 
     else if (feat=="SIMPLE")
@@ -32,7 +32,7 @@ read_graph_type(
 
     else if (feat=="DIRECTED")
     {
-        meta.features.is_directed=true;
+        graph_type.is_directed=true;
     }
 
     else if (feat=="UNDIRECTED")
@@ -41,12 +41,12 @@ read_graph_type(
 
     else if (feat=="WEIGHTED")
     {
-        meta.features.is_weighted=true;
+        graph_type.is_weighted=true;
     }
 
     else if (feat=="PROBABILISTIC")
     {
-        meta.features.is_probabilistic=true;
+        graph_type.is_probabilistic=true;
     }
 
 
@@ -56,7 +56,7 @@ read_graph_type(
 
     else if (feat=="TEMPORAL")
     {
-        meta.features.is_temporal=true;
+        graph_type.is_temporal=true;
     }
 
     else if (feat=="STATIC")
@@ -65,7 +65,7 @@ read_graph_type(
 
     else if (feat=="LOOPS")
     {
-        meta.features.allows_loops=true;
+        graph_type.allows_loops=true;
     }
 
     else if (feat=="NO LOOPS")
@@ -76,7 +76,7 @@ read_graph_type(
     {
         throw core::WrongParameterException("Line " +
                                             std::to_string(line_number) +
-                                            ": " + graph_type);
+                                            ": " + graph_type_spec);
     }
 }
 
@@ -137,7 +137,10 @@ read_metadata(
 
         case GraphIOFileSection::TYPE:
         {
-            read_graph_type(line, meta, csv.row_num());
+            for (std::string graph_characteristic: fields)
+            {
+                read_graph_type(graph_characteristic, meta.features, csv.row_num());
+            }
             break;
         }
 

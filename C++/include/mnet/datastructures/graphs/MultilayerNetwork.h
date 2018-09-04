@@ -26,7 +26,7 @@ namespace net {
  * ever the vertices in V), and an EdgeStore (E) for inter-layer edges.
  */
 template <typename V, typename L, typename E>
-class MultilayerNetwork : core::ObserverStore
+class MultilayerNetwork : public core::ObserverStore
 {
 
   public:

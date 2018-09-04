@@ -3,8 +3,8 @@
  * - 2018.03.09 file created, following a restructuring of the previous library.
  */
 
-#ifndef UU_MNET_DATASTRUCTURES_UNIONVERTEXSTORE_H_
-#define UU_MNET_DATASTRUCTURES_UNIONVERTEXSTORE_H_
+#ifndef UU_MNET_DATASTRUCTURES_STORES_UNIONVERTEXSTORE_H_
+#define UU_MNET_DATASTRUCTURES_STORES_UNIONVERTEXSTORE_H_
 
 #include <memory>
 #include "net/datastructures/stores/VertexStore.h"

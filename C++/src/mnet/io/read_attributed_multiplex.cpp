@@ -3,15 +3,15 @@
  * - 2018.03.09 file created, following a restructuring of the previous library.
  */
 
-#include "mnet/io/read_multiplex.h"
-#include "net/io/read_simple_graph.h"
+#include "mnet/io/read_attributed_multiplex.h"
+#include "net/io/read_attributed_simple_graph.h"
 
 
 namespace uu {
 namespace net {
 
-std::unique_ptr<MultiplexNetwork>
-read_multiplex(
+std::unique_ptr<AttributedMultiplexNetwork>
+read_attributed_multiplex(
     const std::string& infile,
     const std::string& name,
     char separator
@@ -21,11 +21,39 @@ read_multiplex(
     MultilayerMetadata meta = read_multilayer_metadata(infile, ',');
     //EdgeDir dir = meta.features.is_directed?EdgeDir::DIRECTED:EdgeDir::UNDIRECTED;
 
-    // Check metadata consistency (@todo) & create graph 
+    // Check metadata consistency (@todo) & create graph & add attributes
     
-    auto mpx = create_multiplex_network(name);
+    auto mpx = create_attributed_multiplex_network(name);
 
-    // @todo create layers
+    for (auto attr: meta.vertex_attributes)
+    {
+        mpx->vertices()->attr()->add(attr.name, attr.type);
+    }
+    
+    /*
+    for (auto attr: meta.edge_attributes)
+    {
+        mpx->edges()->attr()->add(attr.name, attr.type);
+    }
+    */
+    
+    for (auto layer_attr: meta.intralayer_vertex_attributes)
+    {
+        std::string layer_name = layer_attr.first;
+        for (auto attr: layer_attr.second)
+        {
+            mpx->layers()->get(layer_name)->vertices()->attr()->add(attr.name, attr.type);
+        }
+    }
+    
+    for (auto layer_attr: meta.intralayer_edge_attributes)
+    {
+        std::string layer_name = layer_attr.first;
+        for (auto attr: layer_attr.second)
+        {
+            mpx->layers()->get(layer_name)->edges()->attr()->add(attr.name, attr.type);
+        }
+    }
     
     // Read data (vertices, edges, attribute values)
     read_multilayer_data(mpx.get(),  meta, infile, separator);
@@ -36,9 +64,9 @@ read_multiplex(
 
 
     template <>
-    SimpleGraph*
+    AttributedSimpleGraph*
     read_layer(
-               MultiplexNetwork* ml,
+               AttributedMultiplexNetwork* ml,
                const std::vector<std::string>& fields,
                size_t from_idx,
                size_t line_number
@@ -50,7 +78,7 @@ read_multiplex(
         
         if (!layer)
         {
-            auto ptr = uu::net::create_simple_graph(layer_name, uu::net::EdgeDir::UNDIRECTED);
+            auto ptr = uu::net::create_attributed_simple_graph(layer_name, uu::net::EdgeDir::UNDIRECTED);
             layer = ml->layers()->add(std::move(ptr));
         }
         
@@ -60,7 +88,7 @@ read_multiplex(
     template <>
     void
     read_vertex(
-                MultiplexNetwork* ml,
+                AttributedMultiplexNetwork* ml,
                 const std::vector<std::string>& fields,
                 const MultilayerMetadata& meta,
                 size_t line_number
@@ -73,7 +101,7 @@ read_multiplex(
     template <>
     void
     read_intralayer_vertex(
-                           MultiplexNetwork* ml,
+                           AttributedMultiplexNetwork* ml,
                            const std::vector<std::string>& fields,
                            const MultilayerMetadata& meta,
                            size_t line_number
@@ -82,14 +110,14 @@ read_multiplex(
         
         assert_not_null(ml, "read_intralayer_vertex", "ml");
         auto v = read_vertex(ml, fields, 0, line_number);
-        auto l = read_layer<MultiplexNetwork, SimpleGraph>(ml, fields, 1, line_number);
+        auto l = read_layer<AttributedMultiplexNetwork, AttributedSimpleGraph>(ml, fields, 1, line_number);
         l->vertices()->add(v);
     }
     
     template <>
     void
     read_intralayer_edge(
-                         MultiplexNetwork* ml,
+                         AttributedMultiplexNetwork* ml,
                          const std::vector<std::string>& fields,
                          const MultilayerMetadata& meta,
                          size_t line_number
@@ -98,7 +126,7 @@ read_multiplex(
         assert_not_null(ml, "read_intralayer_edge", "ml");
         auto v1 = read_vertex(ml, fields, 0, line_number);
         auto v2 = read_vertex(ml, fields, 1, line_number);
-        auto l = read_layer<MultiplexNetwork, SimpleGraph>(ml, fields, 2, line_number);
+        auto l = read_layer<AttributedMultiplexNetwork, AttributedSimpleGraph>(ml, fields, 2, line_number);
         
         l->vertices()->add(v1);
         l->vertices()->add(v2);

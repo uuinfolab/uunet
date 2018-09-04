@@ -2,8 +2,8 @@
 
  */
 
-#ifndef UU_NET_DATASTRUCTURES_VERTEXDISJOINTLAYERSTORE_H_
-#define UU_NET_DATASTRUCTURES_VERTEXDISJOINTLAYERSTORE_H_
+#ifndef UU_NET_DATASTRUCTURES_STORES_VERTEXDISJOINTLAYERSTORE_H_
+#define UU_NET_DATASTRUCTURES_STORES_VERTEXDISJOINTLAYERSTORE_H_
 
 #include <array>
 #include <utility> // for std::pair
@@ -29,11 +29,20 @@ class VertexDisjointLayerStore
 
     template <int N>
     typename std::tuple_element< N, std::tuple<GraphTypes*...>>::type
-            get()
+            get(
+    )
     {
         return std::get<N>(layers).get();
     }
 
+    template <int N>
+    typename std::tuple_element< N, std::tuple<GraphTypes*...>>::type
+    get(
+    ) const
+    {
+        return std::get<N>(layers).get();
+    }
+    
     size_t
     pos(
         const std::string& layer_name

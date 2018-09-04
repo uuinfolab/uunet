@@ -30,12 +30,7 @@ using SimpleMultiplexNetwork =
     VertexOverlappingLayerStore<SimpleGraph,AttributeStore<SimpleGraph>>
     >;
 
-using SimpleBipartiteGraph =
-    MultilayerNetwork<
-    SimpleUnionVertexStore,
-    VertexDisjointLayerStore<SimpleGraph, SimpleGraph>,
-    SimpleMultilayerEdgeStore<2>
-    >;
+
 
 } // namespace net
 } // namespace uu
