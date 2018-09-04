@@ -7,6 +7,7 @@
 #define UU_MNET_DATASTRUCTURE_UNIONOBSERVER_H_
 
 #include "core/exceptions/OperationNotSupportedException.h"
+#include "core/exceptions/DuplicateElementException.h"
 #include "core/datastructures/observers/Observer.h"
 
 namespace uu {

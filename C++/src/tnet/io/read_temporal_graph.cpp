@@ -4,6 +4,9 @@
  */
 
 #include "tnet/io/read_temporal_graph.h"
+#include "core/exceptions/DuplicateElementException.h"
+#include "core/exceptions/WrongParameterException.h"
+#include "core/exceptions/WrongFormatException.h"
 
 
 namespace uu {

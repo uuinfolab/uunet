@@ -6,11 +6,9 @@
 #define UU_NET_DATASTRUCTURES_STORES_VERTEXDISJOINTLAYERSTORE_H_
 
 #include <array>
+#include <unordered_map>
 #include <utility> // for std::pair
 #include <tuple>
-#include "core/attributes.h"
-#include "core/datastructures.h"
-#include "net/datastructures.h"
 //#include "mnet/datastructures/LayerObserver.h"
 //#include "mnet/datastructures/ForwardLayerObserver.h"
 

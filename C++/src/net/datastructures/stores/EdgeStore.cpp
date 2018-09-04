@@ -4,6 +4,7 @@
  */
 
 #include "net/datastructures/stores/EdgeStore.h"
+#include "core/exceptions/WrongParameterException.h"
 #include "core/exceptions/NullPtrException.h"
 
 namespace uu {

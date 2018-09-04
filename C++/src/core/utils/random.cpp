@@ -1,5 +1,5 @@
 #include "core/utils/random.h"
-#include "core/exceptions.h"
+#include "core/exceptions/OperationNotSupportedException.h"
 #include <algorithm>
 
 namespace uu {

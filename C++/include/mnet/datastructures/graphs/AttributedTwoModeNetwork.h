@@ -62,6 +62,14 @@ class
     bottom(
     ) const;
 
+    AttributedSimpleEdgeStore<Attributes<Edge, UserDefinedAttrs<Edge>>>*
+    edges(
+    );
+
+    const AttributedSimpleEdgeStore<Attributes<Edge, UserDefinedAttrs<Edge>>>*
+    edges(
+    ) const;
+
     std::string
     summary(
     ) const;
@@ -73,7 +81,8 @@ class
  */
 std::unique_ptr<AttributedTwoModeNetwork>
 create_attributed_twomode_network(
-    const std::string& name
+    const std::string& name,
+    EdgeDir dir
 );
 
 }

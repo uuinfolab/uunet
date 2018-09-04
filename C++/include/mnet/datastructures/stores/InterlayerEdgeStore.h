@@ -9,7 +9,6 @@
 #include <unordered_set>
 #include "core/exceptions/WrongParameterException.h"
 //#include "net/datastructures/stores/Attributed.h"
-#include "core/datastructures.h"
 //#include "net/datastructures/Edge.h"
 //#include "net/datastructures/EmptyAttributeStore.h"
 //#include "mnet/datastructures/MultilayerObserver.h"
@@ -36,6 +35,27 @@ class InterlayerEdgeStore
     template <size_t N1, size_t N2>
     E*
     get()
+    {
+        if (N1<N2)
+        {
+            return edge_stores_.at(N1).at(N2).get();
+        }
+
+        else if (N2<N1)
+        {
+            return edge_stores_.at(N2).at(N1).get();
+        }
+
+        else
+        {
+            throw core::WrongParameterException("interlayer edges cannot be among nodes in the same layer");
+        }
+    }
+
+
+    template <size_t N1, size_t N2>
+    const E*
+    get() const
     {
         if (N1<N2)
         {

@@ -8,6 +8,7 @@
 
 #include <string>
 #include <vector>
+#include "core/exceptions/OperationNotSupportedException.h"
 #include "core/attributes/Attribute.h"
 #include "core/attributes/AttributeStore.h"
 #include "core/utils/CSVReader.h"
