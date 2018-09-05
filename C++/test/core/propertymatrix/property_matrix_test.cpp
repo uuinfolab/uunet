@@ -1,6 +1,8 @@
 #include "gtest/gtest.h"
 
-#include "core/datastructures/propertymatrix.h"
+#include "core/datastructures/propertymatrix/PropertyMatrix.h"
+#include "core/datastructures/propertymatrix/StructureComparisonFunction.h"
+#include "core/datastructures/propertymatrix/summarization.h"
 
 TEST(core_datastructures_propertymatrix_PropertyMatrix_test, bool_values)
 {

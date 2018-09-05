@@ -1,4 +1,4 @@
-#include "core/attributes.h"
+#include "core/attributes/MainMemoryAttributeStore.h"
 
 #include "gtest/gtest.h"
 
