@@ -8,7 +8,7 @@
 
 #include <memory>
 #include "net/datastructures/stores/VertexStore.h"
-#include "mnet/datastructures/UnionObserver.h"
+#include "mnet/datastructures/observers/UnionObserver.h"
 
 namespace uu {
 namespace net {
@@ -46,7 +46,7 @@ class
 
 };
 
-} // namespace net
-} // namespace uu
+}
+} 
 
 #endif

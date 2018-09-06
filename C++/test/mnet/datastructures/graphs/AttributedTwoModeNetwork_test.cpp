@@ -36,10 +36,10 @@ TEST_F(mnet_datastructures_graphs_AttributedTwoModeNetwork_test, creation)
 
     // Adding edges
 
-    net->edges()->add(a1, g1);
-    net->edges()->add(a1, g2);
-    net->edges()->add(a2, g1);
-    net->edges()->add(a3, g2);
+    net->interlayer_edges()->add(a1, g1);
+    net->interlayer_edges()->add(a1, g2);
+    net->interlayer_edges()->add(a2, g1);
+    net->interlayer_edges()->add(a3, g2);
 
     // Uncomment to print network summary
     std::cout << net->summary() << std::endl;

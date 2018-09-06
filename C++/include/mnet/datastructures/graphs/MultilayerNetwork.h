@@ -72,21 +72,6 @@ class MultilayerNetwork : public core::ObserverStore
     ) const;
 
     /**
-     * Returns a pointer to the network's edge store.
-     */
-    E*
-    interlayer_edges(
-    );
-
-
-    /**
-     * Returns a pointer to the network's (const) edge store.
-     */
-    const E*
-    interlayer_edges(
-    ) const;
-
-    /**
      * Returns a string providing a summary of the graph structure.
      */
     std::string
@@ -98,6 +83,22 @@ class MultilayerNetwork : public core::ObserverStore
     const std::string name;
 
   protected:
+    
+    /**
+     * Returns a pointer to the container of edge stores for each pair of layers.
+     */
+    E*
+    interlayer_edges(
+    );
+    
+    
+    /**
+     * Returns a pointer to the container of edge stores for each pair of layers.
+     */
+    const E*
+    interlayer_edges(
+    ) const;
+
     /** Internal vertex store. */
     std::unique_ptr<V> vertices_;
 

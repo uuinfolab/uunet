@@ -22,7 +22,7 @@ create_temporal_graph(
     using A = uu::net::Attributes<uu::net::Edge, uu::net::Times<uu::net::Edge>>;
     auto w_attr = std::make_unique<A>();
 
-    auto es = std::make_unique<AttributedSimpleEdgeStore<A>>(dir, std::move(w_attr));
+    auto es = std::make_unique<TemporalMultiEdgeStore>(dir, std::move(w_attr));
 
     GraphType t;
     t.allows_loops = allows_loops;

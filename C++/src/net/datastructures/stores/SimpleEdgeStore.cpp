@@ -26,10 +26,14 @@ add(
     const Vertex* vertex2
 )
 {
-    // Edge::create will also take care of checking that the pointers are not null
+    if (!get(vertex1,vertex2))
+    {
+            // Edge::create will also take care of checking that the pointers are not null
     std::shared_ptr<const Edge> e = Edge::create(vertex1, vertex2, edge_directionality);
 
     return add(e);
+    }
+    else return nullptr;
 }
 
 

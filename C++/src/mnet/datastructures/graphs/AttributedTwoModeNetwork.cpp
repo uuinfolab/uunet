@@ -54,17 +54,17 @@ bottom(
 
 AttributedSimpleEdgeStore<Attributes<Edge, UserDefinedAttrs<Edge>>>*
 AttributedTwoModeNetwork::
-edges(
+interlayer_edges(
 )
 {
-    return interlayer_edges()->get<0,1>();
+    return super::interlayer_edges()->get<0,1>();
 }
 
 const AttributedSimpleEdgeStore<Attributes<Edge, UserDefinedAttrs<Edge>>>*
 AttributedTwoModeNetwork::
-edges() const
+interlayer_edges() const
 {
-    return interlayer_edges()->get<0,1>();
+    return super::interlayer_edges()->get<0,1>();
 }
 
 std::string
@@ -72,11 +72,12 @@ AttributedTwoModeNetwork::
 summary(
 ) const
 {
-    size_t num_edges = edges()->size();
+    size_t num_edges = interlayer_edges()->size();
     std::string summary =
         "TwoModeNetwork (" +
-        vertices_->summary() + ", " +
-        layers_->summary() + ", " +
+    vertices_->summary() + " (top: " +
+    std::to_string(top()->vertices()->size()) + ", bottom: " +
+    std::to_string(bottom()->vertices()->size()) + "), " +
         std::to_string(num_edges) + (num_edges==1?" edge)":" edges)");
     return summary;
 }

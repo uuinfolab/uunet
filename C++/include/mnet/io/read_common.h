@@ -149,6 +149,12 @@ read_multilayer_data(
             break;
         }
 
+        case MultilayerIOFileSection::INTERLAYER_EDGES:
+        {
+            read_interlayer_edge(ml, fields, meta, csv.row_num());
+            break;
+        }
+                
         default:
             break;
         }

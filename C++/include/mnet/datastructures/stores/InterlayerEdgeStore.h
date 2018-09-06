@@ -20,8 +20,10 @@ template <typename E, size_t N>
 class InterlayerEdgeStore
 {
 
-  protected:
-
+protected:
+    
+    InterlayerEdgeStore();
+    
   public:
     /**
      * Constructor.
@@ -80,7 +82,6 @@ class InterlayerEdgeStore
 
   protected:
 
-
     std::array<std::array<std::unique_ptr<E>,N>,N> edge_stores_;
 
     //std::array<std::shared_ptr<core::Container<Vertex> >,2> vertex_stores_;
@@ -89,6 +90,11 @@ class InterlayerEdgeStore
 };
 
 
+    template <typename E, size_t N>
+    InterlayerEdgeStore<E,N>::
+    InterlayerEdgeStore()
+    {}
+    
 template <typename E, size_t N>
 InterlayerEdgeStore<E,N>::
 InterlayerEdgeStore(

@@ -63,11 +63,11 @@ class
     ) const;
 
     AttributedSimpleEdgeStore<Attributes<Edge, UserDefinedAttrs<Edge>>>*
-    edges(
+    interlayer_edges(
     );
 
     const AttributedSimpleEdgeStore<Attributes<Edge, UserDefinedAttrs<Edge>>>*
-    edges(
+    interlayer_edges(
     ) const;
 
     std::string

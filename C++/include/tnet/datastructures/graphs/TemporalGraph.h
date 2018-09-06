@@ -12,7 +12,7 @@
 #include "net/datastructures/stores/VertexStore.h"
 #include "net/datastructures/stores/AttributedSimpleEdgeStore.h"
 #include "net/datastructures/stores/Attributes.h"
-#include "tnet/datastructures/stores/Times.h"
+#include "tnet/datastructures/stores/TemporalMultiEdgeStore.h"
 
 namespace uu {
 namespace net {
@@ -20,7 +20,7 @@ namespace net {
 using TemporalGraph =
     Graph<
     VertexStore,
-    AttributedSimpleEdgeStore<Attributes<Edge, Times<Edge>>>
+    TemporalMultiEdgeStore
     >;
 
 std::unique_ptr<TemporalGraph>

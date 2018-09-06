@@ -107,15 +107,6 @@ read_edge(
 
     auto edge = g->edges()->add(vertex1,vertex2);
 
-    if (!edge)
-    {
-        edge = g->edges()->get(vertex1,vertex2);
-        throw core::DuplicateElementException("Line " +
-                                              std::to_string(line_number) +
-                                              ": duplicate edge " +
-                                              edge->to_string());
-    }
-
     g->edges()->attr()->set_time(edge, core::to_time(time));
 
 }
