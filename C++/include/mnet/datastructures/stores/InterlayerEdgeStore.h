@@ -6,6 +6,8 @@
 #ifndef UU_NET_DATASTRUCTURES_STORES_INTERLAYEREDGESTORE_H_
 #define UU_NET_DATASTRUCTURES_STORES_INTERLAYEREDGESTORE_H_
 
+#include <memory>
+#include <array>
 #include <unordered_set>
 #include "core/exceptions/WrongParameterException.h"
 //#include "net/datastructures/stores/Attributed.h"
@@ -20,10 +22,10 @@ template <typename E, size_t N>
 class InterlayerEdgeStore
 {
 
-protected:
-    
+  protected:
+
     InterlayerEdgeStore();
-    
+
   public:
     /**
      * Constructor.
@@ -90,11 +92,11 @@ protected:
 };
 
 
-    template <typename E, size_t N>
-    InterlayerEdgeStore<E,N>::
-    InterlayerEdgeStore()
-    {}
-    
+template <typename E, size_t N>
+InterlayerEdgeStore<E,N>::
+InterlayerEdgeStore()
+{}
+
 template <typename E, size_t N>
 InterlayerEdgeStore<E,N>::
 InterlayerEdgeStore(

@@ -14,7 +14,7 @@
 namespace uu {
 namespace net {
 
-    using TemporalMultiEdgeStore = AttributedMultiEdgeStore<Attributes<Edge, Times<Edge>>>;
+using TemporalMultiEdgeStore = AttributedMultiEdgeStore<Attributes<Edge, Times<Edge>>>;
 
 }
 }

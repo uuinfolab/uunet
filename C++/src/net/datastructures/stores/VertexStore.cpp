@@ -52,8 +52,14 @@ add(
 )
 {
     if (!get(vertex_name))
+    {
         return add(Vertex::create(vertex_name));
-    else return nullptr;
+    }
+
+    else
+    {
+        return nullptr;
+    }
 }
 
 

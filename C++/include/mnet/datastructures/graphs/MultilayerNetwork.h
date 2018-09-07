@@ -83,15 +83,15 @@ class MultilayerNetwork : public core::ObserverStore
     const std::string name;
 
   protected:
-    
+
     /**
      * Returns a pointer to the container of edge stores for each pair of layers.
      */
     E*
     interlayer_edges(
     );
-    
-    
+
+
     /**
      * Returns a pointer to the container of edge stores for each pair of layers.
      */

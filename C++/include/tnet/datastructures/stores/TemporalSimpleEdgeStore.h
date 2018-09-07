@@ -15,7 +15,7 @@
 namespace uu {
 namespace net {
 
-    using TemporalSimpleEdgeStore = AttributedSimpleEdgeStore<Attributes<Edge, Times<Edge>>>;
+using TemporalSimpleEdgeStore = AttributedSimpleEdgeStore<Attributes<Edge, Times<Edge>>>;
 
 }
 }

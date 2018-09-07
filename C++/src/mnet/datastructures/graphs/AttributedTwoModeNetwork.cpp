@@ -75,9 +75,9 @@ summary(
     size_t num_edges = interlayer_edges()->size();
     std::string summary =
         "TwoModeNetwork (" +
-    vertices_->summary() + " (top: " +
-    std::to_string(top()->vertices()->size()) + ", bottom: " +
-    std::to_string(bottom()->vertices()->size()) + "), " +
+        vertices_->summary() + " (top: " +
+        std::to_string(top()->vertices()->size()) + ", bottom: " +
+        std::to_string(bottom()->vertices()->size()) + "), " +
         std::to_string(num_edges) + (num_edges==1?" edge)":" edges)");
     return summary;
 }

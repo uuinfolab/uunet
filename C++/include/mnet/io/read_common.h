@@ -154,7 +154,7 @@ read_multilayer_data(
             read_interlayer_edge(ml, fields, meta, csv.row_num());
             break;
         }
-                
+
         default:
             break;
         }

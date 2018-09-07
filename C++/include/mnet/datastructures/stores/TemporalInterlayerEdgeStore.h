@@ -13,39 +13,39 @@ namespace uu {
 namespace net {
 
 template <size_t N>
-    class
+class
     TemporalInterlayerEdgeStore :
     public InterlayerEdgeStore<TemporalSimpleEdgeStore, N>
 {
     typedef InterlayerEdgeStore<TemporalSimpleEdgeStore, N> super;
-    
+
     using super::edge_stores_;
-    
-public:
+
+  public:
     TemporalInterlayerEdgeStore(EdgeDir dir);
-    
+
 };
 
 
-    
-    
-    template <size_t N>
-    TemporalInterlayerEdgeStore<N>::
-    TemporalInterlayerEdgeStore(EdgeDir dir)
+
+
+template <size_t N>
+TemporalInterlayerEdgeStore<N>::
+TemporalInterlayerEdgeStore(EdgeDir dir)
+{
+
+    for (size_t i=0; i< N; i++)
     {
-        
-        for (size_t i=0; i< N; i++)
+        for (size_t j=i+1; j< N; j++)
         {
-            for (size_t j=i+1; j< N; j++)
-            {
-                using A = uu::net::Attributes<uu::net::Edge, uu::net::Times<uu::net::Edge>>;
-                auto w_attr = std::make_unique<A>();
-                edge_stores_.at(i).at(j) = std::make_unique<TemporalSimpleEdgeStore>(dir, std::move(w_attr));
-            }
+            using A = uu::net::Attributes<uu::net::Edge, uu::net::Times<uu::net::Edge>>;
+            auto w_attr = std::make_unique<A>();
+            edge_stores_.at(i).at(j) = std::make_unique<TemporalSimpleEdgeStore>(dir, std::move(w_attr));
         }
-        
     }
-    
+
+}
+
 }
 }
 

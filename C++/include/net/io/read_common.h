@@ -206,11 +206,11 @@ read_vertex(
 )
 {
     assert_not_null(g, "read_vertex", "g");
-    
+
     std::string vertex_name = fields.at(from_idx);
-    
+
     auto vertex = g->vertices()->add(vertex_name);
-    
+
     if (!vertex)
     {
         vertex = g->vertices()->get(vertex_name);
