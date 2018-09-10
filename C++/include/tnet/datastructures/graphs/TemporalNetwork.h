@@ -3,8 +3,8 @@
  * - 2018.03.09 file created, following a restructuring of the previous library.
  */
 
-#ifndef UU_TNET_DATASTRUCTURE_GRAPHS_TEMPORALGRAPH_H_
-#define UU_TNET_DATASTRUCTURE_GRAPHS_TEMPORALGRAPH_H_
+#ifndef UU_TNET_DATASTRUCTURE_GRAPHS_TEMPORALNETWORK_H_
+#define UU_TNET_DATASTRUCTURE_GRAPHS_TEMPORALNETWORK_H_
 
 #include <memory>
 #include <string>
@@ -17,14 +17,14 @@
 namespace uu {
 namespace net {
 
-using TemporalGraph =
+using TemporalNetwork =
     Graph<
     VertexStore,
     TemporalMultiEdgeStore
     >;
 
-std::unique_ptr<TemporalGraph>
-create_temporal_graph(
+std::unique_ptr<TemporalNetwork>
+create_temporal_network(
     const std::string& name,
     EdgeDir dir = EdgeDir::UNDIRECTED,
     bool allow_loops = false

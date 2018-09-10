@@ -5,9 +5,9 @@
 #include <fstream>
 #include <vector>
 
-#include "tnet/io/read_temporal_graph.h"
+#include "tnet/io/read_temporal_network.h"
 
-class net_io_temporal_graph_test : public ::testing::Test
+class net_io_temporal_network_test : public ::testing::Test
 {
   protected:
 
@@ -49,9 +49,9 @@ class net_io_temporal_graph_test : public ::testing::Test
 
 };
 
-TEST_F(net_io_temporal_graph_test, read)
+TEST_F(net_io_temporal_network_test, read)
 {
-    auto g = uu::net::read_temporal_graph(test_file_name, "g", ',');
+    auto g = uu::net::read_temporal_network(test_file_name, "g", ',');
     std::cout << g->summary() << std::endl;
 
 }

@@ -5,12 +5,12 @@
  * - 2018.03.09 file created, following a restructuring of the previous library.
  */
 
-#ifndef UU_TNET_IO_READTEMPORALGRAPH_H_
-#define UU_TNET_IO_READTEMPORALGRAPH_H_
+#ifndef UU_TNET_IO_READTEMPORALNETWORK_H_
+#define UU_TNET_IO_READTEMPORALNETWORK_H_
 
 #include <string>
 #include <memory>
-#include "tnet/datastructures/graphs/TemporalGraph.h"
+#include "tnet/datastructures/graphs/TemporalNetwork.h"
 #include "net/io/read_common.h"
 
 namespace uu {
@@ -22,8 +22,8 @@ namespace net {
  * @param name name of the new graph
  * @param separator character used in the input file to separate fields
  */
-std::unique_ptr<TemporalGraph>
-read_temporal_graph(
+std::unique_ptr<TemporalNetwork>
+read_temporal_network(
     const std::string& infile,
     const std::string& name,
     char separator
@@ -41,7 +41,7 @@ read_temporal_graph(
 template <>
 void
 read_vertex(
-    TemporalGraph* g,
+    TemporalNetwork* g,
     const std::vector<std::string>& fields,
     const std::vector<core::Attribute>& vertex_attributes,
     size_t line_number
@@ -61,7 +61,7 @@ read_vertex(
 template <>
 void
 read_edge(
-    TemporalGraph* g,
+    TemporalNetwork* g,
     const std::vector<std::string>& fields,
     const std::vector<core::Attribute>& edge_attributes,
     size_t line_number

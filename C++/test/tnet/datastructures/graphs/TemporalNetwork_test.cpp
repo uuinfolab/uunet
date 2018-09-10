@@ -1,8 +1,8 @@
 #include "gtest/gtest.h"
 
-#include "tnet/datastructures/graphs/TemporalGraph.h"
+#include "tnet/datastructures/graphs/TemporalNetwork.h"
 
-class net_datastructures_graphs_TemporalGraph_test : public ::testing::Test
+class tnet_datastructures_graphs_TemporalNetwork_test : public ::testing::Test
 {
   protected:
     virtual void
@@ -13,10 +13,10 @@ class net_datastructures_graphs_TemporalGraph_test : public ::testing::Test
     // virtual void TearDown() {}
 };
 
-TEST_F(net_datastructures_graphs_TemporalGraph_test, all_functions)
+TEST_F(tnet_datastructures_graphs_TemporalNetwork_test, all_functions)
 {
 
-    std::unique_ptr<uu::net::TemporalGraph> g = uu::net::create_temporal_graph("a graph", uu::net::EdgeDir::DIRECTED);
+    std::unique_ptr<uu::net::TemporalNetwork> g = uu::net::create_temporal_network("a graph", uu::net::EdgeDir::DIRECTED);
 
     // Adding vertices
     const uu::net::Vertex* v1 = g->vertices()->add(uu::net::Vertex::create("miao"));

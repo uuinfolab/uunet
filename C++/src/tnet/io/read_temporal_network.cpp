@@ -3,7 +3,7 @@
  * - 2018.03.09 file created, following a restructuring of the previous library.
  */
 
-#include "tnet/io/read_temporal_graph.h"
+#include "tnet/io/read_temporal_network.h"
 #include "core/exceptions/DuplicateElementException.h"
 #include "core/exceptions/WrongParameterException.h"
 #include "core/exceptions/WrongFormatException.h"
@@ -12,8 +12,8 @@
 namespace uu {
 namespace net {
 
-std::unique_ptr<TemporalGraph>
-read_temporal_graph(
+std::unique_ptr<TemporalNetwork>
+read_temporal_network(
     const std::string& infile,
     const std::string& name,
     char separator
@@ -24,7 +24,7 @@ read_temporal_graph(
     EdgeDir dir = meta.features.is_directed?EdgeDir::DIRECTED:EdgeDir::UNDIRECTED;
 
     // Check metadata consistency (@todo) & create graph
-    auto g = create_temporal_graph(name, dir, meta.features.allows_loops);
+    auto g = create_temporal_network(name, dir, meta.features.allows_loops);
 
     // Read data (vertices, edges, attribute values)
     read_data(g.get(),  meta, infile, separator);
@@ -37,7 +37,7 @@ read_temporal_graph(
 template <>
 void
 read_vertex(
-    TemporalGraph* g,
+    TemporalNetwork* g,
     const std::vector<std::string>& fields,
     const std::vector<core::Attribute>& vertex_attributes,
     size_t line_number
@@ -71,7 +71,7 @@ read_vertex(
 template <>
 void
 read_edge(
-    TemporalGraph* g,
+    TemporalNetwork* g,
     const std::vector<std::string>& fields,
     const std::vector<core::Attribute>& edge_attributes,
     size_t line_number
