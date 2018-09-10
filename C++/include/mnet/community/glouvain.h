@@ -66,7 +66,7 @@ class glouvain
     double
     Q(Eigen::SparseMatrix<double> M, std::vector<int> y, double twoum);
     /* Same as Q but does not use the full modularity matrix. Instead it uses the iterative version for really large networks */
-    
+
     double
     Q_handle(metanet meta, std::vector<int> y, double twoum);
 
@@ -230,7 +230,7 @@ move(group_index & g, int node, Eigen::SparseMatrix<double> mod);
 double
 moverandw(group_index & g, int node, Eigen::SparseMatrix<double> mod);
 
-    
+
 class metanet
 {
 
@@ -253,10 +253,12 @@ class metanet
         {
             AA = cutils::ordered_supraA(a, omega, false, false);
         }
+
         else
         {
             AA = cutils::supraA(a, omega, false, false);
         }
+
         K = supraK(a);
         kvec = cutils::sparse_sum(cutils::supraA(a, 0, false, false), 0);
 
@@ -264,8 +266,8 @@ class metanet
         this->omega = gamma;
         this->N = a[0].rows();
     }
-    
-    
+
+
     Eigen::SparseMatrix<double>
     get(int index)
     {
@@ -411,7 +413,7 @@ glouvain::fit(
     // @todo check UNDIRECTED
     // @todo check ORDERED
     bool ordered = false;
-    
+
     double (*move_func)(group_index &, int, Eigen::SparseMatrix<double>);
 
     if ("moverandw" == m)
@@ -573,7 +575,7 @@ glouvain::fit(
     return to_community_structure<M,G>(mnet, partition);
 }
 
-    
+
 
 }
 }

@@ -12,7 +12,7 @@ namespace uu {
 namespace net {
 
 template <typename Graph>
-    class VertexOverlappingOrderedLayerStore :
+class VertexOverlappingOrderedLayerStore :
     private core::LabeledUniquePtrSortedRandomSet<Graph>,
     private std::vector<Graph*>
 {
@@ -31,18 +31,18 @@ template <typename Graph>
     push_back(
         std::unique_ptr<Graph>
     );
-    
-    
+
+
     Graph*
     get_at_index(
-                 size_t idx
-                 );
-    
+        size_t idx
+    );
+
     const Graph*
     get_at_index(
         size_t idx
-        ) const;
-    
+    ) const;
+
     using super1::size;
     using super1::get;
     using super2::begin;
@@ -58,39 +58,39 @@ template <typename Graph>
 
 };
 
-    
-    template <typename Graph>
-    Graph*
-    VertexOverlappingOrderedLayerStore<Graph>::
-    push_back(
-        std::unique_ptr<Graph> g
-        )
-    {
-        Graph* g_rawptr = super1::add(std::move(g));
-        super2::push_back(g_rawptr);
-        return g_rawptr;
-    }
-    
-    template <typename Graph>
-    Graph*
-    VertexOverlappingOrderedLayerStore<Graph>::
-    get_at_index(
-                 size_t idx
-                 )
-    {
-        return super2::at(idx);
-    }
-    
-    template <typename Graph>
-    const Graph*
-    VertexOverlappingOrderedLayerStore<Graph>::
-    get_at_index(
-                 size_t idx
-                 ) const
-    {
-        return super2::at(idx);
-    }
-    
+
+template <typename Graph>
+Graph*
+VertexOverlappingOrderedLayerStore<Graph>::
+push_back(
+    std::unique_ptr<Graph> g
+)
+{
+    Graph* g_rawptr = super1::add(std::move(g));
+    super2::push_back(g_rawptr);
+    return g_rawptr;
+}
+
+template <typename Graph>
+Graph*
+VertexOverlappingOrderedLayerStore<Graph>::
+get_at_index(
+    size_t idx
+)
+{
+    return super2::at(idx);
+}
+
+template <typename Graph>
+const Graph*
+VertexOverlappingOrderedLayerStore<Graph>::
+get_at_index(
+    size_t idx
+) const
+{
+    return super2::at(idx);
+}
+
 }
 }
 

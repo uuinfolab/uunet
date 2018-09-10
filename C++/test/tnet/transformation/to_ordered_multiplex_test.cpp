@@ -43,20 +43,24 @@ TEST_F(tnet_transformation_to_ordered_multiplex_test, all_functions)
     // Uncomment the following line to print a summary of the graph
     std::cout << g->summary() << std::endl;
     std::cout << mpx->summary() << std::endl;
+
     for (auto l: *mpx->layers())
     {
         std::cout << "Layer " << l->name << std::endl;
+
         for (auto e: *l->edges())
         {
             std::cout << (*e) << std::endl;
         }
     }
+
     auto com_struct = uu::net::generalized_louvain<uu::net::OrderedMultiplexNetwork, uu::net::SimpleGraph>(mpx.get(), 1, 1, 100);
-    
+
     // DEBUG ONLY
     for (auto c: *com_struct)
     {
         std::cout << "COMMUNITY" << std::endl;
+
         for (auto p: *c)
         {
             std::cout << p.first->name << "@" << p.second->name << std::endl;

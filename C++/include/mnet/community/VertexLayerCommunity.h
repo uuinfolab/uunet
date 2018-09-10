@@ -15,10 +15,10 @@ namespace net {
 
 
 template <typename G>
-    class
+class
     VertexLayerCommunity :
     public Community<std::pair<const Vertex*, const G*>>
-    {};
+{};
 
 }
 }

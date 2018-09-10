@@ -48,21 +48,21 @@ class Times
         const OT* obj
     ) const;
 
-    
+
     /**
      *
      */
     core::Value<core::Time>
     get_min_time(
-             ) const;
+    ) const;
 
-    
+
     /**
      *
      */
     core::Value<core::Time>
     get_max_time(
-             ) const;
+    ) const;
 
     /**
      * If the AttributeStore used by this class to store the times contains other attributes
@@ -120,24 +120,24 @@ get_time(
 }
 
 
-    template <typename OT>
-    core::Value<core::Time>
-    Times<OT>::
-    get_min_time(
-             ) const
-    {
-        return attr_->get_min_time(time_attribute_);
-    }
+template <typename OT>
+core::Value<core::Time>
+Times<OT>::
+get_min_time(
+) const
+{
+    return attr_->get_min_time(time_attribute_);
+}
 
-    
-    template <typename OT>
-    core::Value<core::Time>
-    Times<OT>::
-    get_max_time(
-             ) const
-    {
-        return attr_->get_max_time(time_attribute_);
-    }
+
+template <typename OT>
+core::Value<core::Time>
+Times<OT>::
+get_max_time(
+) const
+{
+    return attr_->get_max_time(time_attribute_);
+}
 
 template <typename OT>
 void

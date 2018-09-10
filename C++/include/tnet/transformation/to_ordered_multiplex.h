@@ -8,7 +8,7 @@
 
 namespace uu {
 namespace net {
-		
+
 
 /**
 * @brief Transforms a temporal network into an ordered multiplex network.
@@ -16,11 +16,11 @@ namespace net {
 * @param num_partitions number of time slices
 * @return a pointer to an ordered multiplex network
 **/
-    std::unique_ptr<OrderedMultiplexNetwork>
-    to_ordered_multiplex(
+std::unique_ptr<OrderedMultiplexNetwork>
+to_ordered_multiplex(
     const TemporalNetwork* tnet,
     size_t num_partitions
-    );
+);
 
 }
 }

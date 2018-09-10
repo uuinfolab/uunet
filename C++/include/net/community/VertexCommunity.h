@@ -12,10 +12,10 @@
 namespace uu {
 namespace net {
 
-    class
+class
     VertexCommunity :
     public Community<const Vertex*>
-    {};
+{};
 
 }
 }

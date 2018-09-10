@@ -16,7 +16,7 @@ namespace net {
  */
 template <typename C>
 class CommunityStructure :
-public core::UniquePtrSortedRandomSet<C>
+    public core::UniquePtrSortedRandomSet<C>
 {
 };
 

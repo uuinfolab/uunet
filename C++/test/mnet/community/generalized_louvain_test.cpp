@@ -63,11 +63,12 @@ TEST_F(mnet_community_generalized_louvain_test, read)
 {
     auto net = uu::net::read_multiplex(test_file_name, "g", ',');
     auto com_struct = uu::net::generalized_louvain<uu::net::MultiplexNetwork, uu::net::SimpleGraph>(net.get(), 1, 1, 100);
-    
+
     // DEBUG ONLY
     for (auto c: *com_struct)
     {
         std::cout << "COMMUNITY" << std::endl;
+
         for (auto p: *c)
         {
             std::cout << p.first->name << "@" << p.second->name << std::endl;

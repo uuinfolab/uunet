@@ -64,7 +64,7 @@ class cutils
     		 nodes2cid is a vector of community assignment for the nodes in mnet, where
     		 nodes2cid.size() == mnet->get_actors->size() * mnet->layers()->get_all->size()
     	Post: returns a community assignment of actors with their real attributes from the multilayer network
-    
+
     template <typename M, typename G>
     static
     std::shared_ptr<CommunityStructure<IntralayerVertexCommunity<G>>>
@@ -79,7 +79,7 @@ class cutils
     		 actors2cid is a vector of community assignments for the actors in mnet, where
     		 actors2cid.size() == mnet->get_actors->size()
     	Post: returns a community assignment of actors with their real attributes from the multilayer network
-    
+
     template <typename M, typename G>
     static
     std::shared_ptr<CommunityStructure<IntralayerVertexCommunity<G>>>
@@ -95,11 +95,11 @@ class cutils
     		 gamma is the resolution parameter, for all layers
     		 omega is the inter-layer coupling strength parameter.
     	Post: returns multilayer Girvan-Newman modularity matrix B and the total number of edges in the network * 2, as reference in the twoum parameter. This function is inspired by https://github.com/GenLouvain/GenLouvain/blob/master/HelperFunctions/multicat.m
-    
+
     static Eigen::SparseMatrix<double>
     ng_modularity(double& twom, std::vector<Eigen::SparseMatrix<double>> a, double gamma, double omega);
-*/
-    
+    */
+
     /*
     	Use: Eigen::SparseMatrix<double> A = cutils::supraA(a, eps, use_node_degrees, use_self_loop);
     	Pre: a is a vector of adjacency matrices (layers)
@@ -110,7 +110,7 @@ class cutils
     static Eigen::SparseMatrix<double>
     supraA(std::vector<Eigen::SparseMatrix<double>> a, double eps, bool use_node_degrees, bool use_self_loop);
 
-    
+
     /*
      Use: Eigen::SparseMatrix<double> A = cutils::supraA(a, eps, use_node_degrees, use_self_loop);
      Pre: a is a vector of adjacency matrices (layers)
@@ -265,122 +265,122 @@ cutils::actors2communities(std::shared_ptr<M> mnet, std::vector<unsigned int> ac
     return communities;
 }
 */
-    
-    /*
-     Use: Eigen::SparseMatrix<double> B = cutils::ng_modularity(twom, a, gamma, omega);
-     Pre: twoum gets the value of the degree of the nodes in the multilayer network
-     a is a vector of adjacency matrices (layers)
-     gamma is the resolution parameter, for all layers
-     omega is the inter-layer coupling strength parameter.
-     Post: returns multilayer Girvan-Newman modularity matrix B and the total number of edges in the network * 2, as reference in the twoum parameter. This function is inspired by https://github.com/GenLouvain/GenLouvain/blob/master/HelperFunctions/multicat.m
-     */
-    Eigen::SparseMatrix<double>
-    modularity_matrix(
-                      double& twom,
-                      std::vector<Eigen::SparseMatrix<double>> a,
-                      double gamma,
-                      double omega,
-                      bool ordered = false
-                      );
-    
-    
-    template <typename M>
-    std::vector<Eigen::SparseMatrix<double>>
-    to_adjacency_matrices(
-                          const M* mnet
-                          )
+
+/*
+ Use: Eigen::SparseMatrix<double> B = cutils::ng_modularity(twom, a, gamma, omega);
+ Pre: twoum gets the value of the degree of the nodes in the multilayer network
+ a is a vector of adjacency matrices (layers)
+ gamma is the resolution parameter, for all layers
+ omega is the inter-layer coupling strength parameter.
+ Post: returns multilayer Girvan-Newman modularity matrix B and the total number of edges in the network * 2, as reference in the twoum parameter. This function is inspired by https://github.com/GenLouvain/GenLouvain/blob/master/HelperFunctions/multicat.m
+ */
+Eigen::SparseMatrix<double>
+modularity_matrix(
+    double& twom,
+    std::vector<Eigen::SparseMatrix<double>> a,
+    double gamma,
+    double omega,
+    bool ordered = false
+);
+
+
+template <typename M>
+std::vector<Eigen::SparseMatrix<double>>
+                                      to_adjacency_matrices(
+                                              const M* mnet
+                                      )
+{
+    size_t num_layers = mnet->layers()->size();
+    size_t num_actors = mnet->vertices()->size();
+
+    std::vector<Eigen::SparseMatrix<double>> result(num_layers);
+
+    for (size_t idx=0; idx<mnet->layers()->size(); idx++)
     {
-        size_t num_layers = mnet->layers()->size();
-        size_t num_actors = mnet->vertices()->size();
-        
-        std::vector<Eigen::SparseMatrix<double>> result(num_layers);
-        
-        for (size_t idx=0; idx<mnet->layers()->size(); idx++)
+        auto l = mnet->layers()->get_at_index(idx);
+
+        result[idx] = Eigen::SparseMatrix<double> (num_actors, num_actors);
+
+        //Eigen::SparseMatrix<double> m = Eigen::SparseMatrix<double> (num_actors, num_actors);
+
+        std::vector<Eigen::Triplet<double>> tlist;
+
+        // @todo tlist.reserve(mnet->get_edges()->size());
+
+        tlist.reserve(l->edges()->size());
+        // end @todo
+
+        for (auto e: *l->edges())
         {
-            auto l = mnet->layers()->get_at_index(idx);
-            
-            result[idx] = Eigen::SparseMatrix<double> (num_actors, num_actors);
-            
-                //Eigen::SparseMatrix<double> m = Eigen::SparseMatrix<double> (num_actors, num_actors);
-            
-            std::vector<Eigen::Triplet<double>> tlist;
-            
-                // @todo tlist.reserve(mnet->get_edges()->size());
-            
-            tlist.reserve(l->edges()->size());
-                // end @todo
-            
-            for (auto e: *l->edges())
-            {
-                size_t v1_id = mnet->vertices()->get_index(e->v1);
-                size_t v2_id = mnet->vertices()->get_index(e->v2);
-                
-                tlist.push_back(Eigen::Triplet<double>(v1_id, v2_id, 1));
-                    //if (e->directionality == EdgeDir::UNDIRECTED)
-                    //{
-                tlist.push_back(Eigen::Triplet<double>(v2_id, v1_id, 1));
-                    //}
-                
-            }
-            
-            result[idx].setFromTriplets(tlist.begin(), tlist.end());
+            size_t v1_id = mnet->vertices()->get_index(e->v1);
+            size_t v2_id = mnet->vertices()->get_index(e->v2);
+
+            tlist.push_back(Eigen::Triplet<double>(v1_id, v2_id, 1));
+            //if (e->directionality == EdgeDir::UNDIRECTED)
+            //{
+            tlist.push_back(Eigen::Triplet<double>(v2_id, v1_id, 1));
+            //}
+
         }
-        
-        return result;
-    }
-    
-    
-    
-    template <typename M, typename G>
-    std::unique_ptr<CommunityStructure<VertexLayerCommunity<G>>>
-    to_community_structure(
-                           const M* mnet,
-                           const std::vector<unsigned int>& nodes2cid
-                           )
-    {
-        
-        size_t num_layers = mnet->layers()->size();
-        size_t num_actors = mnet->vertices()->size();
-        
-            // group by community id
-        
-        std::unordered_map<unsigned int, std::list<std::pair<const Vertex*, const G*>> > result;
-        
-        for (size_t i = 0; i < num_layers; i++)
-        {
-            auto layer = mnet->layers()->get_at_index(i);
-            
-            for (size_t j = i * num_actors; j < (1 + i) * num_actors; j++)
-            {
-                auto actor = mnet->vertices()->get_at_index(j - (i * num_actors));
-                
-                    // @todo check if vertex exists in the layer
-                auto iv = std::make_pair(actor, layer);
-                result[nodes2cid.at(j)].push_back(iv);
-                
-            }
-        }
-        
-            // build community structure
-        
-        auto communities = std::make_unique<CommunityStructure<VertexLayerCommunity<G>>>();
-        
-        for (auto pair: result)
-        {
-            auto c = std::make_unique<VertexLayerCommunity<G>>();
-            
-            for (auto vertex_layer_pair: pair.second)
-            {
-                c->add(vertex_layer_pair);
-            }
-            
-            communities->add(std::move(c));
-        }
-        
-        return communities;
+
+        result[idx].setFromTriplets(tlist.begin(), tlist.end());
     }
 
-    
+    return result;
+}
+
+
+
+template <typename M, typename G>
+std::unique_ptr<CommunityStructure<VertexLayerCommunity<G>>>
+to_community_structure(
+    const M* mnet,
+    const std::vector<unsigned int>& nodes2cid
+)
+{
+
+    size_t num_layers = mnet->layers()->size();
+    size_t num_actors = mnet->vertices()->size();
+
+    // group by community id
+
+    std::unordered_map<unsigned int, std::list<std::pair<const Vertex*, const G*>> > result;
+
+    for (size_t i = 0; i < num_layers; i++)
+    {
+        auto layer = mnet->layers()->get_at_index(i);
+
+        for (size_t j = i * num_actors; j < (1 + i) * num_actors; j++)
+        {
+            auto actor = mnet->vertices()->get_at_index(j - (i * num_actors));
+
+            // @todo check if vertex exists in the layer
+            auto iv = std::make_pair(actor, layer);
+            result[nodes2cid.at(j)].push_back(iv);
+
+        }
+    }
+
+    // build community structure
+
+    auto communities = std::make_unique<CommunityStructure<VertexLayerCommunity<G>>>();
+
+    for (auto pair: result)
+    {
+        auto c = std::make_unique<VertexLayerCommunity<G>>();
+
+        for (auto vertex_layer_pair: pair.second)
+        {
+            c->add(vertex_layer_pair);
+        }
+
+        communities->add(std::move(c));
+    }
+
+    return communities;
+}
+
+
 }
 }
 
