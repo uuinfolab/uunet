@@ -51,7 +51,15 @@ add(
     std::string vertex_name
 )
 {
-    return add(Vertex::create(vertex_name));
+    if (!get(vertex_name))
+    {
+        return add(Vertex::create(vertex_name));
+    }
+
+    else
+    {
+        return nullptr;
+    }
 }
 
 

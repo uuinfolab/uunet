@@ -7,7 +7,7 @@
 #define UU_NET_DATASTRUCTURES_STORES_ATTRIBUTESTORE_H_
 
 #include <memory>
-#include "core/attributes.h"
+#include "core/attributes/MainMemoryAttributeStore.h"
 #include "core/datastructures/observers/Observer.h"
 #include "core/exceptions/NullPtrException.h"
 

@@ -3,8 +3,8 @@
  * - 2018.03.19 file created, with code taken from other existing files.
  */
 
-#ifndef UU_NET_DATASTRUCTURES_STORES_TIMES_H_
-#define UU_NET_DATASTRUCTURES_STORES_TIMES_H_
+#ifndef UU_TNET_DATASTRUCTURES_STORES_TIMES_H_
+#define UU_TNET_DATASTRUCTURES_STORES_TIMES_H_
 
 #include <memory>
 #include "net/datastructures/stores/AttributeStore.h"
@@ -48,6 +48,22 @@ class Times
         const OT* obj
     ) const;
 
+
+    /**
+     *
+     */
+    core::Value<core::Time>
+    get_min_time(
+    ) const;
+
+
+    /**
+     *
+     */
+    core::Value<core::Time>
+    get_max_time(
+    ) const;
+
     /**
      * If the AttributeStore used by this class to store the times contains other attributes
      * of type Time, this function can be used so that subsequent calls to get_time and
@@ -77,6 +93,7 @@ Times(AttributeStore<OT>* attr)
     attr_ = attr;
     time_attribute_ = kDEFAULT_TIME_ATTRIBUTE_NAME;
     attr_->add(time_attribute_, core::AttributeType::TIME);
+    attr_->add_index(time_attribute_);
 }
 
 
@@ -102,6 +119,25 @@ get_time(
     return attr_->get_time(obj, time_attribute_);
 }
 
+
+template <typename OT>
+core::Value<core::Time>
+Times<OT>::
+get_min_time(
+) const
+{
+    return attr_->get_min_time(time_attribute_);
+}
+
+
+template <typename OT>
+core::Value<core::Time>
+Times<OT>::
+get_max_time(
+) const
+{
+    return attr_->get_max_time(time_attribute_);
+}
 
 template <typename OT>
 void

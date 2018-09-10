@@ -11,9 +11,9 @@
 namespace uu {
 namespace net {
 
-    /**
-     * The sections that can be found in a file storing a graph.
-     */
+/**
+ * The sections that can be found in a file storing a graph.
+ */
 enum class GraphIOFileSection
 {
     DEFAULT, // @todo is this necessary?
@@ -25,21 +25,21 @@ enum class GraphIOFileSection
     EDGES
 };
 
-    /**
-     * Checks if the input line indicates the start of a new section.
-     */
-    bool
-    new_section_start(
-                      const std::string& line
-                      );
-    
-    /**
-     * Returns the new section starting on this input line.
-     */
-    GraphIOFileSection
-    get_section(
-                const std::string& line
-                );
+/**
+ * Checks if the input line indicates the start of a new section.
+ */
+bool
+new_section_start(
+    const std::string& line
+);
+
+/**
+ * Returns the new section starting on this input line.
+ */
+GraphIOFileSection
+get_section(
+    const std::string& line
+);
 
 }
 }

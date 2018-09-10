@@ -46,7 +46,7 @@ read_vertex(
                                          std::to_string(line_number) +
                                          ": Only vertex name expected");
     }
-    
+
     read_vertex(g, fields, 0, line_number);
 }
 
@@ -60,7 +60,7 @@ read_edge(
     size_t line_number
 )
 {
-    
+
     if (fields.size()!=3)
     {
         throw core::WrongFormatException("Line " +
@@ -72,7 +72,7 @@ read_edge(
     std::string weight = fields[2];
 
     auto edge = read_edge(g, fields, 0, line_number);
-    
+
     g->edges()->attr()->set_weight(edge, core::to_double(weight));
 
 }

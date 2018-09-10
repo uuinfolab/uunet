@@ -71,9 +71,9 @@ TEST_F(net_algorithms_sssp_test, binary_graph)
 {
     auto source = g->vertices()->get("v1");
     auto pos_source = g->vertices()->get_index(source);
-    
+
     auto path_lengths = uu::net::single_source_path_length(g.get(), source);
-    
+
     auto v2 = g->vertices()->get("v2");
     auto pos_v2 = g->vertices()->get_index(v2);
     auto v3 = g->vertices()->get("v3");
@@ -86,22 +86,22 @@ TEST_F(net_algorithms_sssp_test, binary_graph)
     auto pos_v9 = g->vertices()->get_index(v9);
     auto v0 = g->vertices()->get("v0");
     auto pos_v0 = g->vertices()->get_index(v0);
-    
-    EXPECT_EQ(0,path_lengths.at(pos_source))
-    << "wrong shortest path length, vertex v1";
-    EXPECT_EQ(1,path_lengths.at(pos_v2))
-    << "wrong shortest path length, vertex v2";
-    EXPECT_EQ(1,path_lengths.at(pos_v3))
-    << "wrong shortest path length, vertex v3";
-    EXPECT_EQ(2,path_lengths.at(pos_v4))
-    << "wrong shortest path length, vertex v4";
-    EXPECT_EQ(3,path_lengths.at(pos_v7))
-    << "wrong shortest path length, vertex v7";
-    EXPECT_EQ(4,path_lengths.at(pos_v9))
-    << "wrong shortest path length, vertex v9";
-    EXPECT_EQ(-1,path_lengths.at(pos_v0))
-    << "wrong shortest path length, vertex v0";
 
-    
+    EXPECT_EQ(0,path_lengths.at(pos_source))
+            << "wrong shortest path length, vertex v1";
+    EXPECT_EQ(1,path_lengths.at(pos_v2))
+            << "wrong shortest path length, vertex v2";
+    EXPECT_EQ(1,path_lengths.at(pos_v3))
+            << "wrong shortest path length, vertex v3";
+    EXPECT_EQ(2,path_lengths.at(pos_v4))
+            << "wrong shortest path length, vertex v4";
+    EXPECT_EQ(3,path_lengths.at(pos_v7))
+            << "wrong shortest path length, vertex v7";
+    EXPECT_EQ(4,path_lengths.at(pos_v9))
+            << "wrong shortest path length, vertex v9";
+    EXPECT_EQ(-1,path_lengths.at(pos_v0))
+            << "wrong shortest path length, vertex v0";
+
+
 }
 

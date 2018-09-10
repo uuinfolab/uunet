@@ -236,7 +236,7 @@ Graph<V,E>::
 is_directed(
 ) const
 {
-    return type_.is_directed();
+    return type_.is_directed;
 }
 
 

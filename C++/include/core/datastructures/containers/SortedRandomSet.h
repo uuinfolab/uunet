@@ -26,7 +26,7 @@
 #include "core/datastructures/containers/DefaultEQ.h"
 #include "core/datastructures/containers/SortedRandomSetEntry.h"
 #include "core/utils/random.h"
-#include "core/exceptions.h"
+#include "core/exceptions/ElementNotFoundException.h"
 
 namespace uu {
 namespace core {

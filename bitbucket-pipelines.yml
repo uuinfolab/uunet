@@ -14,3 +14,9 @@ pipelines:
           - cmake -D CMAKE_BUILD_TYPE=Debug ..
           - make
           - ./core-tests
+          - ./net-tests
+          - ./wnet-tests
+          - ./tnet-tests
+          - ./pnet-tests
+          - ./mnet-tests
+          - ./xnet-tests

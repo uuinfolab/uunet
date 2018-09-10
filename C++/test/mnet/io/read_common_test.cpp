@@ -23,15 +23,26 @@ class mnet_io_read_common_test : public ::testing::Test
         if (!test_file.is_open())
         {
             FAIL()
-            << "Could not create temporary file. Test not executed.";
+                    << "Could not create temporary file. Test not executed.";
         }
 
         test_file << "#VERSION             " << std::endl;
         test_file << "2.0                  " << std::endl;
         test_file << "                     " << std::endl;
         test_file << "#LAYERS              " << std::endl;
-        test_file << "l1, UNDIRECTED       " << std::endl;
+        test_file << "l1, DIRECTED         " << std::endl;
         test_file << "l2, UNDIRECTED       " << std::endl;
+        test_file << "                     " << std::endl;
+        test_file << "#VERTEX ATTRIBUTES   " << std::endl;
+        test_file << "a1,string            " << std::endl;
+        test_file << "l1,a1,string         " << std::endl;
+        test_file << "l2,a1,double         " << std::endl;
+        test_file << "l3,a1,double         " << std::endl;
+        test_file << "                     " << std::endl;
+        test_file << "#EDGE ATTRIBUTES     " << std::endl;
+        test_file << "a1,string            " << std::endl;
+        test_file << "l1,a1,string         " << std::endl;
+        test_file << "l2,a1,double         " << std::endl;
         test_file << "                     " << std::endl;
         test_file << "#INTRALAYER VERTICES " << std::endl;
         test_file << "v6,l2                " << std::endl;
@@ -67,11 +78,25 @@ TEST_F(mnet_io_read_common_test, read_metadata)
             << "wrong feature: DIRECTED";
     EXPECT_TRUE(meta.features.is_weighted)
             << "wrong feature: WEIGHTED";
-    EXPECT_EQ(2, meta.vertex_attributes.size())
-            << "wrong number of vertex attributes read";
-    EXPECT_EQ(2, meta.edge_attributes.size())
-            << "wrong number of vertex attributes read";
      */
-    
+    ASSERT_EQ(3, meta.layers.size())
+            << "wrong number of layers read";
+
+    EXPECT_TRUE(meta.layers.at("l1").is_directed)
+            << "wrong layer feature: DIRECTED";
+    EXPECT_FALSE(meta.layers.at("l2").is_directed)
+            << "wrong layer feature: UNDIRECTED";
+    EXPECT_FALSE(meta.layers.at("l3").is_directed)
+            << "wrong layer feature: UNDIRECTED";
+
+    EXPECT_EQ(1, meta.vertex_attributes.size())
+            << "wrong number of vertex attributes read";
+    //EXPECT_EQ(1, meta.edge_attributes.size())
+    //        << "wrong number of vertex attributes read";
+    EXPECT_EQ(1, meta.intralayer_edge_attributes.at("l1").size())
+            << "wrong number of vertex attributes read";
+
+
+
 }
 

@@ -15,8 +15,8 @@ namespace uu {
 namespace core {
 
 
-    void
-    to_upper_case(std::string& s);
+void
+to_upper_case(std::string& s);
 
 
 }

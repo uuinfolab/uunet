@@ -23,32 +23,42 @@ read_multiplex(
     char separator
 );
 
-    template <>
-    void
-    read_vertex(
-                MultiplexNetwork* ml,
-                const std::vector<std::string>& fields,
-                const MultilayerMetadata& meta,
-                size_t line_number
-                );
-    
-    template <>
-    void
-    read_intralayer_vertex(
-                           MultiplexNetwork* ml,
-                           const std::vector<std::string>& fields,
-                           const MultilayerMetadata& meta,
-                           size_t line_number
-                           );
-    
-    template <>
-    void
-    read_intralayer_edge(
-                         MultiplexNetwork* ml,
-                         const std::vector<std::string>& fields,
-                         const MultilayerMetadata& meta,
-                         size_t line_number
-                         );
+
+template <>
+SimpleGraph*
+read_layer(
+    MultiplexNetwork* ml,
+    const std::vector<std::string>& fields,
+    size_t from_idx,
+    size_t line_number
+);
+
+template <>
+void
+read_vertex(
+    MultiplexNetwork* ml,
+    const std::vector<std::string>& fields,
+    const MultilayerMetadata& meta,
+    size_t line_number
+);
+
+template <>
+void
+read_intralayer_vertex(
+    MultiplexNetwork* ml,
+    const std::vector<std::string>& fields,
+    const MultilayerMetadata& meta,
+    size_t line_number
+);
+
+template <>
+void
+read_intralayer_edge(
+    MultiplexNetwork* ml,
+    const std::vector<std::string>& fields,
+    const MultilayerMetadata& meta,
+    size_t line_number
+);
 
 }
 }
