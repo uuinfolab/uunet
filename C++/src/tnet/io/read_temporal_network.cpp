@@ -108,12 +108,13 @@ read_edge(
 
     auto edge = g->edges()->add(vertex1,vertex2);
 
-    
+
     // if time is an integer, it is interpreted as seconds since epoch.
     if (std::regex_match(time, std::regex("(\\+|-)?[[:digit:]]+")))
     {
         g->edges()->attr()->set_time(edge, core::epoch_to_time(time));
     }
+
     // otherwise a data-time string is expected
     else
     {

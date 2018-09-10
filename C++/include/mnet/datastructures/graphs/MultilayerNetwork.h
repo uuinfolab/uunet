@@ -13,6 +13,7 @@
 #include "core/datastructures/observers/ObserverStore.h"
 #include "net/datastructures/objects/Edge.h"
 #include "net/datastructures/objects/Vertex.h"
+#include "mnet/datastructures/graphs/MultilayerNetworkType.h"
 
 namespace uu {
 namespace net {
@@ -36,6 +37,7 @@ class MultilayerNetwork : public core::ObserverStore
      */
     MultilayerNetwork(
         const std::string& name,
+        MultilayerNetworkType t,
         std::unique_ptr<V> v,
         std::unique_ptr<L> l,
         std::unique_ptr<E> e
@@ -69,6 +71,10 @@ class MultilayerNetwork : public core::ObserverStore
      */
     const L*
     layers(
+    ) const;
+
+    bool
+    is_ordered(
     ) const;
 
     /**
@@ -108,6 +114,8 @@ class MultilayerNetwork : public core::ObserverStore
     /** Internal edge store. */
     std::unique_ptr<E> edges_;
 
+    MultilayerNetworkType type_;
+
     /** ... */
     std::unordered_set<std::unique_ptr<core::GenericObserver>> obs_;
 
@@ -119,6 +127,7 @@ template <typename V, typename L, typename E>
 MultilayerNetwork<V,L,E>::
 MultilayerNetwork(
     const std::string& name,
+    MultilayerNetworkType t,
     std::unique_ptr<V> v,
     std::unique_ptr<L> l,
     std::unique_ptr<E> e
@@ -127,6 +136,7 @@ MultilayerNetwork(
     vertices_ = std::move(v);
     layers_ = std::move(l);
     edges_ = std::move(e);
+    type_ = t;
 }
 
 
@@ -187,6 +197,16 @@ layers(
 ) const
 {
     return layers_.get();
+}
+
+
+template <typename V, typename L, typename E>
+bool
+MultilayerNetwork<V,L,E>::
+is_ordered(
+) const
+{
+    return type_.is_ordered;
 }
 
 template <typename V, typename L, typename E>

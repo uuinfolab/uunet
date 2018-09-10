@@ -41,6 +41,7 @@ class
 
     AttributedTwoModeNetwork(
         const std::string& name,
+        MultilayerNetworkType t,
         std::unique_ptr<UnionVertexStore> v,
         std::unique_ptr<VertexDisjointLayerStore<AttributedEmptyGraph, AttributedEmptyGraph>> l,
         std::unique_ptr<InterlayerEdgeStore<AttributedSimpleEdgeStore<Attributes<Edge, UserDefinedAttrs<Edge>>>,2>> e

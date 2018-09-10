@@ -5,7 +5,7 @@ namespace net {
 
 Eigen::SparseMatrix<double>
 cutils::supraA(
-    std::vector<Eigen::SparseMatrix<double>> a,
+    const std::vector<Eigen::SparseMatrix<double>>& a,
     double eps,
     bool use_node_degrees,
     bool use_self_loop
@@ -77,7 +77,7 @@ cutils::supraA(
 
 Eigen::SparseMatrix<double>
 cutils::ordered_supraA(
-    std::vector<Eigen::SparseMatrix<double>> a,
+    const std::vector<Eigen::SparseMatrix<double>>& a,
     double eps,
     bool use_node_degrees,
     bool use_self_loop
@@ -143,7 +143,10 @@ cutils::ordered_supraA(
 }
 
 Eigen::SparseMatrix<double>
-cutils::block_diag(std::vector<Eigen::SparseMatrix<double>> a, double eps)
+cutils::block_diag(
+    const std::vector<Eigen::SparseMatrix<double>>& a,
+    double eps
+)
 {
     Eigen::SparseMatrix<double> m = Eigen::SparseMatrix<double>(
                                         a[0].rows() * a.size(), a[0].cols() * a.size());
@@ -188,7 +191,10 @@ cutils::block_diag(std::vector<Eigen::SparseMatrix<double>> a, double eps)
 
 
 Eigen::MatrixXd
-cutils::sparse_sum(Eigen::SparseMatrix<double> X, int axis)
+cutils::sparse_sum(
+    const Eigen::SparseMatrix<double>& X,
+    int axis
+)
 {
     Eigen::MatrixXd d = Eigen::MatrixXd::Zero(X.rows(), 1);
 
@@ -212,7 +218,9 @@ cutils::sparse_sum(Eigen::SparseMatrix<double> X, int axis)
 }
 
 std::vector<int>
-cutils::unique(std::vector<int> y)
+cutils::unique(
+    std::vector<int> y
+)
 {
     std::sort(y.begin(), y.end());
     std::vector<int>::iterator it;
@@ -222,7 +230,10 @@ cutils::unique(std::vector<int> y)
 }
 
 std::vector<int>
-cutils::range(size_t size, bool randomize)
+cutils::range(
+    size_t size,
+    bool randomize
+)
 {
     std::vector<int> range(size);
     std::iota(range.begin(), range.end(), 0);
@@ -240,7 +251,7 @@ cutils::range(size_t size, bool randomize)
 Eigen::SparseMatrix<double>
 modularity_matrix(
     double &twoum,
-    std::vector<Eigen::SparseMatrix<double>> a,
+    const std::vector<Eigen::SparseMatrix<double>>& a,
     double gamma,
     double omega,
     bool ordered

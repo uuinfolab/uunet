@@ -54,9 +54,12 @@ to_ordered_multiplex(
     for (auto e : *tnet->edges())
     {
         auto t = tnet->edges()->attr()->get_time(e);
+
         if (t.null)
+        {
             continue;
-        
+        }
+
         size_t idx = ((t.value - min_time) / split_time);
 
         if (idx == num_partitions)

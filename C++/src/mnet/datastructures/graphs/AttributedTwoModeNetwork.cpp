@@ -11,11 +11,12 @@ namespace net {
 AttributedTwoModeNetwork::
 AttributedTwoModeNetwork(
     const std::string& name,
+    MultilayerNetworkType t,
     std::unique_ptr<UnionVertexStore> v,
     std::unique_ptr<VertexDisjointLayerStore<AttributedEmptyGraph, AttributedEmptyGraph>> l,
     std::unique_ptr<InterlayerEdgeStore<AttributedSimpleEdgeStore<Attributes<Edge, UserDefinedAttrs<Edge>>>,2>> e
 ) :
-    super(name, std::move(v), std::move(l), std::move(e))
+    super(name, t, std::move(v), std::move(l), std::move(e))
 {
 }
 
@@ -111,8 +112,12 @@ create_attributed_twomode_network(
 
     std::unique_ptr<AttributedTwoModeNetwork> net;
 
+
+    MultilayerNetworkType t;
+
     net = std::make_unique<AttributedTwoModeNetwork>(
               name,
+              t,
               std::move(vs),
               std::move(ls),
               std::move(es));

@@ -41,6 +41,7 @@ class
 
     TemporalTextNetwork(
         const std::string& name,
+        MultilayerNetworkType t,
         std::unique_ptr<UnionVertexStore> v,
         std::unique_ptr<VertexDisjointLayerStore<TextGraph, AttributedSimpleGraph>> l,
         std::unique_ptr<TemporalInterlayerEdgeStore<2>> e

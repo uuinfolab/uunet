@@ -37,6 +37,7 @@ class
 
     OrderedMultiplexNetwork(
         const std::string& name,
+        MultilayerNetworkType t,
         std::unique_ptr<VertexStore> v,
         std::unique_ptr<VertexOverlappingOrderedLayerStore<SimpleGraph>> l,
         std::unique_ptr<EmptyEdgeStore> e

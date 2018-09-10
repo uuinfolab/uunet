@@ -17,11 +17,33 @@
 namespace uu {
 namespace net {
 
-using TemporalNetwork =
-    Graph<
+class
+    TemporalNetwork
+    : public
+      Graph<
+      VertexStore,
+      TemporalMultiEdgeStore
+      >
+{
+  private:
+    typedef Graph<
     VertexStore,
     TemporalMultiEdgeStore
-    >;
+    > super;
+
+  public:
+
+    TemporalNetwork(
+        const std::string& name,
+        GraphType t,
+        std::unique_ptr<VertexStore> v,
+        std::unique_ptr<TemporalMultiEdgeStore> e
+    );
+
+    std::string
+    summary(
+    ) const override;
+};
 
 std::unique_ptr<TemporalNetwork>
 create_temporal_network(

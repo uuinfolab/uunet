@@ -139,6 +139,7 @@ class Graph
     /**
      * Returns a string providing a summary of the graph structure.
      */
+    virtual
     std::string
     summary(
     ) const;
@@ -147,7 +148,7 @@ class Graph
 
     const std::string name;
 
-  private:
+  protected:
 
     /** Graph type. */
     GraphType type_;

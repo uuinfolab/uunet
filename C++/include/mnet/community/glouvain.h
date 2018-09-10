@@ -1,5 +1,5 @@
-#ifndef GLOUVAIN_H_
-#define GLOUVAIN_H_
+#ifndef UU_MNET_COMMUNITY_GLOUVAIN_H_
+#define UU_MNET_COMMUNITY_GLOUVAIN_H_
 
 
 #include "net/community/CommunityStructure.h"
@@ -49,12 +49,21 @@ class glouvain
     */
     template <typename M, typename G>
     std::unique_ptr<CommunityStructure<VertexLayerCommunity<G>>>
-    fit(const M* mnet, const std::string& m, double gamma, double omega, size_t limit);
+    fit(
+        const M* mnet,
+        const std::string& m,
+        double gamma,
+        double omega,
+        size_t limit
+    );
 
     /* Map indexes of b to values of a:
     https://stackoverflow.com/questions/5691218/matlab-mapping-values-to-index-of-other-array*/
     std::vector<int>
-    mapV2I(std::vector<int> a, std::vector<int> b);
+    mapV2I(
+        const std::vector<int>& a,
+        const std::vector<int>& b
+    ) const;
 
     /*
     	Use: double q = Q(M, y, twoum)
@@ -64,11 +73,19 @@ class glouvain
     	Post: Calculate the modularity Q of partitioning vector y in matrix M
     */
     double
-    Q(Eigen::SparseMatrix<double> M, std::vector<int> y, double twoum);
-    /* Same as Q but does not use the full modularity matrix. Instead it uses the iterative version for really large networks */
+    Q(
+        const Eigen::SparseMatrix<double>& M,
+        const std::vector<int>& y,
+        double twoum
+    ) const;
 
+    /* Same as Q but does not use the full modularity matrix. Instead it uses the iterative version for really large networks */
     double
-    Q_handle(metanet meta, std::vector<int> y, double twoum);
+    Q_handle(
+        metanet& meta,
+        const std::vector<int>& y,
+        double twoum
+    );
 
     /*
     	Use: Eigen::SparseMatrix<double> M = metanetwork(B, S2)
@@ -77,7 +94,10 @@ class glouvain
     	Post: M is a new modularity network, that contains collapsed nodes of B
     */
     Eigen::SparseMatrix<double>
-    metanetwork(Eigen::SparseMatrix<double> B, std::vector<int> S2);
+    metanetwork(
+        const Eigen::SparseMatrix<double>& B,
+        const std::vector<int>& S2
+    ) const;
 
 };
 
@@ -93,12 +113,16 @@ struct unique_group_map
 
 
     //implement unique_group_map (quick membership check and insertion of elements, quick iteration over members, unordered
-    unique_group_map(size_t n) : ismember(std::vector<bool>(n,false)) {}
+    unique_group_map(
+        size_t n
+    ) : ismember(std::vector<bool>(n,false)) {}
+
     bool
     count(int i)
     {
         return ismember[i];
     }
+
     void
     insert(int i)
     {
@@ -134,9 +158,13 @@ typedef std::pair<std::vector<int>,std::vector<double>> move_list;
 struct group_index
 {
 
-    group_index():n_nodes(0), n_groups(0) {}
+    group_index(
+    )
+        : n_nodes(0), n_groups(0) {}
 
-    group_index(std::vector<int> v)
+    group_index(
+        const std::vector<int>& v
+    )
     {
         n_nodes = v.size();
         nodes = v;
@@ -152,7 +180,9 @@ struct group_index
     };
 
     Eigen::MatrixXd
-    index(int group)
+    index(
+        int group
+    )
     {
         Eigen::MatrixXd r = Eigen::MatrixXd::Zero(groups[group].size(), 1);
 
@@ -169,7 +199,10 @@ struct group_index
 
     //move node to group
     void
-    move(int node, int group)
+    move(
+        int node,
+        int group
+    )
     {
         //move node by splicing into list for new group
         groups[group].splice(groups[group].end(), groups[nodes[node]],nodes_iterator[node]);
@@ -207,28 +240,51 @@ struct group_index
     };
 
     std::vector<std::list<int>> groups; //the index of each node in a group is stored in a linked list
+
     std::vector<std::list<int>::iterator> nodes_iterator; //stores the position of the node in the list for the group it belongs to
+
     std::vector<int> nodes; //stores the group a node belongs to
+
 };
 
 set_type
-possible_moves(group_index & g, int node, Eigen::SparseMatrix<double> mod);
+possible_moves(
+    group_index & g,
+    int node,
+    const Eigen::SparseMatrix<double>& mod
+);
 
 //calculates changes in modularity for sparse modularity matrix
 map_type
-mod_change(group_index & g, Eigen::SparseMatrix<double> mod, set_type & unique_groups, int current_node);
+mod_change(
+    group_index & g,
+    const Eigen::SparseMatrix<double>& mod,
+    set_type & unique_groups,
+    int current_node
+);
 
 //find moves that improve modularity
 move_list
-positive_moves(set_type & unique_groups, map_type & mod_c);
+positive_moves(
+    set_type & unique_groups,
+    map_type & mod_c
+);
 
 //move best move
 double
-move(group_index & g, int node, Eigen::SparseMatrix<double> mod);
+move(
+    group_index & g,
+    int node,
+    const Eigen::SparseMatrix<double>& mod
+);
 
 //move to random group with probability proportional to increase in modularity
 double
-moverandw(group_index & g, int node, Eigen::SparseMatrix<double> mod);
+moverandw(
+    group_index & g,
+    int node,
+    const Eigen::SparseMatrix<double>& mod
+);
 
 
 class metanet
@@ -243,10 +299,12 @@ class metanet
          Works only for undirected and unweighted networks.
     */
 
-    metanet(std::vector<Eigen::SparseMatrix<double>> a,
-            double gamma,
-            double omega,
-            bool ordered = false)
+    metanet(
+        const std::vector<Eigen::SparseMatrix<double>>& a,
+        double gamma,
+        double omega,
+        bool ordered = false
+    )
     {
 
         if (ordered)
@@ -269,7 +327,9 @@ class metanet
 
 
     Eigen::SparseMatrix<double>
-    get(int index)
+    get(
+        int index
+    )
     {
         std::list<int> ind = nodes(index);
 
@@ -282,20 +342,26 @@ class metanet
     }
 
     void
-    assign(std::vector<int> v)
+    assign(
+        const std::vector<int>& v
+    )
     {
         group = group_index(v);
         mod_reduced = std::vector<double>(group.n_groups, 0);
     }
 
     std::list<int>
-    nodes(int index)
+    nodes(
+        int index
+    ) const
     {
-        return group.groups[index];
+        return group.groups.at(index);
     }
 
     void
-    reduce(Eigen::SparseMatrix<double> mod)
+    reduce(
+        const Eigen::SparseMatrix<double>& mod
+    )
     {
         for (int i = 0; i < mod.outerSize(); i++)
         {
@@ -307,7 +373,8 @@ class metanet
     }
 
     Eigen::SparseMatrix<double>
-    ret()
+    ret(
+    )
     {
         Eigen::SparseMatrix<double> out(mod_reduced.size(), 1);
         std::vector<Eigen::Triplet<double>> tlist;
@@ -331,17 +398,22 @@ class metanet
 
   private:
     group_index group;
+
     std::vector<double> mod_reduced = std::vector<double>();
 
     Eigen::SparseMatrix<double> AA, K;
+
     double gamma, omega;
+
     int N;
+
     Eigen::MatrixXd kvec;
 
 
-
     Eigen::SparseMatrix<double>
-    ng_handle(int index)
+    ng_handle(
+        int index
+    ) const
     {
         Eigen::SparseMatrix<double> Acol = AA.col(index);
         Eigen::SparseMatrix<double> Kcol = K.col(index / N);
@@ -363,7 +435,9 @@ class metanet
     }
 
     Eigen::SparseMatrix<double>
-    supraK(std::vector<Eigen::SparseMatrix<double>> a)
+    supraK(
+        const std::vector<Eigen::SparseMatrix<double>>& a
+    )
     {
         Eigen::SparseMatrix<double> K = Eigen::SparseMatrix<double>(a[0].rows() * a.size(), a.size());
         std::vector<Eigen::Triplet<double>> tlist;
@@ -412,9 +486,9 @@ glouvain::fit(
 {
     // @todo check UNDIRECTED
     // @todo check ORDERED
-    bool ordered = false;
+    bool ordered = mnet->is_ordered();
 
-    double (*move_func)(group_index &, int, Eigen::SparseMatrix<double>);
+    double (*move_func)(group_index &, int, const Eigen::SparseMatrix<double>&);
 
     if ("moverandw" == m)
     {

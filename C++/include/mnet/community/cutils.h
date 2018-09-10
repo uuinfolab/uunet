@@ -24,13 +24,13 @@ class cutils
     	Pre : std::shared_ptr<M> is a non empty multilayer network
     	Post: a is a list of Matrixes that is the adjacency matrix of mnet.
     		Each matrix represents one layer
-    */
+
     template <typename M>
     static
     std::vector<Eigen::SparseMatrix<double> >
     ml_network2adj_matrix(
         const std::shared_ptr<M>& mnet
-    );
+    );*/
 
     /*
     	Use: MatrixXd m = sparse_sum(X, axis);
@@ -40,7 +40,10 @@ class cutils
     		it as a Matrix. Use it like this: m(i, 0) where 0 <= i <= X.rows()
     */
     static Eigen::MatrixXd
-    sparse_sum(Eigen::SparseMatrix<double> X, int axis);
+    sparse_sum(
+        const Eigen::SparseMatrix<double>& X,
+        int axis
+    );
 
     /*
     	Use: std::vector<int> u = cutils::unique(std::vector<int> y);
@@ -56,7 +59,10 @@ class cutils
     		the contents of x are randomly shuffled
     */
     static std::vector<int>
-    range(size_t size, bool randomize);
+    range(
+        size_t size,
+        bool randomize
+    );
 
     /*
     	Use: CommunityStructureSharedPtr c = cutils::nodes2communities(mnet, nodes2cid);
@@ -108,7 +114,12 @@ class cutils
     			Diagonal blocks of the matrix are adjacency matrices from a, also known as inter-layer edges. Off-diagonal blocks are the intra-layer edges connecting the same node across the layers. use_node_degrees will set node degree as intra-layer edge weight on the off-diagonal block. use_self_loop sets eps on the main diagonal, which is a self loop for every node.
     */
     static Eigen::SparseMatrix<double>
-    supraA(std::vector<Eigen::SparseMatrix<double>> a, double eps, bool use_node_degrees, bool use_self_loop);
+    supraA(
+        const std::vector<Eigen::SparseMatrix<double>>& a,
+        double eps,
+        bool use_node_degrees,
+        bool use_self_loop
+    );
 
 
     /*
@@ -119,7 +130,12 @@ class cutils
      Diagonal blocks of the matrix are adjacency matrices from a, also known as inter-layer edges. Off-diagonal blocks are the intra-layer edges connecting the same node across the layers. use_node_degrees will set node degree as intra-layer edge weight on the off-diagonal block. use_self_loop sets eps on the main diagonal, which is a self loop for every node.
      */
     static Eigen::SparseMatrix<double>
-    ordered_supraA(std::vector<Eigen::SparseMatrix<double>> a, double eps, bool use_node_degrees, bool use_self_loop);
+    ordered_supraA(
+        const std::vector<Eigen::SparseMatrix<double>>& a,
+        double eps,
+        bool use_node_degrees,
+        bool use_self_loop
+    );
 
     /*
     	Use: Eigen::SparseMatrix<double> diag = cutils::block_diag(a, eps);
@@ -128,7 +144,10 @@ class cutils
     	Post: Returns a symmetric N * L * N * L matrix where N is the number of actors and L is the number layers. Diagonal blocks are the intra-layuer edges.
     */
     static Eigen::SparseMatrix<double>
-    block_diag(std::vector<Eigen::SparseMatrix<double>> a, double eps);
+    block_diag(
+        const std::vector<Eigen::SparseMatrix<double>>& a,
+        double eps
+    );
 
 };
 
@@ -277,7 +296,7 @@ cutils::actors2communities(std::shared_ptr<M> mnet, std::vector<unsigned int> ac
 Eigen::SparseMatrix<double>
 modularity_matrix(
     double& twom,
-    std::vector<Eigen::SparseMatrix<double>> a,
+    const std::vector<Eigen::SparseMatrix<double>>& a,
     double gamma,
     double omega,
     bool ordered = false

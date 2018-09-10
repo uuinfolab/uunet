@@ -11,11 +11,12 @@ namespace net {
 OrderedMultiplexNetwork::
 OrderedMultiplexNetwork(
     const std::string& name,
+    MultilayerNetworkType t,
     std::unique_ptr<VertexStore> v,
     std::unique_ptr<VertexOverlappingOrderedLayerStore<SimpleGraph>> l,
     std::unique_ptr<EmptyEdgeStore> e
 ) :
-    super(name, std::move(v), std::move(l), std::move(e))
+    super(name, t, std::move(v), std::move(l), std::move(e))
 {
 }
 
@@ -63,9 +64,12 @@ create_ordered_multiplex_network(
     auto ls = std::make_unique<VertexOverlappingOrderedLayerStore<SimpleGraph>>();
     auto es = std::make_unique<EmptyEdgeStore>();
 
+    MultilayerNetworkType t;
+    t.is_ordered = true;
+
     // Add observers @todo
 
-    return std::make_unique<OrderedMultiplexNetwork>(name, std::move(vs), std::move(ls), std::move(es));
+    return std::make_unique<OrderedMultiplexNetwork>(name, t, std::move(vs), std::move(ls), std::move(es));
 
 }
 

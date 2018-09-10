@@ -11,11 +11,12 @@ namespace net {
 AttributedMultiplexNetwork::
 AttributedMultiplexNetwork(
     const std::string& name,
+    MultilayerNetworkType t,
     std::unique_ptr<AttributedVertexStore<Attributes<Vertex, UserDefinedAttrs<Vertex>>>> v,
     std::unique_ptr<VertexOverlappingLayerStore<AttributedSimpleGraph>> l,
     std::unique_ptr<EmptyEdgeStore> e
 ) :
-    super(name, std::move(v), std::move(l), std::move(e))
+    super(name, t, std::move(v), std::move(l), std::move(e))
 {
 }
 
@@ -67,9 +68,12 @@ create_attributed_multiplex_network(
     auto ls = std::make_unique<VertexOverlappingLayerStore<AttributedSimpleGraph>>();
     auto es = std::make_unique<EmptyEdgeStore>();
 
+
+    MultilayerNetworkType t;
+
     // Add observers @todo
 
-    return std::make_unique<AttributedMultiplexNetwork>(name, std::move(vs), std::move(ls), std::move(es));
+    return std::make_unique<AttributedMultiplexNetwork>(name, t, std::move(vs), std::move(ls), std::move(es));
 
 }
 

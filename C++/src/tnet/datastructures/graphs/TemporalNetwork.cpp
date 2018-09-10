@@ -10,6 +10,26 @@
 namespace uu {
 namespace net {
 
+TemporalNetwork::
+TemporalNetwork(
+    const std::string& name,
+    GraphType t,
+    std::unique_ptr<VertexStore> v,
+    std::unique_ptr<TemporalMultiEdgeStore> e
+) : super(name, t, std::move(v), std::move(e)) {}
+
+std::string
+TemporalNetwork::
+summary(
+) const
+{
+    std::string summary =
+        "Temporal Network (" +
+        vertices_->summary() + ", " +
+        edges_->summary() + ")";
+    return summary;
+}
+
 std::unique_ptr<TemporalNetwork>
 create_temporal_network(
     const std::string& name,

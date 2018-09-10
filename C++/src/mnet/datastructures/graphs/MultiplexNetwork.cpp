@@ -11,11 +11,12 @@ namespace net {
 MultiplexNetwork::
 MultiplexNetwork(
     const std::string& name,
+    MultilayerNetworkType t,
     std::unique_ptr<VertexStore> v,
     std::unique_ptr<VertexOverlappingLayerStore<SimpleGraph>> l,
     std::unique_ptr<EmptyEdgeStore> e
 ) :
-    super(name, std::move(v), std::move(l), std::move(e))
+    super(name, t, std::move(v), std::move(l), std::move(e))
 {
 }
 
@@ -65,7 +66,10 @@ create_multiplex_network(
 
     // Add observers @todo
 
-    return std::make_unique<MultiplexNetwork>(name, std::move(vs), std::move(ls), std::move(es));
+
+    MultilayerNetworkType t;
+
+    return std::make_unique<MultiplexNetwork>(name, t, std::move(vs), std::move(ls), std::move(es));
 
 }
 

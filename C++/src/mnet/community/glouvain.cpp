@@ -5,7 +5,11 @@ namespace uu {
 namespace net {
 
 set_type
-possible_moves(group_index & g, int node, Eigen::SparseMatrix<double> mod)
+possible_moves(
+    group_index & g,
+    int node,
+    const Eigen::SparseMatrix<double>& mod
+)
 {
     set_type unique_groups(g.n_groups);
     unique_groups.insert(g.nodes[node]);
@@ -27,7 +31,12 @@ possible_moves(group_index & g, int node, Eigen::SparseMatrix<double> mod)
 
 //calculates changes in modularity for sparse modularity matrix
 map_type
-mod_change(group_index & g, Eigen::SparseMatrix<double> mod, set_type & unique_groups, int current_node)
+mod_change(
+    group_index & g,
+    const Eigen::SparseMatrix<double>& mod,
+    set_type & unique_groups,
+    int current_node
+)
 {
     int current_group = g.nodes[current_node];
     map_type mod_c;
@@ -63,7 +72,10 @@ mod_change(group_index & g, Eigen::SparseMatrix<double> mod, set_type & unique_g
 
 //find moves that improve modularity
 move_list
-positive_moves(set_type & unique_groups, map_type & mod_c)
+positive_moves(
+    set_type & unique_groups,
+    map_type & mod_c
+)
 {
     move_list moves;
 
@@ -81,7 +93,11 @@ positive_moves(set_type & unique_groups, map_type & mod_c)
 
 //move best move
 double
-move(group_index & g, int node, Eigen::SparseMatrix<double> mod)
+move(
+    group_index & g,
+    int node,
+    const Eigen::SparseMatrix<double>& mod
+)
 {
     set_type unique_groups = possible_moves(g, node, mod);
     map_type mod_c = mod_change(g, mod, unique_groups, node);
@@ -110,11 +126,17 @@ move(group_index & g, int node, Eigen::SparseMatrix<double> mod)
 
 // Random engine used for random movement function, moverandw
 std::default_random_engine
-generator((unsigned int)time(0));
+generator(
+    (unsigned int)time(0)
+);
 
 //move to random group with probability proportional to increase in modularity
 double
-moverandw(group_index & g, int node, Eigen::SparseMatrix<double> mod)
+moverandw(
+    group_index & g,
+    int node,
+    const Eigen::SparseMatrix<double>& mod
+)
 {
     set_type unique_groups = possible_moves(g, node, mod);
     map_type mod_c = mod_change(g, mod, unique_groups, node);
@@ -139,7 +161,10 @@ moverandw(group_index & g, int node, Eigen::SparseMatrix<double> mod)
 ///
 
 std::vector<int>
-glouvain::mapV2I(std::vector<int> a, std::vector<int> b)
+glouvain::mapV2I(
+    const std::vector<int>& a,
+    const std::vector<int>& b
+) const
 {
     std::vector<int> v(b.size());
 
@@ -152,7 +177,11 @@ glouvain::mapV2I(std::vector<int> a, std::vector<int> b)
 }
 
 double
-glouvain::Q(Eigen::SparseMatrix<double> M, std::vector<int> y, double twoum)
+glouvain::Q(
+    const Eigen::SparseMatrix<double>& M,
+    const std::vector<int>& y,
+    double twoum
+) const
 {
     Eigen::SparseMatrix<double> P(y.size(), y.size());
 
@@ -170,7 +199,11 @@ glouvain::Q(Eigen::SparseMatrix<double> M, std::vector<int> y, double twoum)
 
 
 double
-glouvain::Q_handle(metanet meta, std::vector<int> y, double twoum)
+glouvain::Q_handle(
+    metanet& meta,
+    const std::vector<int>& y,
+    double twoum
+)
 {
     Eigen::SparseMatrix<double> P(y.size(), y.size());
 
@@ -197,7 +230,10 @@ glouvain::Q_handle(metanet meta, std::vector<int> y, double twoum)
 
 
 Eigen::SparseMatrix<double>
-glouvain::metanetwork(Eigen::SparseMatrix<double> B, std::vector<int> S2)
+glouvain::metanetwork(
+    const Eigen::SparseMatrix<double>& B,
+    const std::vector<int>& S2
+) const
 {
     Eigen::SparseMatrix<double> PP(B.rows(), *std::max_element(S2.begin(), S2.end()) + 1);
     PP.reserve(B.rows());

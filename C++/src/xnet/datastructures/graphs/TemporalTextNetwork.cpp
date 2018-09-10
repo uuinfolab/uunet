@@ -12,11 +12,12 @@ namespace net {
 TemporalTextNetwork::
 TemporalTextNetwork(
     const std::string& name,
+    MultilayerNetworkType t,
     std::unique_ptr<UnionVertexStore> v,
     std::unique_ptr<VertexDisjointLayerStore<TextGraph, AttributedSimpleGraph>> l,
     std::unique_ptr<TemporalInterlayerEdgeStore<2>> e
 ) :
-    super(name, std::move(v), std::move(l), std::move(e))
+    super(name, t, std::move(v), std::move(l), std::move(e))
 {
 }
 
@@ -106,8 +107,12 @@ create_temporal_text_network(
 
     std::unique_ptr<TemporalTextNetwork> net;
 
+
+    MultilayerNetworkType t;
+
     net = std::make_unique<TemporalTextNetwork>(
               name,
+              t,
               std::move(vs),
               std::move(ls),
               std::move(es));

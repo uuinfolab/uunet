@@ -37,6 +37,7 @@ class
 
     AttributedMultiplexNetwork(
         const std::string& name,
+        MultilayerNetworkType t,
         std::unique_ptr<AttributedVertexStore<Attributes<Vertex, UserDefinedAttrs<Vertex>>>> v,
         std::unique_ptr<VertexOverlappingLayerStore<AttributedSimpleGraph>> l,
         std::unique_ptr<EmptyEdgeStore> e
