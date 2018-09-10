@@ -47,12 +47,17 @@ to_ordered_multiplex(
 
     auto max_time = tnet->edges()->attr()->get_max_time().value;
     auto min_time = tnet->edges()->attr()->get_min_time().value;
-    auto split_time = (max_time - min_time) / num_partitions;
+    //auto max_t_time = std::chrono::system_clock::to_time_t(max_time);
+    //auto min_t_time = std::chrono::system_clock::to_time_t(min_time);
+    auto split_time = (max_time - min_time) / (float)num_partitions;
 
     for (auto e : *tnet->edges())
     {
-        auto t = tnet->edges()->attr()->get_time(e).value;
-        size_t idx = ((t - min_time) / split_time);
+        auto t = tnet->edges()->attr()->get_time(e);
+        if (t.null)
+            continue;
+        
+        size_t idx = ((t.value - min_time) / split_time);
 
         if (idx == num_partitions)
         {

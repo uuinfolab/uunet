@@ -3,6 +3,7 @@
  * - 2018.03.09 file created, following a restructuring of the previous library.
  */
 
+#include <regex>
 #include "tnet/io/read_temporal_network.h"
 #include "core/exceptions/DuplicateElementException.h"
 #include "core/exceptions/WrongParameterException.h"
@@ -107,7 +108,17 @@ read_edge(
 
     auto edge = g->edges()->add(vertex1,vertex2);
 
-    g->edges()->attr()->set_time(edge, core::to_time(time));
+    
+    // if time is an integer, it is interpreted as seconds since epoch.
+    if (std::regex_match(time, std::regex("(\\+|-)?[[:digit:]]+")))
+    {
+        g->edges()->attr()->set_time(edge, core::epoch_to_time(time));
+    }
+    // otherwise a data-time string is expected
+    else
+    {
+        g->edges()->attr()->set_time(edge, core::to_time(time));
+    }
 
 }
 
