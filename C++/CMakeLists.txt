@@ -25,6 +25,8 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
+
 # Choosing compiler (clang has preference).
 if (CMAKE_CXX_COMPILER MATCHES ".*clang.*" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   set (CMAKE_COMPILER_IS_CLANGXX 1)
@@ -90,10 +92,16 @@ add_library (uunet SHARED ${SOURCES} ${PROBE_PATH})
 
 TARGET_LINK_LIBRARIES(uunet ${META_FILES})
 
+install(DIRECTORY "include/" # source directory
+        DESTINATION "include/libuunet" # target directory
+        FILES_MATCHING # install only matched files
+        PATTERN "*.h" # select header files
+)
+
 install (TARGETS uunet
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
-  ARCHIVE DESTINATION lib)
+  PUBLIC_HEADER DESTINATION include)
 
 # Generate tests only during Debug.
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
