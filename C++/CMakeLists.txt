@@ -98,6 +98,24 @@ install(DIRECTORY "include/" # source directory
         PATTERN "*.h" # select header files
 )
 
+install(DIRECTORY "ext/eigen3/" # source directory
+        DESTINATION "include/eigen3" # target directory
+        FILES_MATCHING # install only matched files
+        PATTERN "*" # select header files
+)
+
+install(DIRECTORY "ext/spectra" # source directory
+        DESTINATION "include/spectra" # target directory
+        FILES_MATCHING # install only matched files
+        PATTERN "*.h" # select header files
+)
+
+install(DIRECTORY "ext/eclat/" # source directory
+        DESTINATION "include/eclat" # target directory
+        FILES_MATCHING # install only matched files
+        PATTERN "*" # select header files
+)
+
 install (TARGETS uunet
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
