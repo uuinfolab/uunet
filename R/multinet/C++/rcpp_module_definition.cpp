@@ -1,9 +1,8 @@
 #include <Rcpp.h>
-#include "multinet.h"
 #include "r_functions.h"
 
 using namespace Rcpp;
-using namespace mlnet;
+//using namespace mlnet;
 
 //namespace mlnet {
 //class MLNetwork;
@@ -34,11 +33,8 @@ RCPP_EXPOSED_CLASS(REvolutionModel)
 }*/
 
 
-
-//void show_global_vertex(global_vertex_id& gvid) {Rcout << "(vertex_id: " << gvid.vid << ", network_id: " << gvid.network << ")";}
-//void show_network(Network* net) {Rcout << "network [" << (net->isNamed()?"named,":"unnamed,") << (net->isDirected()?"directed,":"undirected,") << (net->isWeighted()?"weigthed":"unweighted") << "] (vertexes: " << net->getNumVertexes() << ", edges: " << net->getNumEdges() << ")" << std::endl;}
-void show_multilayer_network(RMLNetwork *mnet) {Rcout << mnet->get_mlnet()->to_string() << std::endl;}
-void show_evolution_model(REvolutionModel *evm) {Rcout << evm->description() << std::endl;}
+void show_multilayer_network(RMLNetwork *mnet) {Rcpp::Rcout << mnet->get_mlnet()->summary() << std::endl;}
+//void show_evolution_model(REvolutionModel *evm) {Rcpp::Rcout << evm->description() << std::endl;}
 
 RCPP_MODULE(multinet){
 
@@ -46,21 +42,11 @@ RCPP_MODULE(multinet){
 	.method("name", &RMLNetwork::name, "name of the multilayer network" )
     .method("show", &show_multilayer_network);
 
-    //class_<MLNetworkSharedPtr>("MLNetworkPtr");
-
+    /***
     class_<REvolutionModel>("REvolutionModel")
     .method("show", &show_evolution_model);
-
-    /*
-    class_<EvolutionModel>("EvolutionModel");
-    class_<BAEvolutionModel>("BAEvolutionModel")
-    .derives<EvolutionModel>("EvolutionModel")
-    .constructor<int,int>();
-    class_<UniformEvolutionModel>("UniformEvolutionModel")
-    .derives<EvolutionModel>("EvolutionModel")
-    .constructor<int>();
      */
-
+    
     /******************************/
     /* CREATION AND STORAGE       */
     /******************************/
@@ -69,6 +55,8 @@ RCPP_MODULE(multinet){
 
     // OTHER FUNCTIONS TO CREATE MLNETWORKS FROM THE LITERATURE (E.G., AUCS) ARE DEFINED IN functions.R
 
+    /***
+     
     // Generation
     function("evolution.pa.ml", &ba_evolution_model, List::create( _["m0"], _["m"]), "Creates a layer evolutionary model based on preferential attachment"); // TODO
     function("evolution.er.ml", &er_evolution_model, List::create( _["n"]), "Creates a layer evolutionary model based on random edge creation, as in the ER model"); // TODO
@@ -77,11 +65,16 @@ RCPP_MODULE(multinet){
     // IO
     function("read.ml", &readMultilayer, List::create( _["file"], _["name"]="unnamed", _["sep"]=',', _["aligned"]=false), "Reads a multilayer network from a file");
     function("write.ml", &writeMultilayer, List::create( _["mlnetwork"], _["file"], _["format"]="multilayer", _["layers"]=CharacterVector(), _["sep"]=',', _["merge.actors"]=true, _["all.actors"]=false), "Writes a multilayer network to a file");
-
+     
+     */
+    
     /**************************************/
     /* INFORMATION ON MULTILAYER NETWORKS */
     /**************************************/
 
+    
+    /***
+     
     function("layers.ml", &layers, List::create( _["mlnetwork"]), "Returns the list of layers in the input multilayer network");
     function("actors.ml", &actors, List::create( _["mlnetwork"], _["layers"]=CharacterVector()), "Returns the list of actors present in the input layers, or in the whole multilayer network if no layers are specified");
     function("nodes.ml", &nodes, List::create( _["mlnetwork"], _["layers"]=CharacterVector()), "Returns the list of nodes in the input layers, or in the whole multilayer network if no layers are specified");
@@ -157,6 +150,9 @@ RCPP_MODULE(multinet){
     function("get.community.list.ml", &to_list, List::create( _["comm.struct"], _["mlnetwork"]), "Converts a community structure (data frame) into a list of communities, layer by layer");
     
     //function("sir.ml", &sir_ml, List::create( _["mlnetwork"], _["beta"], _["tau"], _["num_iterations"] = 1000), "Executes a SIR spreading process, returning the number of nodes in each status at each iteration");
+     
+     */
+    
 }
 
 

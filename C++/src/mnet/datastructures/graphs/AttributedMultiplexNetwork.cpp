@@ -77,6 +77,28 @@ create_attributed_multiplex_network(
 
 }
 
+    
+    std::shared_ptr<AttributedMultiplexNetwork>
+    create_shared_attributed_multiplex_network(
+                                        const std::string& name
+                                        )
+    {
+        
+        using VA = Attributes<Vertex, UserDefinedAttrs<Vertex>>;
+        auto v_attr = std::make_unique<VA>();
+        auto vs = std::make_unique<AttributedVertexStore<VA>>(std::move(v_attr));
+        
+        auto ls = std::make_unique<VertexOverlappingLayerStore<AttributedSimpleGraph>>();
+        auto es = std::make_unique<EmptyEdgeStore>();
+        
+        
+        MultilayerNetworkType t;
+        
+            // Add observers @todo
+        
+        return std::make_shared<AttributedMultiplexNetwork>(name, t, std::move(vs), std::move(ls), std::move(es));
+        
+    }
 }
 }
 

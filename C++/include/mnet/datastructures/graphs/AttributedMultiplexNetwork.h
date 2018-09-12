@@ -57,6 +57,16 @@ create_attributed_multiplex_network(
     const std::string& name
 );
 
+    
+    /**
+     * This is mainly intended for the integration with R, where unique_ptrs are not compatible with
+     * how Rcpp is implemented.
+     */
+    std::shared_ptr<AttributedMultiplexNetwork>
+    create_shared_attributed_multiplex_network(
+                                        const std::string& name
+                                        );
+    
 }
 }
 

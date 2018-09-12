@@ -1,9 +1,9 @@
 mkdir src
 cd src
-cp -r ../../multinet/include .
+cp -r ../../../C++/include .
 mkdir multinet
-cp -r ../../multinet/src/* multinet
-cp -r ../../multinet/lib/eclat .
+cp -r ../../../C++/src/* multinet
+cp -r ../../../C++/ext/eclat .
 #find * | grep cpp | sed 's/\//_/g' > f2
 #paste -d" " f1 f2 > f3
 #chmod +x f3
@@ -33,12 +33,12 @@ rm sources
 rm objects
 # copy external libraries
 mkdir lib
-cp -r ../../multinet/lib/eigen3 lib
-cp -r ../../multinet/lib/spectra lib
-cp -r ../../multinet/lib/dlib/dlib lib
+cp -r ../../../C++/ext/eigen3 lib
+# cp -r ../../C++/ext/spectra lib
+# cp -r ../../multinet/lib/dlib/dlib lib
 # copying the .h files from the eclat library
 mkdir lib/eclat
-find ../../multinet/lib/eclat* | grep "\\.h$" | sed 's/^/cp /g' | sed 's/$/ lib\/eclat/g' > f
+find ../../../C++/ext/eclat* | grep "\\.h$" | sed 's/^/cp /g' | sed 's/$/ lib\/eclat/g' > f
 chmod +x f
 ./f
 rm f

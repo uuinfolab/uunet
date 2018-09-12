@@ -9,22 +9,26 @@
 #include "r_functions.h"
 #include "rcpp_utils.h"
 
-using namespace mlnet;
+#include "mnet/datastructures/graphs/AttributedMultiplexNetwork.h"
+
 using namespace Rcpp;
 
 RCPP_EXPOSED_CLASS(RMLNetwork)
-RCPP_EXPOSED_CLASS(REvolutionModel)
-
-//RCPP_EXPOSED_CLASS(MLNetwork)
 //RCPP_EXPOSED_CLASS(REvolutionModel)
-//RCPP_EXPOSED_CLASS(BAEvolutionModel)
+
 
 // CREATION AND STORAGE
 
-RMLNetwork emptyMultilayer(const std::string& name) {
-    return RMLNetwork(MLNetwork::create(name));
+RMLNetwork
+emptyMultilayer(
+                const std::string& name
+                )
+{
+    return RMLNetwork(uu::net::create_shared_attributed_multiplex_network(name));
 }
 
+/*
+ 
 void renameMultilayer(RMLNetwork& rmnet, const std::string& new_name) {
     rmnet.get_mlnet()->name = new_name;
 }
@@ -1298,7 +1302,7 @@ DataFrame distance_ml(const RMLNetwork& rmnet, const std::string& from_actor, co
     return 0;
 }
 
-/*
+/   *
  NumericMatrix sir_ml(const RMLNetwork& rmnet, double beta, int tau, long num_iterations) {
  MLNetworkSharedPtr mnet = rmnet.get_mlnet();
  matrix<long> stats = sir(mnet, beta, tau, num_iterations);
@@ -1318,7 +1322,7 @@ DataFrame distance_ml(const RMLNetwork& rmnet, const std::string& from_actor, co
  }
  }
  return res;
- }*/
+ } ///////
 
 // COMMUNITY DETECTION
 
@@ -1487,4 +1491,6 @@ DataFrame circular_ml(const RMLNetwork& rmnet) {
     
     return nodes;
 }
+ 
+ */
 

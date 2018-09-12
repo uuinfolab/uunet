@@ -10,31 +10,40 @@
 #define _R_FUNCTIONS_H_
 
 #include <Rcpp.h>
-#include "multinet.h"
+#include "mnet/datastructures/graphs/AttributedMultiplexNetwork.h"
 #include <unordered_set>
 #include <vector>
+#include <memory>
 
 using namespace Rcpp;
-using namespace mlnet;
 
 class RMLNetwork
 {
   private:
-    MLNetworkSharedPtr ptr;
+    std::shared_ptr<uu::net::AttributedMultiplexNetwork> ptr;
+    
   public:
+    
     std::string
-    name() const
+    name(
+    ) const
     {
         return ptr->name;
     }
-    RMLNetwork(MLNetworkSharedPtr ptr) : ptr(ptr) {}
-    MLNetworkSharedPtr
+    
+    RMLNetwork(std::shared_ptr<uu::net::AttributedMultiplexNetwork> ptr) : ptr(ptr) {
+        // @todo check not null?
+    }
+    
+    uu::net::AttributedMultiplexNetwork*
     get_mlnet() const
     {
-        return ptr;
+        return ptr.get();
     }
+    
 };
 
+/*
 class REvolutionModel
 {
   private:
@@ -53,11 +62,16 @@ class REvolutionModel
         return ptr;
     }
 };
-
+*/
+ 
 // CREATION AND STORAGE
 
 RMLNetwork
-emptyMultilayer(const std::string& name);
+emptyMultilayer(
+    const std::string& name
+);
+
+/*
 void
 renameMultilayer(RMLNetwork& rmnet, const std::string& new_name);
 RMLNetwork
@@ -190,4 +204,6 @@ circular_ml(const RMLNetwork& mnet);
 // SPREADING
 // NumericMatrix sir_ml(const RMLNetwork& mnet, double beta, int tau, long num_iterations);
 
-#endif /* _R_FUNCTIONS_H_ */
+ */
+
+#endif

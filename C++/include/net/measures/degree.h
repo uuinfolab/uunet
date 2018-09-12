@@ -85,7 +85,7 @@ degree(
 );
 
 
-/** DEFINITIONS */
+// DEFINITIONS
 
 
 template<typename G>
