@@ -236,7 +236,7 @@ read_multilayer_metadata(
             {
                 int from_idx = 0;
                 core::Attribute edge_att = read_attr_def(fields, from_idx, csv.row_num());
-                meta.edge_attributes.push_back(edge_att);
+                meta.interlayer_edge_attributes.push_back(edge_att);
             }
 
             else if (fields.size()==3)

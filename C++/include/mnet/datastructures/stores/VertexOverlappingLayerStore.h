@@ -7,13 +7,15 @@
 
 #include <unordered_set>
 #include "core/datastructures/containers/LabeledUniquePtrSortedRandomSet.h"
+#include "core/datastructures/observers/Subject.h"
 
 namespace uu {
 namespace net {
 
 template <typename Graph>
 class VertexOverlappingLayerStore :
-    public core::LabeledUniquePtrSortedRandomSet<Graph>
+    public core::LabeledUniquePtrSortedRandomSet<Graph>,
+    public core::Subject<const Graph>
 {
 
 
@@ -26,7 +28,60 @@ class VertexOverlappingLayerStore :
     VertexOverlappingLayerStore()
     {}
 
+    using super::add;
+    using super::get;
+    using super::erase;
     using super::size;
+    using core::Subject<const Graph>::observers;
+
+
+    virtual
+    Graph *
+    add(
+        std::unique_ptr<Graph> g
+    ) override
+    {
+        core::assert_not_null(g.get(), "VertexOverlappingLayerStore::add", "g");
+
+        // Notify the observers.
+        for (auto obs: observers)
+        {
+            obs->notify_add(g.get());
+        }
+
+        return super::add(std::move(g));
+    }
+
+
+    virtual
+    bool
+    erase(
+        Graph * g
+    ) override
+    {
+        core::assert_not_null(g, "VertexOverlappingLayerStore::erase", "g");
+
+
+        // Notify the observers.
+        for (auto obs: observers)
+        {
+            obs->notify_erase(g);
+        }
+
+        return super::erase(g);
+    }
+
+    void
+    erase(
+        const Vertex* v
+    )
+    {
+        /*
+        for (auto g=begin(); g!=end(); ++g)
+        {
+            (*g)->vertices()->erase(v);
+        }*/
+    }
 
     std::string
     summary(

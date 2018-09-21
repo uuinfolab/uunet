@@ -24,6 +24,12 @@ class VertexOverlappingOrderedLayerStore :
 
   public:
 
+    using super1::size;
+    using super1::erase;
+    using super1::get;
+    using super2::begin;
+    using super2::end;
+
     VertexOverlappingOrderedLayerStore()
     {}
 
@@ -43,10 +49,10 @@ class VertexOverlappingOrderedLayerStore :
         size_t idx
     ) const;
 
-    using super1::size;
-    using super1::get;
-    using super2::begin;
-    using super2::end;
+    void
+    erase(
+        const Vertex* v
+    );
 
     std::string
     summary(
@@ -89,6 +95,20 @@ get_at_index(
 ) const
 {
     return super2::at(idx);
+}
+
+
+template <typename Graph>
+void
+VertexOverlappingOrderedLayerStore<Graph>::
+erase(
+    const Vertex* v
+)
+{
+    for (auto g=begin(); g!=end(); ++g)
+    {
+        (*g)->vertices()->erase(v);
+    }
 }
 
 }

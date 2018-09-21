@@ -9,6 +9,8 @@
 #include "tnet/io/read_temporal_network.h"
 #include "tnet/transformation/to_ordered_multiplex.h"
 #include "mnet/community/glouvain.h"
+#include "net/measures/basic"
+#include "net/community/normalized_mutual_information.h"
 
 int
 main()
@@ -75,6 +77,22 @@ main()
             std::cout << node.first->name << "@" << node.second->name << std::endl;
         }
     }
+
+    auto communities2 = uu::net::generalized_louvain<uu::net::OrderedMultiplexNetwork, uu::net::SimpleGraph>(sliced_net.get(), 1, 1, 100);
+
+    size_t num_vertices = 0;
+
+    for (auto layer: sliced_net->layers())
+    {
+        num_vertices += uu::net::order(layer);
+    }
+
+    std::cout << "NMI: " << uu::net::normalized_mutual_information(
+                  communities,
+                  communities2,
+                  num_vertices
+              )
+              << std::endl;
 
     return 0;
 }

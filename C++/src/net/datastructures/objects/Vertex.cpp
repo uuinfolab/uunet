@@ -7,7 +7,7 @@ Vertex::
 Vertex(
     const std::string& name
 ) :
-    NamedObject(name)
+    NamedObject(name), key(name)
 {
 }
 
@@ -15,7 +15,7 @@ Vertex(
 std::shared_ptr<const Vertex>
 Vertex::
 create(
-    const std::string& name
+    const key_type& name
 )
 {
     return std::make_shared<const Vertex>(name);

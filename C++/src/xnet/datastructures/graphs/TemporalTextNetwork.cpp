@@ -99,7 +99,7 @@ create_temporal_text_network(
 
     using LS = VertexDisjointLayerStore<TextGraph, AttributedSimpleGraph>;
 
-    std::unique_ptr<TextGraph> g1 = create_text_graph("messages");
+    std::unique_ptr<TextGraph> g1 = create_text_graph("messages", EdgeDir::DIRECTED);
     std::unique_ptr<AttributedSimpleGraph> g2 = create_attributed_simple_graph("actors");
     auto ls = std::make_unique<LS>(std::move(g1), std::move(g2));
 

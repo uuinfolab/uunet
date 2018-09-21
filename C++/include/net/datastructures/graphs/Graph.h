@@ -180,6 +180,7 @@ Graph(
         throw core::WrongParameterException("incompatible graph type directionality and edge store directionality");
     }
 
+
     // register an observer to propagate the removal of vertices to the edge store
     auto obs1 = std::make_unique<PropagateObserver<E, const Vertex>>(edges());
     vertices()->attach(obs1.get());
@@ -189,6 +190,7 @@ Graph(
     auto obs2 = std::make_unique<AdjVertexCheckObserver<V>>(vertices());
     edges()->attach(obs2.get());
     register_observer(std::move(obs2));
+
 }
 
 template<typename V, typename E>

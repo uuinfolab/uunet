@@ -10,7 +10,7 @@
 #define _R_FUNCTIONS_H_
 
 #include <Rcpp.h>
-#include "mnet/datastructures/graphs/AttributedMultiplexNetwork.h"
+#include "mnet/datastructures/graphs/AttributedHomogeneousMultilayerNetwork.h"
 #include <unordered_set>
 #include <vector>
 #include <memory>
@@ -20,27 +20,28 @@ using namespace Rcpp;
 class RMLNetwork
 {
   private:
-    std::shared_ptr<uu::net::AttributedMultiplexNetwork> ptr;
-    
+    std::shared_ptr<uu::net::AttributedHomogeneousMultilayerNetwork> ptr;
+
   public:
-    
+
     std::string
     name(
     ) const
     {
         return ptr->name;
     }
-    
-    RMLNetwork(std::shared_ptr<uu::net::AttributedMultiplexNetwork> ptr) : ptr(ptr) {
+
+    RMLNetwork(std::shared_ptr<uu::net::AttributedHomogeneousMultilayerNetwork> ptr) : ptr(ptr)
+    {
         // @todo check not null?
     }
-    
-    uu::net::AttributedMultiplexNetwork*
+
+    uu::net::AttributedHomogeneousMultilayerNetwork*
     get_mlnet() const
     {
         return ptr.get();
     }
-    
+
 };
 
 /*
@@ -63,13 +64,16 @@ class REvolutionModel
     }
 };
 */
- 
+
 // CREATION AND STORAGE
+
 
 RMLNetwork
 emptyMultilayer(
     const std::string& name
 );
+
+
 
 /*
 void
@@ -86,6 +90,7 @@ er_evolution_model(int n);
 RMLNetwork
 growMultiplex(int num_actors, long num_of_steps, const GenericVector& evolution_model, const NumericVector& pr_internal_event, const NumericVector& pr_external_event, const NumericMatrix& dependency);
 
+ */
 // INFORMATION ON NETWORKS
 
 CharacterVector
@@ -100,21 +105,22 @@ edges(const RMLNetwork& mnet, const CharacterVector& layer_names1, const Charact
 DataFrame
 edges_idx(const RMLNetwork& rmnet);
 
-int
+size_t
 numLayers(const RMLNetwork& mnet);
-long
+size_t
 numActors(const RMLNetwork& mnet, const CharacterVector& layers);
-long
+size_t
 numNodes(const RMLNetwork& mnet, const CharacterVector& layers);
-long
+size_t
 numEdges(const RMLNetwork& mnet, const CharacterVector& layer_names1, const CharacterVector& layer_names2);
 DataFrame
 isDirected(const RMLNetwork& mnet, const CharacterVector& layer_names1, const CharacterVector& layer_names2);
-
+/*
 std::unordered_set<std::string>
 actor_neighbors(const RMLNetwork& rmnet, const std::string& actor_name, const CharacterVector& layer_names, const std::string& mode_name);
 std::unordered_set<std::string>
 actor_xneighbors(const RMLNetwork& rmnet, const std::string& actor_name, const CharacterVector& layer_names, const std::string& mode_name);
+
 
 // NETWORK MANIPULATION
 

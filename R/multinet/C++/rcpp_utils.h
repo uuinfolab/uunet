@@ -17,57 +17,57 @@
 #include "net/datastructures/objects/Edge.h"
 #include "net/datastructures/graphs/AttributedSimpleGraph.h"
 #include "mnet/community/VertexLayerCommunity.h"
-#include "mnet/datastructures/graphs/AttributedMultiplexNetwork.h"
+#include "mnet/datastructures/graphs/AttributedHomogeneousMultilayerNetwork.h"
 #include "r_functions.h"
 
-std::vector<const uu::net::AttributedSimpleGraph*>
+std::vector<uu::net::AttributedSimpleGraph*>
 resolve_layers(
-               const uu::net::AttributedMultiplexNetwork* mnet,
-               const Rcpp::CharacterVector& names
-               );
+    const uu::net::AttributedHomogeneousMultilayerNetwork* mnet,
+    const Rcpp::CharacterVector& names
+);
 
-std::unordered_set<const uu::net::AttributedSimpleGraph*>
+std::unordered_set<uu::net::AttributedSimpleGraph*>
 resolve_layers_unordered(
-                         const uu::net::AttributedMultiplexNetwork* mnet,
-                         const Rcpp::CharacterVector& names
-                         );
+    const uu::net::AttributedHomogeneousMultilayerNetwork* mnet,
+    const Rcpp::CharacterVector& names
+);
 
 std::vector<const uu::net::Vertex*>
 resolve_actors(
-               const uu::net::AttributedMultiplexNetwork* mnet,
-               const Rcpp::CharacterVector& names
-               );
+    const uu::net::AttributedHomogeneousMultilayerNetwork* mnet,
+    const Rcpp::CharacterVector& names
+);
 
 std::unordered_set<const uu::net::Vertex*>
 resolve_actors_unordered(
-                         const uu::net::AttributedMultiplexNetwork* mnet,
-                         const Rcpp::CharacterVector& names
-                         );
+    const uu::net::AttributedHomogeneousMultilayerNetwork* mnet,
+    const Rcpp::CharacterVector& names
+);
 
 /*
 std::vector<NodeSharedPtr>
 resolve_nodes(
-              const uu::net::AttributedMultiplexNetwork* mnet,
+              const uu::net::AttributedHomogeneousMultilayerNetwork* mnet,
               const Rcpp::DataFrame& node_matrix
               );
 */
 
 std::vector<const uu::net::Edge*>
 resolve_edges(
-              const uu::net::AttributedMultiplexNetwork* mnet,
-              const Rcpp::DataFrame& edge_matrix
-              );
+    const uu::net::AttributedHomogeneousMultilayerNetwork* mnet,
+    const Rcpp::DataFrame& edge_matrix
+);
 
 
 uu::net::EdgeMode
 resolve_mode(
-             std::string mode
-             );
+    std::string mode
+);
 
 Rcpp::DataFrame
 to_dataframe(
-        uu::net::CommunityStructure<uu::net::VertexLayerCommunity<uu::net::AttributedSimpleGraph>> cs
-        );
+    uu::net::CommunityStructure<uu::net::VertexLayerCommunity<uu::net::AttributedSimpleGraph>> cs
+);
 
 
 #endif

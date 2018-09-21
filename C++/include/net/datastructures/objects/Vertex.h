@@ -25,6 +25,8 @@ class
 
   public:
 
+    typedef std::string key_type;
+
     /** Constructor. */
     Vertex(
         const std::string& name
@@ -33,13 +35,16 @@ class
     static
     std::shared_ptr<const Vertex>
     create(
-        const std::string& name
+        const key_type& name
     );
+
 
     /** Output function, presenting a complete description of the vertex. */
     std::string
     to_string(
     ) const;
+
+    const key_type key;
 
 };
 

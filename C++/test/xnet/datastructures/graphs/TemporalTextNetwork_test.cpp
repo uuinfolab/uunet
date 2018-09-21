@@ -39,6 +39,15 @@ TEST_F(mnet_datastructures_graphs_TemporalTextNetwork_test, creation)
 
     // Adding edges
 
+    // ... intra
+
+    net->messages()->edges()->add(m1, m2);
+
+    std::cout << "Message layer: " << std::endl;
+    std::cout << net->messages()->summary() << std::endl;
+
+    // ... inter
+
     net->interlayer_edges()->add(a1, m1);
     net->interlayer_edges()->add(m1, a2);
     net->interlayer_edges()->add(m1, a3);
