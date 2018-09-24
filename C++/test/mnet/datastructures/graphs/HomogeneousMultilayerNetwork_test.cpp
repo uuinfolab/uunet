@@ -19,6 +19,7 @@ class mnet_datastructures_graphs_HomogeneousMultilayerNetwork_test : public ::te
 TEST_F(mnet_datastructures_graphs_HomogeneousMultilayerNetwork_test, creation)
 {
 
+    /*
     // Creating an empty multiplex network
 
     auto net = uu::net::create_homogeneous_multilayer_network("a ml net");
@@ -57,6 +58,7 @@ TEST_F(mnet_datastructures_graphs_HomogeneousMultilayerNetwork_test, creation)
 
     // Uncomment to print a summary of the network
     //std::cout << net->summary() << std::endl;
+     */
 
 }
 
