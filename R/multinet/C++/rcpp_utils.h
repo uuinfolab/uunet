@@ -32,6 +32,12 @@ resolve_layers_unordered(
     const Rcpp::CharacterVector& names
 );
 
+std::unordered_set<const uu::net::AttributedSimpleGraph*>
+resolve_const_layers_unordered(
+                         const uu::net::AttributedHomogeneousMultilayerNetwork* mnet,
+                         const Rcpp::CharacterVector& names
+                         );
+
 std::vector<const uu::net::Vertex*>
 resolve_actors(
     const uu::net::AttributedHomogeneousMultilayerNetwork* mnet,

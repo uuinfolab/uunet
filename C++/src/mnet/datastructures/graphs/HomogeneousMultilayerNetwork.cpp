@@ -35,7 +35,7 @@ summary(
     }
 
 
-    size_t num_inter_edges = interlayer_edges()->size();
+    size_t num_inter_edges = edges()->size();
 
     /*
     for (auto layer1: *layers_)

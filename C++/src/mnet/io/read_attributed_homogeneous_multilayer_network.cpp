@@ -59,7 +59,7 @@ read_attributed_homogeneous_multilayer_network(
 
     for (auto attr: meta.interlayer_edge_attributes)
     {
-        net->interlayer_edges()->attr()->add(attr.name, attr.type);
+        net->edges()->attr()->add(attr.name, attr.type);
     }
 
     // Read data (vertices, edges, attribute values)
@@ -160,7 +160,7 @@ read_interlayer_edge(
     l1->vertices()->add(v1);
     l2->vertices()->add(v2);
 
-    ml->interlayer_edges()->add(v1,l1,v2,l2);
+    ml->edges()->add(v1,l1,v2,l2);
 
 }
 

@@ -78,6 +78,13 @@ class DynamicInterlayerEdgeStore:
     ) override = 0;
 
 
+    virtual
+    GenericObjectList<InterlayerEdge<V,L>>*
+    get(
+        const L* layer1,
+        const L* layer2
+        ) const;
+    
     /**
      * @brief Returns the nodes with an edge from/to the input vertex.
      * @param node pointer to the node.
@@ -141,7 +148,7 @@ class DynamicInterlayerEdgeStore:
 
 
     /** Edges */
-    std::unordered_map<const L*, std::unordered_map<const L*, core::SortedRandomSet<const InterlayerEdge<V,L>*>>> edges_;
+    std::unordered_map<const L*, std::unordered_map<const L*, std::unique_ptr<GenericObjectList<InterlayerEdge<V,L>>>>> edges_;
 
     /** Edge directionality */
     std::unordered_map<const L*, std::unordered_map<const L*, EdgeDir>> edge_directionality;
@@ -198,7 +205,8 @@ add(
         return nullptr;
     }
 
-    edges_.at(e->l1).at(e->l2).add(new_edge);
+    edges_.at(e->l1).at(e->l2)->add(new_edge);
+    edges_.at(e->l2).at(e->l1)->add(new_edge);
 
     if (sidx_neighbors_out[e->l1][e->l2].count(e->v1)==0)
     {
@@ -276,7 +284,18 @@ add(
     return new_edge;
 }
 
-
+    template <typename V, typename L>
+    GenericObjectList<InterlayerEdge<V,L>>*
+    DynamicInterlayerEdgeStore<V,L>::
+    get(
+        const L* layer1,
+        const L* layer2
+        ) const
+    {
+        core::assert_not_null(layer1, "neighbors", "layer1");
+        core::assert_not_null(layer2, "neighbors", "layer2");
+        return edges_.at(layer1).at(layer2).get();
+    }
 
 template <typename V, typename L>
 const

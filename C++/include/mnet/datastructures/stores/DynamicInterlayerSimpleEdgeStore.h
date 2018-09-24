@@ -24,6 +24,7 @@ class
     using super::super;
 
     using super::add;
+    using super::get;
     using super::neighbors;
     using super::is_directed;
     using super::attach;
@@ -196,6 +197,9 @@ erase(
         obs->notify_erase(edge);
     }
 
+    edges_[edge->l1][edge->l2]->erase(edge);
+    edges_[edge->l2][edge->l1]->erase(edge);
+    
     cidx_edge_by_vertexes[edge->l1][edge->l2][edge->v1].erase(edge->v2);
 
     sidx_neighbors_in[edge->l1][edge->l2][edge->v2]->erase(edge->v1);

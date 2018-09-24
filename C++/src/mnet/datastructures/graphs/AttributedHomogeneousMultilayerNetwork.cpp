@@ -35,7 +35,7 @@ summary(
     }
 
 
-    size_t num_inter_edges = interlayer_edges()->size();
+    size_t num_inter_edges = edges()->size();
 
     /*
     for (auto layer1: *layers_)
@@ -44,7 +44,7 @@ summary(
         {
             if (layer1<layer2)
             {
-                num_inter_edges += interlayer_edges()->get(layer1, layer2)->size();
+                num_inter_edges += edges()->get(layer1, layer2)->size();
             }
         }
     }
@@ -99,7 +99,7 @@ create_attributed_homogeneous_multilayer_network(
     register_observer(std::move(obs1));
 
     // register an observer to propagate the removal of vertices to the edge store
-    auto obs2 = std::make_unique<PropagateObserver<DynamicSimpleInterlayerEdgeStore, const Vertex>>(interlayer_edges());
+    auto obs2 = std::make_unique<PropagateObserver<DynamicSimpleInterlayerEdgeStore, const Vertex>>(edges());
     vertices()->attach(obs2.get());
     register_observer(std::move(obs2));
     */
@@ -154,7 +154,7 @@ create_shared_attributed_homogeneous_multilayer_network(
      register_observer(std::move(obs1));
 
      // register an observer to propagate the removal of vertices to the edge store
-     auto obs2 = std::make_unique<PropagateObserver<DynamicSimpleInterlayerEdgeStore, const Vertex>>(interlayer_edges());
+     auto obs2 = std::make_unique<PropagateObserver<DynamicSimpleInterlayerEdgeStore, const Vertex>>(edges());
      vertices()->attach(obs2.get());
      register_observer(std::move(obs2));
      */

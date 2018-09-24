@@ -95,7 +95,9 @@ RMLNetwork growMultiplex(int num_actors, long num_of_steps, const GenericVector&
 // INFORMATION ON NETWORKS
 
 CharacterVector
-layers(const RMLNetwork& rmnet)
+layers(
+       const RMLNetwork& rmnet
+       )
 {
     auto mnet = rmnet.get_mlnet();
     CharacterVector res(0);
@@ -109,7 +111,10 @@ layers(const RMLNetwork& rmnet)
 }
 
 CharacterVector
-actors(const RMLNetwork& rmnet, const CharacterVector& layer_names)
+actors(
+       const RMLNetwork& rmnet,
+       const CharacterVector& layer_names
+       )
 {
     CharacterVector actors(0);
     auto mnet = rmnet.get_mlnet();
@@ -141,7 +146,10 @@ actors(const RMLNetwork& rmnet, const CharacterVector& layer_names)
 }
 
 DataFrame
-nodes(const RMLNetwork& rmnet, const CharacterVector& layer_names)
+nodes(
+      const RMLNetwork& rmnet,
+      const CharacterVector& layer_names
+      )
 {
     auto mnet = rmnet.get_mlnet();
     auto layers = resolve_layers_unordered(mnet,layer_names);
@@ -166,7 +174,9 @@ nodes(const RMLNetwork& rmnet, const CharacterVector& layer_names)
 }
 
 DataFrame
-edges_idx(const RMLNetwork& rmnet)
+edges_idx(
+          const RMLNetwork& rmnet
+          )
 {
     auto mnet = rmnet.get_mlnet();
     NumericVector from, to, directed;
@@ -191,7 +201,11 @@ edges_idx(const RMLNetwork& rmnet)
 }
 
 DataFrame
-edges(const RMLNetwork& rmnet, const CharacterVector& layer_names1, const CharacterVector& layer_names2)
+edges(
+      const RMLNetwork& rmnet,
+      const CharacterVector& layer_names1,
+      const CharacterVector& layer_names2
+      )
 {
     auto mnet = rmnet.get_mlnet();
     std::vector<uu::net::AttributedSimpleGraph*> layers1 = resolve_layers(mnet,layer_names1);
@@ -214,39 +228,16 @@ edges(const RMLNetwork& rmnet, const CharacterVector& layer_names1, const Charac
     {
         for (auto layer2: layers2)
         {
-            if (layer1==layer2)
-            {
-                for (auto edge: *layer1->edges())
+            if (layer2<layer1) continue;
+            for (auto edge: *mnet->edges().get(layer1,layer2))
                 {
-                    from_a.push_back(edge->v1->name);
-                    from_l.push_back(layer1->name);
-                    to_a.push_back(edge->v2->name);
-                    to_l.push_back(layer1->name);
-                    directed.push_back((edge->dir==uu::net::EdgeDir::DIRECTED)?1:0);
-                }
-            }
-
-            else
-            {
-                if (layer1>layer2 && !mnet->interlayer_edges()->is_directed(layer1,layer2))
-                {
-                    continue;
-                }
-
-                for (auto edge: *mnet->interlayer_edges())
-                {
-                    if (edge->l1 != layer1 || edge->l2 != layer2)
-                    {
-                        continue;
-                    }
-
                     from_a.push_back(edge->v1->name);
                     from_l.push_back(layer1->name);
                     to_a.push_back(edge->v2->name);
                     to_l.push_back(layer2->name);
                     directed.push_back((edge->dir==uu::net::EdgeDir::DIRECTED)?1:0);
                 }
-            }
+            
         }
     }
 
@@ -254,14 +245,19 @@ edges(const RMLNetwork& rmnet, const CharacterVector& layer_names1, const Charac
 }
 
 size_t
-numLayers(const RMLNetwork& rmnet)
+numLayers(
+          const RMLNetwork& rmnet
+          )
 {
     auto mnet = rmnet.get_mlnet();
     return mnet->layers()->size();
 }
 
 size_t
-numActors(const RMLNetwork& rmnet, const CharacterVector& layer_names)
+numActors(
+          const RMLNetwork& rmnet,
+          const CharacterVector& layer_names
+          )
 {
     auto mnet = rmnet.get_mlnet();
 
@@ -285,7 +281,10 @@ numActors(const RMLNetwork& rmnet, const CharacterVector& layer_names)
 }
 
 size_t
-numNodes(const RMLNetwork& rmnet, const CharacterVector& layer_names)
+numNodes(
+         const RMLNetwork& rmnet,
+         const CharacterVector& layer_names
+         )
 {
     auto mnet = rmnet.get_mlnet();
     std::vector<uu::net::AttributedSimpleGraph*> layers = resolve_layers(mnet,layer_names);
@@ -300,11 +299,15 @@ numNodes(const RMLNetwork& rmnet, const CharacterVector& layer_names)
 }
 
 size_t
-numEdges(const RMLNetwork& rmnet, const CharacterVector& layer_names1, const CharacterVector& layer_names2)
+numEdges(
+         const RMLNetwork& rmnet,
+         const CharacterVector& layer_names1,
+         const CharacterVector& layer_names2
+         )
 {
     auto mnet = rmnet.get_mlnet();
-    std::vector<uu::net::AttributedSimpleGraph*> layers1 = resolve_layers(mnet,layer_names1);
-    std::vector<uu::net::AttributedSimpleGraph*> layers2;
+    std::unordered_set<const uu::net::AttributedSimpleGraph*> layers1 = resolve_const_layers_unordered(mnet,layer_names1);
+    std::unordered_set<const uu::net::AttributedSimpleGraph*> layers2;
 
     if (layer_names2.size()==0)
     {
@@ -313,28 +316,21 @@ numEdges(const RMLNetwork& rmnet, const CharacterVector& layer_names1, const Cha
 
     else
     {
-        layers2 = resolve_layers(mnet,layer_names2);
+        layers2 = resolve_const_layers_unordered(mnet,layer_names2);
     }
 
     size_t num_edges = 0;
 
 
+    
     for (auto layer1: layers1)
     {
         for (auto layer2: layers2)
         {
-            if (layer1==layer2)
-            {
-                num_edges += layer1->edges()->size();
-            }
-        }
-    }
-
-    for (auto edge: *mnet->interlayer_edges())
-    {
-        if (edge->l1 == layer1 && edge->l2 == layer2)
-        {
-            num_edges++;
+            if (layer2<layer1) continue;
+            
+            num_edges += mnet->edges().get(layer1,layer2)->size();
+            
         }
     }
 
@@ -375,7 +371,14 @@ isDirected(const RMLNetwork& rmnet, const CharacterVector& layer_names1, const C
 }
 
 /*
-std::unordered_set<std::string> actor_neighbors(const RMLNetwork& rmnet, const std::string& actor_name, const CharacterVector& layer_names, const std::string& mode_name) {
+std::unordered_set<std::string>
+actor_neighbors(
+                const RMLNetwork& rmnet,
+                const std::string& actor_name,
+                const CharacterVector& layer_names,
+                const std::string& mode_name
+                )
+{
 std::unordered_set<std::string> res_neighbors;
 auto mnet = rmnet.get_mlnet();
 auto actor = mnet->vertices()->get(actor_name);

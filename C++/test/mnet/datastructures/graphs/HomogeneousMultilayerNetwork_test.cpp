@@ -53,7 +53,7 @@ TEST_F(mnet_datastructures_graphs_HomogeneousMultilayerNetwork_test, creation)
 
     // interlayer edges
 
-    net->interlayer_edges()->add(v1, layer1, v2, layer3);
+    net->edges()->add(v1, layer1, v2, layer3);
 
     // Uncomment to print a summary of the network
     //std::cout << net->summary() << std::endl;

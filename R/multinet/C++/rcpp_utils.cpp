@@ -74,6 +74,42 @@ resolve_layers_unordered(
 }
 
 
+
+std::unordered_set<const uu::net::AttributedSimpleGraph*>
+resolve_const_layers_unordered(
+                         const uu::net::AttributedHomogeneousMultilayerNetwork* mnet,
+                         const Rcpp::CharacterVector& names
+                         )
+{
+    std::unordered_set<const uu::net::AttributedSimpleGraph*> res;
+    
+    if (names.size()==0)
+    {
+        for (auto layer: *mnet->layers())
+        {
+            res.insert(layer);
+        }
+    }
+    
+    else
+    {
+        for (int i=0; i<names.size(); ++i)
+        {
+            auto layer = mnet->layers()->get(std::string(names[i]));
+            
+            if (!layer)
+            {
+                Rcpp::stop("cannot find layer " + std::string(names[i]));
+            }
+            
+            res.insert(layer);
+        }
+    }
+    
+    return res;
+}
+
+
 std::vector<const uu::net::Vertex*>
 resolve_actors(
     const uu::net::AttributedHomogeneousMultilayerNetwork* mnet,
