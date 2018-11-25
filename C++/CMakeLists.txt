@@ -10,7 +10,6 @@ set (PROJECT_VENDOR 			"Matteo Magnani")
 set (PROJECT_CONTACT 			"matteo.magnani@it.uu.se")
 set (PROJECT_URL 				"https://bitbucket.org/uuinfolab/uunet")
 set (PROJECT_DESCRIPTION 		"Network analysis library")
-set (CMAKE_BUILD_TYPE 			"Debug")
 
 # Setting the project version
 file (READ						"${CMAKE_CURRENT_SOURCE_DIR}/VERSION" PROJECT_VERSION_FULL)
@@ -26,34 +25,55 @@ set (LIBRARY_VERSION_PATCH 		"${PROJECT_VERSION_PATCH}")
 set (LIBRARY_VERSION 			"${LIBRARY_VERSION_MAJOR}.${LIBRARY_VERSION_MINOR}")
 set (LIBRARY_VERSION_FULL 		"${LIBRARY_VERSION}.${LIBRARY_VERSION_PATCH}")
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-
-set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
+# Add aditional cmake scripts
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+enable_testing()
 
 # Choosing compiler (clang has preference).
 if (CMAKE_CXX_COMPILER MATCHES ".*clang.*" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   set (CMAKE_COMPILER_IS_CLANGXX 1)
 endif()
 
-# Setting flags.
-if (CMAKE_COMPILER_IS_GNUCXX)
-  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -march=native -mavx -std=c++14")
-  set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O2")
-  set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -O3 -ggdb -g3 -Wall -Wextra -fmessage-length=0 -funroll-loops -fno-omit-frame-pointer -DNDEBUG")
+# Choosing Debug as default building type.
+set(default_build_type "Release")
+
+if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+	message(STATUS "Setting build type to '${default_build_type}' as none was specified.")
+	set(CMAKE_BUILD_TYPE "${default_build_type}" CACHE STRING "Choose the type of build." FORCE)
+	
+	set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+endif()
+
+message (STATUS "Compiling as: " ${CMAKE_BUILD_TYPE})
+
+if(MSVC)
+    add_compile_options("/W4" "$<$<CONFIG:RELEASE>:/O2>")
 else()
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -stdlib=libc++")
-	set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O2")
-	set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -O3 -ggdb -g3 -Wall -Wall -fmessage-length=0 -funroll-loops -fno-omit-frame-pointer -D__extern_always_inline=\"extern __always_inline\" -DNDEBUG")
+	add_compile_options("$<$<CONFIG:RELEASE>:-O2>" "$<$<CONFIG:DEBUG>:-O3 -ggdb -g3 -Wall -Wextra -Werror>")
+    
+	if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+        add_compile_options("-stdlib=libc++")
+    else()
+        # nothing special for gcc at the moment
+    endif()
 endif()
 
-# Choosing Release as default building type.
-if (NOT CMAKE_BUILD_TYPE)
-	set (CMAKE_BUILD_TYPE Release ... FORCE)
-endif()
 
-message (STATUS "Compiling as: " ${CMAKE_BUILD_TYPE} )
+
+
+
+
+set (CMAKE_EXPORT_COMPILE_COMMANDS 1)
+#set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O2")
+
+# Setting flags.
+#if (CMAKE_COMPILER_IS_GNUCXX)
+#  set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -O3 -ggdb -g3 -Wall -Wextra -fmessage-length=0 -funroll-loops -fno-omit-frame-pointer -DNDEBUG")
+#else()
+#	set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -O3 -ggdb -g3 -Wall -Wall -fmessage-length=0 -funroll-loops -fno-omit-frame-pointer -D__extern_always_inline=\"extern __always_inline\" -DNDEBUG")
+#endif()
+
+
 
 # Include external libraries.
 include_directories (
@@ -92,6 +112,9 @@ endif(DOXY)
 # Generate and install libraries
 add_library (uunet SHARED ${SOURCES} ${PROBE_PATH})
 target_include_directories (uunet PUBLIC include)
+target_compile_features(uunet PUBLIC cxx_std_14)
+
+set_target_properties(uunet PROPERTIES CXX_EXTENSIONS OFF)
 
 TARGET_LINK_LIBRARIES(uunet ${META_FILES})
 
@@ -125,6 +148,6 @@ install (TARGETS uunet
   PUBLIC_HEADER DESTINATION include)
 
 # Generate tests only during Debug.
-#if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-#	add_subdirectory(test)
-#endif()
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+	add_subdirectory(test)
+endif()

@@ -1,6 +1,8 @@
 file (GLOB_RECURSE SOURCES_TEST *.cpp)
 
-add_executable (core-tests ${SOURCES_TEST})
+add_executable(core-tests ${SOURCES_TEST})
+#add_gtest(core-tests)
+
 
 set_target_properties(core-tests 
 	PROPERTIES
@@ -10,8 +12,8 @@ set_target_properties(core-tests
 
 target_link_libraries (core-tests
 	uunet
-	libgtest
-	libgmock
+	gtest
+	gmock
 	${CMAKE_THREAD_LIBS_INIT}
 )
 
