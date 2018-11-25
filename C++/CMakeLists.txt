@@ -1,14 +1,19 @@
-cmake_minimum_required (VERSION 3.0 FATAL_ERROR)
+cmake_minimum_required (VERSION 3.1...3.12)
+
+if(${CMAKE_VERSION} VERSION_LESS 3.12)
+	cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
+endif()
+
 project (uunet LANGUAGES C CXX)
 
 set (PROJECT_VENDOR 			"Matteo Magnani")
 set (PROJECT_CONTACT 			"matteo.magnani@it.uu.se")
-set (PROJECT_URL			"https://bitbucket.org/uuinfolab/net")
+set (PROJECT_URL 				"https://bitbucket.org/uuinfolab/uunet")
 set (PROJECT_DESCRIPTION 		"Network analysis library")
 set (CMAKE_BUILD_TYPE 			"Debug")
 
 # Setting the project version
-file (READ				"${CMAKE_CURRENT_SOURCE_DIR}/VERSION" PROJECT_VERSION_FULL)
+file (READ						"${CMAKE_CURRENT_SOURCE_DIR}/VERSION" PROJECT_VERSION_FULL)
 string (REGEX REPLACE 			"[\n\r]" "" PROJECT_VERSION_FULL "${PROJECT_VERSION_FULL}")
 string (REGEX REPLACE 			"^([0-9]+)\\.[0-9]+\\.[0-9]+$" "\\1" PROJECT_VERSION_MAJOR "${PROJECT_VERSION_FULL}")
 string (REGEX REPLACE 			"^[0-9]+\\.([0-9]+)\\.[0-9]+$" "\\1" PROJECT_VERSION_MINOR "${PROJECT_VERSION_FULL}")
@@ -50,9 +55,6 @@ endif()
 
 message (STATUS "Compiling as: " ${CMAKE_BUILD_TYPE} )
 
-# Include uunet library.
-include_directories (include)
-
 # Include external libraries.
 include_directories (
     ext/cpptoml
@@ -89,6 +91,7 @@ endif(DOXY)
 
 # Generate and install libraries
 add_library (uunet SHARED ${SOURCES} ${PROBE_PATH})
+target_include_directories (uunet PUBLIC include)
 
 TARGET_LINK_LIBRARIES(uunet ${META_FILES})
 
@@ -122,6 +125,6 @@ install (TARGETS uunet
   PUBLIC_HEADER DESTINATION include)
 
 # Generate tests only during Debug.
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-	add_subdirectory(test)
-endif()
+#if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+#	add_subdirectory(test)
+#endif()
