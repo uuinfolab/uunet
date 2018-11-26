@@ -68,29 +68,55 @@ else()
 endif()
 
 # Target must already exist
-macro(add_gtest TESTNAME)
-    target_link_libraries(${TESTNAME} PUBLIC gtest gmock gtest_main)
-    
-    if(GOOGLE_TEST_INDIVIDUAL)
-        if(CMAKE_VERSION VERSION_LESS 3.10)
-            gtest_add_tests(TARGET ${TESTNAME}
-                            TEST_PREFIX "${TESTNAME}."
-                            TEST_LIST TmpTestList)
-            set_tests_properties(${TmpTestList} PROPERTIES FOLDER "Tests")
-        
-    	else()
-            gtest_discover_tests(${TESTNAME}
-                TEST_PREFIX "${TESTNAME}."
-                PROPERTIES FOLDER "Tests")
-        endif()
-    
-    else()
-        add_test(${TESTNAME} ${TESTNAME})
-        set_target_properties(${TESTNAME} PROPERTIES FOLDER "Tests")
-    
-    endif()
+#macro(add_gtest TESTNAME)
+#    target_link_libraries(${TESTNAME} PUBLIC gtest gmock gtest_main)
+#    
+#    if(GOOGLE_TEST_INDIVIDUAL)
+#        if(CMAKE_VERSION VERSION_LESS 3.10)
+#            gtest_add_tests(TARGET ${TESTNAME}
+#                            TEST_PREFIX "${TESTNAME}."
+#                            TEST_LIST TmpTestList)
+#            set_tests_properties(${TmpTestList} PROPERTIES FOLDER "Tests")
+#        
+#    	else()
+#            gtest_discover_tests(${TESTNAME}
+#                TEST_PREFIX "${TESTNAME}."
+#                PROPERTIES FOLDER "Tests")
+#        endif()
+#    
+#    else()
+#        add_test(${TESTNAME} ${TESTNAME})
+#        set_target_properties(${TESTNAME} PROPERTIES FOLDER "Tests")
+#    
+#    endif()
+#
+#endmacro()
 
+macro (add_gtest TESTNAME TARGETNAME)
+    set_target_properties(${TESTNAME}
+	PROPERTIES
+	RUNTIME_OUTPUT_DIRECTORY
+	${CMAKE_BINARY_DIR})
+
+    target_link_libraries (${TESTNAME} PUBLIC
+	gtest
+	gmock
+	gtest_main
+	${TARGETNAME}
+	${CMAKE_THREAD_LIBS_INIT})
+
+    add_custom_command(TARGET ${TESTNAME}
+	POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+	${CMAKE_SOURCE_DIR}/data $<TARGET_FILE_DIR:core-tests>
+	COMMENT "Copying testing datasets"
+	VERBATIM)
 endmacro()
+
+
+
+
+
 
 mark_as_advanced(
     gmock_build_tests

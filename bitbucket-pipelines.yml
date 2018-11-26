@@ -18,6 +18,6 @@ pipelines:
           - ./net-tests
           - ./wnet-tests
           - ./tnet-tests
-          - ./pnet-tests
+          #- ./pnet-tests
           - ./mnet-tests
           - ./xnet-tests

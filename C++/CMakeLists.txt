@@ -27,7 +27,6 @@ set (LIBRARY_VERSION_FULL 		"${LIBRARY_VERSION}.${LIBRARY_VERSION_PATCH}")
 
 # Add aditional cmake scripts
 list (APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
-enable_testing()
 
 # Choosing compiler (clang has preference).
 if (CMAKE_CXX_COMPILER MATCHES ".*clang.*" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
@@ -70,8 +69,7 @@ file (GLOB_RECURSE SOURCES ext/eclat/*.c src/*.cpp)
 add_library (uunet SHARED ${SOURCES})
 
 # Include private components
-target_include_directories (uunet PRIVATE
-    ext/cpptoml
+target_include_directories (uunet PUBLIC
 	ext/eigen3 
 	ext/spectra
 	ext/eclat/eclat/src
@@ -79,7 +77,6 @@ target_include_directories (uunet PRIVATE
 	ext/eclat/math/src
 	ext/eclat/util/src
 	ext/eclat/apriori/src)
-
 
 # Include public components
 target_include_directories (uunet PUBLIC 
@@ -117,14 +114,17 @@ if (DOXY)
 	else()
 		message (FATAL_ERROR "Doxygen is needed to build the documentation.")
 	endif()
-endif(DOXY)
+endif (DOXY)
 
+# Installing targets
+install (TARGETS uunet
+	EXPORT uunet-target
+	LIBRARY DESTINATION lib
+	ARCHIVE DESTINATION lib
+	RUNTIME DESTINATION bin)
 
-
-install(DIRECTORY "include/" # source directory
-        DESTINATION "include/libuunet" # target directory
-        FILES_MATCHING # install only matched files
-        PATTERN "*.h" # select header files
+install(DIRECTORY "include/"			# source directory
+        DESTINATION "include/libuunet" 	# target directory
 )
 
 install(DIRECTORY "ext/eigen3/" # source directory
@@ -145,10 +145,6 @@ install(DIRECTORY "ext/eclat/" # source directory
         PATTERN "*" # select header files
 )
 
-install (TARGETS uunet
-  RUNTIME DESTINATION bin
-  LIBRARY DESTINATION lib
-  PUBLIC_HEADER DESTINATION include)
 
 # Generate tests only during Debug.
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
