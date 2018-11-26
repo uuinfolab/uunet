@@ -78,7 +78,7 @@ include_directories (
 	ext/eclat/apriori/src)
 
 # Check BLAS package. TODO(dvladek): check if really needed.
-find_package(BLAS REQUIRED)
+#find_package(BLAS REQUIRED)
 
 file (GLOB_RECURSE SOURCES ext/eclat/*.c src/*.cpp)
 
@@ -103,9 +103,17 @@ endif(DOXY)
 # Generate and install libraries
 add_library (uunet SHARED ${SOURCES} ${PROBE_PATH})
 target_include_directories (uunet PUBLIC include)
-target_compile_features(uunet PUBLIC cxx_std_14)
 
-set_target_properties(uunet PROPERTIES CXX_EXTENSIONS OFF)
+if(${CMAKE_VERSION} VERSION_LESS 3.8)
+	set_target_properties(myTarget PROPERTIES
+		CXX_STANDARD 14
+		CXX_STANDARD_REQUIRED YES
+		CXX_EXTENSIONS NO)
+else()
+	target_compile_features(uunet PUBLIC cxx_std_14)
+	set_target_properties(uunet PROPERTIES CXX_EXTENSIONS OFF)
+endif()
+
 
 TARGET_LINK_LIBRARIES(uunet ${META_FILES})
 
