@@ -105,7 +105,7 @@ add_library (uunet SHARED ${SOURCES} ${PROBE_PATH})
 target_include_directories (uunet PUBLIC include)
 
 if(${CMAKE_VERSION} VERSION_LESS 3.8)
-	set_target_properties(myTarget PROPERTIES
+	set_target_properties(uunet PROPERTIES
 		CXX_STANDARD 14
 		CXX_STANDARD_REQUIRED YES
 		CXX_EXTENSIONS NO)
