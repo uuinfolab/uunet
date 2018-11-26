@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.1...3.12)
 
-if(${CMAKE_VERSION} VERSION_LESS 3.12)
-	cmake_policy(VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
+if (${CMAKE_VERSION} VERSION_LESS 3.12)
+	cmake_policy (VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
 endif()
 
 project (uunet LANGUAGES C CXX)
@@ -26,7 +26,7 @@ set (LIBRARY_VERSION 			"${LIBRARY_VERSION_MAJOR}.${LIBRARY_VERSION_MINOR}")
 set (LIBRARY_VERSION_FULL 		"${LIBRARY_VERSION}.${LIBRARY_VERSION_PATCH}")
 
 # Add aditional cmake scripts
-list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+list (APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 enable_testing()
 
 # Choosing compiler (clang has preference).
@@ -35,13 +35,13 @@ if (CMAKE_CXX_COMPILER MATCHES ".*clang.*" OR CMAKE_CXX_COMPILER_ID STREQUAL "Cl
 endif()
 
 # Choosing Debug as default building type.
-set(default_build_type "Release")
+set (default_build_type "Release")
 
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-	message(STATUS "Setting build type to '${default_build_type}' as none was specified.")
-	set(CMAKE_BUILD_TYPE "${default_build_type}" CACHE STRING "Choose the type of build." FORCE)
+	message (STATUS "Setting build type to '${default_build_type}' as none was specified.")
+	set (CMAKE_BUILD_TYPE "${default_build_type}" CACHE STRING "Choose the type of build." FORCE)
 	
-	set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+	set_property (CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
 message (STATUS "Compiling as: " ${CMAKE_BUILD_TYPE})
@@ -49,13 +49,13 @@ message (STATUS "Compiling as: " ${CMAKE_BUILD_TYPE})
 
 # Adding compiler options. The non-modern style has been used for compatibility reasons with cmake < 3.8
 
-if(MSVC)
+if (MSVC)
 	set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O2")
 else()
 	set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O2")
 	set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -O3 -ggdb -g3 -Wall -Wextra")
     
-	if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+	if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
         add_compile_options("-stdlib=libc++")
     else()
         # nothing special for gcc at the moment
@@ -65,9 +65,12 @@ endif()
 set (CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 
+# Generate uunet target
+file (GLOB_RECURSE SOURCES ext/eclat/*.c src/*.cpp)
+add_library (uunet SHARED ${SOURCES})
 
-# Include external libraries.
-include_directories (
+# Include private components
+target_include_directories (uunet PRIVATE
     ext/cpptoml
 	ext/eigen3 
 	ext/spectra
@@ -77,20 +80,36 @@ include_directories (
 	ext/eclat/util/src
 	ext/eclat/apriori/src)
 
-# Check BLAS package. TODO(dvladek): check if really needed.
-#find_package(BLAS REQUIRED)
 
-file (GLOB_RECURSE SOURCES ext/eclat/*.c src/*.cpp)
+# Include public components
+target_include_directories (uunet PUBLIC 
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+	$<INSTALL_INTERFACE:include>
+	include)
+
+# Compile uunet target
+if (${CMAKE_VERSION} VERSION_LESS 3.8)
+	set_target_properties (uunet PROPERTIES
+		CXX_STANDARD 14
+		CXX_STANDARD_REQUIRED YES
+		CXX_EXTENSIONS NO)
+else()
+	target_compile_features (uunet PUBLIC cxx_std_14)
+	set_target_properties (uunet PROPERTIES CXX_EXTENSIONS OFF)
+endif()
+
 
 # Disabling doxygen documentation by default.
 option (DOXY "Generate DoxyGen documentation" OFF)
 if (DOXY)
 	find_package (Doxygen)
+	
 	if (DOXYGEN_FOUND)
 		set (DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/uunet.doxyfile)
 		set (DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
-		configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
-		add_custom_target(doc ALL
+		configure_file (${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+		
+		add_custom_target (doc ALL
 			COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
 			WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 			COMMENT "Generating API documentation with Doxygen"
@@ -100,22 +119,7 @@ if (DOXY)
 	endif()
 endif(DOXY)
 
-# Generate and install libraries
-add_library (uunet SHARED ${SOURCES} ${PROBE_PATH})
-target_include_directories (uunet PUBLIC include)
 
-if(${CMAKE_VERSION} VERSION_LESS 3.8)
-	set_target_properties(uunet PROPERTIES
-		CXX_STANDARD 14
-		CXX_STANDARD_REQUIRED YES
-		CXX_EXTENSIONS NO)
-else()
-	target_compile_features(uunet PUBLIC cxx_std_14)
-	set_target_properties(uunet PROPERTIES CXX_EXTENSIONS OFF)
-endif()
-
-
-TARGET_LINK_LIBRARIES(uunet ${META_FILES})
 
 install(DIRECTORY "include/" # source directory
         DESTINATION "include/libuunet" # target directory
