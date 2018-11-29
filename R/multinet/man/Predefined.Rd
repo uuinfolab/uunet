@@ -40,13 +40,17 @@ All these functions return a multilayer network.
 \references{
 Rossi, Luca, and Magnani, Matteo (2015). Towards effective visual analytics on multiplex and multilayer networks. Chaos, Solitons and Fractals, 72, 68-76. (for ml.aucs()).
 Padgett, John F., and McLean, Paul D. (2006). Organizational Invention and Elite Transformation: The Birth of Partnership Systems in Renaissance Florence. American Journal of Sociology, 111(5), 1463-1568. (for ml.florentine()).
-Breiger, R. and Boorman, S. and Arabic, P. (1975). n algorithm for clustering relational data with applications to social network analysis and comparison with multidimensional scaling. Journal of Mathematical Psycholoy, 12 (for ml.monastery()).
+Breiger, R. and Boorman, S. and Arabic, P. (1975). An algorithm for clustering relational data with applications to social network analysis and comparison with multidimensional scaling. Journal of Mathematical Psychology, 12 (for ml.monastery() and ml.bankwiring() - these authors prepared the datasets, see multilayer.it.uu.se/datasets.html for references to the data collectors).
 Kapferer, Bruce (1972). Strategy and Transaction in an African Factory: African Workers and Indian Management in a Zambian Town. Manchester University Press (fot ml.tailorshop()).
+}
 \seealso{
 \link{Getting networks: IO}, \link{Getting networks: generation}
 }
 \examples{
 empty <- ml.empty("new network")
 aucs <- ml.aucs()
+bankwiring <- ml.bankwiring()
 florentine <- ml.florentine()
+monastery <- ml.monastery()
+tailorshop <- ml.tailorshop()
 }
