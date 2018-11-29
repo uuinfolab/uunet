@@ -6,6 +6,7 @@
 #endif
 
 #include <cstddef> // to prevent '::max_align_t' has not been declared error
+#include <cstdio>
 #include <iostream>
 #include <stdio.h>
 #include <sstream>
