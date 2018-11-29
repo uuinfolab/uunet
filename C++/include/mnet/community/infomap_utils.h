@@ -5,7 +5,7 @@
 #define NS_INFOMAP
 #endif
 
-//#include "infomap.h"
+#include <cstddef> // to prevent '::max_align_t' has not been declared error
 #include <iostream>
 #include <stdio.h>
 #include <sstream>
