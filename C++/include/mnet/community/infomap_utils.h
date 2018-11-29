@@ -5,10 +5,6 @@
 #define NS_INFOMAP
 #endif
 
-#ifndef max_align_t
-typedef long double max_align_t;
-#endif
-
 #include <cstddef> // to prevent '::max_align_t' has not been declared error
 #include <cstdio>
 #include <iostream>

@@ -3,25 +3,6 @@
 #define NS_INFOMAP
 #endif
 
-#ifndef AS_LIB
-#define AS_LIB
-#endif
-
-
-#include <iostream>
-#include <stdio.h>
-#include <sstream>
-#include <fstream>
-#include <stdexcept>
-#include <cstdlib>
-#include <string>
-#include "io/Config.h"
-#include "io/version.h"
-#include "utils/Logger.h"
-#include "io/ProgramInterface.h"
-#include "io/convert.h"
-#include "utils/FileURI.h"
-#include "mnet/community/infomap_utils.h"
 
 namespace uu {
 namespace net {
