@@ -5,9 +5,12 @@
 #define NS_INFOMAP
 #endif
 
+#ifndef _GCC_MAX_ALIGN_T
+typedef long double max_align_t;
+#endif
+
 //#include "infomap.h"
 #include <cstddef> // to prevent '::max_align_t' has not been declared error
-#include <cstdio>
 #include <iostream>
 #include <stdio.h>
 #include <sstream>
