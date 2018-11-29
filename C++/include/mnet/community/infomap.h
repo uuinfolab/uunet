@@ -5,7 +5,7 @@
 #define NS_INFOMAP
 #endif
 
-#ifndef _GCC_MAX_ALIGN_T
+#ifndef max_align_t
 typedef long double max_align_t;
 #endif
 
