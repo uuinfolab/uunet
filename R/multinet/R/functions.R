@@ -1,20 +1,5 @@
 loadModule("multinet",TRUE)
 
-# Functions loading some famous small datasets
-# More datasets can be downloaded from the book webpage: multilayer.it.uu.se
-
-ml.aucs <- function() {
-	read.ml(system.file("extdata", "aucs.mpx", package="multinet"),"AUCS")
-}
-
-ml.toy <- function() {
-	read.ml(system.file("extdata", "book.mpx", package="multinet"),"toy")
-}
-
-ml.florentine <- function() {
-	read.ml(system.file("extdata", "florentine_families.mpx", package="multinet"),"Florentine families")
-}
-
 # Casting of (a portion of) a multilayer network into an igraph (multi)graph. This is done by creating an intermediate graphml file and loading it as an igraph file
 
 as.igraph.Rcpp_RMLNetwork <- function (x, layers=NULL, merge.actors=TRUE, all.actors=FALSE, ...) {
