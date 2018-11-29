@@ -184,7 +184,8 @@ void
 PropertyMatrix<STRUCTURE,CONTEXT,VALUE>::
 set(
     const STRUCTURE& s,
-    const CONTEXT& c, VALUE v
+    const CONTEXT& c,
+    VALUE v
 )
 {
     data[c][s] = Value<VALUE>(v,false);

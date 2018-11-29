@@ -77,12 +77,12 @@ resolve_layers_unordered(
 
 std::unordered_set<const uu::net::AttributedSimpleGraph*>
 resolve_const_layers_unordered(
-                         const uu::net::AttributedHomogeneousMultilayerNetwork* mnet,
-                         const Rcpp::CharacterVector& names
-                         )
+    const uu::net::AttributedHomogeneousMultilayerNetwork* mnet,
+    const Rcpp::CharacterVector& names
+)
 {
     std::unordered_set<const uu::net::AttributedSimpleGraph*> res;
-    
+
     if (names.size()==0)
     {
         for (auto layer: *mnet->layers())
@@ -90,22 +90,22 @@ resolve_const_layers_unordered(
             res.insert(layer);
         }
     }
-    
+
     else
     {
         for (int i=0; i<names.size(); ++i)
         {
             auto layer = mnet->layers()->get(std::string(names[i]));
-            
+
             if (!layer)
             {
                 Rcpp::stop("cannot find layer " + std::string(names[i]));
             }
-            
+
             res.insert(layer);
         }
     }
-    
+
     return res;
 }
 
@@ -116,7 +116,7 @@ resolve_actors(
     const Rcpp::CharacterVector& names
 )
 {
-    int result_size = names.size()?names.size():mnet->layers()->size();
+    int result_size = names.size()?names.size():mnet->vertices()->size();
     std::vector<const uu::net::Vertex*> res(result_size);
 
     if (names.size()==0)
@@ -182,37 +182,52 @@ resolve_actors_unordered(
     return res;
 }
 
-/*
-std::vector<NodeSharedPtr>
-resolve_nodes(
-              const uu::net::AttributedHomogeneousMultilayerNetwork* mnet,
-              const Rcpp::DataFrame& node_matrix
-              )
+std::vector<std::pair<const uu::net::Vertex*, uu::net::AttributedSimpleGraph*>>
+        resolve_vertices(
+            const uu::net::AttributedHomogeneousMultilayerNetwork* mnet,
+            const Rcpp::DataFrame& vertex_matrix
+        )
 {
-	std::vector<NodeSharedPtr> res(nodes.nrow());
-    CharacterVector a = nodes(0);
-    CharacterVector l = nodes(1);
+    std::vector<std::pair<const uu::net::Vertex*, uu::net::AttributedSimpleGraph*>> res(vertex_matrix.nrow());
+    CharacterVector a = vertex_matrix(0);
+    CharacterVector l = vertex_matrix(1);
 
-    for (int i=0; i<nodes.nrow(); i++) {
-        ActorSharedPtr actor = mnet->actors->get(std::string(a(i)));
-        if (!actor) Rcpp::stop("cannot find actor " + std::string(a(i)));
-        LayerSharedPtr layer = mnet->layers()->get(std::string(l(i)));
-        if (!layer) Rcpp::stop("cannot find layer " + std::string(l(i)));
-        NodeSharedPtr node = mnet->get_node(actor,layer);
-        if (!node) Rcpp::stop("cannot find actor " + actor->name + " on layer " + layer->name);
-        res[i] = node;
+    for (int i=0; i<vertex_matrix.nrow(); i++)
+    {
+        auto actor = mnet->vertices()->get(std::string(a(i)));
+
+        if (!actor)
+        {
+            Rcpp::stop("cannot find actor " + std::string(a(i)));
+        }
+
+        auto layer = mnet->layers()->get(std::string(l(i)));
+
+        if (!layer)
+        {
+            Rcpp::stop("cannot find layer " + std::string(l(i)));
+        }
+
+        int vertex = layer->vertices()->get_index(actor);
+
+        if (vertex == -1)
+        {
+            Rcpp::stop("cannot find actor " + actor->name + " on layer " + layer->name);
+        }
+
+        res[i] = std::make_pair(actor, layer);
     }
-	return res;
-}
-*/
 
-std::vector<const uu::net::Edge*>
-resolve_edges(
-    const uu::net::AttributedHomogeneousMultilayerNetwork* mnet,
-    const Rcpp::DataFrame& edges
-)
+    return res;
+}
+
+std::vector<std::pair<const uu::net::Edge*, uu::net::AttributedSimpleGraph*>>
+        resolve_edges(
+            const uu::net::AttributedHomogeneousMultilayerNetwork* mnet,
+            const Rcpp::DataFrame& edges
+        )
 {
-    std::vector<const uu::net::Edge*> res(edges.nrow());
+    std::vector<std::pair<const uu::net::Edge*, uu::net::AttributedSimpleGraph*>> res(edges.nrow());
     CharacterVector a_from = edges(0);
     CharacterVector l_from = edges(1);
     CharacterVector a_to = edges(2);
@@ -257,7 +272,7 @@ resolve_edges(
                 Rcpp::stop("cannot find edge from " + actor1->to_string() + " to " + actor2->to_string());
             }
 
-            res[i] = edge;
+            res[i] = std::make_pair(edge, layer1);
         }
 
         else
@@ -299,7 +314,7 @@ resolve_mode(
 
 Rcpp::DataFrame
 to_dataframe(
-    uu::net::CommunityStructure<uu::net::VertexLayerCommunity<uu::net::AttributedSimpleGraph>> cs
+    uu::net::CommunityStructure<uu::net::VertexLayerCommunity<const uu::net::AttributedSimpleGraph>>* cs
 )
 {
 
@@ -308,7 +323,7 @@ to_dataframe(
 
     int comm_id=0;
 
-    for (auto com: cs)
+    for (auto com: *cs)
     {
         for (auto pair: *com)
         {

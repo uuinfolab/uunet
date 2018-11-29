@@ -27,6 +27,7 @@ class
       AttributedDynamicInterlayerSimpleEdgeStore<Vertex,AttributedSimpleGraph,Attributes<InterlayerEdge<Vertex,AttributedSimpleGraph>, UserDefinedAttrs<InterlayerEdge<Vertex,AttributedSimpleGraph>>>>
       >
 {
+
     typedef MultilayerNetwork<
     AttributedVertexStore<Attributes<Vertex, UserDefinedAttrs<Vertex>>>,
                           VertexOverlappingLayerStore<AttributedSimpleGraph>,
@@ -35,9 +36,11 @@ class
 
   public:
 
+    typedef AttributedSimpleGraph layer_type;
+
     //using super::super;
 
-    using super::edges;
+    using super::interlayer_edges;
 
     AttributedHomogeneousMultilayerNetwork(
         const std::string& name,

@@ -14,24 +14,14 @@ In this manual, \emph{\link{Getting networks: IO}} describes functions to read a
 
 Updating and getting information about the basic components of a multilayer network (layers, actors, nodes and edges) can be done using the methods described in \emph{\link{Network management: properties}}, \emph{\link{Network management: updates}} and \emph{\link{Network management: edge directionality}}. \emph{\link{Navigation}} shows how to retrieve the neighbors of a node. Attribute values can also be attached to the basic components of a multilayer network (actors, layers, nodes and edges). Attribute management is described in \emph{\link{Network management: attributes}}.
 
-Each individual layer as well as combination of layers obtained using the data pre-processing (flattening and projection) functions described in \emph{\link{Transformation}} can be analyzed as a single-layer network using the iGraph package, by converting them
-as shown in \emph{\link{Conversion}}. We can also visualize small networks using the method described in \emph{\link{Plotting}}.
+Each individual layer as well as combination of layers obtained using the data pre-processing (flattening) functions described in \emph{\link{Transformation}} can be analyzed as a single-layer network using the iGraph package, by converting them as shown in \emph{\link{Conversion}}. We can also visualize small networks using the method described in \emph{\link{Plotting}}.
 
-Multilayer network analysis measures are described in \emph{\link{Measures: basic}} (for single-actor, degree-based measures), \emph{\link{Measures: distance-based}} (for measures based on geodesic distances), \emph{\link{Measures: random walks}} (for measures based on random walks) and \emph{\link{Measures: layer comparison}} (to compare different layers).
+Multilayer network analysis measures are described in \emph{\link{Measures: basic}} (for single-actor, degree-based measures), \emph{\link{Measures: distance-based}} (for measures based on geodesic distances) and \emph{\link{Measures: layer comparison}} (to compare different layers).
 
 Communities can be extracted using various clustering algorithms, described in \emph{\link{Mining: communities}}.
 
 Most of the methods provided by this package are described in the book "Multilayer Social Networks". These methods have been proposed by many different authors: extensive references are available in the book, and in the documentation of each function we indicate the main reference we have followed for the implementation. For a few methods developed after the book was published we give specific references to the corresponding literature.
 }
-%\details{
-%\tabular{ll}{
-%Package: \tab multinet\cr
-%Type: \tab Package\cr
-%Version: \tab 1.0\cr
-%Date: \tab 2015-10-01\cr
-%License: \tab GPL\cr
-%}
-%}
 \author{
 Matteo Magnani \email{matteo.magnani@it.uu.se}
 }

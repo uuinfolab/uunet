@@ -33,7 +33,10 @@ class net_io_read_multiplex_test : public ::testing::Test
         test_file << "l1, UNDIRECTED       " << std::endl;
         test_file << "l2, UNDIRECTED       " << std::endl;
         test_file << "                     " << std::endl;
-        test_file << "#INTRALAYER VERTICES " << std::endl;
+        test_file << "#ACTORS              " << std::endl;
+        test_file << "v4                   " << std::endl;
+        test_file << "                     " << std::endl;
+        test_file << "#VERTICES            " << std::endl;
         test_file << "v6,l2                " << std::endl;
         test_file << "                     " << std::endl;
         test_file << "#EDGES               " << std::endl;

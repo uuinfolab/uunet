@@ -35,6 +35,22 @@ class Attributes :
 
     using AttributeStoreWrapper<OT>::attr_;
 
+
+    /** Returns an iterator to the first object in the collection */
+    typename AttributeStore<OT>::iterator
+    begin(
+    ) const;
+
+    /** Returns an iterator after the last object in the collection */
+    typename AttributeStore<OT>::iterator
+    end(
+    ) const;
+
+    /** Returns the number of objects in the collection */
+    size_t
+    size(
+    ) const;
+
     /**
      * Returns a short summary of the store, indicating the number of attributes.
      */
@@ -69,6 +85,33 @@ Attributes() :
 {
 }
 
+
+template <typename OT, typename ...Attrs>
+typename AttributeStore<OT>::iterator
+Attributes<OT, Attrs...>::
+begin(
+) const
+{
+    return attr_->begin();
+}
+
+template <typename OT, typename ...Attrs>
+typename AttributeStore<OT>::iterator
+Attributes<OT, Attrs...>::
+end(
+) const
+{
+    return attr_->end();
+}
+
+template <typename OT, typename ...Attrs>
+size_t
+Attributes<OT, Attrs...>::
+size(
+) const
+{
+    return attr_->size();
+}
 
 template <typename OT, typename ...Attrs>
 std::string

@@ -98,7 +98,6 @@ add(
 
     core::assert_not_null(v.get(), "add", "v");
 
-
     // Notify the observers.
     for (auto obs: observers)
     {
@@ -130,7 +129,6 @@ add(
     const typename V::key_type& key
 )
 {
-
     if (!get(key))
     {
         return add(Vertex::create(key));
@@ -170,8 +168,8 @@ erase(
     const V * v
 )
 {
-
     core::assert_not_null(v, "erase", "v");
+
 
     // Notify the observers.
     for (auto obs: observers)

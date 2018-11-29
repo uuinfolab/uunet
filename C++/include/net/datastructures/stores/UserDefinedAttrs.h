@@ -119,35 +119,35 @@ class UserDefinedAttrs
     get_string(
         const OT* oid,
         const std::string& attribute_name
-    );
+    ) const;
 
 
     core::Value<double>
     get_double(
         const OT* oid,
         const std::string& attribute_name
-    );
+    ) const;
 
 
     core::Value<int>
     get_int(
         const OT* oid,
         const std::string& attribute_name
-    );
+    ) const;
 
 
     core::Value<core::Time>
     get_time(
         const OT* oid,
         const std::string& attribute_name
-    );
+    ) const;
 
 
     core::Value<core::Text>
     get_text(
         const OT* oid,
         const std::string& attribute_name
-    );
+    ) const;
 
 
     /*****************************************************/
@@ -160,7 +160,7 @@ class UserDefinedAttrs
         const std::string& attribute_name,
         const std::string& min_value,
         const std::string& max_value
-    );
+    ) const;
 
 
     std::vector<OT>
@@ -168,7 +168,7 @@ class UserDefinedAttrs
         const std::string& attribute_name,
         const int& min_value,
         const int& max_value
-    );
+    ) const;
 
 
     std::vector<OT>
@@ -176,7 +176,7 @@ class UserDefinedAttrs
         const std::string& attribute_name,
         const double& min_value,
         const double& max_value
-    );
+    ) const;
 
 
 
@@ -185,7 +185,7 @@ class UserDefinedAttrs
         const std::string& attribute_name,
         const core::Time& min_value,
         const core::Time& max_value
-    );
+    ) const;
 
 
     /*****************************************************/
@@ -196,27 +196,27 @@ class UserDefinedAttrs
     core::Value<double>
     get_min_double(
         const std::string& attribute_name
-    );
+    ) const;
 
 
 
     core::Value<int>
     get_min_int(
         const std::string& attribute_name
-    );
+    ) const;
 
 
 
     core::Value<std::string>
     get_min_string(
         const std::string& attribute_name
-    );
+    ) const;
 
 
     core::Value<core::Time>
     get_min_time(
         const std::string& attribute_name
-    );
+    ) const;
 
 
     /*****************************************************/
@@ -227,27 +227,27 @@ class UserDefinedAttrs
     core::Value<int>
     get_max_int(
         const std::string& attribute_name
-    );
+    ) const;
 
 
 
     core::Value<double>
     get_max_double(
         const std::string& attribute_name
-    );
+    ) const;
 
 
 
     core::Value<std::string>
     get_max_string(
         const std::string& attribute_name
-    );
+    ) const;
 
 
     core::Value<core::Time>
     get_max_time(
         const std::string& attribute_name
-    );
+    ) const;
 
 
   private:
@@ -406,7 +406,7 @@ UserDefinedAttrs<OT>::
 get_string(
     const OT* oid,
     const std::string& attribute_name
-)
+) const
 {
     return attr_->get_string(oid, attribute_name);
 }
@@ -418,7 +418,7 @@ UserDefinedAttrs<OT>::
 get_double(
     const OT* oid,
     const std::string& attribute_name
-)
+) const
 {
     return attr_->get_double(oid, attribute_name);
 }
@@ -430,7 +430,7 @@ UserDefinedAttrs<OT>::
 get_int(
     const OT* oid,
     const std::string& attribute_name
-)
+) const
 {
     return attr_->get_int(oid, attribute_name);
 }
@@ -442,7 +442,7 @@ UserDefinedAttrs<OT>::
 get_time(
     const OT* oid,
     const std::string& attribute_name
-)
+) const
 {
     return attr_->get_time(oid, attribute_name);
 }
@@ -454,7 +454,7 @@ UserDefinedAttrs<OT>::
 get_text(
     const OT* oid,
     const std::string& attribute_name
-)
+) const
 {
     return attr_->get_text(oid, attribute_name);
 }
@@ -472,7 +472,7 @@ range_query_string(
     const std::string& attribute_name,
     const std::string& min_value,
     const std::string& max_value
-)
+) const
 {
     return attr_->range_query_string(attribute_name, min_value, max_value);
 }
@@ -485,7 +485,7 @@ range_query_int(
     const std::string& attribute_name,
     const int& min_value,
     const int& max_value
-)
+) const
 {
     return attr_->range_query_int(attribute_name, min_value, max_value);
 }
@@ -498,7 +498,7 @@ range_query_double(
     const std::string& attribute_name,
     const double& min_value,
     const double& max_value
-)
+) const
 {
     return attr_->range_query_double(attribute_name, min_value, max_value);
 }
@@ -511,7 +511,7 @@ range_query_time(
     const std::string& attribute_name,
     const core::Time& min_value,
     const core::Time& max_value
-)
+) const
 {
     return attr_->range_query_time(attribute_name, min_value, max_value);
 }
@@ -527,7 +527,7 @@ core::Value<double>
 UserDefinedAttrs<OT>::
 get_min_double(
     const std::string& attribute_name
-)
+) const
 {
     return attr_->get_min_double(attribute_name);
 }
@@ -539,7 +539,7 @@ core::Value<int>
 UserDefinedAttrs<OT>::
 get_min_int(
     const std::string& attribute_name
-)
+) const
 {
     return attr_->get_min_int(attribute_name);
 }
@@ -551,7 +551,7 @@ core::Value<std::string>
 UserDefinedAttrs<OT>::
 get_min_string(
     const std::string& attribute_name
-)
+) const
 {
     return attr_->get_min_string(attribute_name);
 }
@@ -562,7 +562,7 @@ core::Value<core::Time>
 UserDefinedAttrs<OT>::
 get_min_time(
     const std::string& attribute_name
-)
+) const
 {
     return attr_->get_min_time(attribute_name);
 }
@@ -578,7 +578,7 @@ core::Value<int>
 UserDefinedAttrs<OT>::
 get_max_int(
     const std::string& attribute_name
-)
+) const
 {
     return attr_->get_max_int(attribute_name);
 }
@@ -590,7 +590,7 @@ core::Value<double>
 UserDefinedAttrs<OT>::
 get_max_double(
     const std::string& attribute_name
-)
+) const
 {
     return attr_->get_max_double(attribute_name);
 }
@@ -602,7 +602,7 @@ core::Value<std::string>
 UserDefinedAttrs<OT>::
 get_max_string(
     const std::string& attribute_name
-)
+) const
 {
     return attr_->get_max_string(attribute_name);
 }
@@ -613,7 +613,7 @@ core::Value<core::Time>
 UserDefinedAttrs<OT>::
 get_max_time(
     const std::string& attribute_name
-)
+) const
 {
     return attr_->get_max_time(attribute_name);
 }

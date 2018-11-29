@@ -14,9 +14,11 @@ std::unique_ptr<AttributedHomogeneousMultilayerNetwork>
 read_attributed_homogeneous_multilayer_network(
     const std::string& infile,
     const std::string& name,
-    char separator
+    char separator,
+    bool align
 )
 {
+
     // Read metadata
     MultilayerMetadata meta = read_multilayer_metadata(infile, ',');
     //EdgeDir dir = meta.features.is_directed?EdgeDir::DIRECTED:EdgeDir::UNDIRECTED;
@@ -24,6 +26,15 @@ read_attributed_homogeneous_multilayer_network(
     // Check metadata consistency (@todo) & create graph & add attributes
 
     auto net = create_attributed_homogeneous_multilayer_network(name);
+
+    for (auto l: meta.layers)
+    {
+        std::string layer_name = l.first;
+        auto layer_type = l.second;
+        auto dir = layer_type.is_directed?EdgeDir::DIRECTED:EdgeDir::UNDIRECTED;
+        auto layer = create_attributed_simple_graph(layer_name, dir, layer_type.allows_loops);
+        net->layers()->add(std::move(layer));
+    }
 
     for (auto attr: meta.vertex_attributes)
     {
@@ -59,11 +70,23 @@ read_attributed_homogeneous_multilayer_network(
 
     for (auto attr: meta.interlayer_edge_attributes)
     {
-        net->edges()->attr()->add(attr.name, attr.type);
+        net->interlayer_edges()->attr()->add(attr.name, attr.type);
     }
 
     // Read data (vertices, edges, attribute values)
     read_multilayer_data(net.get(),  meta, infile, separator);
+
+    // Align
+    if (align)
+    {
+        for (auto layer: *net->layers())
+        {
+            for (auto a: *net->vertices())
+            {
+                layer->vertices()->add(a);
+            }
+        }
+    }
 
     return net;
 
@@ -102,7 +125,10 @@ read_vertex(
 )
 {
     assert_not_null(ml, "read_vertex", "ml");
-    read_vertex(ml, fields, 0, line_number);
+    auto v = read_vertex(ml, fields, 0, line_number);
+
+    read_attr_values(ml->vertices()->attr(), v, meta.vertex_attributes, fields, 1, line_number);
+
 }
 
 template <>
@@ -114,11 +140,17 @@ read_intralayer_vertex(
     size_t line_number
 )
 {
-
     assert_not_null(ml, "read_intralayer_vertex", "ml");
     auto v = read_vertex(ml, fields, 0, line_number);
     auto l = read_layer<AttributedHomogeneousMultilayerNetwork, AttributedSimpleGraph>(ml, fields, 1, line_number);
     l->vertices()->add(v);
+
+    auto v_attr = meta.intralayer_vertex_attributes.find(l->name);
+
+    if (v_attr != meta.intralayer_vertex_attributes.end())
+    {
+        read_attr_values(l->vertices()->attr(), v, v_attr->second, fields, 2, line_number);
+    }
 }
 
 template <>
@@ -137,8 +169,14 @@ read_intralayer_edge(
 
     l->vertices()->add(v1);
     l->vertices()->add(v2);
-    l->edges()->add(v1,v2);
+    auto e = l->edges()->add(v1,v2);
 
+    auto e_attr = meta.intralayer_edge_attributes.find(l->name);
+
+    if (e_attr != meta.intralayer_edge_attributes.end())
+    {
+        read_attr_values(l->edges()->attr(), e, e_attr->second, fields, 3, line_number);
+    }
 }
 
 
@@ -151,7 +189,7 @@ read_interlayer_edge(
     size_t line_number
 )
 {
-    assert_not_null(ml, "read_intralayer_edge", "ml");
+    assert_not_null(ml, "read_interlayer_edge", "ml");
     auto v1 = read_vertex(ml, fields, 0, line_number);
     auto l1 = read_layer<AttributedHomogeneousMultilayerNetwork, AttributedSimpleGraph>(ml, fields, 1, line_number);
     auto v2 = read_vertex(ml, fields, 2, line_number);
@@ -160,7 +198,7 @@ read_interlayer_edge(
     l1->vertices()->add(v1);
     l2->vertices()->add(v2);
 
-    ml->edges()->add(v1,l1,v2,l2);
+    ml->interlayer_edges()->add(v1,l1,v2,l2);
 
 }
 

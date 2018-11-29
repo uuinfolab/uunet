@@ -33,8 +33,10 @@ class mnet_io_read_common_test : public ::testing::Test
         test_file << "l1, DIRECTED         " << std::endl;
         test_file << "l2, UNDIRECTED       " << std::endl;
         test_file << "                     " << std::endl;
-        test_file << "#VERTEX ATTRIBUTES   " << std::endl;
+        test_file << "#ACTOR ATTRIBUTES    " << std::endl;
         test_file << "a1,string            " << std::endl;
+        test_file << "                     " << std::endl;
+        test_file << "#VERTEX ATTRIBUTES   " << std::endl;
         test_file << "l1,a1,string         " << std::endl;
         test_file << "l2,a1,double         " << std::endl;
         test_file << "l3,a1,double         " << std::endl;
@@ -44,7 +46,7 @@ class mnet_io_read_common_test : public ::testing::Test
         test_file << "l1,a1,string         " << std::endl;
         test_file << "l2,a1,double         " << std::endl;
         test_file << "                     " << std::endl;
-        test_file << "#INTRALAYER VERTICES " << std::endl;
+        test_file << "#VERTICES            " << std::endl;
         test_file << "v6,l2                " << std::endl;
         test_file << "                     " << std::endl;
         test_file << "#EDGES               " << std::endl;

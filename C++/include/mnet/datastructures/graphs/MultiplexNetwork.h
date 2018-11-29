@@ -45,6 +45,7 @@ class
 
   public:
 
+    typedef SimpleGraph layer_type;
     //using super::super;
 
     MultiplexNetwork(

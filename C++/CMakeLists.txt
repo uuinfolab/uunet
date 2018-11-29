@@ -55,19 +55,22 @@ include_directories (include)
 
 # Include external libraries.
 include_directories (
-    ext/cpptoml
+    	ext/cpptoml
 	ext/eigen3 
 	ext/spectra
 	ext/eclat/eclat/src
 	ext/eclat/tract/src
 	ext/eclat/math/src
 	ext/eclat/util/src
-	ext/eclat/apriori/src)
+	ext/eclat/apriori/src
+	ext/infomap)
+
+add_definitions(-DNS_INFOMAP -DONLY_C_LOCALE=1)
 
 # Check BLAS package. TODO(dvladek): check if really needed.
 find_package(BLAS REQUIRED)
 
-file (GLOB_RECURSE SOURCES ext/eclat/*.c src/*.cpp)
+file (GLOB_RECURSE SOURCES ext/eclat/*.c ext/infomap/*.cpp src/*.cpp)
 
 # Disabling doxygen documentation by default.
 option (DOXY "Generate DoxyGen documentation" OFF)
@@ -114,6 +117,12 @@ install(DIRECTORY "ext/eclat/" # source directory
         DESTINATION "include/eclat" # target directory
         FILES_MATCHING # install only matched files
         PATTERN "*" # select header files
+)
+
+install(DIRECTORY "ext/infomap" # source directory
+        DESTINATION "include/infomap" # target directory
+        FILES_MATCHING # install only matched files
+        PATTERN "*.h" # select header files
 )
 
 install (TARGETS uunet

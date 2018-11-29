@@ -8,4 +8,7 @@ importFrom(graphics, arrows, points, segments, text, par, plot, xspline)
 import(igraph)
 import(methods)
 S3method(as.igraph,Rcpp_RMLNetwork)
+S3method(as.list,Rcpp_RMLNetwork)
+S3method(summary,Rcpp_RMLNetwork)
 S3method(plot,Rcpp_RMLNetwork)
+

@@ -35,7 +35,7 @@ summary(
     }
 
 
-    size_t num_inter_edges = edges()->size();
+    size_t num_inter_edges = interlayer_edges()->size();
 
     /*
     for (auto layer1: *layers_)
@@ -97,12 +97,12 @@ create_homogeneous_multilayer_network(
     auto obs2 = std::make_unique<PropagateObserver<DynamicSimpleInterlayerEdgeStore, const Vertex>>(interlayer_edges());
     vertices()->attach(obs2.get());
     register_observer(std::move(obs2));
-    */
 
     // register an observer to update the edge store when layers are added or removed
     auto obs3 = std::make_unique<PropagateAddEraseObserver<DynamicInterlayerSimpleEdgeStore<Vertex,SimpleGraph>, const SimpleGraph>>(es.get());
     ls->attach(obs3.get());
 
+     */
 
     MultilayerNetworkType t;
 
@@ -115,7 +115,7 @@ create_homogeneous_multilayer_network(
                );
 
 
-    net->register_observer(std::move(obs3));
+    //net->register_observer(std::move(obs3));
 
     // register an observer to check that new edges have end-vertices in the network
 

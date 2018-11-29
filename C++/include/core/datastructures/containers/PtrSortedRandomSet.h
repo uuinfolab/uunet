@@ -112,13 +112,13 @@ class
     /** Returns true if an object with the input id is present in the collection */
     bool
     contains(
-        E*
+        const E*
     ) const;
 
     /** Returns the position of the input value in the collection, or -1 */
     int
     get_index(
-        E*
+        const E*
     ) const;
 
     /** Returns the object at the given position in the collection.
@@ -285,26 +285,26 @@ template <typename E, typename PTR, typename PtrLT, typename PtrEQ>
 bool
 PtrSortedRandomSet<E, PTR, PtrLT, PtrEQ>::
 contains(
-    E* search_value
+    const E* search_value
 ) const
 {
 
     core::assert_not_null(search_value, "contains", "search_value");
 
-    return set.template contains<E*,PtrLT,PtrEQ>(search_value);
+    return set.template contains<const E*,PtrLT,PtrEQ>(search_value);
 }
 
 template <typename E, typename PTR, typename PtrLT, typename PtrEQ>
 int
 PtrSortedRandomSet<E, PTR, PtrLT, PtrEQ>::
 get_index(
-    E* search_value
+    const E* search_value
 ) const
 {
 
     core::assert_not_null(search_value, "get_index", "search_value");
 
-    return set.template get_index<E*,PtrLT,PtrEQ>(search_value);
+    return set.template get_index<const E*,PtrLT,PtrEQ>(search_value);
 }
 
 template <typename E, typename PTR, typename PtrLT, typename PtrEQ>

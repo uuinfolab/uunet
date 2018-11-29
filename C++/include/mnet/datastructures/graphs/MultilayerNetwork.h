@@ -96,7 +96,7 @@ class MultilayerNetwork
      * Returns a pointer to the container of edge stores for each pair of layers.
      */
     E*
-    edges(
+    interlayer_edges(
     );
 
 
@@ -104,7 +104,7 @@ class MultilayerNetwork
      * Returns a pointer to the container of edge stores for each pair of layers.
      */
     const E*
-    edges(
+    interlayer_edges(
     ) const;
 
     /** Internal vertex store. */
@@ -165,7 +165,7 @@ vertices(
 template <typename V, typename L, typename E>
 E*
 MultilayerNetwork<V,L,E>::
-edges(
+interlayer_edges(
 )
 {
     return edges_.get();
@@ -175,7 +175,7 @@ edges(
 template <typename V, typename L, typename E>
 const E*
 MultilayerNetwork<V,L,E>::
-edges(
+interlayer_edges(
 ) const
 {
     return edges_.get();

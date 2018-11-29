@@ -4,6 +4,7 @@
  */
 #include "mnet/datastructures/graphs/AttributedHomogeneousMultilayerNetwork.h"
 #include "net/datastructures/observers/PropagateObserver.h"
+#include "mnet/datastructures/observers/LayerObserver.h"
 #include "net/datastructures/observers/PropagateAddEraseObserver.h"
 
 namespace uu {
@@ -27,6 +28,7 @@ AttributedHomogeneousMultilayerNetwork::
 summary(
 ) const
 {
+
     size_t num_intra_edges = 0;
 
     for (auto layer: *layers_)
@@ -34,21 +36,7 @@ summary(
         num_intra_edges += layer->edges()->size();
     }
 
-
-    size_t num_inter_edges = edges()->size();
-
-    /*
-    for (auto layer1: *layers_)
-    {
-        for (auto layer2: *layers_)
-        {
-            if (layer1<layer2)
-            {
-                num_inter_edges += edges()->get(layer1, layer2)->size();
-            }
-        }
-    }
-    */
+    size_t num_inter_edges = interlayer_edges()->size();
 
     size_t num_actors = vertices()->size();
 
@@ -67,7 +55,7 @@ summary(
         "Multilayer Network [" +
         std::to_string(num_actors) + (num_actors==1?" actor, ":" actors, ") +
         std::to_string(num_layers) + (num_layers==1?" layer, ":" layers, ") +
-        std::to_string(num_nodes) + (num_nodes==1?" node, ":" nodes, ") +
+        std::to_string(num_nodes) + (num_nodes==1?" vertex, ":" vertices, ") +
         std::to_string(num_edges) + (num_edges==1?" edge ":" edges ") +
         "(" + std::to_string(num_intra_edges) + "," +  std::to_string(num_inter_edges) + ")]";
     return summary;
@@ -92,21 +80,14 @@ create_attributed_homogeneous_multilayer_network(
 
     // Add observers @todo
 
-    /*
+
     // register an observer to propagate the removal of vertices to the layers
-    auto obs1 = std::make_unique<PropagateObserver<VertexOverlappingLayerStore<AttributedSimpleGraphLayer>, const Vertex>>(layers());
-    vertices()->attach(obs1.get());
-    register_observer(std::move(obs1));
+    auto obs1 = std::make_unique<PropagateObserver<VertexOverlappingLayerStore<AttributedSimpleGraph>, const Vertex>>(ls.get());
+    vs->attach(obs1.get());
 
-    // register an observer to propagate the removal of vertices to the edge store
-    auto obs2 = std::make_unique<PropagateObserver<DynamicSimpleInterlayerEdgeStore, const Vertex>>(edges());
-    vertices()->attach(obs2.get());
-    register_observer(std::move(obs2));
-    */
-
-    // register an observer to update the edge store when layers are added or removed
-    auto obs3 = std::make_unique<PropagateAddEraseObserver<AttributedDynamicInterlayerSimpleEdgeStore<Vertex,AttributedSimpleGraph,EA>, const AttributedSimpleGraph>>(es.get());
-    ls->attach(obs3.get());
+    // register an observer to react to the addition/removal of layers
+    auto obs2 = std::make_unique<LayerObserver<AttributedDynamicInterlayerSimpleEdgeStore<Vertex,AttributedSimpleGraph,EA>, AttributedSimpleGraph>>(es.get());
+    ls->attach(obs2.get());
 
 
     MultilayerNetworkType t;
@@ -120,7 +101,8 @@ create_attributed_homogeneous_multilayer_network(
                );
 
 
-    net->register_observer(std::move(obs3));
+    net->register_observer(std::move(obs1));
+    net->register_observer(std::move(obs2));
 
     // register an observer to check that new edges have end-vertices in the network
 
@@ -147,21 +129,14 @@ create_shared_attributed_homogeneous_multilayer_network(
 
     // Add observers @todo
 
-    /*
-     // register an observer to propagate the removal of vertices to the layers
-     auto obs1 = std::make_unique<PropagateObserver<VertexOverlappingLayerStore<AttributedSimpleGraphLayer>, const Vertex>>(layers());
-     vertices()->attach(obs1.get());
-     register_observer(std::move(obs1));
 
-     // register an observer to propagate the removal of vertices to the edge store
-     auto obs2 = std::make_unique<PropagateObserver<DynamicSimpleInterlayerEdgeStore, const Vertex>>(edges());
-     vertices()->attach(obs2.get());
-     register_observer(std::move(obs2));
-     */
+    // register an observer to propagate the removal of vertices to the layers
+    auto obs1 = std::make_unique<PropagateObserver<VertexOverlappingLayerStore<AttributedSimpleGraph>, const Vertex>>(ls.get());
+    vs->attach(obs1.get());
 
-    // register an observer to update the edge store when layers are added or removed
-    auto obs3 = std::make_unique<PropagateAddEraseObserver<AttributedDynamicInterlayerSimpleEdgeStore<Vertex,AttributedSimpleGraph,EA>, const AttributedSimpleGraph>>(es.get());
-    ls->attach(obs3.get());
+    // register an observer to react to the addition/removal of layers
+    auto obs2 = std::make_unique<LayerObserver<AttributedDynamicInterlayerSimpleEdgeStore<Vertex,AttributedSimpleGraph,EA>, AttributedSimpleGraph>>(es.get());
+    ls->attach(obs2.get());
 
 
     MultilayerNetworkType t;
@@ -175,7 +150,9 @@ create_shared_attributed_homogeneous_multilayer_network(
                );
 
 
-    net->register_observer(std::move(obs3));
+
+    net->register_observer(std::move(obs1));
+    net->register_observer(std::move(obs2));
 
     // register an observer to check that new edges have end-vertices in the network
 

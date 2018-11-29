@@ -19,6 +19,7 @@ read_multiplex(
 {
     // Read metadata
     MultilayerMetadata meta = read_multilayer_metadata(infile, ',');
+
     //EdgeDir dir = meta.features.is_directed?EdgeDir::DIRECTED:EdgeDir::UNDIRECTED;
 
     // Check metadata consistency (@todo) & create graph

@@ -19,15 +19,17 @@ template<typename T>
 struct SharedPtrLT
 {
     bool
-    operator() (const std::shared_ptr<T>& x, const T*& y) const
+    operator() (const std::shared_ptr<T>& x, const T* const & y) const
     {
         return x.get()<y;
     }
+
     bool
     operator() (std::shared_ptr<T>& x, T*& y) const
     {
         return x.get()<y;
     }
+
 };
 
 

@@ -179,7 +179,7 @@ class SortedRandomSet
         >
     bool
     contains(
-        KEY
+        const KEY
     ) const;
 
     /** Returns the position of the input value in the collection, or -1 */
@@ -190,7 +190,7 @@ class SortedRandomSet
         >
     int
     get_index(
-        KEY
+        const KEY
     ) const;
 
     /** Returns the object at the given position in the collection.
@@ -361,7 +361,7 @@ template <typename KEY, typename LT, typename EQ>
 bool
 SortedRandomSet<ELEMENT_TYPE>::
 contains(
-    KEY search_value
+    const KEY search_value
 ) const
 {
     LT lt = LT();
@@ -385,7 +385,7 @@ template <typename KEY, typename LT, typename EQ>
 int
 SortedRandomSet<ELEMENT_TYPE>::
 get_index(
-    KEY search_value
+    const KEY search_value
 ) const
 {
     LT lt = LT();

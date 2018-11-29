@@ -37,7 +37,7 @@ class
 
     //using super::super;
 
-    using super::edges;
+    using super::interlayer_edges;
 
     HomogeneousMultilayerNetwork(
         const std::string& name,

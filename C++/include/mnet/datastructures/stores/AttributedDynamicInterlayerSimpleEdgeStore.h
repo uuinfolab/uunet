@@ -27,7 +27,6 @@ class
 
   public:
 
-
     AttributedDynamicInterlayerSimpleEdgeStore(
         std::unique_ptr<A> attr
     );

@@ -19,20 +19,19 @@ new_multilayer_section_start(const std::string& line)
 
     if (
         line_copy=="#VERSION" ||
-        line_copy=="#TYPE" ||
-        line_copy=="#VERTEX ATTRIBUTES" ||
-        line_copy=="#EDGE ATTRIBUTES" ||
+        line_copy.find("#TYPE") == 0 ||
         line_copy=="#LAYERS" ||
+        line_copy=="#ACTORS" ||
+        line_copy=="#ACTOR ATTRIBUTES" ||
         line_copy=="#VERTICES" ||
-        line_copy=="#INTRALAYER VERTICES" ||
+        line_copy=="#VERTEX ATTRIBUTES" ||
         line_copy=="#INTRALAYER EDGES" ||
         line_copy=="#INTERLAYER EDGES" ||
         // alternative for: #INTRALAYER EDGES
         line_copy=="#EDGES" ||
+        line_copy=="#EDGE ATTRIBUTES" ||
         // deprecated
-        line_copy=="#VERTEXES" ||
-        line_copy=="#ACTORS" ||
-        line_copy=="#ACTOR ATTRIBUTES")
+        line_copy=="#VERTEXES")
     {
         return true;
     }
@@ -53,19 +52,9 @@ get_multilayer_section(
         return MultilayerIOFileSection::VERSION;
     }
 
-    if (line_copy=="#TYPE")
+    if (line_copy.find("#TYPE") == 0) // for backward compatibility, if the type is on the same line
     {
         return MultilayerIOFileSection::TYPE;
-    }
-
-    if (line_copy=="#VERTEX ATTRIBUTES")
-    {
-        return MultilayerIOFileSection::VERTEX_ATTRIBUTES;
-    }
-
-    if (line_copy=="#EDGE ATTRIBUTES")
-    {
-        return MultilayerIOFileSection::EDGE_ATTRIBUTES;
     }
 
     if (line_copy=="#LAYERS")
@@ -73,14 +62,24 @@ get_multilayer_section(
         return MultilayerIOFileSection::LAYERS;
     }
 
-    if (line_copy=="#VERTICES")
+    if (line_copy=="#ACTORS")
     {
         return MultilayerIOFileSection::VERTICES;
     }
 
-    if (line_copy=="#INTRALAYER VERTICES")
+    if (line_copy=="#ACTOR ATTRIBUTES")
+    {
+        return MultilayerIOFileSection::ACTOR_ATTRIBUTES;
+    }
+
+    if (line_copy=="#VERTICES" || line_copy=="#NODES")
     {
         return MultilayerIOFileSection::INTRALAYER_VERTICES;
+    }
+
+    if (line_copy=="#VERTEX ATTRIBUTES" || line_copy=="#NODE ATTRIBUTES")
+    {
+        return MultilayerIOFileSection::VERTEX_ATTRIBUTES;
     }
 
     if (line_copy=="#EDGES" || line_copy=="#INTRALAYER EDGES")
@@ -93,23 +92,16 @@ get_multilayer_section(
         return MultilayerIOFileSection::INTERLAYER_EDGES;
     }
 
+    if (line_copy=="#EDGE ATTRIBUTES")
+    {
+        return MultilayerIOFileSection::EDGE_ATTRIBUTES;
+    }
+
     // DEPRECATED
     if (line_copy=="#VERTEXES")
     {
-        std::cerr << "[WARNING] usage of #VERTEXES deprecated. Use #INTRALAYER VERTICES instead." << std::endl;
+        // std::cerr << "[WARNING] usage of #VERTEXES deprecated. Use #VERTICES instead." << std::endl;
         return MultilayerIOFileSection::INTRALAYER_VERTICES;
-    }
-
-    if (line_copy=="#ACTORS")
-    {
-        std::cerr << "[WARNING] usage of #ACTORS deprecated. Use #VERTICES instead." << std::endl;
-        return MultilayerIOFileSection::VERTICES;
-    }
-
-    if (line_copy=="#ACTOR ATTRIBUTES")
-    {
-        std::cerr << "[WARNING] usage of #ACTOR deprecated. Use #VERTEX instead." << std::endl;
-        return MultilayerIOFileSection::VERTEX_ATTRIBUTES;
     }
 
     return MultilayerIOFileSection::DEFAULT; // cannot get here
@@ -187,16 +179,37 @@ read_multilayer_metadata(
 
         case MultilayerIOFileSection::TYPE:
         {
-            std::cout << "TYPE" << std::endl;
-            //read_multilayer_type(line, meta, csv.row_num());
+            // std::cout << "[WARNING] #TYPE section not implented" << std::endl;
+            // read_multilayer_type(line, meta, csv.row_num());
             // @todo
             break;
         }
 
+
+        case MultilayerIOFileSection::ACTOR_ATTRIBUTES:
+        {
+            if (fields.size()==2)
+            {
+                size_t from_idx = 0;
+                core::Attribute vertex_att = read_attr_def(fields, from_idx, csv.row_num());
+                meta.vertex_attributes.push_back(vertex_att);
+            }
+
+            else
+            {
+                throw core::WrongFormatException("Line " + std::to_string(csv.row_num()) +
+                                                 ": attribute name and attribute type expected");
+            }
+
+            break;
+        }
+
+
         case MultilayerIOFileSection::VERTEX_ATTRIBUTES:
         {
 
-            // global vertex attributes
+            // global vertex ( = actor) attributes
+            // for compatibility with previous version
             if (fields.size()==2)
             {
                 size_t from_idx = 0;

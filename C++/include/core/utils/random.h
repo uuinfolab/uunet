@@ -106,6 +106,15 @@ test(
     int row_num
 );
 
+template <class RandomAccessIterator, class URNG>
+void shuffle (RandomAccessIterator first, RandomAccessIterator last, URNG&& g)
+{
+    for (auto i=(last-first)-1; i>0; --i) {
+        std::uniform_int_distribution<decltype(i)> d(0,i);
+        std::swap (first[i], first[d(g)]);
+    }
+}
+    
 }
 }
 

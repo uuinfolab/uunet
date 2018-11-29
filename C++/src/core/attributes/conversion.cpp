@@ -33,14 +33,20 @@ to_string (
     const std::string& format
 )
 {
-    std::ostringstream ss;
-
+    
     time_t t = std::chrono::system_clock::to_time_t(v);
-    std::tm time = *gmtime(&t);
+    std::tm* time = gmtime(&t);
 
-    ss << std::put_time(&time, format.data());
+    // std::tm time = *gmtime(&t);
+    // std::ostringstream ss;
+    // ss << std::put_time(&time, format.data()); ONLY AVAILABLE FROM GCC 5.0
+    // return ss.str();
+    
+    char buffer [100];
+    
+    strftime (buffer, 100, format.data(), time);
 
-    return ss.str();
+    return std::string(buffer);
 }
 
 

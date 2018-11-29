@@ -9,6 +9,8 @@
 #include "mnet/datastructures/stores/DynamicInterlayerEdgeStore.h"
 #include "net/datastructures/graphs/SimpleGraph.h"
 #include "net/datastructures/stores/SimpleEdgeStore.h"
+#include "core/exceptions/ElementNotFoundException.h"
+#include "core/exceptions/assert_not_null.h"
 
 namespace uu {
 namespace net {
@@ -98,8 +100,8 @@ class
     virtual
     void
     erase(
-        const V* vertex,
-        const L* layer
+        const L* layer,
+        const V* vertex
     ) override;
 
 
@@ -117,16 +119,14 @@ add(
     std::shared_ptr<const InterlayerEdge<V,L>> e
 )
 {
-    if (!e.get())
-    {
-        throw core::NullPtrException("edge in add(edge)");
-    }
+    core::assert_not_null(e.get(), "add", "e");
 
     for (auto obs: observers)
     {
         obs->notify_add(e.get());
     }
 
+    // get() also checks if the layers are present in this store
     if (get(e->v1, e->l1, e->v2, e->l2))
     {
         return nullptr;
@@ -142,7 +142,6 @@ add(
     cidx_edge_by_vertexes[e->l1][e->l2][e->v1][e->v2] = new_edge;
 
     /// DIR SPECIFIC.
-
 
     if (!is_directed(e->l1, e->l2))
     {
@@ -169,15 +168,39 @@ get(
     core::assert_not_null(vertex2, "get", "vertex2");
     core::assert_not_null(layer2, "get", "layer2");
 
-    if (cidx_edge_by_vertexes.at(layer1).at(layer2).count(vertex1)>0 &&
-            cidx_edge_by_vertexes.at(layer1).at(layer2).at(vertex1).count(vertex2)>0)
+    auto l1 = cidx_edge_by_vertexes.find(layer1);
+
+    if (l1 == cidx_edge_by_vertexes.end())
     {
-        return cidx_edge_by_vertexes.at(layer1).at(layer2).at(vertex1).at(vertex2);
+        throw core::ElementNotFoundException("layer " + layer1->name +
+                                             " is not present in this store");
+    }
+
+    auto l2 = l1->second.find(layer2);
+
+    if (l2 == l1->second.end())
+    {
+        throw core::ElementNotFoundException("layer " + layer2->name +
+                                             " is not present in this store");
+    }
+
+    auto v1 = l2->second.find(vertex1);
+
+    if (v1 == l2->second.end())
+    {
+        return nullptr;
+    }
+
+    auto v2 = v1->second.find(vertex2);
+
+    if (v2 == v1->second.end())
+    {
+        return nullptr;
     }
 
     else
     {
-        return nullptr;
+        return v2->second;
     }
 }
 
@@ -199,12 +222,12 @@ erase(
 
     edges_[edge->l1][edge->l2]->erase(edge);
     edges_[edge->l2][edge->l1]->erase(edge);
-    
+
     cidx_edge_by_vertexes[edge->l1][edge->l2][edge->v1].erase(edge->v2);
 
-    sidx_neighbors_in[edge->l1][edge->l2][edge->v2]->erase(edge->v1);
+    sidx_neighbors_in[edge->l2][edge->l1][edge->v2]->erase(edge->v1);
     sidx_neighbors_out[edge->l1][edge->l2][edge->v1]->erase(edge->v2);
-    sidx_incident_in[edge->l1][edge->l2][edge->v2]->erase(edge);
+    sidx_incident_in[edge->l2][edge->l1][edge->v2]->erase(edge);
     sidx_incident_out[edge->l1][edge->l2][edge->v1]->erase(edge);
 
 
@@ -212,17 +235,19 @@ erase(
     // an edge in the other direction keeping them neighbors
     if (is_directed(edge->l1, edge->l2))
     {
+
         if (!get(edge->v2,edge->l2,edge->v1,edge->l1))
         {
             sidx_neighbors_all[edge->l2][edge->l1][edge->v2]->erase(edge->v1);
-            sidx_neighbors_all[edge->l2][edge->l1][edge->v1]->erase(edge->v2);
+            sidx_neighbors_all[edge->l1][edge->l2][edge->v1]->erase(edge->v2);
             sidx_incident_all[edge->l2][edge->l1][edge->v2]->erase(edge);
-            sidx_incident_all[edge->l2][edge->l1][edge->v1]->erase(edge);
+            sidx_incident_all[edge->l1][edge->l2][edge->v1]->erase(edge);
         }
     }
 
     else
     {
+
         cidx_edge_by_vertexes[edge->l2][edge->l1][edge->v2].erase(edge->v1);
 
         sidx_neighbors_in[edge->l1][edge->l2][edge->v1]->erase(edge->v2);
@@ -235,6 +260,7 @@ erase(
         sidx_incident_all[edge->l2][edge->l1][edge->v2]->erase(edge);
     }
 
+
     return core::SharedPtrSortedRandomSet<const InterlayerEdge<V,L>>::erase(edge);
 }
 
@@ -244,19 +270,15 @@ template<typename V, typename L>
 void
 DynamicInterlayerSimpleEdgeStore<V,L>::
 erase(
-    const V* vertex,
-    const L* layer
+    const L* layer,
+    const V* vertex
 )
 {
 
-    // @todo
-    if (!vertex)
-    {
-        throw core::NullPtrException("vertex in erase(vertex) from edge store");
-    }
+    assert_not_null(layer, "erase", "layer");
+    assert_not_null(vertex, "erase", "vertex");
 
     std::unordered_set<const InterlayerEdge<V,L>*> to_erase;
-
 
     std::vector<const L*> layers;
 
@@ -271,6 +293,7 @@ erase(
     {
         for (auto neighbor: *neighbors(layer,l,vertex,EdgeMode::OUT))
         {
+
             auto e = get(vertex,layer,neighbor,l);
 
             to_erase.insert(e);
@@ -281,7 +304,9 @@ erase(
     {
         for (auto neighbor: *neighbors(layer,l,vertex,EdgeMode::IN))
         {
-            to_erase.insert(get(neighbor,l,vertex,layer));
+            auto e = get(neighbor,l,vertex,layer);
+
+            to_erase.insert(e);
         }
     }
 
@@ -302,7 +327,6 @@ add(
 {
     super::add(layer);
 
-
     std::vector<const L*> layers;
 
     for (auto&& p: edges_)
@@ -317,8 +341,6 @@ add(
     }
 
 }
-
-
 
 template <typename V, typename L>
 void
@@ -339,7 +361,7 @@ erase(
 
     for (auto l: layers)
     {
-        cidx_edge_by_vertexes[layer].erase(l);
+        cidx_edge_by_vertexes[l].erase(layer);
     }
 
     cidx_edge_by_vertexes.erase(layer);

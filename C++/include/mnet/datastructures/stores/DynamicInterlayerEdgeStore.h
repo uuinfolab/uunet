@@ -80,11 +80,11 @@ class DynamicInterlayerEdgeStore:
 
     virtual
     GenericObjectList<InterlayerEdge<V,L>>*
-    get(
-        const L* layer1,
-        const L* layer2
-        ) const;
-    
+                                        get(
+                                            const L* layer1,
+                                            const L* layer2
+                                        ) const;
+
     /**
      * @brief Returns the nodes with an edge from/to the input vertex.
      * @param node pointer to the node.
@@ -123,6 +123,13 @@ class DynamicInterlayerEdgeStore:
     ) const;
 
 
+    void
+    set_directed(
+        const L* layer1,
+        const L* layer2,
+        bool directed
+    );
+
 
     virtual
     void
@@ -140,8 +147,8 @@ class DynamicInterlayerEdgeStore:
     virtual
     void
     erase(
-        const V* vertex,
-        const L* layer
+        const L* layer,
+        const V* vertex
     ) = 0;
 
   protected:
@@ -217,16 +224,16 @@ add(
     sidx_neighbors_out[e->l1][e->l2][e->v1]->add(e->v2);
     sidx_incident_out[e->l1][e->l2][e->v1]->add(new_edge);
 
-    /*
-    if (sidx_neighbors_in[e->l1][e->l2].count(e->v2)==0)
+
+    if (sidx_neighbors_in[e->l2][e->l1].count(e->v2)==0)
     {
-        sidx_neighbors_in[e->l1][e->l2][e->v2] = std::make_unique<GenericObjectList<V>>();
-        sidx_incident_in[e->l1][e->l2][e->v2] = std::make_unique<GenericObjectList<InterlayerEdge<V,L>>>();
+        sidx_neighbors_in[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<V>>();
+        sidx_incident_in[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<InterlayerEdge<V,L>>>();
     }
 
-    sidx_neighbors_in[e->l1][e->l2][e->v2]->add(e->v1);
-    sidx_incident_in[e->l1][e->l2][e->v2]->add(new_edge);
-     */
+    sidx_neighbors_in[e->l2][e->l1][e->v2]->add(e->v1);
+    sidx_incident_in[e->l2][e->l1][e->v2]->add(new_edge);
+
 
     if (sidx_neighbors_all[e->l1][e->l2].count(e->v1)==0)
     {
@@ -237,16 +244,15 @@ add(
     sidx_neighbors_all[e->l1][e->l2][e->v1]->add(e->v2);
     sidx_incident_all[e->l1][e->l2][e->v1]->add(new_edge);
 
-    /*
-    if (sidx_neighbors_all[e->l1][e->l2].count(e->v2)==0)
+    if (sidx_neighbors_all[e->l2][e->l1].count(e->v2)==0)
     {
-        sidx_neighbors_all[e->l1][e->l2][e->v2] = std::make_unique<GenericObjectList<V>>();
-        sidx_incident_all[e->l1][e->l2][e->v2] = std::make_unique<GenericObjectList<InterlayerEdge<V,L>>>();
+        sidx_neighbors_all[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<V>>();
+        sidx_incident_all[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<InterlayerEdge<V,L>>>();
     }
 
-    sidx_neighbors_all[e->l1][e->l2][e->v2]->add(e->v1);
-    sidx_incident_all[e->l1][e->l2][e->v2]->add(new_edge);
-     */
+    sidx_neighbors_all[e->l2][e->l1][e->v2]->add(e->v1);
+    sidx_incident_all[e->l2][e->l1][e->v2]->add(new_edge);
+
 
     if (e->dir == EdgeDir::UNDIRECTED)
     {
@@ -260,17 +266,16 @@ add(
         sidx_neighbors_out[e->l2][e->l1][e->v2]->add(e->v1);
         sidx_incident_out[e->l2][e->l1][e->v2]->add(new_edge);
 
-        /*
-        if (sidx_neighbors_in[e->l2][e->l1].count(e->v1)==0)
+        if (sidx_neighbors_in[e->l1][e->l2].count(e->v1)==0)
         {
-            sidx_neighbors_in[e->l2][e->l1][e->v1] = std::make_unique<GenericObjectList<V>>();
-            sidx_incident_in[e->l2][e->l1][e->v1] = std::make_unique<GenericObjectList<InterlayerEdge<V,L>>>();
+            sidx_neighbors_in[e->l1][e->l2][e->v1] = std::make_unique<GenericObjectList<V>>();
+            sidx_incident_in[e->l1][e->l2][e->v1] = std::make_unique<GenericObjectList<InterlayerEdge<V,L>>>();
         }
 
-        sidx_neighbors_in[e->l2][e->l1][e->v1]->add(e->v2);
-        sidx_incident_in[e->l2][e->l1][e->v1]->add(new_edge);
-        */
+        sidx_neighbors_in[e->l1][e->l2][e->v1]->add(e->v2);
+        sidx_incident_in[e->l1][e->l2][e->v1]->add(new_edge);
 
+        /*
         if (sidx_neighbors_all[e->l2][e->l1].count(e->v2)==0)
         {
             sidx_neighbors_all[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<V>>();
@@ -279,23 +284,24 @@ add(
 
         sidx_neighbors_all[e->l2][e->l1][e->v2]->add(e->v1);
         sidx_incident_all[e->l2][e->l1][e->v2]->add(new_edge);
+         */
     }
 
     return new_edge;
 }
 
-    template <typename V, typename L>
-    GenericObjectList<InterlayerEdge<V,L>>*
-    DynamicInterlayerEdgeStore<V,L>::
-    get(
-        const L* layer1,
-        const L* layer2
-        ) const
-    {
-        core::assert_not_null(layer1, "neighbors", "layer1");
-        core::assert_not_null(layer2, "neighbors", "layer2");
-        return edges_.at(layer1).at(layer2).get();
-    }
+template <typename V, typename L>
+GenericObjectList<InterlayerEdge<V,L>>*
+                                    DynamicInterlayerEdgeStore<V,L>::
+                                    get(
+                                        const L* layer1,
+                                        const L* layer2
+                                    ) const
+{
+    core::assert_not_null(layer1, "neighbors", "layer1");
+    core::assert_not_null(layer2, "neighbors", "layer2");
+    return edges_.at(layer1).at(layer2).get();
+}
 
 template <typename V, typename L>
 const
@@ -411,9 +417,31 @@ is_directed(
     const L* layer2
 ) const
 {
-    core::assert_not_null(layer1, "neighbors", "layer1");
-    core::assert_not_null(layer2, "neighbors", "layer2");
+    core::assert_not_null(layer1, "is_directed", "layer1");
+    core::assert_not_null(layer2, "is_directed", "layer2");
     return edge_directionality.at(layer1).at(layer2) == EdgeDir::DIRECTED?true:false;
+}
+
+
+template <typename V, typename L>
+void
+DynamicInterlayerEdgeStore<V,L>::
+set_directed(
+    const L* layer1,
+    const L* layer2,
+    bool directed
+)
+{
+    core::assert_not_null(layer1, "set_directed", "layer1");
+    core::assert_not_null(layer2, "set_directed", "layer2");
+
+    if (edges_.at(layer1).at(layer2)->size() > 0)
+    {
+        throw core::OperationNotSupportedException("cannot change directionality after edges have been inserted");
+    }
+
+    edge_directionality.at(layer1).at(layer2) = directed?EdgeDir::DIRECTED:EdgeDir::UNDIRECTED;
+    edge_directionality.at(layer2).at(layer1) = directed?EdgeDir::DIRECTED:EdgeDir::UNDIRECTED;
 }
 
 
@@ -438,7 +466,7 @@ add(
 
     for (auto l: layers)
     {
-        edges_[l][layer];
+        edges_[l][layer] = std::make_unique<GenericObjectList<InterlayerEdge<V,L>>>();
         edge_directionality[l][layer];
         sidx_neighbors_out[l][layer];
         sidx_neighbors_in[l][layer];
@@ -447,7 +475,7 @@ add(
         sidx_incident_in[l][layer];
         sidx_incident_all[l][layer];
 
-        edges_[layer][l];
+        edges_[layer][l] = std::make_unique<GenericObjectList<InterlayerEdge<V,L>>>();
         edge_directionality[layer][l];
         sidx_neighbors_out[layer][l];
         sidx_neighbors_in[layer][l];
@@ -479,7 +507,50 @@ erase(
 
     for (auto l: layers)
     {
-        edges_[layer].erase(l);
+        edges_[l].erase(layer);
+        edge_directionality[l].erase(layer);
+        sidx_neighbors_out[l].erase(layer);
+        sidx_neighbors_in[l].erase(layer);
+        sidx_neighbors_all[l].erase(layer);
+        sidx_incident_out[l].erase(layer);
+        sidx_incident_in[l].erase(layer);
+        sidx_incident_all[l].erase(layer);
+    }
+
+    edges_.erase(layer);
+    edge_directionality.erase(layer);
+    sidx_neighbors_out.erase(layer);
+    sidx_neighbors_in.erase(layer);
+    sidx_neighbors_all.erase(layer);
+    sidx_incident_out.erase(layer);
+    sidx_incident_in.erase(layer);
+    sidx_incident_all.erase(layer);
+
+}
+
+
+
+template <typename V, typename L>
+void
+DynamicInterlayerEdgeStore<V,L>::
+erase(
+    const L* layer,
+    const V* vertex
+)
+{
+    core::assert_not_null(layer, "erase", "layer");
+    core::assert_not_null(vertex, "erase", "vertex");
+
+    std::vector<const L*> layers;
+
+    for (auto&& p: edges_)
+    {
+        layers.push_back(p.first);
+    }
+
+    for (auto l: layers)
+    {
+        edges_[layer][l];
         edge_directionality[layer].erase(l);
         sidx_neighbors_out[layer].erase(l);
         sidx_neighbors_in[layer].erase(l);
@@ -499,7 +570,6 @@ erase(
     sidx_incident_all.erase(layer);
 
 }
-
 }
 }
 

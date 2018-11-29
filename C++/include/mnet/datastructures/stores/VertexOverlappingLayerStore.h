@@ -15,7 +15,7 @@ namespace net {
 template <typename Graph>
 class VertexOverlappingLayerStore :
     public core::LabeledUniquePtrSortedRandomSet<Graph>,
-    public core::Subject<const Graph>
+    public core::Subject<Graph>
 {
 
 
@@ -32,7 +32,7 @@ class VertexOverlappingLayerStore :
     using super::get;
     using super::erase;
     using super::size;
-    using core::Subject<const Graph>::observers;
+    using core::Subject<Graph>::observers;
 
 
     virtual

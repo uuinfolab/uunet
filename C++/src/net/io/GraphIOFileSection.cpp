@@ -83,19 +83,19 @@ get_section(const std::string& line)
     // DEPRECATED
     if (line_copy=="#VERTEXES")
     {
-        std::cerr << "[WARNING] usage of #VERTEXES deprecated. Use #VERTICES instead." << std::endl;
+        //std::cerr << "[WARNING] usage of #VERTEXES deprecated. Use #VERTICES instead." << std::endl;
         return GraphIOFileSection::VERTICES;
     }
 
     if (line_copy=="#ACTORS")
     {
-        std::cerr << "[WARNING] usage of #ACTORS deprecated. Use #VERTICES instead." << std::endl;
+        //std::cerr << "[WARNING] usage of #ACTORS deprecated. Use #VERTICES instead." << std::endl;
         return GraphIOFileSection::VERTICES;
     }
 
     if (line_copy=="#ACTOR ATTRIBUTES")
     {
-        std::cerr << "[WARNING] usage of #ACTOR deprecated. Use #VERTEX instead." << std::endl;
+        //std::cerr << "[WARNING] usage of #ACTOR deprecated. Use #VERTEX instead." << std::endl;
         return GraphIOFileSection::VERTEX_ATTRIBUTES;
     }
 

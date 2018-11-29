@@ -110,7 +110,7 @@ add(
         throw NullPtrException("element to be added to the store");
     }
 
-    return super::set.add(element->shared_from_this());
+    return add(element->shared_from_this());
 }
 
 

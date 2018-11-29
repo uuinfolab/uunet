@@ -28,6 +28,94 @@ as.igraph.Rcpp_RMLNetwork <- function (x, layers=NULL, merge.actors=TRUE, all.ac
     g
 }
 
+
+# A function to convert the network into a list of igraph objects
+as.list.Rcpp_RMLNetwork <- function(x, ...) {
+    layer.names = sort(layers.ml(x))
+    layers <- vector("list",num.layers.ml(x)+1)
+    layers[[1]] <- as.igraph(x)
+    names(layers)[1] <- "_flat_"
+    if (num.layers.ml(x)>0) {
+        for (i in 1 : num.layers.ml(x)) {
+            layers[[i+1]] <- as.igraph(x,layer.names[i])
+            bad.vs<-V(layers[[i+1]])[degree(layers[[i+1]]) == 0]
+            # remove isolated nodes
+            layers[[i+1]] <-delete.vertices(layers[[i+1]], bad.vs)
+            names(layers)[i+1] <- layer.names[i]
+        }
+    }
+    layers
+}
+
+#
+add.igraph.layer.ml <- function(mlnetwork, g, name)
+{
+    if (is.null(vertex_attr(g)$name))
+    {
+        stop("igraph object must have a vertex attribute 'name' with vertex names")
+    }
+    
+    add.layers.ml(mlnetwork, name, is.directed(g))
+    
+    add.actors.ml(mlnetwork, vertex_attr(g)$name)
+    
+    vertices = data.frame(actor=vertex_attr(g)$name, layer=name)
+    add.vertices.ml(mlnetwork, vertices)
+    
+    for (attr in names(vertex_attr(g)))
+    {
+        if (is.numeric(vertex_attr(g)[[attr]]))
+        {
+            add.attributes.ml(mlnetwork, attributes=attr, type="numeric", target="vertex", layer=name)
+        }
+        if (is.character(vertex_attr(g)[[attr]]))
+        {
+            add.attributes.ml(mlnetwork, attributes=attr, type="string", target="vertex", layer=name)
+        }
+        set.values.ml(mlnetwork, attr, vertices=vertices, values=vertex_attr(g)[[attr]])
+    }
+    
+    
+    edges = data.frame(
+    actor1=get.edgelist(g)[,1], layer1=name,
+    actor2=get.edgelist(g)[,2], layer2=name)
+    
+    add.edges.ml(mlnetwork, edges)
+    
+    for (attr in names(edge_attr(g)))
+    {
+        if (is.numeric(edge_attr(g)[[attr]]))
+        {
+            add.attributes.ml(mlnetwork, attributes=attr, type="numeric", target="edge", layer=name)
+        }
+        if (is.character(edge_attr(g)[[attr]]))
+        {
+            add.attributes.ml(mlnetwork, attributes=attr, type="string", target="edge", layer=name)
+        }
+        set.values.ml(mlnetwork, attr, edges=edges, values=edge_attr(g)[[attr]])
+    }
+}
+
+# Basic layer-by-layer statistics
+summary.Rcpp_RMLNetwork <- function(object, ...) {
+    mlnet.layers <- as.list(object)
+    mlnet.table <- as.data.frame(matrix(0,length(mlnet.layers),8))
+    dimnames(mlnet.table) <- list(names(mlnet.layers),c("n","m","dir","nc","dens","cc","apl","dia"))
+    if (num.layers.ml(object)>0) {
+        for (i in 1 : length(mlnet.layers)) {
+            mlnet.table[i,1] = vcount(mlnet.layers[[i]])
+            mlnet.table[i,2] = ecount(mlnet.layers[[i]])
+            mlnet.table[i,3] = is.directed(mlnet.layers[[i]])
+            mlnet.table[i,4] = count_components(mlnet.layers[[i]])
+            mlnet.table[i,5] = graph.density(mlnet.layers[[i]])
+            mlnet.table[i,6] = transitivity(mlnet.layers[[i]])
+            mlnet.table[i,7] = average.path.length(mlnet.layers[[i]])
+            mlnet.table[i,8] = diameter(mlnet.layers[[i]])
+        }
+    }
+    mlnet.table
+}
+
 # (Rudimentary) plotting function.
 
     

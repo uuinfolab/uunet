@@ -16,7 +16,7 @@ namespace net {
 class metanet;
 
 template <typename M, typename G>
-std::unique_ptr<CommunityStructure<VertexLayerCommunity<G>>>
+std::unique_ptr<CommunityStructure<VertexLayerCommunity<const G>>>
 generalized_louvain(
     const M* mnet,
     double gamma,
@@ -48,7 +48,7 @@ class glouvain
     		method for single layer networks. This implementation is based from http://netwiki.amath.unc.edu/GenLouvain/GenLouvain
     */
     template <typename M, typename G>
-    std::unique_ptr<CommunityStructure<VertexLayerCommunity<G>>>
+    std::unique_ptr<CommunityStructure<VertexLayerCommunity<const G>>>
     fit(
         const M* mnet,
         const std::string& m,
@@ -79,7 +79,8 @@ class glouvain
         double twoum
     ) const;
 
-    /* Same as Q but does not use the full modularity matrix. Instead it uses the iterative version for really large networks */
+    /* Same as Q but does not use the full modularity matrix. Instead it uses the iterative version
+     for really large networks */
     double
     Q_handle(
         metanet& meta,
@@ -461,7 +462,7 @@ class metanet
 
 
 template <typename M, typename G>
-std::unique_ptr<CommunityStructure<VertexLayerCommunity<G>>>
+std::unique_ptr<CommunityStructure<VertexLayerCommunity<const G>>>
 generalized_louvain(
     const M* mnet,
     double gamma,
@@ -475,7 +476,7 @@ generalized_louvain(
 
 
 template <typename M, typename G>
-std::unique_ptr<CommunityStructure<VertexLayerCommunity<G>>>
+std::unique_ptr<CommunityStructure<VertexLayerCommunity<const G>>>
 glouvain::fit(
     const M* mnet,
     const std::string& m,

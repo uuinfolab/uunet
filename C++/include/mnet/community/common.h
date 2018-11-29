@@ -66,10 +66,10 @@ range(
 
 /*
 * Converts a vector with community identifiers for each vertex/layer pair into a community structure.
-* @param mnet is a mulltilayer network, with at least some connected actors and 1+ layers
+* @param mnet is a multilayer network, with at least some connected actors and 1+ layers
 * @param nodes2cid is a vector of community assignment for the nodes in mnet, where
 * nodes2cid.size() == num_actors * num_layers
-* @return a community assignment of actors with
+* @return a community assignment of actors
 */
 
 template <typename M, typename G>
@@ -196,7 +196,6 @@ to_community_structure(
     const std::vector<unsigned int>& nodes2cid
 )
 {
-
     size_t num_layers = mnet->layers()->size();
     size_t num_actors = mnet->vertices()->size();
 
@@ -212,7 +211,11 @@ to_community_structure(
         {
             auto actor = mnet->vertices()->get_at_index(j - (i * num_actors));
 
-            // @todo check if vertex exists in the layer
+            if (!layer->vertices()->contains(actor))
+            {
+                continue;
+            }
+
             auto iv = std::make_pair(actor, layer);
             result[nodes2cid.at(j)].push_back(iv);
 

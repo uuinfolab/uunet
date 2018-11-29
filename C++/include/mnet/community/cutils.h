@@ -351,7 +351,7 @@ std::vector<Eigen::SparseMatrix<double>>
 
 
 template <typename M, typename G>
-std::unique_ptr<CommunityStructure<VertexLayerCommunity<G>>>
+std::unique_ptr<CommunityStructure<VertexLayerCommunity<const G>>>
 to_community_structure(
     const M* mnet,
     const std::vector<unsigned int>& nodes2cid
@@ -373,7 +373,12 @@ to_community_structure(
         {
             auto actor = mnet->vertices()->get_at_index(j - (i * num_actors));
 
-            // @todo check if vertex exists in the layer
+
+            if (!layer->vertices()->contains(actor))
+            {
+                continue;
+            }
+
             auto iv = std::make_pair(actor, layer);
             result[nodes2cid.at(j)].push_back(iv);
 
@@ -382,11 +387,11 @@ to_community_structure(
 
     // build community structure
 
-    auto communities = std::make_unique<CommunityStructure<VertexLayerCommunity<G>>>();
+    auto communities = std::make_unique<CommunityStructure<VertexLayerCommunity<const G>>>();
 
     for (auto pair: result)
     {
-        auto c = std::make_unique<VertexLayerCommunity<G>>();
+        auto c = std::make_unique<VertexLayerCommunity<const G>>();
 
         for (auto vertex_layer_pair: pair.second)
         {

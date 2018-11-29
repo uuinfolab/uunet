@@ -23,7 +23,7 @@ struct UniquePtrEQ
 
 TEST(core_datastructures_containers_UniquePtrSortedRandomSet_test, ptr_to_int)
 {
-    uu::core::SortedRandomSet<std::unique_ptr<const int>> set;
+    uu::core::UniquePtrSortedRandomSet<const int> set;
 
     std::unique_ptr<const int> e1 = std::make_unique<const int>(1);
     const int* e1_copy = e1.get();
@@ -45,29 +45,29 @@ TEST(core_datastructures_containers_UniquePtrSortedRandomSet_test, ptr_to_int)
     EXPECT_EQ(set.size(), 3)
             << "Inserted 3 elements, but size != 3";
 
-    bool res = set.contains<const int*,UniquePtrLT,UniquePtrEQ>(e3_copy);
+    bool res = set.contains(e3_copy);
     EXPECT_TRUE(res)
             << "contains method cannot find existing element";
-    res = set.contains<const int*,UniquePtrLT,UniquePtrEQ>(e4_copy);
+    res = set.contains(e4_copy);
     EXPECT_FALSE(res)
             << "contains method finds non-existing element";
 
-    int idx = set.get_index<const int*,UniquePtrLT,UniquePtrEQ>(e1_copy);
-    EXPECT_EQ(e1_copy, set.get_at_index(idx).get())
+    int idx = set.get_index(e1_copy);
+    EXPECT_EQ(e1_copy, set.get_at_index(idx))
             << "get_index and get_at_index not aligned";
-    idx = set.get_index<const int*,UniquePtrLT,UniquePtrEQ>(e2_copy);
-    EXPECT_EQ(e2_copy, set.get_at_index(idx).get())
+    idx = set.get_index(e2_copy);
+    EXPECT_EQ(e2_copy, set.get_at_index(idx))
             << "get_index and get_at_index not aligned";
-    idx = set.get_index<const int*,UniquePtrLT,UniquePtrEQ>(e3_copy);
-    EXPECT_EQ(e3_copy, set.get_at_index(idx).get())
+    idx = set.get_index(e3_copy);
+    EXPECT_EQ(e3_copy, set.get_at_index(idx))
             << "get_index and get_at_index not aligned";
 
-    set.get_at_random().get(); // cannot test this, as it is random... :)
+    set.get_at_random(); // cannot test this, as it is random... :)
 
-    res = set.erase<const int*,UniquePtrLT,UniquePtrEQ>(e4_copy);
+    res = set.erase(e4_copy);
     EXPECT_FALSE(res)
             << "Erasing a non-existing element should return false";
-    res = set.erase<const int*,UniquePtrLT,UniquePtrEQ>(e2_copy);
+    res = set.erase(e2_copy);
     EXPECT_TRUE(res)
             << "Erasing an existing element should return true";
 
@@ -76,9 +76,9 @@ TEST(core_datastructures_containers_UniquePtrSortedRandomSet_test, ptr_to_int)
 
     size_t number_of_elements = 0;
 
-    for (const std::unique_ptr<const int>& el: set)
+    for (auto el: set)
     {
-        res = set.contains<const int*,UniquePtrLT,UniquePtrEQ>(el.get());
+        res = set.contains(el);
         EXPECT_TRUE(res)
                 << "Iterator returns something not in the set";
 

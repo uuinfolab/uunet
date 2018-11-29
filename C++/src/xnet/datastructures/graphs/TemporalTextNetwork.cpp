@@ -59,14 +59,14 @@ TemporalTextNetwork::
 interlayer_edges(
 )
 {
-    return super::edges()->get<0,1>();
+    return super::interlayer_edges()->get<0,1>();
 }
 
 const TemporalSimpleEdgeStore*
 TemporalTextNetwork::
 interlayer_edges() const
 {
-    return super::edges()->get<0,1>();
+    return super::interlayer_edges()->get<0,1>();
 }
 
 std::string

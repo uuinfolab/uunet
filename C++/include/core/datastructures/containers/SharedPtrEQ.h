@@ -19,7 +19,7 @@ template<typename T>
 struct SharedPtrEQ
 {
     bool
-    operator() (const std::shared_ptr<T>& x, const T*& y) const
+    operator() (const std::shared_ptr<T>& x, const T* const & y) const
     {
         return x.get()==y;
     }

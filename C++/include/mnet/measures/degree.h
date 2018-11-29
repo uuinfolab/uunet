@@ -80,14 +80,14 @@ degree(
 {
     core::assert_not_null(v, "degree", "v");
 
-    int degree = 0;
+    int d = 0;
 
     for (auto layer=first; layer!=last; ++layer)
     {
-        degree += degree(layer, v, EdgeMode);
+        d += degree(*layer, v, mode);
     }
 
-    return degree;
+    return d;
 }
 
 
@@ -106,10 +106,10 @@ degree_mean(
 
     for (auto layer=first; layer!=last; ++layer)
     {
-        degrees.push_back((double)degree(layer, v, mode));
+        degrees.push_back((double)degree(*layer, v, mode));
     }
 
-    return core::mean(degrees);
+    return core::mean(degrees.begin(), degrees.end());
 }
 
 
@@ -128,10 +128,10 @@ degree_deviation(
 
     for (auto layer=first; layer!=last; ++layer)
     {
-        degrees.push_back((double)degree(layer, v, mode));
+        degrees.push_back((double)degree(*layer, v, mode));
     }
 
-    return core::stdev(degrees);
+    return core::stdev(degrees.begin(), degrees.end());
 }
 
 

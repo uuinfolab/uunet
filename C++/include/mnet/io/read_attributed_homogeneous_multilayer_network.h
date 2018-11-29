@@ -20,7 +20,8 @@ std::unique_ptr<AttributedHomogeneousMultilayerNetwork>
 read_attributed_homogeneous_multilayer_network(
     const std::string& infile,
     const std::string& name,
-    char separator
+    char separator,
+    bool align = false
 );
 
 

@@ -19,7 +19,7 @@ template<typename T>
 struct UniquePtrLT
 {
     bool
-    operator() (const std::unique_ptr<T>& x, const T*& y) const
+    operator() (const std::unique_ptr<T>& x, const T* const& y) const
     {
         return x.get()<y;
     }
