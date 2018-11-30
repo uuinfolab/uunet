@@ -52,7 +52,9 @@ class net_io_read_temporal_text_network_test : public ::testing::Test
 
 TEST_F(net_io_read_temporal_text_network_test, read)
 {
+    /*
     auto net = uu::net::read_temporal_text_network(test_file_name, "g", ',');
     std::cout << net->summary() << std::endl;
+     */
 }
 

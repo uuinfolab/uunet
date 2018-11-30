@@ -19,6 +19,7 @@ class mnet_datastructures_graphs_TemporalTextNetwork_test : public ::testing::Te
 TEST_F(mnet_datastructures_graphs_TemporalTextNetwork_test, creation)
 {
 
+    /*
     // Creating an empty multiplex network
 
     auto net = uu::net::create_temporal_text_network("a text net");
@@ -59,6 +60,6 @@ TEST_F(mnet_datastructures_graphs_TemporalTextNetwork_test, creation)
 
     // Uncomment to print network summary
     std::cout << net->summary() << std::endl;
-
+*/
 }
 
