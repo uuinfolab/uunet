@@ -142,10 +142,11 @@ struct BinaryHelper<std::string>
 
         if (stringLength > 0)
         {
-            char cstr[stringLength];
+            char *cstr = new char[stringLength];
             ifstream.read(cstr, stringLength);
             std::string str(cstr, stringLength);
             value.swap(str);
+            delete[] cstr;
         }
 
         return size + sizeof(char) * stringLength;

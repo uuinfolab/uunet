@@ -10,8 +10,8 @@
 #define _R_FUNCTIONS_H_
 
 #include <Rcpp.h>
-#include "mnet/datastructures/graphs/AttributedHomogeneousMultilayerNetwork.h"
-#include "mnet/generation/EvolutionModel.h"
+#include "networks/AttributedHomogeneousMultilayerNetwork.hpp"
+#include "generation/EvolutionModel.hpp"
 #include <unordered_set>
 #include <vector>
 #include <memory>
@@ -455,9 +455,19 @@ lart_ml(
 
  */
 
+double
+modularity_ml(
+              const RMLNetwork& rmnet,
+              const DataFrame& com, double gamma,
+              double omega
+              );
+
+
 List
-to_list(const DataFrame& cs,
-        const RMLNetwork& mnet);
+to_list(
+        const DataFrame& cs,
+        const RMLNetwork& mnet
+        );
 
 // Layout
 

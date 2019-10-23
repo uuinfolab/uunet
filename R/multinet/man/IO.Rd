@@ -1,7 +1,7 @@
-\name{Getting networks: IO}
-\alias{Getting networks: IO}
-\alias{read.ml}
-\alias{write.ml}
+\name{multinet.IO}
+\alias{multinet.IO}
+\alias{read_ml}
+\alias{write_ml}
 \title{
 Reading and writing multilayer networks from/to file
 }
@@ -88,37 +88,37 @@ The format used by the package is the following:
  }
 }
 \usage{
-read.ml(file, name="unnamed", sep=',', aligned=FALSE)
-write.ml(mlnetwork, file, format="multilayer", layers=character(0),
-  sep=',', merge.actors=TRUE, all.actors=FALSE)
+read_ml(file, name = "unnamed", sep = ',', aligned = FALSE)
+write_ml(n, file, format = "multilayer", layers = character(0),
+  sep = ',', merge.actors = TRUE, all.actors = FALSE)
 }
 \arguments{
 \item{file}{The path of the file storing the multilayer network.}
 \item{name}{The name of the multilayer network.}
-\item{mlnetwork}{A multilayer network.}
+\item{n}{A multilayer network.}
 \item{layers}{If specific layers are passed to the function, only those layers are saved to file.}
 \item{format}{Either "multilayer", to use the package's internal format, or "graphml".}
 \item{sep}{The character used in the file to separate text fields.}
-\item{aligned}{If true, all actors are added to all layers.}
-\item{merge.actors}{Whether the nodes corresponding to each single actor should be merged into a single node (true) or kept separated (false), when format="graphml" is used.}
-\item{all.actors}{Whether all actors in the multilayer network should be included in the output file (true) or only those present in at least one of the input layers (false), when format="graphml" and merge.actors=TRUE are used.}
+\item{aligned}{If \code{true}, all actors are added to all layers.}
+\item{merge.actors}{Whether the nodes corresponding to each single actor should be merged into a single node (\code{true}) or kept separated (\code{false}), when \code{format = "graphml"} is used.}
+\item{all.actors}{Whether all actors in the multilayer network should be included in the output file (true) or only those present in at least one of the input layers (false), when \code{format = "graphml"} and \code{merge.actors = TRUE} are used.}
 }
 \value{
-\code{read.ml} returns a multilayer network. \code{write.ml} does not return any value.
+\code{read_ml} returns a multilayer network. \code{write_ml} does not return any value.
 }
 \seealso{
-\link{Getting networks: predefined}, \link{Getting networks: generation}
+\link{multinet.predefined}, \link{multinet.generation}
 }
 \examples{
 # writing a network to file...
 file <- tempfile("aucs.mpx")
-net <- ml.aucs()
-write.ml(net,file)
+net <- ml_aucs()
+write_ml(net,file)
 # ...and reading it back into a variable
-net <- read.ml(file,"AUCS")
+net <- read_ml(file,"AUCS")
 net
 # the following network has more nodes, because all
 # actors are replicated to all graphs
-net.aligned <- read.ml(file,"AUCS",aligned=TRUE)
-net.aligned
+net_aligned <- read_ml(file,"AUCS",aligned=TRUE)
+net_aligned
 }

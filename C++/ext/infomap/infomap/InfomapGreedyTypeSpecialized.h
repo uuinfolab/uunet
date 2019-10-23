@@ -58,7 +58,7 @@ class InfomapGreedyTypeSpecialized : public InfomapGreedyCommon<InfomapGreedyTyp
 
   protected:
 
-    virtual std::auto_ptr<InfomapBase>
+    virtual std::unique_ptr<InfomapBase>
     getNewInfomapInstanceWithoutMemory();
 
     virtual void
@@ -70,29 +70,68 @@ class InfomapGreedyTypeSpecialized : public InfomapGreedyCommon<InfomapGreedyTyp
     void
     addContributionOfMovingMemoryNodes(NodeType& current,
                                        DeltaFlowType& oldModuleDelta, std::vector<DeltaFlowType>& moduleDeltaEnterExit,
-                                       std::vector<unsigned int>& redirect, unsigned int& offset, unsigned int& numModuleLinks) {}
+                                       std::vector<unsigned int>& redirect, unsigned int& offset, unsigned int& numModuleLinks)
+    {
+
+        (void)current; // to avoid compiler warning
+        (void)oldModuleDelta; // to avoid compiler warning
+        (void)moduleDeltaEnterExit; // to avoid compiler warning
+        (void)redirect; // to avoid compiler warning
+        (void)offset; // to avoid compiler warning
+        (void)numModuleLinks; // to avoid compiler warning
+    }
 
     void
     addContributionOfMovingMemoryNodes(NodeType& current,
-                                       DeltaFlowType& oldModuleDelta, std::map<unsigned int, DeltaFlowType>& moduleDeltaFlow) {}
+                                       DeltaFlowType& oldModuleDelta, std::map<unsigned int, DeltaFlowType>& moduleDeltaFlow)
+    {
+        (void)current; // to avoid compiler warning
+        (void)oldModuleDelta; // to avoid compiler warning
+        (void)moduleDeltaFlow; // to avoid compiler warning
+
+    }
 
     void
-    performMoveOfMemoryNode(NodeType& current, unsigned int oldModuleIndex, unsigned int bestModuleIndex) {}
+    performMoveOfMemoryNode(NodeType& current, unsigned int oldModuleIndex, unsigned int bestModuleIndex)
+    {
+        (void)current; // to avoid compiler warning
+        (void)oldModuleIndex; // to avoid compiler warning
+        (void)bestModuleIndex; // to avoid compiler warning
+
+    }
 
     void
-    performPredefinedMoveOfMemoryNode(NodeType& current, unsigned int oldModuleIndex, unsigned int bestModuleIndex, DeltaFlowType& oldModuleDelta, DeltaFlowType& newModuleDelta) {}
+    performPredefinedMoveOfMemoryNode(NodeType& current, unsigned int oldModuleIndex, unsigned int bestModuleIndex, DeltaFlowType& oldModuleDelta, DeltaFlowType& newModuleDelta)
+    {
+
+        (void)current; // to avoid compiler warning
+        (void)oldModuleIndex; // to avoid compiler warning
+        (void)bestModuleIndex; // to avoid compiler warning
+        (void)oldModuleDelta; // to avoid compiler warning
+        (void)newModuleDelta; // to avoid compiler warning
+    }
 
     double
     getDeltaCodelengthOnMovingMemoryNode(DeltaFlowType& oldModuleDelta, DeltaFlowType& newModuleDelta)
     {
+        (void)oldModuleDelta; // to avoid compiler warning
+        (void)newModuleDelta; // to avoid compiler warning
         return 0.0;
     }
 
     void
-    updateCodelengthOnMovingMemoryNode(DeltaFlowType& oldModuleDelta, DeltaFlowType& newModuleDelta) {}
+    updateCodelengthOnMovingMemoryNode(DeltaFlowType& oldModuleDelta, DeltaFlowType& newModuleDelta)
+    {
+        (void)oldModuleDelta; // to avoid compiler warning
+        (void)newModuleDelta; // to avoid compiler warning
+    }
 
     void
-    consolidatePhysicalNodes(std::vector<NodeBase*>& modules) {}
+    consolidatePhysicalNodes(std::vector<NodeBase*>& modules)
+    {
+        (void)modules; // to avoid compiler warning
+
+    }
 
     void
     generateNetworkFromChildren(NodeBase& parent);
@@ -102,12 +141,14 @@ class InfomapGreedyTypeSpecialized : public InfomapGreedyCommon<InfomapGreedyTyp
     virtual std::vector<PhysData>&
     getPhysicalMembers(NodeBase& node)
     {
+        (void)node; // to avoid compiler warning
         return m_dummyPhysData;
     }
 
     virtual StateNode&
     getMemoryNode(NodeBase& node)
     {
+        (void)node; // to avoid compiler warning
         return m_dummyStateNode;
     }
 
@@ -173,7 +214,7 @@ class InfomapGreedyTypeSpecialized<FlowType, WithMemory> : public InfomapGreedyC
 
   protected:
 
-    virtual std::auto_ptr<InfomapBase>
+    virtual std::unique_ptr<InfomapBase>
     getNewInfomapInstanceWithoutMemory();
 
     virtual bool
@@ -267,18 +308,18 @@ class InfomapGreedyTypeSpecialized<FlowType, WithMemory> : public InfomapGreedyC
 
 template<typename FlowType, typename NetworkType>
 inline
-std::auto_ptr<InfomapBase>
+std::unique_ptr<InfomapBase>
 InfomapGreedyTypeSpecialized<FlowType, NetworkType>::getNewInfomapInstanceWithoutMemory()
 {
-    return std::auto_ptr<InfomapBase>(new InfomapGreedyTypeSpecialized<FlowType, WithoutMemory>(Super::m_config));
+    return std::unique_ptr<InfomapBase>(new InfomapGreedyTypeSpecialized<FlowType, WithoutMemory>(Super::m_config));
 }
 
 template<typename FlowType>
 inline
-std::auto_ptr<InfomapBase>
+std::unique_ptr<InfomapBase>
 InfomapGreedyTypeSpecialized<FlowType, WithMemory>::getNewInfomapInstanceWithoutMemory()
 {
-    return std::auto_ptr<InfomapBase>(new InfomapGreedyTypeSpecialized<FlowType, WithoutMemory>(Super::m_config));
+    return std::unique_ptr<InfomapBase>(new InfomapGreedyTypeSpecialized<FlowType, WithoutMemory>(Super::m_config));
 }
 
 
@@ -1130,6 +1171,9 @@ template<typename FlowType>
 void
 InfomapGreedyTypeSpecialized<FlowType, WithMemory>::printClusterNumbers(std::ostream& out)
 {
+    (void)out; // To avoid warning
+
+    /* COMMENTED FOR R VERSION
     unsigned int indexOffset = m_config.zeroBasedNodeNumbers ? 0 : 1;
     out << "# '" << m_config.parsedArgs << "' -> " << Super::numLeafNodes() << " nodes " <<
         "partitioned in " << m_config.elapsedTime() << " from codelength " <<
@@ -1181,6 +1225,7 @@ InfomapGreedyTypeSpecialized<FlowType, WithMemory>::printClusterNumbers(std::ost
             out << "\b\b]\n";
         }
     }
+     */
 }
 
 

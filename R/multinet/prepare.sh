@@ -3,6 +3,9 @@ cd src
 cp -r ../../../C++/include .
 mkdir multinet
 cp -r ../../../C++/src/* multinet
+cp -r ../../../C++/libs/core/src/* multinet
+cp -r ../../../C++/libs/net/src/* multinet
+cp -r ../../../C++/libs/olap/src/* multinet
 cp -r ../../../C++/ext/eclat .
 cp -r ../../../C++/ext/infomap .
 #find * | grep cpp | sed 's/\//_/g' > f2

@@ -109,6 +109,7 @@ InfomapBase::run(Network& input, HierarchicalNetwork& output)
 void
 InfomapBase::run(HierarchicalNetwork& output)
 {
+
     calcOneLevelCodelength();
     calcEntropyRate();
 
@@ -173,7 +174,7 @@ InfomapBase::run(HierarchicalNetwork& output)
             topPerplexity += -infomath::plogp(getNodeData(*moduleIt).flow);
         }
 
-        topPerplexity = std::pow(2, topPerplexity);
+        topPerplexity = std::pow(2.0, topPerplexity);
 
         for (InfomapIterator it(root(), 1); !it.isEnd(); ++it)
         {
@@ -183,7 +184,7 @@ InfomapBase::run(HierarchicalNetwork& output)
             }
         }
 
-        bottomPerplexity = std::pow(2, bottomPerplexity);
+        bottomPerplexity = std::pow(2.0, bottomPerplexity);
 
         // physicalId -> (moduleId -> flow)
         std::map<unsigned int, std::map<unsigned int, double> > topModulesPerPhysicalNode;
@@ -220,7 +221,7 @@ InfomapBase::run(HierarchicalNetwork& output)
                 topOverlapPerplexityPerNode += -infomath::plogp(itModuleFlow->second / flow);
             }
 
-            topOverlapPerplexityPerNode = std::pow(2, topOverlapPerplexityPerNode);
+            topOverlapPerplexityPerNode = std::pow(2.0, topOverlapPerplexityPerNode);
             topOverlap += flow * topOverlapPerplexityPerNode;
         }
 
@@ -237,7 +238,7 @@ InfomapBase::run(HierarchicalNetwork& output)
                 bottomOverlapPerplexityPerNode += -infomath::plogp(itModuleFlow->second / flow);
             }
 
-            bottomOverlapPerplexityPerNode = std::pow(2, bottomOverlapPerplexityPerNode);
+            bottomOverlapPerplexityPerNode = std::pow(2.0, bottomOverlapPerplexityPerNode);
             bottomOverlap += flow * bottomOverlapPerplexityPerNode;
         }
 
@@ -314,11 +315,11 @@ InfomapBase::run(HierarchicalNetwork& output)
         }
     }
 
-    Log() << std::setw(fieldWidth) << "maxDepth";
+    Log() << std::setw(fieldWidth) << "maxDep.h";
     Log() << " ";
-    Log() << std::setw(fieldWidth) << "weightedDepth";
+    Log() << std::setw(fieldWidth) << "weightedDep.h";
     Log() << " ";
-    Log() << std::setw(fieldWidth) << "Codelength";
+    Log() << std::setw(fieldWidth) << "Codeleng.h";
     Log() << " ";
     // Log() << std::left << std::setw(fieldWidth) << "Minimum" << std::right;
     Log() << "\n";
@@ -954,8 +955,8 @@ InfomapBase::tryIndexingIteratively()
             Log(3) << std::endl;
         }
 
-        // std::auto_ptr<InfomapBase> superInfomap(getNewInfomapInstance());
-        std::auto_ptr<InfomapBase> superInfomap(getNewInfomapInstanceWithoutMemory());
+        // std::unique_ptr<InfomapBase> superInfomap(getNewInfomapInstance());
+        std::unique_ptr<InfomapBase> superInfomap(getNewInfomapInstanceWithoutMemory());
         superInfomap->m_trialIndex = m_trialIndex;
 
         superInfomap->m_subLevel = m_subLevel + m_TOP_LEVEL_ADDITION;
@@ -1034,11 +1035,10 @@ InfomapBase::tryIndexingIteratively()
         consolidateModules(replaceExistingModules);
 
         double superIndexCodelength = superInfomap->indexCodelength;
+        // previous line commented to avoid variable-not-used warning
 
         if (std::abs(superIndexCodelength - indexCodelength) > 1e-10)
             //std::cout << "*** (" << superIndexCodelength << " / " << indexCodelength << ") ";
-
-
         {
             ++numIndexingCompleted;
         }
@@ -1272,7 +1272,7 @@ InfomapBase::processPartitionQueue(PartitionQueue& queue, PartitionQueue& nextLe
         PartitionQueue& subQueue = subQueues[moduleIndex];
         subQueue.level = queue.level + 1;
 
-        std::auto_ptr<InfomapBase> subInfomap(getNewInfomapInstance());
+        std::unique_ptr<InfomapBase> subInfomap(getNewInfomapInstance());
         subInfomap->m_subLevel = m_subLevel + 1;
         subInfomap->reseed(moduleIndex + m_subLevel);
 
@@ -1292,7 +1292,7 @@ InfomapBase::processPartitionQueue(PartitionQueue& queue, PartitionQueue& nextLe
             indexCodelengths[moduleIndex] = subInfomap->indexCodelength;
             moduleCodelengths[moduleIndex] = subInfomap->moduleCodelength;
             //						improvements[moduleIndex] = module.codelength - subInfomap->hierarchicalCodelength;
-            module.getSubStructure().subInfomap = subInfomap;
+            module.getSubStructure().subInfomap = std::move(subInfomap);
             //				nextLevelSize += subQueue.size();
         }
 
@@ -1578,6 +1578,8 @@ InfomapBase::partition(unsigned int recursiveCount, bool fast, bool forceConsoli
 void
 InfomapBase::mergeAndConsolidateRepeatedly(bool forceConsolidation, bool fast)
 {
+    (void)fast; // to avoid variable-not-used warning
+    (void)forceConsolidation; // to avoid variable-not-used warning
     m_aggregationLevel = 0;
     unsigned int numLevelsConsolidated = 0;
 
@@ -1700,6 +1702,7 @@ InfomapBase::mergeAndConsolidateRepeatedly(bool forceConsolidation, bool fast)
 void
 InfomapBase::generalTune(unsigned int level)
 {
+    (void)level; // to avoid variable-not-used warning
 
 }
 
@@ -1876,7 +1879,7 @@ InfomapBase::partitionEachModule(unsigned int recursiveCount, bool fast)
             continue;
         }
 
-        std::auto_ptr<InfomapBase> subInfomap(getNewInfomapInstance());
+        std::unique_ptr<InfomapBase> subInfomap(getNewInfomapInstance());
         // To not happen to get back the same network with the same seed
         subInfomap->m_subLevel = m_subLevel + 1;
         subInfomap->initSubNetwork(*moduleIt, false);
@@ -1957,13 +1960,13 @@ InfomapBase::partitionEachModuleParallel(unsigned int recursiveCount, bool fast)
 
         if (module.childDegree() > 1)
         {
-            std::auto_ptr<InfomapBase> subInfomap(getNewInfomapInstance());
+            std::unique_ptr<InfomapBase> subInfomap(getNewInfomapInstance());
             subInfomap->m_subLevel = m_subLevel + 1;
             subInfomap->reseed(getSeedFromCodelength(codelength));
             subInfomap->initSubNetwork(module, false);
             subInfomap->partition(recursiveCount, fast);
 
-            module.getSubStructure().subInfomap = subInfomap;
+            module.getSubStructure().subInfomap = std::move(subInfomap);
         }
     }
 
@@ -2225,7 +2228,7 @@ InfomapBase::initNetwork(Network& network)
 void
 InfomapBase::initMemoryNetwork()
 {
-    std::auto_ptr<MemNetwork> net(m_config.isMultiplexNetwork() ? new MultiplexNetwork(m_config) : new MemNetwork(m_config));
+    std::unique_ptr<MemNetwork> net(m_config.isMultiplexNetwork() ? new MultiplexNetwork(m_config) : new MemNetwork(m_config));
     MemNetwork& network = *net;
 
     network.readInputData();
@@ -2399,6 +2402,7 @@ InfomapBase::initMemoryNetwork(MemNetwork& network)
 void
 InfomapBase::initSubNetwork(NodeBase& parent, bool recalculateFlow)
 {
+    (void)recalculateFlow; // to avoid variable-not-used warning
     DEBUG_OUT("InfomapBase::initSubNetwork()..." << std::endl);
     root()->owner = &parent;
     cloneFlowData(parent, *root());
@@ -2467,16 +2471,16 @@ InfomapBase::consolidateExternalClusterData(bool printResults)
 {
     Log() << "Build hierarchical structure from external cluster data... " << std::flush;
 
-    std::auto_ptr<NetworkAdapter> adapter;
+    std::unique_ptr<NetworkAdapter> adapter;
 
     if (m_config.isMemoryNetwork())
     {
-        adapter = std::auto_ptr<NetworkAdapter>(new MemoryNetworkAdapter(m_config, m_treeData));
+        adapter = std::unique_ptr<NetworkAdapter>(new MemoryNetworkAdapter(m_config, m_treeData));
     }
 
     else
     {
-        adapter = std::auto_ptr<NetworkAdapter>(new NetworkAdapter(m_config, m_treeData));
+        adapter = std::unique_ptr<NetworkAdapter>(new NetworkAdapter(m_config, m_treeData));
     }
 
     bool isModulesLoaded = adapter->readExternalHierarchy(m_config.clusterDataFile);
@@ -2493,6 +2497,7 @@ InfomapBase::consolidateExternalClusterData(bool printResults)
 bool
 InfomapBase::preClusterMultiplexNetwork(bool printResults)
 {
+    (void)printResults; // to avoid variable-not-used warning
     // overridden
     return false;
 }
@@ -2620,7 +2625,9 @@ InfomapBase::printNetworkData(HierarchicalNetwork& output, std::string filename)
         Log() << "\nBuilding output tree" << (writeEdges ? " with links" : "") << "... " << std::flush;
 
         output.clear(m_config);
-        saveHierarchicalNetwork(output, filename, writeEdges);
+        //saveHierarchicalNetwork(output, filename, writeEdges);
+        // UPDATED CODE
+        saveHierarchicalNetwork(output, filename, false);
 
         if (!m_config.noFileOutput)
         {
@@ -2719,6 +2726,9 @@ InfomapBase::printHierarchicalData(HierarchicalNetwork& hierarchicalNetwork, std
 void
 InfomapBase::printClusterNumbers(std::ostream& out)
 {
+    (void)out; // To avoid warning
+
+    /* COMMENTED FOR R VERSION
     out << "# '" << m_config.parsedArgs << "' -> " << numLeafNodes() << " nodes " <<
         "partitioned in " << m_config.elapsedTime() << " from codelength " <<
         io::toPrecision(oneLevelCodelength, 9, true) << " in one level to codelength " <<
@@ -2732,11 +2742,13 @@ InfomapBase::printClusterNumbers(std::ostream& out)
         unsigned int index = (*it)->parent->index;
         out <<  (index + 1) << "\n";
     }
+     */
 }
 
 void
 InfomapBase::printTreeLevelSizes(std::ostream& out, std::string heading)
 {
+    (void)out; // to avoid variable-not-used warning
     Log() << heading << std::endl;
     std::map<unsigned int, unsigned int> levelMap;
 

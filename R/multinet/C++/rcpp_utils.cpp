@@ -1,14 +1,14 @@
 #include "rcpp_utils.h"
 #include <algorithm>
 
-std::vector<uu::net::AttributedSimpleGraph*>
+std::vector<uu::net::Network*>
 resolve_layers(
     const uu::net::AttributedHomogeneousMultilayerNetwork* mnet,
     const Rcpp::CharacterVector& names
 )
 {
     int result_size = names.size()?names.size():mnet->layers()->size();
-    std::vector<uu::net::AttributedSimpleGraph*> res(result_size);
+    std::vector<uu::net::Network*> res(result_size);
 
     if (names.size()==0)
     {
@@ -39,13 +39,13 @@ resolve_layers(
     return res;
 }
 
-std::unordered_set<uu::net::AttributedSimpleGraph*>
+std::unordered_set<uu::net::Network*>
 resolve_layers_unordered(
     const uu::net::AttributedHomogeneousMultilayerNetwork* mnet,
     const Rcpp::CharacterVector& names
 )
 {
-    std::unordered_set<uu::net::AttributedSimpleGraph*> res;
+    std::unordered_set<uu::net::Network*> res;
 
     if (names.size()==0)
     {
@@ -75,13 +75,13 @@ resolve_layers_unordered(
 
 
 
-std::unordered_set<const uu::net::AttributedSimpleGraph*>
+std::unordered_set<const uu::net::Network*>
 resolve_const_layers_unordered(
     const uu::net::AttributedHomogeneousMultilayerNetwork* mnet,
     const Rcpp::CharacterVector& names
 )
 {
-    std::unordered_set<const uu::net::AttributedSimpleGraph*> res;
+    std::unordered_set<const uu::net::Network*> res;
 
     if (names.size()==0)
     {
@@ -182,13 +182,13 @@ resolve_actors_unordered(
     return res;
 }
 
-std::vector<std::pair<const uu::net::Vertex*, uu::net::AttributedSimpleGraph*>>
+std::vector<std::pair<const uu::net::Vertex*, uu::net::Network*>>
         resolve_vertices(
             const uu::net::AttributedHomogeneousMultilayerNetwork* mnet,
             const Rcpp::DataFrame& vertex_matrix
         )
 {
-    std::vector<std::pair<const uu::net::Vertex*, uu::net::AttributedSimpleGraph*>> res(vertex_matrix.nrow());
+    std::vector<std::pair<const uu::net::Vertex*, uu::net::Network*>> res(vertex_matrix.nrow());
     CharacterVector a = vertex_matrix(0);
     CharacterVector l = vertex_matrix(1);
 
@@ -208,7 +208,7 @@ std::vector<std::pair<const uu::net::Vertex*, uu::net::AttributedSimpleGraph*>>
             Rcpp::stop("cannot find layer " + std::string(l(i)));
         }
 
-        int vertex = layer->vertices()->get_index(actor);
+        int vertex = layer->vertices()->index_of(actor);
 
         if (vertex == -1)
         {
@@ -221,13 +221,13 @@ std::vector<std::pair<const uu::net::Vertex*, uu::net::AttributedSimpleGraph*>>
     return res;
 }
 
-std::vector<std::pair<const uu::net::Edge*, uu::net::AttributedSimpleGraph*>>
+std::vector<std::pair<const uu::net::Edge*, uu::net::Network*>>
         resolve_edges(
             const uu::net::AttributedHomogeneousMultilayerNetwork* mnet,
             const Rcpp::DataFrame& edges
         )
 {
-    std::vector<std::pair<const uu::net::Edge*, uu::net::AttributedSimpleGraph*>> res(edges.nrow());
+    std::vector<std::pair<const uu::net::Edge*, uu::net::Network*>> res(edges.nrow());
     CharacterVector a_from = edges(0);
     CharacterVector l_from = edges(1);
     CharacterVector a_to = edges(2);
@@ -314,7 +314,7 @@ resolve_mode(
 
 Rcpp::DataFrame
 to_dataframe(
-    uu::net::CommunityStructure<uu::net::VertexLayerCommunity<const uu::net::AttributedSimpleGraph>>* cs
+    uu::net::CommunityStructure<uu::net::VertexLayerCommunity<const uu::net::Network>>* cs
 )
 {
 
@@ -341,3 +341,48 @@ to_dataframe(
                _("cid")=community_id
            );
 }
+
+std::unique_ptr<uu::net::CommunityStructure<uu::net::VertexLayerCommunity<const uu::net::Network>>>
+to_communities(
+               const DataFrame& com,
+               const uu::net::AttributedHomogeneousMultilayerNetwork* mnet
+               )
+{
+    CharacterVector cs_actor = com["actor"];
+    CharacterVector cs_layer = com["layer"];
+    NumericVector cs_cid = com["cid"];
+    
+    std::unordered_map<int, std::list<std::pair<const uu::net::Vertex*, const uu::net::Network*>> > result;
+    
+    for (size_t i=0; i<com.nrow(); i++) {
+        int comm_id = cs_cid[i];
+        auto layer = mnet->layers()->get(std::string(cs_layer[i]));
+        if (!layer) stop("cannot find layer " + std::string(cs_layer[i]) + " (community structure not compatible with this network?)");
+        auto actor = mnet->vertices()->get(std::string(cs_actor[i]));
+        if (!actor) stop("cannot find actor " + std::string(cs_actor[i]) + " (community structure not compatible with this network?)");
+        
+        auto iv = std::make_pair(actor, layer);
+        result[comm_id].push_back(iv);
+        
+    }
+    
+    
+        // build community structure
+    
+    auto communities = std::make_unique<uu::net::CommunityStructure<uu::net::VertexLayerCommunity<const uu::net::Network>>>();
+    
+    for (auto pair: result)
+    {
+        auto c = std::make_unique<uu::net::VertexLayerCommunity<const uu::net::Network>>();
+        
+        for (auto vertex_layer_pair: pair.second)
+        {
+            c->add(vertex_layer_pair);
+        }
+        
+        communities->add(std::move(c));
+    }
+    
+    return communities;
+}
+

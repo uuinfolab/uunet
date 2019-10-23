@@ -47,7 +47,7 @@ struct SubStructure
 {
     SubStructure();
     ~SubStructure();
-    std::auto_ptr<InfomapBase> subInfomap;
+    std::unique_ptr<InfomapBase> subInfomap;
     bool
     haveSubInfomapInstance()
     {
@@ -404,6 +404,7 @@ class NodeBase
     virtual void
     printData(std::ostream& out)
     {
+        (void)out; // to avoid variable-not-used warning
     }
 
     //debug

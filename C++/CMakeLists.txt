@@ -8,7 +8,7 @@ project (uunet LANGUAGES C CXX)
 
 set (PROJECT_VENDOR 			"Matteo Magnani")
 set (PROJECT_CONTACT 			"matteo.magnani@it.uu.se")
-set (PROJECT_URL 				"https://bitbucket.org/uuinfolab/uunet")
+set (PROJECT_URL 			"https://bitbucket.org/uuinfolab/uunet")
 set (PROJECT_DESCRIPTION 		"Network analysis library")
 
 # Setting the project version
@@ -69,7 +69,7 @@ set (CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 
 # Generate uunet target
-file (GLOB_RECURSE SOURCES ext/eclat/*.c ext/infomap/*.cpp src/*.cpp)
+file (GLOB_RECURSE SOURCES ext/eclat/*.c ext/infomap/*.cpp src/*.cpp libs/core/src/*.cpp libs/olap/src/*.cpp libs/net/src/*.cpp)
 add_library (uunet SHARED ${SOURCES})
 
 # Include private components
@@ -87,9 +87,13 @@ add_definitions(-DNS_INFOMAP -DONLY_C_LOCALE=1)
 
 # Include public components
 target_include_directories (uunet PUBLIC 
-	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/libs>
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
 	$<INSTALL_INTERFACE:include>
-	include)
+	src
+	libs/core/src
+	libs/olap/src
+	libs/net/src)
 
 # Compile uunet target
 if (${CMAKE_VERSION} VERSION_LESS 3.8)
@@ -142,7 +146,7 @@ install(DIRECTORY "ext/eigen3/" # source directory
 install(DIRECTORY "ext/spectra" # source directory
         DESTINATION "include/spectra" # target directory
         FILES_MATCHING # install only matched files
-        PATTERN "*.h" # select header files
+        PATTERN "*.hpp" # select header files
 )
 
 install(DIRECTORY "ext/eclat/" # source directory
@@ -154,7 +158,7 @@ install(DIRECTORY "ext/eclat/" # source directory
 install(DIRECTORY "ext/infomap" # source directory
         DESTINATION "include/infomap" # target directory
         FILES_MATCHING # install only matched files
-        PATTERN "*.h" # select header files
+        PATTERN "*.hpp" # select header files
 )
 
 # Generate tests only during Debug.
