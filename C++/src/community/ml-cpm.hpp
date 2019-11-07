@@ -5,7 +5,7 @@
 #include <unordered_set>
 #include <vector>
 #include "core/utils/math.hpp"
-#include "mnet/community/MLCPMCommunity.hpp"
+#include "community/MLCPMCommunity.hpp"
 
 namespace uu {
 namespace net {

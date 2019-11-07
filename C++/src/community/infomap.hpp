@@ -17,8 +17,8 @@
 #include "io/Config.h"
 #include "infomap/InfomapContext.h"
 #include "core/exceptions/ExternalLibException.hpp"
-#include "mnet/community/infomap_utils.hpp"
-#include "mnet/community/VertexLayerCommunity.hpp"
+#include "community/infomap_utils.hpp"
+#include "community/VertexLayerCommunity.hpp"
 #include "community/CommunityStructure.hpp"
 
 namespace uu {
