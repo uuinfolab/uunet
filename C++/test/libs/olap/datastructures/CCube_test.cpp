@@ -54,9 +54,11 @@ TEST(core_olap_test, CCube)
     EXPECT_EQ(c.elements()->size(), (size_t)2);
     
     // Iterating over the containers
+    /*
     for (auto cont: c)
     {
         std::cout << cont->size() << std::endl;
     }
+     */
 }
 

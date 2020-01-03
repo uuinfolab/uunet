@@ -118,7 +118,7 @@ TEST_F(mnet_datastructures_graphs_AttributedHomogeneousMultilayerNetwork_test, c
 
 
     // Uncomment to print a summary of the network
-    std::cout << net->summary() << " " << layer1->vertices()->size() << std::endl;
+    //std::cout << net->summary() << " " << layer1->vertices()->size() << std::endl;
     //bool rem =
     layer1->vertices()->erase(v1);
     EXPECT_EQ((size_t)0, net->interlayer_edges()->neighbors(layer3, layer1, v2, uu::net::EdgeMode::INOUT)->size())

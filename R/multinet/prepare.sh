@@ -1,11 +1,9 @@
 mkdir src
 cd src
-cp -r ../../../C++/include .
+#cp -r ../../../C++/include .
 mkdir multinet
 cp -r ../../../C++/src/* multinet
-cp -r ../../../C++/libs/core/src/* multinet
-cp -r ../../../C++/libs/net/src/* multinet
-cp -r ../../../C++/libs/olap/src/* multinet
+cp -r ../../../C++/libs/* multinet
 cp -r ../../../C++/ext/eclat .
 cp -r ../../../C++/ext/infomap .
 #find * | grep cpp | sed 's/\//_/g' > f2
@@ -42,7 +40,6 @@ mkdir lib
 cp -r ../../../C++/ext/eigen3 lib
 cp -r ../../../C++/ext/infomap lib
 # cp -r ../../C++/ext/spectra lib
-# cp -r ../../multinet/lib/dlib/dlib lib
 # copying the .h files from the eclat library
 mkdir lib/eclat
 find ../../../C++/ext/eclat* | grep "\\.h$" | sed 's/^/cp /g' | sed 's/$/ lib\/eclat/g' > f

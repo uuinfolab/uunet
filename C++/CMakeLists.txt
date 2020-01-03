@@ -69,7 +69,7 @@ set (CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 
 # Generate uunet target
-file (GLOB_RECURSE SOURCES ext/eclat/*.c ext/infomap/*.cpp src/*.cpp libs/core/src/*.cpp libs/olap/src/*.cpp libs/net/src/*.cpp)
+file (GLOB_RECURSE SOURCES ext/eclat/*.c ext/infomap/*.cpp libs/*.cpp src/*.cpp)
 add_library (uunet SHARED ${SOURCES})
 
 # Include private components
@@ -91,9 +91,7 @@ target_include_directories (uunet PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
 	$<INSTALL_INTERFACE:include>
 	src
-	libs/core/src
-	libs/olap/src
-	libs/net/src)
+	libs)
 
 # Compile uunet target
 if (${CMAKE_VERSION} VERSION_LESS 3.8)
@@ -143,19 +141,7 @@ FILES_MATCHING # install only matched files
 PATTERN "*.hpp" # select header files
 )
 
-install(DIRECTORY "libs/core/src/" # source directory
-DESTINATION "include/libuunet" # target directory
-FILES_MATCHING # install only matched files
-PATTERN "*.hpp" # select header files
-)
-
-install(DIRECTORY "libs/net/src/" # source directory
-DESTINATION "include/libuunet" # target directory
-FILES_MATCHING # install only matched files
-PATTERN "*.hpp" # select header files
-)
-
-install(DIRECTORY "libs/olap/src/" # source directory
+install(DIRECTORY "libs/" # source directory
 DESTINATION "include/libuunet" # target directory
 FILES_MATCHING # install only matched files
 PATTERN "*.hpp" # select header files
@@ -170,19 +156,19 @@ install(DIRECTORY "ext/eigen3/" # source directory
 install(DIRECTORY "ext/spectra" # source directory
         DESTINATION "include/spectra" # target directory
         FILES_MATCHING # install only matched files
-        PATTERN "*.hpp" # select header files
+        PATTERN "*.h" # select header files
 )
 
 install(DIRECTORY "ext/eclat/" # source directory
         DESTINATION "include/eclat" # target directory
         FILES_MATCHING # install only matched files
-        PATTERN "*" # select header files
+        PATTERN "*.h" # select header files
 )
 
 install(DIRECTORY "ext/infomap" # source directory
         DESTINATION "include/infomap" # target directory
         FILES_MATCHING # install only matched files
-        PATTERN "*.hpp" # select header files
+        PATTERN "*.h" # select header files
 )
 
 # Generate tests only during Debug.

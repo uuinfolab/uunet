@@ -56,6 +56,7 @@ TEST_F(core_olap_operators_test, islice)
     // @todo make test
     std::vector<std::vector<size_t>> s = {{0}, {0,1}};
 
+    /*
     for (auto e: islice(c.get(), s))
     {
         std::cout << "entry:" << std::endl;
@@ -65,6 +66,7 @@ TEST_F(core_olap_operators_test, islice)
             std::cout << obj->val << std::endl;
         }
     }
+     */
 
 }
 

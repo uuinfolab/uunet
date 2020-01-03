@@ -67,12 +67,12 @@ TEST_F(core_olap_operators_test_resize, resize)
     
     c->resize("d1", "m3", new_containers.begin(), new_containers.end());
 
-    
+    /*
     for (auto cell: *c)
     {
         std::cout << cell->size() << std::endl;
     }
-    
+    */
 }
 
 

@@ -31,6 +31,7 @@ TEST_F(net_community_label_propagation_test, algorithm)
 
     auto com = uu::net::label_propagation(net.get());
 
+    /*
     for (auto c: *com)
     {
         std::cout << "COM" << std::endl;
@@ -40,6 +41,7 @@ TEST_F(net_community_label_propagation_test, algorithm)
             std::cout << (*v) << std::endl;
         }
     }
+    */
 
 }
 
