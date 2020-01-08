@@ -8,6 +8,7 @@
 #ifndef UU_CORE_UTILS_NAMES_H_
 #define UU_CORE_UTILS_NAMES_H_
 
+#include <cstddef>
 #include <string>
 
 namespace uu {
