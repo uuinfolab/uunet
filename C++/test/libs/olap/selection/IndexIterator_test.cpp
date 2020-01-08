@@ -14,7 +14,7 @@ TEST(core_olap_selection_test, IndexIterator)
 
     for (auto index: idx)
     {
-        
+
         if (iteration == 2)
         {
             EXPECT_EQ(vidx2, index)
@@ -29,7 +29,7 @@ TEST(core_olap_selection_test, IndexIterator)
         }
 
         iteration++;
-        
+
     }
 
 

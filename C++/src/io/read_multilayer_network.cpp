@@ -47,28 +47,36 @@ read_attributed_homogeneous_multilayer_network(
         auto layer = std::make_unique<Network>(layer_name, dir, layer_type.allows_loops);
         net->layers()->add(std::move(layer));
     }*/
-    
+
     for (auto dir: meta.interlayer_dir)
     {
         std::string layer_name1 = dir.first.first;
         std::string layer_name2 = dir.first.second;
         auto layer1 = net->layers()->get(layer_name1);
+
         if (!layer1)
-        throw core::WrongFormatException("unknown layer name (" + layer_name1 + ")");
+        {
+            throw core::WrongFormatException("unknown layer name (" + layer_name1 + ")");
+        }
+
         auto layer2 = net->layers()->get(layer_name2);
+
         if (!layer2)
-        throw core::WrongFormatException("unknown layer name (" + layer_name2 + ")");
+        {
+            throw core::WrongFormatException("unknown layer name (" + layer_name2 + ")");
+        }
+
         net->interlayer_edges()->set_directed(layer1, layer2, dir.second);
     }
 
 
     for (auto attr: meta.vertex_attributes)
     {
-        
-            net->vertices()->attr()->add(attr.name, attr.type);
-        
+
+        net->vertices()->attr()->add(attr.name, attr.type);
+
     }
-    
+
     for (auto layer_attr: meta.intralayer_vertex_attributes)
     {
         std::string layer_name = layer_attr.first;
@@ -83,7 +91,7 @@ read_attributed_homogeneous_multilayer_network(
     {
         net->interlayer_edges()->attr()->add(attr.name, attr.type);
     }
-    
+
     for (auto layer_attr: meta.intralayer_edge_attributes)
     {
         std::string layer_name = layer_attr.first;
@@ -91,6 +99,7 @@ read_attributed_homogeneous_multilayer_network(
         for (auto attr: layer_attr.second)
         {
             bool res = net->layers()->get(layer_name)->edges()->attr()->add(attr.name, attr.type);
+
             if (!res)
             {
                 throw core::DuplicateElementException("edge attribute " + attr.name);
@@ -105,7 +114,7 @@ read_attributed_homogeneous_multilayer_network(
 
     // Read data (vertices, edges, attribute values)
     read_multilayer_data(net.get(),  meta, infile, separator);
-    
+
     // Align
     if (align)
     {
@@ -242,9 +251,9 @@ read_interlayer_edge(
     if (l1==l2)
     {
         auto e = l1->edges()->add(v1,v2);
-        
+
         auto e_attr = meta.intralayer_edge_attributes.find(l1->name);
-        
+
         if (e_attr != meta.intralayer_edge_attributes.end())
         {
             read_attr_values(l1->edges()->attr(), e, e_attr->second, fields, 4, line_number);
@@ -254,7 +263,7 @@ read_interlayer_edge(
     else
     {
         auto e = ml->interlayer_edges()->add(v1,l1,v2,l2);
-        
+
         read_attr_values(ml->interlayer_edges()->attr(), e, meta.interlayer_edge_attributes, fields, 4, line_number);
 
     }

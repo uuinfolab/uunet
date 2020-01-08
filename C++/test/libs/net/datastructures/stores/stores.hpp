@@ -9,11 +9,11 @@
 
 class net_datastructures_stores : public ::testing::Test
 {
-protected:
-    
-        // Some vertices to be used in the tests
+  protected:
+
+    // Some vertices to be used in the tests
     std::shared_ptr<const uu::net::Vertex> v1, v2, v3, v1b;
-    
+
     virtual void
     SetUp()
     {

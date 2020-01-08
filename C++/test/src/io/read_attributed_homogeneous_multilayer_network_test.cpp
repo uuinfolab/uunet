@@ -82,7 +82,7 @@ class net_io_read_attributed_homogeneous_multilayer_network_test : public ::test
 TEST_F(net_io_read_attributed_homogeneous_multilayer_network_test, read)
 {
     auto net = uu::net::read_attributed_homogeneous_multilayer_network(test_file_name, "g", ',');
-    
+
     //std::cout << net->summary() << std::endl;
     auto l1 = net->layers()->get("l1");
     auto l2 = net->layers()->get("l2");
@@ -94,20 +94,20 @@ TEST_F(net_io_read_attributed_homogeneous_multilayer_network_test, read)
     auto e = edges->get(v1, v5);
     double val1 = edges->attr()->get_double(e, "attr.name2").value;
     EXPECT_EQ(8.0, val1)
-    << "wrong attribute value: edge on layer";
-    
+            << "wrong attribute value: edge on layer";
+
     auto il_edges = net->interlayer_edges();
     auto il_e = il_edges->get(v1,l1,v2,l2);
     double val2 = il_edges->attr()->get_double(il_e, "attr.name2").value;
     EXPECT_EQ(18.0, val2)
-    << "wrong attribute value: interlayer edge";
-    
-    
+            << "wrong attribute value: interlayer edge";
+
+
     double dir = il_edges->is_directed(l1, l2);
     EXPECT_TRUE(dir)
-    << "wrong interlayer edge directionality";
-    
-    
+            << "wrong interlayer edge directionality";
+
+
     //std::cout << net->summary() << std::endl;
 
 }

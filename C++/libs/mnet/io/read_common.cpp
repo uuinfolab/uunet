@@ -142,17 +142,23 @@ read_multilayer_metadata(
         if (new_multilayer_section_start(line))
         {
             section = get_multilayer_section(line);
-            
+
             if (section == MultilayerIOFileSection::TYPE) // for backward compatibility
             {
                 std::string line_copy = line;
                 core::to_upper_case(line_copy);
+
                 if (line_copy.find("MULTIPLEX") != std::string::npos)
+                {
                     meta.is_multiplex = true;
+                }
+
                 else if (line_copy.find("MULTILAYER") != std::string::npos)
+                {
                     meta.is_multiplex = false;
+                }
             }
-            
+
             //fields = csv.get_next();
             //line = csv.get_current_raw_line();
             // remove trailing spaces
@@ -164,29 +170,39 @@ read_multilayer_metadata(
 
         switch (section)
         {
-            
+
         case MultilayerIOFileSection::TYPE:
         {
             std::string line_copy = line;
             core::to_upper_case(line_copy);
+
             if (line_copy == "MULTIPLEX")
+            {
                 meta.is_multiplex = true;
+            }
+
             else if (line_copy == "MULTILAYER")
+            {
                 meta.is_multiplex = false;
+            }
+
             else
             {
                 throw core::WrongFormatException("Line " + std::to_string(csv.row_num()) +
                                                  ": wrong network type (" + line + ")");
             }
+
             break;
         }
-            
+
         case MultilayerIOFileSection::VERSION:
         {
             version = read_version(line, csv.row_num());
+
             if (version != "3.0")
                 throw core::WrongFormatException("Line " + std::to_string(csv.row_num()) +
-                                             ": version 3.0 required");
+                                                 ": version 3.0 required");
+
             break;
         }
 
@@ -198,9 +214,9 @@ read_multilayer_metadata(
                 if (fields.size() < 2)
                 {
                     throw core::WrongFormatException("Line " + std::to_string(csv.row_num()) +
-                                                 ": layer name and directionality required");
+                                                     ": layer name and directionality required");
                 }
-                
+
                 std::string layer_name = fields.at(0);
                 meta.layers[layer_name];
 
@@ -217,6 +233,7 @@ read_multilayer_metadata(
                     throw core::WrongFormatException("Line " + std::to_string(csv.row_num()) +
                                                      ": layer names and directionality required");
                 }
+
                 std::string layer_name1 = fields.at(0);
                 meta.layers[layer_name1];
                 std::string layer_name2 = fields.at(1);
@@ -225,22 +242,24 @@ read_multilayer_metadata(
                 if (layer_name1 == layer_name2)
                 {
                     meta.layers[layer_name1];
-                    
+
                     for (size_t idx = 2; idx<fields.size(); idx++)
                     {
                         read_graph_type(fields.at(idx), meta.layers[layer_name1], csv.row_num());
                     }
                 }
+
                 else
                 {
-                std::string dir = fields.at(2);
-                core::to_upper_case(dir);
-                if (dir=="DIRECTED")
-                {
-                    meta.interlayer_dir[std::pair<std::string,std::string>(layer_name1,layer_name2)] = true;
+                    std::string dir = fields.at(2);
+                    core::to_upper_case(dir);
+
+                    if (dir=="DIRECTED")
+                    {
+                        meta.interlayer_dir[std::pair<std::string,std::string>(layer_name1,layer_name2)] = true;
+                    }
                 }
-                }
-                
+
             }
 
             break;
@@ -339,12 +358,12 @@ read_multilayer_metadata(
     for (auto edge_att: meta.interlayer_edge_attributes)
     {
         for (auto layer: meta.layers)
-    {
-        std::string layer_name = layer.first;
-        meta.intralayer_edge_attributes[layer_name].push_back(edge_att);
+        {
+            std::string layer_name = layer.first;
+            meta.intralayer_edge_attributes[layer_name].push_back(edge_att);
+        }
     }
-    }
-    
+
     csv.close();
     return meta;
 }

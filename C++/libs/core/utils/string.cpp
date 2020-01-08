@@ -16,17 +16,19 @@ to_upper_case(std::string& s)
 }
 
 
-    void
-    format(
-           std::string& in
-           )
+void
+format(
+    std::string& in
+)
+{
+    size_t pos = 0;
+
+    while ((pos = in.find("&", pos)) != std::string::npos)
     {
-        size_t pos = 0;
-        while((pos = in.find("&", pos)) != std::string::npos) {
-            in.replace(pos, 1, "&amp;");
-            pos += 5;
-        }
+        in.replace(pos, 1, "&amp;");
+        pos += 5;
     }
-    
+}
+
 }
 }

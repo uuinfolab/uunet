@@ -71,12 +71,12 @@ TEST_F(operations_test_test, is_bipartite)
 {
     bool test1 = uu::net::is_bipartite(g.get());
     EXPECT_EQ(true, test1);
-    
+
     auto v1 = g->vertices()->get("v1p1");
     auto v2 = g->vertices()->get("v2p1");
-    
+
     g->edges()->add(v1, v2);
-    
+
     bool test2 = uu::net::is_bipartite(g.get());
     EXPECT_EQ(false, test2);
 }

@@ -135,7 +135,7 @@ TEST_F(net_datastructures_stores_MDSimpleEdgeStore_test, directed)
     e = store->get(v3,vs2,v1,vs1);
     EXPECT_EQ(nullptr, e)
             << "The edge should no longer be there";
-    
+
     // Uncomment to print a description of the store
     // std::cout << store->summary() << std::endl;
 }
@@ -153,11 +153,11 @@ TEST_F(net_datastructures_stores_MDSimpleEdgeStore_test, undirected)
 
     auto e1 = store->add(v1,vs1,v2,vs2);
     EXPECT_TRUE(e1->v1 == v1 && e1->v2 == v2)
-    << "Could not insert a new edge";
-    
+            << "Could not insert a new edge";
+
     auto e2 = store->add(v3,vs2,v1,vs1);
     EXPECT_TRUE(e2->v1 == v3 && e2->v2 == v1)
-    << "Could not insert a new edge";
+            << "Could not insert a new edge";
 
 
     /*const uu::net::Edge* e3 = store->add(v3,v2);

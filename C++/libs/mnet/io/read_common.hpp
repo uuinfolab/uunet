@@ -134,8 +134,8 @@ read_multilayer_data(
         switch (section)
         {
         case MultilayerIOFileSection::ACTORS:
-            {
-                
+        {
+
             read_vertex(ml, fields, meta, csv.row_num());
             break;
         }
@@ -148,18 +148,20 @@ read_multilayer_data(
 
         case MultilayerIOFileSection::EDGES:
         {
-            
+
             if (meta.is_multiplex)
             {
-             read_intralayer_edge(ml, fields, meta, csv.row_num());
+                read_intralayer_edge(ml, fields, meta, csv.row_num());
             }
+
             else
             {
                 read_interlayer_edge(ml, fields, meta, csv.row_num());
             }
+
             break;
         }
-            
+
         default:
             break;
         }

@@ -193,7 +193,7 @@ read_version(
     {
         version = "3.0";
     }
-    
+
     return version;
 }
 

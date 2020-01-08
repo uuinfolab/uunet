@@ -24,7 +24,7 @@ struct MultilayerMetadata
     std::unordered_map<std::string, GraphType> layers;
 
     std::map<std::pair<std::string,std::string>, bool> interlayer_dir;
-    
+
     std::vector<core::Attribute> vertex_attributes;
     std::vector<core::Attribute> interlayer_edge_attributes;
     std::unordered_map<std::string, std::vector<core::Attribute>> intralayer_vertex_attributes;

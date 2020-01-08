@@ -51,9 +51,9 @@ class mnet_community_algorithms_test : public ::testing::Test
 TEST_F(mnet_community_algorithms_test, read_metadata)
 {
     auto n = uu::net::read_attributed_homogeneous_multilayer_network(test_file_name, "net", ',');
-    
+
     auto c = uu::net::mlcpm(n.get(), 3, 1);
     //std::cout << "RESULT: " << c->size() << std::endl;
-    
+
 }
 

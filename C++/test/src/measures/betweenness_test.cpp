@@ -5,10 +5,10 @@
 #include <fstream>
 #include <vector>
 
-#include "algorithms/components.hpp"
 #include "io/read_network.hpp"
+#include "measures/betweenness.hpp"
 
-class net_measures_components_test : public ::testing::Test
+class net_measures_betweenness_test : public ::testing::Test
 {
   protected:
 
@@ -57,8 +57,6 @@ class net_measures_components_test : public ::testing::Test
 
         g = uu::net::read_network(test_file_name, "g", ',');
 
-        test_file.close();
-
     }
 
     void
@@ -69,22 +67,19 @@ class net_measures_components_test : public ::testing::Test
 
 };
 
-TEST_F(net_measures_components_test, membership)
+TEST_F(net_measures_betweenness_test, betweenness)
 {
-    std::vector<int> comp_id = uu::net::components(g.get());
+    auto C_b = uu::net::betweenness(g.get());
 
     auto v0 = g->vertices()->get("v0");
-    size_t pos_v0 = g->vertices()->index_of(v0);
-
-    auto v1 = g->vertices()->get("v1");
-    size_t pos_v1 = g->vertices()->index_of(v1);
-
+    auto v2 = g->vertices()->get("v2");
+    auto v3 = g->vertices()->get("v3");
+    auto v7 = g->vertices()->get("v7");
     auto v8 = g->vertices()->get("v8");
-    size_t pos_v8 = g->vertices()->index_of(v8);
 
-    EXPECT_NE(comp_id.at(pos_v0), comp_id.at(pos_v1))
-            << "these vertices should be in two different components";
-
-    EXPECT_EQ(comp_id.at(pos_v1), comp_id.at(pos_v8))
-            << "these vertices should be in the same component";
+    ASSERT_EQ(C_b[v0], 0.0);
+    ASSERT_EQ(C_b[v2], 4.5);
+    ASSERT_EQ(C_b[v3], 2.5);
+    ASSERT_EQ(C_b[v7], 12.0);
+    ASSERT_EQ(C_b[v8], 0.0);
 }

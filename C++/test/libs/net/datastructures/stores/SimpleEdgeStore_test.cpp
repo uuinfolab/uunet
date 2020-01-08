@@ -135,7 +135,7 @@ TEST_F(net_datastructures_stores_SimpleEdgeStore_test, directed)
     EXPECT_EQ(nullptr, e)
             << "The edge should no longer be there";
 
-    
+
     // Uncomment to print a description of the store
     // std::cout << store->summary() << std::endl;
 }

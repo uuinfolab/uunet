@@ -14,8 +14,8 @@ class Obj :
 };
 
 class ObjStore :
-public uu::core::ObjectStore<Obj>,
-public std::enable_shared_from_this<ObjStore>
+    public uu::core::ObjectStore<Obj>,
+    public std::enable_shared_from_this<ObjStore>
 {
 };
 
@@ -58,13 +58,14 @@ class core_olap_operators_test_resize : public ::testing::Test
 
 TEST_F(core_olap_operators_test_resize, resize)
 {
-    
+
     std::vector<std::shared_ptr<CONTAINER>> new_containers;
+
     for (size_t i = 0; i < 2; i++)
     {
         new_containers.push_back(std::make_shared<CONTAINER>());
     }
-    
+
     c->resize("d1", "m3", new_containers.begin(), new_containers.end());
 
     /*

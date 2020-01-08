@@ -91,7 +91,7 @@ TEST_F(core_olap_operators_test, vslice)
             std::cout << obj->val << std::endl;
         }
     }
-    
+
     (*c)[{(size_t)0,(size_t)0}]->add(std::make_shared<Obj>(3));
 
     for (auto e: islice(slice.get(), s))
@@ -111,7 +111,7 @@ TEST_F(core_olap_operators_test, vslice)
     {
         std::cout << e->val << std::endl;
     }
-     
+
 
     std::cout << "All slice:" << std::endl;
 

@@ -17,14 +17,14 @@ namespace core {
 
 void
 to_upper_case(
-              std::string& s
-              );
+    std::string& s
+);
 
 void
-    format(
-           std::string& in
-           );
-    
+format(
+    std::string& in
+);
+
 }
 }
 
