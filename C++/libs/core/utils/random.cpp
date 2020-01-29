@@ -42,17 +42,17 @@ getRandomLong(
 
 }
 
-    size_t
-    get_binomial(
-                 size_t tests,
-                 double p
-                  )
-    {
-        std::binomial_distribution<size_t> distribution(tests, p);
-        return distribution(get_random_engine());
-        
-    }
-    
+size_t
+get_binomial(
+    size_t tests,
+    double p
+)
+{
+    std::binomial_distribution<size_t> distribution(tests, p);
+    return distribution(get_random_engine());
+
+}
+
 
 
 double
@@ -103,48 +103,48 @@ getKRandom(
     return res;
 }
 
-    
-    std::vector<size_t>
-    get_k_uniform(
-                  size_t max,
-                  size_t k
-                  )
+
+std::vector<size_t>
+get_k_uniform(
+    size_t max,
+    size_t k
+)
+{
+
+    std::vector<size_t> res(k, 0);
+
+    size_t rand = getRandomInt(max);
+
+    size_t last_position = 1;
+
+    res[0] = rand;
+
+    for (size_t i = 1; i < k; i++)
     {
-        
-        std::vector<size_t> res(k, 0);
-        
-        size_t rand = getRandomInt(max);
-        
-        size_t last_position = 1;
-        
-        res[0] = rand;
-        
-        for (size_t i = 1; i < k; i++)
+        rand = getRandomInt(max-i);
+
+        size_t pos = 0;
+
+        while (pos < last_position && res[pos] <= rand)
         {
-            rand = getRandomInt(max-i);
-            
-            size_t pos = 0;
-            
-            while (pos < last_position && res[pos] <= rand)
-            {
-                rand++;
-                pos++;
-            }
-            
-            last_position++;
-            
-            for (size_t idx = last_position - 1; idx > pos; idx--)
-            {
-                res[idx] = res[idx-1];
-            }
-            
-            res[pos] = rand;
-            
+            rand++;
+            pos++;
         }
-        
-        return res;
+
+        last_position++;
+
+        for (size_t idx = last_position - 1; idx > pos; idx--)
+        {
+            res[idx] = res[idx-1];
+        }
+
+        res[pos] = rand;
+
     }
-    
+
+    return res;
+}
+
 bool
 test(
     double probability

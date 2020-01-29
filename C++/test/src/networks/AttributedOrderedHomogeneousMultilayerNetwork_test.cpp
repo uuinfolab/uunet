@@ -44,8 +44,8 @@ TEST_F(net_networks_OrderedMultiplexNetwork_test, creation)
     auto layer1 = net->layers()->at(0);
     auto layer2 = net->layers()->at(1);
     auto layer3 = net->layers()->at(2);
-    
-    
+
+
     layer1->vertices()->add(v1);
     layer2->vertices()->add(v1);
 
@@ -58,6 +58,6 @@ TEST_F(net_networks_OrderedMultiplexNetwork_test, creation)
 
     // Uncomment to print a summary of the network
     // std::cout << net->summary() << std::endl;
-    
+
 }
 

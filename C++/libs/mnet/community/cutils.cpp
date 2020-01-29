@@ -259,7 +259,7 @@ modularity_matrix(
 {
     size_t L = a.size();
     size_t N = a[0].rows();
-    
+
     Eigen::SparseMatrix<double> B(N * L, N * L);
     std::cout << B.rows() << " " << B.cols() << " " << B.nonZeros() << std::endl;
     B.reserve(Eigen::VectorXi::Constant(N * L, N * L));
@@ -278,11 +278,11 @@ modularity_matrix(
 
         Eigen::SparseMatrix<double> tmp, tmp1;
         tmp = (Eigen::SparseMatrix<double>(a[i].transpose()) + a[i]) / 2;
-        
+
         Eigen::MatrixXd tmp2 = kin * kout.transpose();
-        
+
         Eigen::MatrixXd tmp3;
-        
+
         if (mm != 0)
         {
             tmp3 = gamma / 2 * (tmp2 + tmp2) / mm;
@@ -300,9 +300,10 @@ modularity_matrix(
             for (size_t k = 0; k < N; k++)
             {
                 auto coeff = tmp.coeff(j, k);
+
                 if (coeff != 0)
                     tlist.push_back(
-                                    Eigen::Triplet<double>(j + (i * N), k + (i * N), tmp.coeff(j, k)));
+                        Eigen::Triplet<double>(j + (i * N), k + (i * N), tmp.coeff(j, k)));
             }
         }
     }

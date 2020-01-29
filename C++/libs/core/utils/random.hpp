@@ -36,15 +36,15 @@ getRandomInt(
     size_t max
 );
 
-    /**
-     *
-     */
-    size_t
-    get_binomial(
-                 size_t tests,
-                 double p
-                 );
-    
+/**
+ *
+ */
+size_t
+get_binomial(
+    size_t tests,
+    double p
+);
+
 /**
  * Returns a random integral number in the range [0,max[ using an
  * approximately uniform probability distribution.
@@ -86,18 +86,18 @@ getKRandom(
     size_t k
 );
 
-    /**
-     * Returns K random integral numbers in the range [0,max[ using an
-     * approximately uniform probability distribution.
-     * @param max
-     * @param k
-     */
-    std::vector<size_t>
-    get_k_uniform(
-               size_t max,
-               size_t k
-               );
-    
+/**
+ * Returns K random integral numbers in the range [0,max[ using an
+ * approximately uniform probability distribution.
+ * @param max
+ * @param k
+ */
+std::vector<size_t>
+get_k_uniform(
+    size_t max,
+    size_t k
+);
+
 /**
  * Random test: returns TRUE with probability probability.
  */

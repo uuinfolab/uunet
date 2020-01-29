@@ -26,8 +26,8 @@ class
     OrderedMultiplexNetwork
     : public MultilayerNetwork<
       AttrVertexStore,
-    VertexOverlappingOrderedLayerStore<Network>,
-    EmptyEdgeStore
+      VertexOverlappingOrderedLayerStore<Network>,
+      EmptyEdgeStore
       >
 {
 
@@ -51,7 +51,7 @@ class
         MultilayerNetworkType t,
 
         std::unique_ptr<AttrVertexStore> v,
-    std::unique_ptr<VertexOverlappingOrderedLayerStore<Network>> l,
+        std::unique_ptr<VertexOverlappingOrderedLayerStore<Network>> l,
         std::unique_ptr<EmptyEdgeStore> e);
 
     std::string

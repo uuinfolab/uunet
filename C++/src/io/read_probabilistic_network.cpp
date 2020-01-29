@@ -25,7 +25,7 @@ read_probabilistic_network(
     // and add attributes
     auto g = std::make_unique<ProbabilisticNetwork>(name, dir, meta.features.allows_loops);
 
-    
+
     for (auto attr: meta.vertex_attributes)
     {
         g->vertices()->attr()->add(attr.name, attr.type);
@@ -35,7 +35,7 @@ read_probabilistic_network(
     {
         g->edges()->attr()->add(attr.name, attr.type);
     }
-    
+
     // Read data (vertices, edges, attribute values)
     read_data(g.get(),  meta, infile, separator);
 
@@ -80,7 +80,7 @@ read_edge(
     size_t line_number
 )
 {
-    
+
     if (fields.size()!=3+edge_attributes.size())
     {
         throw core::WrongFormatException("Line " +
@@ -92,9 +92,9 @@ read_edge(
     auto edge = read_edge(g, fields, 0, line_number);
 
     double p = core::to_double(fields.at(2));
-    
+
     g->set_prob(edge, p);
-    
+
     read_attr_values(g->edges()->attr(), edge, edge_attributes, fields, 3, line_number);
 
 }

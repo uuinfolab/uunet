@@ -11,7 +11,7 @@
 namespace uu {
 namespace net {
 
-    
+
 class ProbabilisticNetwork
     : public Network
 {

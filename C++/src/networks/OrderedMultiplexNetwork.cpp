@@ -71,7 +71,7 @@ create_ordered_multiplex_network(
     auto vs = std::make_unique<AttrVertexStore>();
 
     auto ls = std::make_unique<VertexOverlappingOrderedLayerStore<Network>>();
-    
+
     auto es = std::make_unique<EmptyEdgeStore>();
 
     // Add observers @todo

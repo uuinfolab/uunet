@@ -5,11 +5,11 @@ A repository for the analysis and mining of networks maintained by the Uppsala U
 
 This repository contains:
 
-* a C++ library provising the native implementation of most of the data storage and analysis functions
+* a C++ library providing the native implementation of most of the data storage and analysis functions
 developed at our lab.
 * the multinet R library, making the C++ functions about multilayer network analysis available as an R package.
-This is based on the book: Multilayer Social Networks, by Dickison, Magnani &
-Rossi, Cambridge University Press (2016), and the latest stable version is also available on CRAN.
+This is based on the book: Multilayer Social Networks, by Dickison, Magnani & Rossi, Cambridge University
+Press (2016), and the latest stable version is also available on CRAN.
 
 Documentation
 -------------
@@ -20,10 +20,21 @@ Documentation
 Requirements
 ------------
 
-The multinet library requires:
+The R version of the library only requires a recent installation of R.
+
+The C++ version of the library requires:
 
 * A modern, C++14-ready compiler.
 * The *cmake* build system.
+
+
+Installation - R
+------------
+The stable version of the multinet R library can be installed directly from R by typing:
+
+```sh
+install.packages("multinet")
+```
 
 Installation - C++
 ------------
@@ -56,26 +67,5 @@ To install the library in your system use the generated Makefile script:
 
 ```sh
 make install
-```
-
-Installation - R
-------------
-The stable version of the multinet R library can be installed directly from R by typing:
-
-```sh
-install.packages("multinet")
-```
-
-To install the latest development version you should chdir to R/multinet, create a /src
-folder and copy into it:
-1. all the .c, .cpp and .h files from the C++ library (../multinet)
-2. all the files from the Rmultinet/C++ directory
-
-Then: 
-```sh
-R CMD build Rmultinet
-R CMD check multinet_<current_version_number>.tar.gz
-R
-> install.packages("multinet_<current_version_number>.tar.gz", repos=NULL)
 ```
 

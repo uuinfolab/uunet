@@ -19,7 +19,7 @@ TemporalNetwork(
     edges()->attr()->add(std::move(t_attr));
 
     edges()->attr()->add_index(KTIME_ATTR_NAME);
-    
+
 }
 
 void
@@ -44,22 +44,22 @@ get_time(
     return edges()->attr()->get_time(e, KTIME_ATTR_NAME);
 }
 
-    core::Value<core::Time>
-    TemporalNetwork::
-    get_min_time(
-    ) const
-    {
-        return edges()->attr()->get_min_time(KTIME_ATTR_NAME);
-    }
+core::Value<core::Time>
+TemporalNetwork::
+get_min_time(
+) const
+{
+    return edges()->attr()->get_min_time(KTIME_ATTR_NAME);
+}
 
-    core::Value<core::Time>
-    TemporalNetwork::
-    get_max_time(
-    ) const
-    {
-        return edges()->attr()->get_max_time(KTIME_ATTR_NAME);
-    }
-    
+core::Value<core::Time>
+TemporalNetwork::
+get_max_time(
+) const
+{
+    return edges()->attr()->get_max_time(KTIME_ATTR_NAME);
+}
+
 bool
 TemporalNetwork::
 is_temporal(

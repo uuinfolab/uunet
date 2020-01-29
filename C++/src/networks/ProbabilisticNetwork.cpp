@@ -29,6 +29,7 @@ set_prob(
     {
         throw core::WrongParameterException("Edge probabilities must be between 0 and 1");
     }
+
     edges()->attr()->set_double(e, KPROB_ATTR_NAME, p);
 }
 

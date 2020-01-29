@@ -60,14 +60,14 @@ class TemporalNetwork
     get_time(
         const Edge* e
     ) const;
-    
+
     /**
      * Gets the highest edge time in the network.
      */
     core::Value<core::Time>
     get_min_time(
     ) const;
-    
+
     /**
      * Gets the highest edge time in the network.
      */

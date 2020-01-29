@@ -11,25 +11,25 @@ namespace net {
  *
  **/
 template <typename G>
-    void
+void
 erdos_renyi_nm(
     G* g,
     size_t n,
     size_t m
 );
-    
- 
-    /**
-     *
-     **/
-    template <typename G>
-    void
-    erdos_renyi_np(
-                G* g,
-                size_t n,
-                double p
-                );
-    
+
+
+/**
+ *
+ **/
+template <typename G>
+void
+erdos_renyi_np(
+    G* g,
+    size_t n,
+    double p
+);
+
 }
 }
 

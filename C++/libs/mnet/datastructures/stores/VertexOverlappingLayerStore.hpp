@@ -78,7 +78,7 @@ class VertexOverlappingLayerStore :
     )
     {
         (void)v; // param not used
-        
+
         for (auto g=super::begin(); g!=super::end(); ++g)
         {
             (*g)->vertices()->erase(v);

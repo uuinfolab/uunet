@@ -18,7 +18,7 @@ to_ordered_multiplex(
     size_t num_partitions
 )
 {
-    
+
     // @todo assert
 
     auto mpx = create_ordered_multiplex_network(tnet->name);
