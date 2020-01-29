@@ -141,10 +141,22 @@ FILES_MATCHING # install only matched files
 PATTERN "*.hpp" # select header files
 )
 
+install(DIRECTORY "src/" # source directory
+DESTINATION "include/libuunet" # target directory
+FILES_MATCHING # install only matched files
+PATTERN "*.ipp" # select header files
+)
+
 install(DIRECTORY "libs/" # source directory
 DESTINATION "include/libuunet" # target directory
 FILES_MATCHING # install only matched files
 PATTERN "*.hpp" # select header files
+)
+
+install(DIRECTORY "libs/" # source directory
+DESTINATION "include/libuunet" # target directory
+FILES_MATCHING # install only matched files
+PATTERN "*.ipp" # select header files
 )
 
 install(DIRECTORY "ext/eigen3/" # source directory

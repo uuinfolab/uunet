@@ -596,8 +596,11 @@ glouvain::fit(
 
     else
     {
+        std::cout << "building..." << std::endl;
         B = modularity_matrix(twoum, to_adjacency_matrices(mnet), gamma, omega, ordered);
+        std::cout << "done" << std::endl;
         M_ = B;
+        std::cout << "done" << std::endl;
     }
 
     std::vector<int> S2(B.rows());

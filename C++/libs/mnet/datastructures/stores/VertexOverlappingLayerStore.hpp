@@ -78,11 +78,11 @@ class VertexOverlappingLayerStore :
     )
     {
         (void)v; // param not used
-        /*
-        for (auto g=begin(); g!=end(); ++g)
+        
+        for (auto g=super::begin(); g!=super::end(); ++g)
         {
             (*g)->vertices()->erase(v);
-        }*/
+        }
     }
 
     std::string

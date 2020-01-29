@@ -8,7 +8,7 @@
 #include "creation/standard_graphs.hpp"
 #include "networks/Network.hpp"
 
-TEST(net_creation_standardgraphs_test, null_graph)
+TEST(net_creation_test, null_graph)
 {
 
     auto n = std::make_unique<uu::net::Network>("Net");
@@ -20,7 +20,7 @@ TEST(net_creation_standardgraphs_test, null_graph)
 }
 
 
-TEST(net_creation_standardgraphs_test, null_graph_iterator)
+TEST(net_creation_test, null_graph_iterator)
 {
 
     auto v1 = uu::net::Vertex::create("V1");
@@ -43,7 +43,7 @@ TEST(net_creation_standardgraphs_test, null_graph_iterator)
 
 
 
-TEST(net_creation_standardgraphs_test, complete_graph)
+TEST(net_creation_test, complete_graph)
 {
 
     auto n = std::make_unique<uu::net::Network>("Net");
@@ -55,7 +55,7 @@ TEST(net_creation_standardgraphs_test, complete_graph)
 }
 
 
-TEST(net_creation_standardgraphs_test, complete_graph_directed)
+TEST(net_creation_test, complete_graph_directed)
 {
 
     auto n = std::make_unique<uu::net::Network>("Net", uu::net::EdgeDir::DIRECTED);
@@ -67,7 +67,7 @@ TEST(net_creation_standardgraphs_test, complete_graph_directed)
 }
 
 
-TEST(net_creation_standardgraphs_test, complete_bipartite_graph)
+TEST(net_creation_test, complete_bipartite_graph)
 {
 
     auto n = std::make_unique<uu::net::Network>("Net");
@@ -79,7 +79,7 @@ TEST(net_creation_standardgraphs_test, complete_bipartite_graph)
 }
 
 
-TEST(net_creation_standardgraphs_test, complete_bipartite_graph_directed)
+TEST(net_creation_test, complete_bipartite_graph_directed)
 {
 
     auto n = std::make_unique<uu::net::Network>("Net", uu::net::EdgeDir::DIRECTED);
@@ -91,7 +91,7 @@ TEST(net_creation_standardgraphs_test, complete_bipartite_graph_directed)
 }
 
 
-TEST(net_creation_standardgraphs_test, path_graph_directed)
+TEST(net_creation_test, path_graph_directed)
 {
 
     auto n = std::make_unique<uu::net::Network>("Net", uu::net::EdgeDir::DIRECTED);
@@ -103,7 +103,7 @@ TEST(net_creation_standardgraphs_test, path_graph_directed)
 }
 
 
-TEST(net_creation_standardgraphs_test, cycle_graph_directed)
+TEST(net_creation_test, cycle_graph_directed)
 {
 
     auto n = std::make_unique<uu::net::Network>("Net", uu::net::EdgeDir::DIRECTED);
@@ -115,7 +115,7 @@ TEST(net_creation_standardgraphs_test, cycle_graph_directed)
 }
 
 
-TEST(net_creation_standardgraphs_test, wheel_graph_directed)
+TEST(net_creation_test, wheel_graph_directed)
 {
 
     auto n = std::make_unique<uu::net::Network>("Net", uu::net::EdgeDir::DIRECTED);

@@ -45,7 +45,7 @@ class TemporalNetwork
     ) const override;
 
     /**
-     * Sets the weight of an edge.
+     * Sets the time of an edge.
      */
     void
     set_time(
@@ -54,12 +54,26 @@ class TemporalNetwork
     );
 
     /**
-     * Sets the weight of an edge.
+     * Gets the time of an edge.
      */
     core::Value<core::Time>
     get_time(
         const Edge* e
-    );
+    ) const;
+    
+    /**
+     * Gets the highest edge time in the network.
+     */
+    core::Value<core::Time>
+    get_min_time(
+    ) const;
+    
+    /**
+     * Gets the highest edge time in the network.
+     */
+    core::Value<core::Time>
+    get_max_time(
+    ) const;
 
     /**
      * Returns a string providing a summary of the network structure.
