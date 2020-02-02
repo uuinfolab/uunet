@@ -10,118 +10,71 @@
 
 TEST(net_creation_test, null_graph)
 {
-
-    auto n = std::make_unique<uu::net::Network>("Net");
-    uu::net::null_graph(n.get(), 11);
+    auto n = uu::net::null_graph(11);
 
     ASSERT_EQ(size_t(11), n->vertices()->size());
     ASSERT_EQ(size_t(0), n->edges()->size());
-
 }
-
-
-TEST(net_creation_test, null_graph_iterator)
-{
-
-    auto v1 = uu::net::Vertex::create("V1");
-    auto v2 = uu::net::Vertex::create("V2");
-    auto v3 = uu::net::Vertex::create("V3");
-
-    std::vector<const uu::net::Vertex*> v;
-
-    v.push_back(v1.get());
-    v.push_back(v2.get());
-    v.push_back(v3.get());
-
-    auto n = std::make_unique<uu::net::Network>("Net");
-    uu::net::null_graph(n.get(), v.begin(), v.end());
-
-    ASSERT_EQ(size_t(3), n->vertices()->size());
-    ASSERT_EQ(size_t(0), n->edges()->size());
-
-}
-
 
 
 TEST(net_creation_test, complete_graph)
 {
-
-    auto n = std::make_unique<uu::net::Network>("Net");
-    uu::net::complete_graph(n.get(), 5);
+    auto n = uu::net::complete_graph(5);
 
     ASSERT_EQ(size_t(5), n->vertices()->size());
     ASSERT_EQ(size_t(10), n->edges()->size());
-
 }
 
 
 TEST(net_creation_test, complete_graph_directed)
 {
-
-    auto n = std::make_unique<uu::net::Network>("Net", uu::net::EdgeDir::DIRECTED);
-    uu::net::complete_graph(n.get(), 5);
+    auto n = uu::net::complete_graph(5, uu::net::EdgeDir::DIRECTED);
 
     ASSERT_EQ(size_t(5), n->vertices()->size());
     ASSERT_EQ(size_t(20), n->edges()->size());
-
 }
 
 
 TEST(net_creation_test, complete_bipartite_graph)
 {
-
-    auto n = std::make_unique<uu::net::Network>("Net");
-    uu::net::complete_bipartite_graph(n.get(), 3, 4);
+    auto n = uu::net::complete_bipartite_graph(3, 4);
 
     ASSERT_EQ(size_t(7), n->vertices()->size());
     ASSERT_EQ(size_t(12), n->edges()->size());
-
 }
 
 
 TEST(net_creation_test, complete_bipartite_graph_directed)
 {
-
-    auto n = std::make_unique<uu::net::Network>("Net", uu::net::EdgeDir::DIRECTED);
-    uu::net::complete_bipartite_graph(n.get(), 3, 4);
+    auto n = uu::net::complete_bipartite_graph(3, 4, uu::net::EdgeDir::DIRECTED);
 
     ASSERT_EQ(size_t(7), n->vertices()->size());
     ASSERT_EQ(size_t(24), n->edges()->size());
-
 }
 
 
 TEST(net_creation_test, path_graph_directed)
 {
-
-    auto n = std::make_unique<uu::net::Network>("Net", uu::net::EdgeDir::DIRECTED);
-    uu::net::path_graph(n.get(), 3);
+    auto n = uu::net::path_graph(3, uu::net::EdgeDir::DIRECTED);
 
     ASSERT_EQ(size_t(3), n->vertices()->size());
     ASSERT_EQ(size_t(2), n->edges()->size());
-
 }
 
 
 TEST(net_creation_test, cycle_graph_directed)
 {
-
-    auto n = std::make_unique<uu::net::Network>("Net", uu::net::EdgeDir::DIRECTED);
-    uu::net::cycle_graph(n.get(), 3);
+    auto n = uu::net::cycle_graph(3, uu::net::EdgeDir::DIRECTED);
 
     ASSERT_EQ(size_t(3), n->vertices()->size());
     ASSERT_EQ(size_t(3), n->edges()->size());
-
 }
 
 
-TEST(net_creation_test, wheel_graph_directed)
+TEST(net_creation_test, wheel_graph)
 {
-
-    auto n = std::make_unique<uu::net::Network>("Net", uu::net::EdgeDir::DIRECTED);
-    uu::net::wheel_graph(n.get(), 5);
+    auto n = uu::net::wheel_graph(5);
 
     ASSERT_EQ(size_t(5), n->vertices()->size());
     ASSERT_EQ(size_t(8), n->edges()->size());
-
 }

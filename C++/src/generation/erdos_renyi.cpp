@@ -1,21 +1,24 @@
+#include "generation/erdos_renyi.hpp"
 
 #include "core/exceptions/OperationNotSupportedException.hpp"
 #include "core/utils/random.hpp"
 #include "creation/standard_graphs.hpp"
-#include "creation/utils.hpp"
+#include "generation/utils.hpp"
+#include "net/operations/add_predefined_subgraphs.hpp"
 
 namespace uu {
 namespace net {
 
-template <typename G>
-void
+std::unique_ptr<Network>
 erdos_renyi_nm(
-    G* g,
     size_t n,
     size_t m
 )
 {
-    null_graph(g, n);
+    std::string name = "ER";
+    
+    auto g = std::make_unique<Network>(name);
+    add_vertices(g.get(), n);
 
     auto edge_ids = core::get_k_uniform(n*(n-1)/2, m);
 
@@ -36,26 +39,21 @@ erdos_renyi_nm(
 
         g->edges()->add(v1, v2);
     }
+
+    return g;
 }
 
 
 
-template <typename G>
-void
+std::unique_ptr<Network>
 erdos_renyi_np(
-    G* g,
     size_t n,
     double p
 )
 {
-    if (g->is_directed())
-    {
-        throw core::OperationNotSupportedException("G(n,p) model only supports undirected graphs");
-    }
-
     size_t max_edges = n*(n-1)/2;
     size_t m = core::get_binomial(max_edges, p);
-    erdos_renyi_nm(g, n, m);
+    return erdos_renyi_nm(n, m);
 
 }
 

@@ -3,98 +3,79 @@
  * - 2018.03.09 file created, following a restructuring of the previous library.
  */
 
-#ifndef UU_NET_CREATION_STANDARDGRAPHS_H_
-#define UU_NET_CREATION_STANDARDGRAPHS_H_
+#ifndef UU_CREATION_STANDARDGRAPHS_H_
+#define UU_CREATION_STANDARDGRAPHS_H_
 
-#include "standard_graphs.ipp"
+#include "networks/Network.hpp"
+
+#include <memory>
 
 namespace uu {
 namespace net {
 
 
 /**
- * When g is an empty graph, returns a graph with n new vertices and no edges.
- *
- * G must have a method vertices() returning a vertex store.
+ * Returns a network with n vertices and no edges.
  */
-template<typename G>
-void
+std::unique_ptr<Network>
 null_graph(
-    G* g,
-    size_t n
+    size_t n,
+    EdgeDir dir = EdgeDir::UNDIRECTED,
+    bool allows_loops = false
 );
 
-/**
- * When g is an empty graph, returns a graph with the input vertices and no edges.
- * @param first, last forward iterators to the initial and final
- * positions of the sequence of const Vertex*'s.
- * The range used is [first,last).
- *
- * G must have a method vertices() returning a vertex store.
- */
-template<typename G, typename ForwardIterator>
-void
-null_graph(
-    G* g,
-    ForwardIterator first,
-    ForwardIterator last
-);
 
 /**
- * When g is an empty graph, returns a graph K_n with n new vertices, all adjacent to each other.
+ * Returns a network K_n with n vertices, all adjacent to each other.
  * If the graph is directed, arcs in both directions are created for each pair of vertices.
  * No loops are created.
  */
-template<typename G>
-void
+std::unique_ptr<Network>
 complete_graph(
-    G* g,
-    size_t n
+    size_t n,
+    EdgeDir dir = EdgeDir::UNDIRECTED
 );
 
+
 /**
- * When g is an empty graph, returns a bipartite graph K_{n1,n2} with two partite sets V1 and V2
- * where all vertices in V1 are all adjacent to all vertices in V2.
+ * Returns a bipartite network K_{n1,n2} with two partite sets V and U
+ * where all vertices in V are all adjacent to all vertices in U.
  * If the graph is directed, arcs in both directions are created for each pair of vertices.
  */
-template<typename G>
-void
+std::unique_ptr<Network>
 complete_bipartite_graph(
-    G* g,
     size_t n1,
-    size_t n2
+    size_t n2,
+    EdgeDir dir = EdgeDir::UNDIRECTED
 );
 
 
 /**
- * When g is an empty graph, returns a graph P_n with n new vertices with edges forming a path.
+ * Returns a network P_n with n vertices with edges forming a path.
  */
-template<typename G>
-void
+std::unique_ptr<Network>
 path_graph(
-    G* g,
-    size_t n
+    size_t n,
+    EdgeDir dir = EdgeDir::UNDIRECTED
 );
 
 /**
- * When g is an empty graph, returns a graph C_n with n new vertices with edges forming a circle.
+ * Returns a network C_n with n vertices with edges forming a circle.
  */
-template<typename G>
-void
+std::unique_ptr<Network>
 cycle_graph(
-    G* g,
-    size_t n
+    size_t n,
+    EdgeDir dir = EdgeDir::UNDIRECTED
 );
 
 
 /**
- * When g is an empty graph, returns a graph W_n with n new vertices made of a C_{n-1}
+ * Returns a network W_n with n vertices made of a C_{n-1}
  * cycle graph plus a vertex adjacent to all the other n-1 vertices.
+ * The graph is undirected.
  */
-template<typename G>
-void
+std::unique_ptr<Network>
 wheel_graph(
-    G* g,
     size_t n
 );
 

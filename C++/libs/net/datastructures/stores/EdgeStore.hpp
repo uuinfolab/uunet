@@ -84,7 +84,7 @@ class EdgeStore :
     GenericObjectList<Vertex>*
     neighbors(
         const Vertex* vertex,
-        EdgeMode mode
+        EdgeMode mode = EdgeMode::INOUT
     ) const;
 
     /**
@@ -97,7 +97,7 @@ class EdgeStore :
     GenericObjectList<Edge>*
     incident(
         const Vertex* vertex,
-        EdgeMode mode
+        EdgeMode mode = EdgeMode::INOUT
     ) const;
 
 

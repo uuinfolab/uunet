@@ -9,7 +9,7 @@
 #include <unordered_set>
 #include <queue>
 #include "core/exceptions/assert_not_null.hpp"
-#include "measures/basic.hpp"
+#include "measures/order.hpp"
 #include "objects/Vertex.hpp"
 #include "objects/EdgeMode.hpp"
 

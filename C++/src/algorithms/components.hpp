@@ -11,7 +11,7 @@
 #include "core/exceptions/assert_not_null.hpp"
 #include "objects/Vertex.hpp"
 #include "objects/EdgeMode.hpp"
-#include "measures/basic.hpp"
+#include "measures/order.hpp"
 #include "algorithms/BFS.hpp"
 
 namespace uu {

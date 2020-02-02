@@ -4,16 +4,17 @@
 #ifndef UU_NET_GENERATION_ER_H_
 #define UU_NET_GENERATION_ER_H_
 
+#include "networks/Network.hpp"
+#include <memory>
+
 namespace uu {
 namespace net {
 
 /**
  *
  **/
-template <typename G>
-void
+std::unique_ptr<Network>
 erdos_renyi_nm(
-    G* g,
     size_t n,
     size_t m
 );
@@ -22,17 +23,13 @@ erdos_renyi_nm(
 /**
  *
  **/
-template <typename G>
-void
+std::unique_ptr<Network>
 erdos_renyi_np(
-    G* g,
     size_t n,
     double p
 );
 
 }
 }
-
-#include "erdos_renyi.ipp"
 
 #endif
