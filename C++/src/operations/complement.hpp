@@ -3,8 +3,11 @@
  * - 2018.03.09 file created, following a restructuring of the previous library.
  */
 
-#ifndef UU_NET_OPERATIONS_COMPLEMENT_H_
-#define UU_NET_OPERATIONS_COMPLEMENT_H_
+#ifndef UU_OPERATIONS_COMPLEMENT_H_
+#define UU_OPERATIONS_COMPLEMENT_H_
+
+#include <memory>
+#include <string>
 
 namespace uu {
 namespace net {
@@ -16,32 +19,17 @@ namespace net {
  * input graph.
  *
  * @param g input graph
- *
- * @todo NOT IMPLEMENTED
  */
 template<typename G>
-std::shared_ptr<G>
+std::unique_ptr<G>
 graph_complement(
-    const std::shared_ptr<const G>& g1
+    const G* g,
+    const std::string& name = ""
 );
 
+}
+}
 
-/**
- * Returns the union of two attributed graphs.
- *
- * @param g1, g2 input graphs
- *
- * @todo NOT IMPLEMENTED
- */
-template<typename G>
-std::shared_ptr<G>
-attributed_graph_union(
-    const std::shared_ptr<const G>& g1,
-    const std::shared_ptr<const G>& g2
-);
-
-
-} // namespace net
-} // namespace uu
+#include "complement.ipp"
 
 #endif

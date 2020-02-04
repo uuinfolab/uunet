@@ -16,7 +16,7 @@ erdos_renyi_nm(
 )
 {
     std::string name = "ER";
-    
+
     auto g = std::make_unique<Network>(name);
     add_vertices(g.get(), n);
 

@@ -3,8 +3,11 @@
  * - 2018.03.09 file created, following a restructuring of the previous library.
  */
 
-#ifndef UU_NET_OPERATIONS_INTERSECTION_H_
-#define UU_NET_OPERATIONS_INTERSECTION_H_
+#ifndef UU_OPERATIONS_INTERSECTION_H_
+#define UU_OPERATIONS_INTERSECTION_H_
+
+#include <memory>
+#include <string>
 
 namespace uu {
 namespace net {
@@ -13,33 +16,19 @@ namespace net {
  * Returns the intersection of two graphs.
  *
  * @param g1, g2 input graphs
- *
- * @todo NOT IMPLEMENTED
  */
 template<typename G>
-std::shared_ptr<G>
+std::unique_ptr<G>
 graph_intersection(
-    const std::shared_ptr<const G>& g1,
-    const std::shared_ptr<const G>& g2
+    const G* g1,
+    const G* g2,
+    const std::string& name = ""
 );
 
 
-/**
- * Returns the intersection of two attributed graphs.
- *
- * @param g1, g2 input graphs
- *
- * @todo NOT IMPLEMENTED
- */
-template<typename G>
-std::shared_ptr<G>
-attributed_graph_intersection(
-    const std::shared_ptr<const G>& g1,
-    const std::shared_ptr<const G>& g2
-);
+}
+}
 
-
-} // namespace net
-} // namespace uu
+#include "intersection.ipp"
 
 #endif
