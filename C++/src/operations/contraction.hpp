@@ -3,8 +3,11 @@
  * - 2018.03.09 file created, following a restructuring of the previous library.
  */
 
-#ifndef UU_NET_OPERATIONS_CONTRACTION_H_
-#define UU_NET_OPERATIONS_CONTRACTION_H_
+#ifndef UU_OPERATIONS_CONTRACTION_H_
+#define UU_OPERATIONS_CONTRACTION_H_
+
+#include <string>
+#include "objects/Edge.hpp"
 
 namespace uu {
 namespace net {
@@ -13,7 +16,7 @@ namespace net {
  * Removes the two end vertices of the input edge and replaces
  * them with a new single vertex.
  *
- * @todo: decide how to handle multiedges created through the contractions
+ * Multiedges are compacted into a single edge
  *
  * e must be an edge in G.
  *
@@ -22,12 +25,15 @@ namespace net {
 template<typename G>
 void
 edge_contraction(
-    const std::shared_ptr<G>& g,
-    const std::shared_ptr<const Edge>& e
+    G* g,
+    const Edge* e,
+    const std::string& vertex_name
 );
 
 
-} // namespace net
-} // namespace uu
+}
+}
+
+#include "contraction.ipp"
 
 #endif
