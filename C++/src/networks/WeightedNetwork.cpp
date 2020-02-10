@@ -37,7 +37,7 @@ core::Value<double>
 WeightedNetwork::
 get_weight(
     const Edge* e
-)
+) const
 {
     return edges()->attr()->get_double(e, KWEIGHT_ATTR_NAME);
 }

@@ -130,7 +130,7 @@ ordered_modularity(const M* mnet, const CS* communities, double omega)
 
     for (size_t l_idx=0; l_idx<mnet->layers()->size(); l_idx++)
     {
-        layer_index[mnet->layers()->get_at_index(l_idx)] = l_idx;
+        layer_index[mnet->layers()->at(l_idx)] = l_idx;
     }
 
     for (auto community: *communities)

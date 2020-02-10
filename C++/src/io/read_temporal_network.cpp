@@ -80,17 +80,21 @@ read_edge(
 )
 {
 
-    if (fields.size()!=2+edge_attributes.size())
+    if (fields.size()!=3+edge_attributes.size())
     {
         throw core::WrongFormatException("Line " +
                                          std::to_string(line_number) +
-                                         ": From and To actor names and weight must " +
+                                         ": From and To vertex names and probability must " +
                                          "be specified for each edge");
     }
 
     auto edge = read_edge(g, fields, 0, line_number);
 
-    read_attr_values(g->edges()->attr(), edge, edge_attributes, fields, 2, line_number);
+    core::Time t = core::epoch_to_time(fields.at(2));
+
+    g->set_time(edge, t);
+
+    read_attr_values(g->edges()->attr(), edge, edge_attributes, fields, 3, line_number);
 
 }
 
