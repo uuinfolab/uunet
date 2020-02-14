@@ -166,7 +166,6 @@ GDB(
     }
 
     double Dcurrent;
-    double previous_discrepancy [current_graph->vertices()->size()];
     auto previous_graph = duplicate_graph(current_graph.get());
     auto next_graph = duplicate_graph(current_graph.get());
 
