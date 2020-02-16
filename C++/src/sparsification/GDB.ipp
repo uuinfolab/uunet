@@ -153,11 +153,7 @@ GDB(
         }
 
         std::cout << "obj func: " << objective_function(previous_2_graph.get(), current_graph.get(), use_absolute) << "\n" << std::endl;
-        std::cout << Dcurrent - objective_function(previous_2_graph.get(), current_graph.get(), use_absolute)  << std::endl;
-        std::cout << fabs(  Dcurrent - objective_function(previous_2_graph.get(), current_graph.get(), use_absolute) )  << std::endl;
-        std::cout << (fabs(  Dcurrent - objective_function(previous_2_graph.get(), current_graph.get(), use_absolute) ) <= improvement_threshold)  << std::endl;
-        std::cout << improvement_threshold << std::endl;
-        std::cout << "while: " <<(! abs(  Dcurrent - objective_function(previous_2_graph.get(), current_graph.get(), use_absolute) ) <= improvement_threshold) << std::endl;
+
 
     } while
     (
