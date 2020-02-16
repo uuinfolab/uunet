@@ -12,14 +12,14 @@ namespace uu {
 namespace net {
 
 /**
- * Generates a Backbone graph
+ * Backbone Graph Initializer, generates a backbone graph
  * @return Backbone grap
  * @param original_graph Input graph to get the backbone graph from
  * @param sparsRatio Sparsification ratio
  * @param spanRatio Spanning ratio
  **/
 std::unique_ptr<Network>
-generate_backbone(
+BGI(
     ProbabilisticNetwork* original_graph,
     float sparsRatio,
     float spanRatio

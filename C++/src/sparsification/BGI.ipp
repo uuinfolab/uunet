@@ -6,6 +6,7 @@
 #include <list>
 #include "networks/ProbabilisticNetwork.hpp"
 #include "measures/size.hpp"
+#include "sparsification/utils.hpp"
 
 
 namespace uu {
@@ -51,71 +52,6 @@ remove_intersection(
     }
 }
 
-/**
- * Adds an edges and its vertices into g
- * @param g1 Graph to add edge to
- * @param e The edge to add
- * @param p The probability of the edge
- **/
-void add_edge_to_graph
-(
-    ProbabilisticNetwork* g,
-    const Edge * e,
-    double p
-)
-{
-    auto v1 = e->v1->to_string();
-    auto v2 = e->v2->to_string();
-
-    g->vertices()->add(v1);
-    g->vertices()->add(v2);
-
-    auto g_v1 = g->vertices()->get(v1);
-    auto g_v2 = g->vertices()->get(v2);
-
-    auto newEdge = Edge::create(g_v1, g_v2, EdgeDir::UNDIRECTED);
-
-    g->edges()->add(newEdge);
-    
-    g->set_prob( g->edges()->get(g_v1, g_v2), p );
-}
-
-
-/**
- * Adds all edges and vertices from g2 into g1 (Union)
- * @param g1 Graph to add edges to
- * @param g2 Graph to add edges from
- **/
-void add_graphs
-(
-    ProbabilisticNetwork* g1, 
-    ProbabilisticNetwork* g2
-)
-{
-    for (auto edge: *g2->edges())
-    {    
-        add_edge_to_graph(g1, edge, g2->get_prob(edge).value);
-    }        
-}
-
-
-/**
- * Duplicates a probabilistic graph to a new object
- * @return The duplicated graph
- * @param g The graph to copy from
- **/
-std::unique_ptr<ProbabilisticNetwork>
-duplicate_graph
-(
-    ProbabilisticNetwork* g
-)
-{
-    std::string name = "Copy of " + g->name;
-    auto newGraph =  std::make_unique<ProbabilisticNetwork> (name, EdgeDir::UNDIRECTED, true);
-
-    add_graphs(newGraph.get(), g);
-    return newGraph;
-}
 
 /**
  * Helper function for Maximum Spanning Tree
@@ -202,15 +138,13 @@ maximum_spanning_tree
     auto MST =  std::make_unique<ProbabilisticNetwork> (name, EdgeDir::UNDIRECTED, true);
     bool visited [g->vertices()->size()] = { false };
     int amountVisited = 0;
-    int amountVertices = g->vertices()->size();
+    //int amountVertices = g->vertices()->size();
     std::list< const Edge *> currentEdges;
 
     //Initially choose a random vertex.
     auto firstV = g->vertices()->get_at_random();
     visited[g->vertices()->index_of(firstV)] = true;
     amountVisited++;
-
-    
 
     // Push all edges connected to first vertex
     for (auto edge: *g->edges()->incident(firstV, EdgeMode::INOUT))
@@ -253,7 +187,7 @@ maximum_spanning_tree
  * @param spanRatio Spanning ratio
  **/
 std::unique_ptr<Network>
-generate_backbone(
+BGI(
     ProbabilisticNetwork* original_graph,
     float sparsRatio,
     float spanRatio
@@ -275,7 +209,7 @@ generate_backbone(
     while (size(Gb.get()) < spanRatio * size(original_graph))
     {
         auto F = maximum_spanning_tree(Gcopy.get());
-        add_graphs(Gb.get(), F.get());      // can be optimized, dont need to set probabilities
+        graph_union(Gb.get(), F.get());      // can be optimized, dont need to set probabilities
                                            // and can add checks for if the edge alraedy exists
         remove_intersection(Gcopy.get(), F.get());
     }
