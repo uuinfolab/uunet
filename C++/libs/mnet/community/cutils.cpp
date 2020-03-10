@@ -261,7 +261,7 @@ modularity_matrix(
     size_t N = a[0].rows();
 
     Eigen::SparseMatrix<double> B(N * L, N * L);
-    std::cout << B.rows() << " " << B.cols() << " " << B.nonZeros() << std::endl;
+    //std::cout << B.rows() << " " << B.cols() << " " << B.nonZeros() << std::endl;
     B.reserve(Eigen::VectorXi::Constant(N * L, N * L));
 
     twoum = 0.0;
@@ -344,6 +344,10 @@ modularity_matrix(
     B.setFromTriplets(tlist.begin(), tlist.end());
 
     twoum = twoum + (N * L * (L - 1) * omega);
+    
+    //std::cout << Eigen::MatrixXd(B) << std::endl;
+    //std::cout << twoum << std::endl;
+    
     return B;
 }
 

@@ -35,6 +35,8 @@ class CSVReader
     std::string quote_as_string_;
     std::string escaped_quote_;
     std::string comment_start_;
+    size_t expected_num_fields_ = 0;
+    size_t lines_skipped_ = 0;
 
   public:
     CSVReader();
@@ -131,6 +133,24 @@ class CSVReader
         char separator
     );
 
+    /**
+     * Sets the expected number of fields.
+     * Lines with a different number of fields will be skipped.
+     * The number of such lines can be retrieved using the skipped_lines() function.
+     */
+    void
+    set_expected_num_fields(
+                        size_t expected_num_fields
+                        );
+    
+    
+    /**
+     * Returns the number of lines skipped because of an unexpected number of fields.
+     */
+    size_t
+    skipped_lines(
+    ) const;
+    
     /**
      * Sets the characters that indicate a comment when at the beginning of
      * a line.

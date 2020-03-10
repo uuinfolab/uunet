@@ -168,19 +168,39 @@ close()
 
 bool
 CSVReader::
-has_next() const
+has_next(
+    ) const
 {
     return has_next_;
 }
 
 void
 CSVReader::
-trim_fields(bool value)
+trim_fields(
+            bool value
+            )
 {
     remove_trailing_spaces_ = value;
 }
 
 
+    void
+    CSVReader::
+    set_expected_num_fields(
+                            size_t expected_num_fields
+                            )
+    {
+        expected_num_fields_ = expected_num_fields;
+    }
+    
+size_t
+    CSVReader::
+    skipped_lines(
+    ) const
+    {
+        return lines_skipped_;
+    }
+    
 std::vector<std::string>
 CSVReader::
 get_next()
@@ -324,12 +344,28 @@ get_next()
             }
         }
 
-        return quoted_record;
+        // if an expected number of fields has been specified, this line is skipped and a
+        // new one is returned.
+        if (expected_num_fields_ != 0 && expected_num_fields_ != quoted_record.size())
+        {
+            lines_skipped_++;
+            return get_next();
+        }
+        else {
+            return quoted_record;
+        }
     }
 
     else
     {
-        return record;
+        if (expected_num_fields_ != 0 && expected_num_fields_ != record.size())
+        {
+            lines_skipped_++;
+            return get_next();
+        }
+        else {
+            return record;
+        }
     }
 }
 

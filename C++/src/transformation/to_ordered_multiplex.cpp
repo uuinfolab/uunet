@@ -50,7 +50,7 @@ to_ordered_multiplex(
     //auto max_t_time = std::chrono::system_clock::to_time_t(max_time);
     //auto min_t_time = std::chrono::system_clock::to_time_t(min_time);
 
-    std::cout << core::to_string(min_time) << " - " << core::to_string(max_time) << std::endl;
+    //std::cout << core::to_string(min_time) << " - " << core::to_string(max_time) << std::endl;
 
     auto split_time = (max_time - min_time) / (float)num_partitions;
 

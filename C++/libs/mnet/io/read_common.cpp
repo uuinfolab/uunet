@@ -231,7 +231,7 @@ read_multilayer_metadata(
                 if (fields.size() < 3)
                 {
                     throw core::WrongFormatException("Line " + std::to_string(csv.row_num()) +
-                                                     ": layer names and directionality required");
+                                                     ": pair of layer names and directionality required");
                 }
 
                 std::string layer_name1 = fields.at(0);
