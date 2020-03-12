@@ -4,7 +4,7 @@ namespace net {
 
 
 template<typename G>
-void
+const Vertex*
 edge_contraction(
     G* g,
     const Edge* e,
@@ -97,6 +97,8 @@ edge_contraction(
     auto v2 = e->v2;
     g->vertices()->erase(v1);
     g->vertices()->erase(v2);
+    
+    return new_vertex;
 }
 
 

@@ -8,6 +8,7 @@
 
 #include <string>
 #include "objects/Edge.hpp"
+#include "objects/Vertex.hpp"
 
 namespace uu {
 namespace net {
@@ -19,11 +20,9 @@ namespace net {
  * Multiedges are compacted into a single edge
  *
  * e must be an edge in G.
- *
- * @todo NOT IMPLEMENTED
  */
 template<typename G>
-void
+const Vertex*
 edge_contraction(
     G* g,
     const Edge* e,

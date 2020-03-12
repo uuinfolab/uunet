@@ -7,7 +7,9 @@
 #define UU_OPERATIONS_SUBDIVISION_H_
 
 #include <string>
+#include <tuple>
 #include "objects/Edge.hpp"
+#include "objects/Vertex.hpp"
 
 namespace uu {
 namespace net {
@@ -18,7 +20,7 @@ namespace net {
  * e must be an edge in E(g).
  */
 template<typename G>
-void
+const Vertex*
 edge_subdivision(
     G* g,
     const Edge* e,
