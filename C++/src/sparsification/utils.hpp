@@ -13,6 +13,39 @@ namespace net {
 
 
 /**
+ *  Calculates one step
+ *  @param edge The edge to get the probability from and the vertices
+ *  @param step_size The step size used for the formula
+ *  @param use_absolute Denotes if we should use the absolute discrepancy (true) or the relative discrepancy (false)
+ *  @param always_use_step_size if true then apply step_size instantly, otherwise only apply step_size if the condition entropy_formula(new_p) > entropy_formula(previous_p) is true
+ **/
+double
+stp
+(
+    ProbabilisticNetwork * previous_graph,
+    ProbabilisticNetwork * current_graph,
+    const Edge * edge,
+    double step_size,
+    bool use_absolute,
+    bool always_use_step_size
+);
+
+
+
+/**
+ *  The objective function of GDB, returns the sum of discrepancies of the whole graph
+ *  @param use_absolute Denotes if we should use the absolute discrepancy (true) or the relative discrepancy (false)
+ **/
+double
+objective_function
+(
+    ProbabilisticNetwork* graph, 
+    ProbabilisticNetwork* sparsified_graph, 
+    bool use_absolute
+);
+
+
+/**
  * Cut size, aka exp degree
  **/
 double
@@ -23,6 +56,17 @@ sum_p_from_v
 );
 
 
+/**
+ *  Returns 1 if use_absolute is true, otherwise return the cut size of v
+ *  @param use_absolute Denotes if we should use the absolute discrepancy (true) or the relative discrepancy (false)
+ **/
+double
+pi
+(
+    ProbabilisticNetwork * g,
+    const Vertex * v,
+    bool use_absolute 
+);
 
 
 
@@ -51,8 +95,8 @@ entropy_of_graph
 double
 a_discrepancy
 (
-    const ProbabilisticNetwork* graph,
-    const ProbabilisticNetwork* sparsified_graph,
+    ProbabilisticNetwork* graph,
+    ProbabilisticNetwork* sparsified_graph,
     const Vertex * v
 );
 
@@ -65,36 +109,30 @@ r_discrepancy
     ProbabilisticNetwork* graph,
     ProbabilisticNetwork* sparsified_graph,
     const Vertex * v
-);;
-
-
-/**
- * Adds all edges and vertices from g2 into g1
- * Note, this modifies g1
- * @param g1 Graph to add edges to
- * @param g2 Graph to add edges from
- **/
-void graph_union
-(
-    ProbabilisticNetwork* g1, 
-    ProbabilisticNetwork* g2
 );
 
 
 /**
- * Adds an edges and its vertices into g
- * @param g1 Graph to add edge to
- * @param e The edge to add
- * @param p The probability of the edge
+ *  Adds all edges from source graph to target graph
+ *  Note: this modifies the target graph
  **/
-void add_edge_to_graph
+void
+graph_add_2
 (
-    ProbabilisticNetwork* g,
-    const Edge * e,
-    double p
+    const Network * source,
+    Network * target
 );
 
-
+/**
+ *  Adds all edges and probabilities from source graph to target graph
+ *  Note: this modifies the target graph
+ **/
+void
+graph_add_prob
+(
+    const ProbabilisticNetwork * source,
+    ProbabilisticNetwork * target
+);
 
 /**
  * Duplicates a probabilistic graph to a new object
@@ -110,6 +148,5 @@ duplicate_graph
 }
 }
 
-#include "utils.ipp"
 
 #endif

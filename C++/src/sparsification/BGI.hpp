@@ -28,6 +28,4 @@ BGI(
 }
 }
 
-#include "BGI.ipp"
-
 #endif

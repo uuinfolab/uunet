@@ -5,29 +5,13 @@
 
 #include <list>
 #include "networks/ProbabilisticNetwork.hpp"
-#include "measures/size.hpp"
 #include "sparsification/utils.hpp"
+#include "sparsification/BGI.hpp"
 
 
 namespace uu {
 namespace net {
-/**
- * Checks if the two edges have the same vertice names (Doesnt check their probabilities)
- **/
-bool
-edge_equals(
-    const Edge *e1,
-    const Edge *e2
-)
-{
-    auto v11 = e1->v1->to_string();
-    auto v12 = e1->v2->to_string();
 
-    auto v21 = e2->v1->to_string();
-    auto v22 = e2->v2->to_string();
-
-    return ( v11 == v21 && v12 == v22 ) || ( v11 == v22 && v12 == v21);
-}
 
 /**
  * Removes the intersection of g1 and g2 from g1
@@ -36,15 +20,15 @@ edge_equals(
  **/
 void 
 remove_intersection(
-    ProbabilisticNetwork* g1, 
-    ProbabilisticNetwork* g2
+    Network* g1, 
+    Network* g2
 )
 {
     for (auto edge: *g1->edges())
     {
         for (auto edge2: *g2->edges())
         {    
-            if(edge_equals(edge, edge2))
+            if(edge == edge2)
             {
                 g1->edges()->erase(edge);
             }
@@ -126,7 +110,7 @@ is_visited(
  * @return Maximum Spanning Tree
  * @param g Input graph to get the spanning tree from
  **/
-std::unique_ptr<ProbabilisticNetwork>
+std::unique_ptr<Network>
 maximum_spanning_tree
 (
     ProbabilisticNetwork* g,
@@ -135,7 +119,13 @@ maximum_spanning_tree
 {    
 
     // Initialize
-    auto MST =  std::make_unique<ProbabilisticNetwork> (name, EdgeDir::UNDIRECTED, true);
+    auto MST =  std::make_unique<Network> (name, EdgeDir::UNDIRECTED, true);
+    for (auto vertex: *g->vertices())
+    {
+        MST->vertices()->add(vertex);
+    }
+
+
     bool visited [g->vertices()->size()] = { false };
     int amountVisited = 0;
     //int amountVertices = g->vertices()->size();
@@ -161,7 +151,7 @@ maximum_spanning_tree
         {
             auto v = set_visited(g, visited, e);
             amountVisited++;
-            add_edge_to_graph(MST.get(), e, g->get_prob(e).value);
+            MST->edges()->add( e );
 
             // Add all edges from current vertice unless they are visited already
             for (auto currentEdge: *g->edges()->incident(v, EdgeMode::INOUT))
@@ -181,7 +171,7 @@ maximum_spanning_tree
 
 /**
  * Generates a Backbone graph
- * @return Backbone grap
+ * @return Backbone graph
  * @param original_graph Input graph to get the backbone graph from
  * @param sparsRatio Sparsification ratio
  * @param spanRatio Spanning ratio
@@ -206,22 +196,21 @@ BGI(
     auto Gb = maximum_spanning_tree(Gcopy.get(), name);
     remove_intersection(Gcopy.get(), Gb.get());
 
-    while (size(Gb.get()) < spanRatio * size(original_graph))
+    while (Gb->edges()->size() < spanRatio * original_graph->edges()->size())
     {
         auto F = maximum_spanning_tree(Gcopy.get());
-        graph_union(Gb.get(), F.get());      // can be optimized, dont need to set probabilities
-                                           // and can add checks for if the edge alraedy exists
+        graph_add_2(F.get(), Gb.get());
         remove_intersection(Gcopy.get(), F.get());
     }
     
-    while (size(Gb.get()) < sparsRatio * size(original_graph))
+    while (Gb->edges()->size() < sparsRatio * original_graph->edges()->size())
     {
         auto e = Gcopy->edges()->get_at_random();
         
         double r = ((double) rand() / (RAND_MAX));
         if (Gcopy->get_prob(e).value > r)
         {
-            add_edge_to_graph(Gb.get(), e, Gcopy->get_prob(e).value);
+            Gb->edges()->add( e );
             Gcopy->edges()->erase(e);
         }
     } 
