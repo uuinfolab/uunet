@@ -7,6 +7,7 @@
 #define UU_NET_DATASTRUCTURE_CONNECTIVITY_WALK_
 
 #include <list>
+#include <iostream>
 #include "objects/Edge.hpp"
 #include "objects/Vertex.hpp"
 
@@ -63,6 +64,11 @@ class Walk
     edges(
     ) const;
 
+    /** Output function, presenting a complete description of the walk. */
+    std::string
+    to_string(
+    ) const;
+
   protected:
 
     /** Vertices */
@@ -72,6 +78,10 @@ class Walk
     std::list<const Edge*> edges_;
 
 };
+
+    
+std::ostream&
+operator<<(std::ostream& os, const Walk& w);
 
 }
 }
