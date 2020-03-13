@@ -59,7 +59,7 @@ class WeightedNetwork
     core::Value<double>
     get_weight(
         const Edge* e
-    );
+    ) const;
 
     /**
      * Returns a string providing a summary of the network structure.

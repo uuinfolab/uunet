@@ -57,41 +57,6 @@ graph_add(
     }
 }
 
-
-template<typename GraphIterator, typename G>
-void
-graph_union(
-    GraphIterator begin,
-    GraphIterator end,
-    G* target
-)
-{
-    core::assert_not_null(target, "graph_union", "target");
-
-    for (auto g=begin; g!=end; ++g)
-    {
-        graph_add(*g, target);
-    }
-}
-
-template<typename G>
-void
-graph_union(
-    const G* g1,
-    const G* g2,
-    G* target)
-{
-
-    core::assert_not_null(g1, "graph_union", "g1");
-    core::assert_not_null(g2, "graph_union", "g2");
-    core::assert_not_null(target, "graph_union", "target");
-
-    std::array<const G*, 2> graphs = {g1, g2};
-
-    graph_union(graphs.begin(), graphs.end(), target);
-
-}
-
 template<typename G, typename W>
 void
 weigthed_graph_add(

@@ -43,11 +43,30 @@ class VertexOverlappingOrderedLayerStore :
 
 
     Graph*
+    get(const std::string& name) const
+    {
+        for (auto&& g: data)
+        {
+            if (g->name == name)
+            {
+                return g.get();
+            }
+        }
+
+        return nullptr;
+    }
+
+    Graph*
     at(size_t pos)
     {
         return data.at(pos).get();
     }
 
+    const Graph*
+    at(size_t pos) const
+    {
+        return data.at(pos).get();
+    }
 
     size_t
     size() const
@@ -123,17 +142,95 @@ class VertexOverlappingOrderedLayerStore :
 
     };
 
+    class
+        const_iterator
+    {
+        typedef std::forward_iterator_tag iterator_category;
+
+      public:
+
+        const_iterator();
+
+        /** Returns an iterator pointing at the input object */
+        const_iterator(
+            typename std::vector<std::unique_ptr<Graph>>::const_iterator it
+        )
+        {
+            current = it;
+        }
+
+        /** Return the object pointed by this iterator */
+        const Graph*
+        operator*(
+        )
+        {
+            return current->get();
+        }
+
+        /** Moves the iterator to the next object in the collection (prefix) */
+        const_iterator
+        operator++(
+        )
+        {
+            return ++current;
+        }
+
+        /** Moves the iterator to the next object in the collection (postfix) */
+        const_iterator
+        operator++(
+            int
+        )
+        {
+            return current++;
+        }
+
+        /** Checks if this iterator equals the input one */
+        bool
+        operator==(
+            const typename VertexOverlappingOrderedLayerStore<Graph>::const_iterator& rhs
+        )
+        {
+            return rhs.current = current;
+        }
+
+        /** Checks if this iterator differs from the input one */
+        bool
+        operator!=(
+            const typename VertexOverlappingOrderedLayerStore<Graph>::const_iterator& rhs
+        )
+        {
+            return rhs.current != current;
+        }
+
+      private:
+
+        /** Entry currently pointed to by this iterator */
+        typename std::vector<std::unique_ptr<Graph>>::const_iterator current;
+
+    };
+
     VertexOverlappingOrderedLayerStore<Graph>::iterator
     begin()
     {
         return iterator(data.begin());
     }
 
+    VertexOverlappingOrderedLayerStore<Graph>::const_iterator
+    begin() const
+    {
+        return const_iterator(data.begin());
+    }
 
     VertexOverlappingOrderedLayerStore<Graph>::iterator
     end()
     {
         return iterator(data.end());
+    }
+
+    VertexOverlappingOrderedLayerStore<Graph>::const_iterator
+    end() const
+    {
+        return const_iterator(data.end());
     }
 
     Graph *

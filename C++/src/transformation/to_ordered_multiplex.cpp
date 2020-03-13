@@ -4,6 +4,7 @@
 #include "core/attributes/conversion.hpp"
 #include "core/attributes/Value.hpp"
 #include "core/attributes/Time.hpp"
+#include "core/exceptions/OperationNotSupportedException.hpp"
 #include <vector>
 #include <fstream>
 #include <algorithm>
@@ -25,7 +26,6 @@ to_ordered_multiplex(
     std::vector<const Edge*> sorted_edge_vector;
     std::vector<std::vector<const Edge*>> partitioned_edge_vector;
 
-
     // create ordered layers for each time partition
     for (size_t i = 0; i<num_partitions; i++)
     {
@@ -45,12 +45,19 @@ to_ordered_multiplex(
         }
     }
 
-
     auto max_time = tnet->get_max_time().value;
     auto min_time = tnet->get_min_time().value;
     //auto max_t_time = std::chrono::system_clock::to_time_t(max_time);
     //auto min_t_time = std::chrono::system_clock::to_time_t(min_time);
+
+    //std::cout << core::to_string(min_time) << " - " << core::to_string(max_time) << std::endl;
+
     auto split_time = (max_time - min_time) / (float)num_partitions;
+
+    if (max_time == min_time)
+    {
+        throw core::OperationNotSupportedException("cannot slice a network with no temporal extension");
+    }
 
     for (auto e : *tnet->edges())
     {

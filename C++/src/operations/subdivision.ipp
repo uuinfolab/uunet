@@ -7,7 +7,7 @@ namespace uu {
 namespace net {
 
 template<typename G>
-void
+const Vertex*
 edge_subdivision(
     G* g,
     const Edge* e,
@@ -32,6 +32,8 @@ edge_subdivision(
     g->edges()->add(e->v1, new_vertex);
     g->edges()->add(new_vertex, e->v2);
     g->edges()->erase(e);
+    
+    return new_vertex;
 }
 
 

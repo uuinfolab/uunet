@@ -27,7 +27,7 @@ template<typename G>
 size_t
 maximum_strength(
     const G* g,
-    const EdgeMode mode
+    const EdgeMode mode = EdgeMode::INOUT
 );
 
 
@@ -41,7 +41,7 @@ template<typename G>
 size_t
 minimum_strength(
     const G* g,
-    const EdgeMode mode
+    const EdgeMode mode = EdgeMode::INOUT
 );
 
 /**
@@ -54,7 +54,7 @@ template<typename G>
 std::vector<double>
 strength_sequence(
     const G* g,
-    const EdgeMode mode
+    const EdgeMode mode = EdgeMode::INOUT
 );
 
 /**
@@ -82,7 +82,7 @@ double
 strength(
     const G* g,
     const Vertex* v,
-    const EdgeMode mode
+    const EdgeMode mode = EdgeMode::INOUT
 );
 
 
@@ -109,7 +109,7 @@ strength(
 
     for (auto edge: *g->edges()->incident(v, mode))
     {
-        auto w = g->edges()->attr()->get_weight(edge);
+        auto w = g->get_weight(edge);
 
         if (!w.null)
         {

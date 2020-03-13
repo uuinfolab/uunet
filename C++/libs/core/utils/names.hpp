@@ -9,6 +9,7 @@
 #define UU_CORE_UTILS_NAMES_H_
 
 #include <cstddef>
+#include "stddef.h"
 #include <string>
 
 namespace uu {

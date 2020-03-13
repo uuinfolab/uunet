@@ -42,32 +42,6 @@ graph_add(
 
 
 /**
- * Stores the union of multiple graphs into another graph
- */
-template<typename GraphIterator, typename G>
-void
-graph_union(
-    GraphIterator begin,
-    GraphIterator end,
-    G* target
-);
-
-
-/**
- * Stores the union of two graphs into a third graph
- *
- * @param g1, g2 input graphs
- */
-template<typename G>
-void
-graph_union(
-    const G* g1,
-    const G* g2,
-    G* target
-);
-
-
-/**
  * Stores the union of two graphs into a third graph, assigning a weight to edges
  * to indicate in how many input graphs the edge was present.
  *

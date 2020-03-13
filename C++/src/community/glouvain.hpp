@@ -2,6 +2,7 @@
 #define UU_MNET_COMMUNITY_GLOUVAIN_H_
 
 
+#include "core/utils/pretty_printing.hpp"
 #include "community/CommunityStructure.hpp"
 #include "community/VertexLayerCommunity.hpp"
 #include "mnet/community/cutils.hpp"
@@ -596,17 +597,17 @@ glouvain::fit(
 
     else
     {
-        std::cout << "building..." << std::endl;
         B = modularity_matrix(twoum, to_adjacency_matrices(mnet), gamma, omega, ordered);
-        std::cout << "done" << std::endl;
         M_ = B;
-        std::cout << "done" << std::endl;
     }
 
     std::vector<int> S2(B.rows());
     std::iota(S2.begin(), S2.end(), 0);
     Sb.clear();
 
+    //std::cout << Eigen::MatrixXd(M_) << std::endl;
+    //std::cout << core::to_string(S2) << std::endl;
+    
     while (Sb != S2)
     {
         Sb = S2;
@@ -626,6 +627,7 @@ glouvain::fit(
                 for (int i: cutils::range(M_.cols(), true))
                 {
                     double di = move_func(g, i, M_.col(i));
+                    //std::cout << core::to_string(g.nodes) << std::endl;
                     dstep = dstep + di;
                 }
 
@@ -647,6 +649,8 @@ glouvain::fit(
         M_ = metanetwork(B, S2);
         y = cutils::unique(S2);
 
+        //std::cout << Eigen::MatrixXd(M_) << std::endl;
+        //std::cout << core::to_string(S2) << std::endl;
     }
 
     std::vector<unsigned int> partition(S.begin(), S.end());
