@@ -7,6 +7,8 @@
 
 #include <memory>
 #include <string>
+#include "networks/Network.hpp"
+#include "networks/ProbabilisticNetwork.hpp"
 
 namespace uu {
 namespace net {
@@ -20,7 +22,7 @@ empty_copy(
     const G* g,
     const std::string& name = ""
 );
-
+    
 }
 }
 

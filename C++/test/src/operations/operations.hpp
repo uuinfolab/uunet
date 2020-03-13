@@ -1,5 +1,5 @@
-#ifndef UU_TEST_MEASURES_H_
-#define UU_TEST_MEASURES_H_
+#ifndef UU_TEST_OPERATIONS_H_
+#define UU_TEST_OPERATIONS_H_
 
 #include "gtest/gtest.h"
 
