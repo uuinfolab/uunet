@@ -1,6 +1,6 @@
 /**
  * History:
- * - 2020.02.14 file created by Oskar
+ * - 2020.03.11 file created by Oskar
  */
 
 #ifndef UU_NET_SPARSIFICATION_ETA_K_CORE_H_

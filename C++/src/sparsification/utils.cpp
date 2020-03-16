@@ -259,7 +259,7 @@ duplicate_graph
     ProbabilisticNetwork* g
 )
 {
-    std::string name = "Copy of " + g->name;
+    std::string name = g->name + '*';
     auto newGraph =  std::make_unique<ProbabilisticNetwork> (name, EdgeDir::UNDIRECTED, true);
     graph_add_prob(g, newGraph.get());
     return newGraph;

@@ -1,6 +1,6 @@
 /**
  * History:
- * - 2020.02.17 file created by Oskar
+ * - 2020.03.11 file created by Oskar
  **/
 
 #include "networks/ProbabilisticNetwork.hpp"
