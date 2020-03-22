@@ -91,7 +91,7 @@ degree_sequence(
         res.push_back(d);
     }
 
-    std::sort(res.begin(), res.end());
+    std::sort(res.begin(), res.end(), std::greater<size_t>());
     return res;
 }
 

@@ -23,7 +23,7 @@ erase(
     const Vertex* v
 )
 {
-
+    (void)v;
 }
 
 std::string

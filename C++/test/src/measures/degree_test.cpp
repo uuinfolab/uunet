@@ -2,9 +2,9 @@
 
 #include "measures/degree.hpp"
 
-#include <cstdio>
-#include <iostream>
-#include <fstream>
+//#include <cstdio>
+//#include <iostream>
+//#include <fstream>
 #include <vector>
 
 
@@ -32,7 +32,7 @@ TEST_F(net_measures_test, average_degree)
 TEST_F(net_measures_test, degree_sequence)
 {
     std::vector<size_t> seq = uu::net::degree_sequence(g.get());
-    std::vector<size_t> true_seq = {0, 1, 1, 1, 1, 2, 2, 2, 4};
+    std::vector<size_t> true_seq = {4, 2, 2, 2, 1, 1, 1, 1, 0};
     EXPECT_EQ(seq, true_seq);
 }
 
