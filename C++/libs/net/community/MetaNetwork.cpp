@@ -18,7 +18,6 @@ MetaNetwork()
     w = std::make_unique<WeightedNetwork>("w", EdgeDir::UNDIRECTED, true);
 }
 
-
 const Vertex*
 MetaNetwork::
 add(

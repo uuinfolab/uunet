@@ -20,7 +20,7 @@ extend(
 )
 {
     auto new_last_vertex = super::extend(e);
-
+    
     // check if the new vertex is already in the path (not the first)
     if (new_last_vertex != vertices_.front() &&
             vertex_set_.find(new_last_vertex) != vertex_set_.end())

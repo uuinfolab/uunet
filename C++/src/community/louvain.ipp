@@ -5,7 +5,8 @@
 namespace uu {
 namespace net {
 
-template <typename G> std::unique_ptr<CommunityStructure<Community<const Vertex*>>>
+template <typename G>
+std::unique_ptr<CommunityStructure<Community<const Vertex*>>>
 louvain(
     const G* g
 )

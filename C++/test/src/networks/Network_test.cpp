@@ -25,8 +25,8 @@ TEST_F(networks_test, Network)
 
 
     // Adding edges
-    const uu::net::Edge* e = g->edges()->add(uu::net::Edge::create(v1, v2, uu::net::EdgeDir::DIRECTED));
-    g->edges()->add(uu::net::Edge::create(v1, v3, uu::net::EdgeDir::DIRECTED));
+    const uu::net::Edge* e = g->edges()->add(v1, v2);
+    g->edges()->add(v1, v3);
 
     // Attributes
 
@@ -44,10 +44,9 @@ TEST_F(networks_test, Network)
     // Adding an edge to a vertex that is not in the graph produces an exception
     std::shared_ptr<const uu::net::Vertex> v = uu::net::Vertex::create("biribu");
     EXPECT_THROW(
-        g->edges()->add(uu::net::Edge::create(v1, v.get(), uu::net::EdgeDir::DIRECTED)),
+        g->edges()->add(v1, v.get()),
         uu::core::ElementNotFoundException
     );
-
 
     // The removal of a vertex propagates to the edges
     g->vertices()->erase(v1);
@@ -61,8 +60,5 @@ TEST_F(networks_test, Network)
 
     EXPECT_FALSE(g->allows_loops())
             << "Wrong graph type: should not allow loops";
-
-    // Uncomment the following line to print a summary of the graph
-    // std::cout << g->summary() << std::endl;
 
 }

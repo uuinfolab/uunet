@@ -1,24 +1,27 @@
-#ifndef UU_COMMUNITY_LOUVAIN_H_
-#define UU_COMMUNITY_LOUVAIN_H_
+#ifndef UU_COMMUNITY_GLOUVAIN2_H_
+#define UU_COMMUNITY_GLOUVAIN2_H_
 
 
 #include "community/CommunityStructure.hpp"
-#include "community/Community.hpp"
+#include "community/VertexLayerCommunity.hpp"
 #include "objects/Vertex.hpp"
+#include "net/community/glouvain_utils.hpp"
 #include <memory>
 
 
 namespace uu {
 namespace net {
 
-template <typename G> std::unique_ptr<CommunityStructure<Community<const Vertex*>>>
-louvain(
-    const G* g
+template <typename M>
+std::unique_ptr<CommunityStructure<VertexLayerCommunity<const typename M::layer_type>>>
+glouvain2(
+          const M* g,
+          double omega
 );
 
 }
 }
 
-#include "louvain.ipp"
+#include "glouvain2.ipp"
 
 #endif
