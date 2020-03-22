@@ -2,18 +2,7 @@
 
 #include "networks/WeightedNetwork.hpp"
 
-class networks_test : public ::testing::Test
-{
-  protected:
-    virtual void
-    SetUp()
-    {
-    }
-
-    // virtual void TearDown() {}
-};
-
-TEST_F(networks_test, WeightedNetwork)
+TEST(networks_test, WeightedNetwork)
 {
 
     auto g = std::make_unique<uu::net::WeightedNetwork>("wnet", uu::net::EdgeDir::DIRECTED);

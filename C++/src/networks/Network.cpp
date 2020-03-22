@@ -22,7 +22,7 @@ Network(
     GraphType t;
     t.allows_loops = allows_loops;
     t.is_directed = dir==EdgeDir::DIRECTED ? true : false;
-    t.is_weighted = true;
+    t.is_weighted = false;
 
     data_ = std::make_unique<Graph<AttrVertexStore, AttrSimpleEdgeStore>>(name, t, std::move(vs), std::move(es));
 

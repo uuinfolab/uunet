@@ -2,18 +2,7 @@
 
 #include "networks/TemporalNetwork.hpp"
 
-class networks_test : public ::testing::Test
-{
-  protected:
-    virtual void
-    SetUp()
-    {
-    }
-
-    // virtual void TearDown() {}
-};
-
-TEST_F(networks_test, TemporalNetwork)
+TEST(networks_test, TemporalNetwork)
 {
 
     auto g = std::make_unique<uu::net::TemporalNetwork>("tnet.hpp", uu::net::EdgeDir::DIRECTED);

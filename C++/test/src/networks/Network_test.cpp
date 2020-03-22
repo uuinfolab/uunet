@@ -1,30 +1,23 @@
 #include "gtest/gtest.h"
 
 #include "networks/Network.hpp"
+#include "core/exceptions/DuplicateElementException.hpp"
+#include "core/exceptions/ElementNotFoundException.hpp"
+#include "core/exceptions/WrongParameterException.hpp"
 
-class networks_test : public ::testing::Test
-{
-  protected:
-    virtual void
-    SetUp()
-    {
-    }
-
-    // virtual void TearDown() {}
-};
-
-TEST_F(networks_test, Network)
+TEST(networks_test, Network)
 {
 
-    auto g = std::make_unique<uu::net::Network>("net", uu::net::EdgeDir::DIRECTED);
+    auto g = std::make_unique<uu::net::Network>("g");
 
     // Adding vertices
-    const uu::net::Vertex* v1 = g->vertices()->add(uu::net::Vertex::create("miao"));
-    const uu::net::Vertex* v2 = g->vertices()->add(uu::net::Vertex::create("bau"));
-    const uu::net::Vertex* v3 = g->vertices()->add(uu::net::Vertex::create("coucou"));
-
+    
+    const uu::net::Vertex* v1 = g->vertices()->add("v1");
+    const uu::net::Vertex* v2 = g->vertices()->add("v2");
+    const uu::net::Vertex* v3 = g->vertices()->add("v3");
 
     // Adding edges
+    
     const uu::net::Edge* e = g->edges()->add(v1, v2);
     g->edges()->add(v1, v3);
 
@@ -32,33 +25,53 @@ TEST_F(networks_test, Network)
 
     g->vertices()->attr()->add("a1", uu::core::AttributeType::DOUBLE);
     g->vertices()->attr()->set_double(v1, "a1", 3.4);
-    EXPECT_EQ(3.4, g->vertices()->attr()->get_double(v1, "a1").value)
-            << "Attribute value not set correctly (vertex)";
+    auto vertex_attr_value = g->vertices()->attr()->get_double(v1, "a1");
+    EXPECT_EQ(3.4, vertex_attr_value.value);
 
     g->edges()->attr()->add("a1", uu::core::AttributeType::DOUBLE);
     g->edges()->attr()->set_double(e, "a1", 3.4);
-    EXPECT_EQ(3.4, g->edges()->attr()->get_double(e, "a1").value)
-            << "Attribute value not set correctly (edge)";
+    auto edge_attr_value = g->edges()->attr()->get_double(e, "a1");
+    EXPECT_EQ(3.4, edge_attr_value.value);
 
+    // Exception handling: adding a vertex with the same name of a vertex already in the network
+    
+    auto v3_bis = std::make_shared<uu::net::Vertex>("v3");
+    
+    EXPECT_EQ(
+        g->vertices()->add("v3"),
+        nullptr
+        );
 
-    // Adding an edge to a vertex that is not in the graph produces an exception
-    std::shared_ptr<const uu::net::Vertex> v = uu::net::Vertex::create("biribu");
+    EXPECT_EQ(
+        g->vertices()->add(v3_bis),
+        nullptr
+        );
+
+    // Exception handling: adding an edge to a vertex that is not in the network
+
     EXPECT_THROW(
-        g->edges()->add(v1, v.get()),
+        g->edges()->add(v1, v3_bis.get()),
         uu::core::ElementNotFoundException
     );
 
     // The removal of a vertex propagates to the edges
+    
     g->vertices()->erase(v1);
-    EXPECT_EQ((size_t)0, g->edges()->size())
-            << "Vertex removal was not propagated to the edges";
+    
+    EXPECT_EQ((size_t)0, g->edges()->size());
 
-    // Checking graph properties
-
-    EXPECT_FALSE(g->allows_multi_edges())
-            << "Wrong graph type: should not allow multi-edges";
-
-    EXPECT_FALSE(g->allows_loops())
-            << "Wrong graph type: should not allow loops";
+    // Checking network properties
+    
+    EXPECT_FALSE(g->is_directed());
+    
+    EXPECT_FALSE(g->allows_multi_edges());
+    
+    EXPECT_FALSE(g->allows_loops());
+    
+    EXPECT_FALSE(g->is_weighted());
+    
+    EXPECT_FALSE(g->is_probabilistic());
+    
+    EXPECT_FALSE(g->is_temporal());
 
 }

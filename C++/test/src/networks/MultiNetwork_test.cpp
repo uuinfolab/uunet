@@ -2,18 +2,7 @@
 
 #include "networks/MultiNetwork.hpp"
 
-class networks_test : public ::testing::Test
-{
-  protected:
-    virtual void
-    SetUp()
-    {
-    }
-
-    // virtual void TearDown() {}
-};
-
-TEST_F(networks_test, MultiNetwork)
+TEST(networks_test, MultiNetwork)
 {
 
     auto g = std::make_unique<uu::net::MultiNetwork>("mnet", uu::net::EdgeDir::DIRECTED);

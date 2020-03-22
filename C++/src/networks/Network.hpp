@@ -16,12 +16,14 @@ namespace uu {
 namespace net {
 
 /**
- * A simple graph is an undirected graph with at most one edge between each pair of vertices,
- * no loops and no attributes.
- * In this library that is the default setting for simple graphs, but we can also have directed
- * edges and loops if specified in the creation function.
+ * A Network is a graph with at most one edge between each pair of vertices.
+ * The Network class also provides vertex and edge attributes, which are local to the network.
+ * That is, the same vertex inside another network will have different attributes.
+ *
+ * Depending on its parameters, a Network can allow or disallow loops (default: disallow) and
+ * be directed or undirected (default: undirected). That is, a Network by default corresponds to
+ * a simple graph.
  */
-
 class Network
 {
 
@@ -30,7 +32,7 @@ class Network
     const std::string name;
 
     /**
-     * Creates a graph with directed or undirected simple edges and with or without loops.
+     * Creates a graph with directed or undirected simple edges and allowing or not loops.
      */
     Network(
         const std::string& name,
@@ -38,15 +40,17 @@ class Network
         bool allow_loops = false
     );
 
+    
     /**
-     * Returns a pointer to the graph's vertex store.
+     * Returns a pointer to the Network's vertex set.
      */
     AttrVertexStore*
     vertices(
     );
 
+    
     /**
-     * Returns a pointer to the graph's (const) vertex store.
+     * Returns a pointer to the Network's vertex set.
      */
     const AttrVertexStore*
     vertices(
@@ -54,7 +58,7 @@ class Network
 
 
     /**
-     * Returns a pointer to the graph's edge store.
+     * Returns a pointer to the Network's edge set.
      */
     AttrSimpleEdgeStore*
     edges(
@@ -62,7 +66,7 @@ class Network
 
 
     /**
-     * Returns a pointer to the graph's (const) edge store.
+     * Returns a pointer to the Network's edge set.
      */
     const AttrSimpleEdgeStore*
     edges(
@@ -70,7 +74,7 @@ class Network
 
 
     /**
-     * Checks if the edges in this graph are directed.
+     * Checks if the Network in this graph are directed.
      */
     virtual
     bool
@@ -79,42 +83,45 @@ class Network
 
 
     /**
-     * Checks if the graph is weighted.
+     * Checks if the Network is weighted.
      */
     virtual
     bool
     is_weighted(
     ) const;
 
+    
     /**
-     * Checks if the graph is probabilistic.
+     * Checks if the Network is probabilistic.
      */
     virtual
     bool
     is_probabilistic(
     ) const;
 
-
+    
     /**
-     * Checks if the graph has temporal information on its edges.
+     * Checks if the Network has temporal information on its edges.
      */
     virtual
     bool
     is_temporal(
     ) const;
 
-
+    
     /**
-     * Checks if the graph allows users to define their own generic attributes.
+     * Checks if the Network allows users to define their own generic attributes.
+     * Always returns true.
      */
     virtual
     bool
     is_attributed(
     ) const;
 
-
+    
     /**
-     * Checks if the graph allows multi-edges. If false, only simple edges are allowed.
+     * Checks if the Network allows multi-edges.
+     * Always returns false.
      */
     virtual
     bool
@@ -130,14 +137,16 @@ class Network
     allows_loops(
     ) const;
 
+    
     /**
-     * Returns a string providing a summary of the graph structure.
+     * Returns a string providing a summary of the Network structure.
      */
     virtual
     std::string
     summary(
     ) const;
 
+    
   private:
 
     std::unique_ptr<Graph<AttrVertexStore, AttrSimpleEdgeStore>> data_;
