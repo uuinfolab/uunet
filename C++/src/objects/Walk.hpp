@@ -79,7 +79,7 @@ class Walk
 
 };
 
-    
+
 std::ostream&
 operator<<(std::ostream& os, const Walk& w);
 

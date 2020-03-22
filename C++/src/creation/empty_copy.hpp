@@ -22,7 +22,7 @@ empty_copy(
     const G* g,
     const std::string& name = ""
 );
-    
+
 }
 }
 

@@ -81,32 +81,32 @@ edges(
     return edges_;
 }
 
-    
+
 std::string
 Walk::
 to_string() const
 {
     std::stringstream ss;
-    
+
     bool first = true;
-    
+
     for (auto v: vertices_)
     {
         ss << (first?"":" - ") << (*v);
         first = false;
     }
-    
+
     return ss.str();
 }
-    
-    
+
+
 std::ostream&
 operator<<(std::ostream& os, const Walk& w)
 {
     os << w.to_string();
     return os;
 }
-    
+
 }
 }
 

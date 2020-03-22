@@ -40,7 +40,7 @@ class Network
         bool allow_loops = false
     );
 
-    
+
     /**
      * Returns a pointer to the Network's vertex set.
      */
@@ -48,7 +48,7 @@ class Network
     vertices(
     );
 
-    
+
     /**
      * Returns a pointer to the Network's vertex set.
      */
@@ -90,7 +90,7 @@ class Network
     is_weighted(
     ) const;
 
-    
+
     /**
      * Checks if the Network is probabilistic.
      */
@@ -99,7 +99,7 @@ class Network
     is_probabilistic(
     ) const;
 
-    
+
     /**
      * Checks if the Network has temporal information on its edges.
      */
@@ -108,7 +108,7 @@ class Network
     is_temporal(
     ) const;
 
-    
+
     /**
      * Checks if the Network allows users to define their own generic attributes.
      * Always returns true.
@@ -118,7 +118,7 @@ class Network
     is_attributed(
     ) const;
 
-    
+
     /**
      * Checks if the Network allows multi-edges.
      * Always returns false.
@@ -137,7 +137,7 @@ class Network
     allows_loops(
     ) const;
 
-    
+
     /**
      * Returns a string providing a summary of the Network structure.
      */
@@ -146,7 +146,7 @@ class Network
     summary(
     ) const;
 
-    
+
   private:
 
     std::unique_ptr<Graph<AttrVertexStore, AttrSimpleEdgeStore>> data_;

@@ -15,8 +15,8 @@ namespace net {
 template <typename M>
 std::unique_ptr<CommunityStructure<VertexLayerCommunity<const typename M::layer_type>>>
 glouvain2(
-          const M* g,
-          double omega
+    const M* g,
+    double omega
 );
 
 }

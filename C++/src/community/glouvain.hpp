@@ -607,7 +607,7 @@ glouvain::fit(
 
     //std::cout << Eigen::MatrixXd(M_) << std::endl;
     //std::cout << core::to_string(S2) << std::endl;
-    
+
     while (Sb != S2)
     {
         Sb = S2;

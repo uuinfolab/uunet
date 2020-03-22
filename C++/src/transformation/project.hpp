@@ -54,17 +54,17 @@ project_unweighted(
 );
 
 
-    template <class M>
-    void
-    project_temporal(
-                       const M* net,
-                       const typename M::layer_type* from,
-                       const typename M::layer_type* to,
-                     TemporalNetwork* target,
-                     size_t delta_time
-                       );
+template <class M>
+void
+project_temporal(
+    const M* net,
+    const typename M::layer_type* from,
+    const typename M::layer_type* to,
+    TemporalNetwork* target,
+    size_t delta_time
+);
 
-    
+
 }
 }
 

@@ -10,7 +10,7 @@ class net_measures_test : public ::testing::Test
   protected:
 
     std::string test_file_name = "net_io_read_graph_file.tmp";
-    
+
     std::unique_ptr<uu::net::Network> g;
     const uu::net::Vertex *v1, *v2, *v3, *v4, *v5, *v6, *v7, *v8, *v9;
     const uu::net::Edge *e1, *e2, *e3, *e4, *e5, *e6, *e7, *e8;
@@ -58,7 +58,7 @@ class net_measures_test : public ::testing::Test
         v7 = g->vertices()->get("v7");
         v8 = g->vertices()->get("v8");
         v9 = g->vertices()->get("v9");
-        
+
         e1 = g->edges()->get(v2, v4);
         e2 = g->edges()->get(v3, v4);
         e3 = g->edges()->get(v4, v5);
@@ -66,7 +66,7 @@ class net_measures_test : public ::testing::Test
         e5 = g->edges()->get(v5, v7);
         e6 = g->edges()->get(v6, v7);
         e7 = g->edges()->get(v8, v9);
-        
+
     }
 
     void
