@@ -2,7 +2,7 @@
 
 #include "core/exceptions/OperationNotSupportedException.hpp"
 #include "core/utils/random.hpp"
-#include "creation/standard_graphs.hpp"
+#include "generation/standard_graphs.hpp"
 #include "generation/utils.hpp"
 #include "net/operations/add_predefined_subgraphs.hpp"
 

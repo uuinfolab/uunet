@@ -1,5 +1,5 @@
 #include "core/exceptions/assert_not_null.hpp"
-#include "creation/empty_copy.hpp"
+#include "generation/empty_copy.hpp"
 
 namespace uu {
 namespace net {
@@ -12,17 +12,61 @@ graph_union(
     const std::string& name
 )
 {
+    core::assert_not_null(g1, "graph_union", "g1");
+    core::assert_not_null(g2, "graph_union", "g2");
+    
     if (g1->is_directed() != g2->is_directed())
     {
-        std::string err = "intersection between directed and undirected graphs";
+        std::string err = "union between directed and undirected graphs not supported";
         throw core::OperationNotSupportedException(err);
     }
 
     std::unique_ptr<G> res = empty_copy(g1, name);
 
-    graph_add(g1, res.get());
-    graph_add(g2, res.get());
-
+    // computing the union of the vertices and edges
+    
+    std::set<const Vertex*> v_union;
+    for (auto vertex: *g1->vertices())
+    {
+        v_union.insert(vertex);
+    }
+    for (auto vertex: *g2->vertices())
+    {
+        v_union.insert(vertex);
+    }
+    
+    std::set<const Edge*> e_union;
+    for (auto edge: *g1->edges())
+    {
+        e_union.insert(edge);
+    }
+    for (auto edge: *g2->edges())
+    {
+        e_union.insert(edge);
+    }
+    
+    // adding the unions of vertices and edges to the new graph
+    
+    for (auto vertex: v_union)
+    {
+        auto success = res->vertices()->add(vertex);
+        if (!success)
+        {
+            std::string err = "the two networks contain different vertices with the same name";
+            throw core::OperationNotSupportedException(err);
+        }
+    }
+    
+    for (auto edge: e_union)
+    {
+        auto success = res->edges()->add(edge);
+        if (!success)
+        {
+            std::string err = "the two networks contain different edges with the same end-vertices";
+            throw core::OperationNotSupportedException(err);
+        }
+    }
+    
     return res;
 }
 

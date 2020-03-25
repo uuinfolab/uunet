@@ -1,5 +1,5 @@
 
-#include "creation/empty_copy.hpp"
+#include "generation/empty_copy.hpp"
 
 namespace uu {
 namespace net {

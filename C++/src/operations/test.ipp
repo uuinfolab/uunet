@@ -4,6 +4,7 @@
  */
 
 #include <unordered_set>
+#include <unordered_map>
 #include <queue>
 #include "core/exceptions/assert_not_null.hpp"
 #include "objects/Vertex.hpp"

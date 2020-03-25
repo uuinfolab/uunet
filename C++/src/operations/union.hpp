@@ -16,7 +16,7 @@ namespace net {
  *
  * The operation is only allowed if both graphs are directed or both are undirected.
  *
- * Currently attributes are not considered.
+ * Only vertices and edges are included in the new graph, not attributes.
  *
  * @param g1, g2 input graphs
  */

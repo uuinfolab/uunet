@@ -1,4 +1,4 @@
-#include "creation/empty_copy.hpp"
+#include "generation/empty_copy.hpp"
 #include "core/exceptions/WrongParameterException.hpp"
 #include "core/utils/Counter.hpp"
 

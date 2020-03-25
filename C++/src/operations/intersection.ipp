@@ -5,7 +5,7 @@
 
 #include "core/exceptions/assert_not_null.hpp"
 #include "core/exceptions/OperationNotSupportedException.hpp"
-#include "creation/empty_copy.hpp"
+#include "generation/empty_copy.hpp"
 
 namespace uu {
 namespace net {
@@ -15,7 +15,7 @@ namespace net {
  *
  * The operation is only allowed if both graphs are directed or both are undirected.
  *
- * Attributes are currently not supported.
+ * Only vertices and edges are included in the new graph, not attributes.
  *
  * @param g1, g2 input graphs
  */
@@ -27,6 +27,9 @@ graph_intersection(
     const std::string& name
 )
 {
+    core::assert_not_null(g1, "graph_intersection", "g1");
+    core::assert_not_null(g2, "graph_intersection", "g2");
+    
     if (g1->is_directed() != g2->is_directed())
     {
         std::string err = "intersection between directed and undirected graphs";
@@ -46,9 +49,9 @@ graph_intersection(
 
     for (auto edge: *g1->edges())
     {
-        if (g2->edges()->get(edge->v1, edge->v2))
+        if (g2->edges()->contains(edge))
         {
-            res->edges()->add(edge->v1, edge->v2);
+            res->edges()->add(edge);
         }
     }
 
