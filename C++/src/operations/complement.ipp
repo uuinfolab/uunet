@@ -27,7 +27,7 @@ graph_complement(
                 continue;
             }
 
-            if (res->is_directed() && (v1>v2))
+            if (!res->is_directed() && (v1>v2))
             {
                 continue;
             }

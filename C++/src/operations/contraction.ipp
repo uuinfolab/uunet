@@ -1,7 +1,10 @@
 
+#include "core/exceptions/assert_not_null.hpp"
+#include "core/exceptions/ElementNotFoundException.hpp"
+#include "core/exceptions/DuplicateElementException.hpp"
+
 namespace uu {
 namespace net {
-
 
 template<typename G>
 const Vertex*

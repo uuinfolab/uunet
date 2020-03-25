@@ -15,10 +15,13 @@ namespace net {
  * Computes the union of two graphs.
  *
  * The operation is only allowed if both graphs are directed or both are undirected.
- *
  * Only vertices and edges are included in the new graph, not attributes.
  *
+ * Complexity: O(N log(N) + M log(M)) where N is the sum of the two graphs'
+ * orders and M is the sum of the two graphs' size
+ *
  * @param g1, g2 input graphs
+ * @param name name of the new graph
  */
 template<typename G>
 std::unique_ptr<G>
