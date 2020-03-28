@@ -132,7 +132,7 @@ pass(
     const WeightedNetwork* g
 )
 {
-    //std::cout << "PASS" << std::endl;
+    std::cout << "PASS" << std::endl;
 
     size_t m2 = size(g);
 
@@ -156,6 +156,7 @@ pass(
 
         for (auto v: *g->vertices())
         {
+            std::cout << "Vertex " << (*v) << ":" << std::endl;
             auto current_community = community.at(v);
             w_degree[v] = strength(g, v);
 
@@ -165,8 +166,9 @@ pass(
 
             for (auto n: *g->edges()->neighbors(v))
             {
-
-                double contribution = 1.0 - w_degree.at(v)*w_degree.at(n)/m2/2;
+                auto e = g->edges()->get(v, n);
+                double A_ij = g->get_weight(e).value;
+                double contribution = A_ij - w_degree.at(v)*w_degree.at(n)/m2/2;
 
                 auto neighbor_community = community.at(n);
 
@@ -188,6 +190,12 @@ pass(
                     it->second += contribution;
                 }
             }
+            
+            for (auto it: improvement)
+            {
+                std::cout << " " << it.first << ": " << it.second << std::endl;
+            }
+            std::cout << " same: " << loss << std::endl;
 
             // best choice
             auto new_community = current_community;

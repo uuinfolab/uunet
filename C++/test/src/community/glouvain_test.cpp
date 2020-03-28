@@ -30,13 +30,17 @@ class community_glouvain_test : public ::testing::Test
         test_file << "v1,v2,l1             " << std::endl;
         test_file << "v1,v3,l1             " << std::endl;
         test_file << "v2,v3,l1             " << std::endl;
-        test_file << "v2,v4,l1             " << std::endl;
         test_file << "v3,v4,l1             " << std::endl;
+        test_file << "v4,v5,l1             " << std::endl;
+        test_file << "v4,v6,l1             " << std::endl;
+        test_file << "v5,v6,l1             " << std::endl;
+        test_file << "v1,v2,l2             " << std::endl;
+        test_file << "v1,v3,l2             " << std::endl;
         test_file << "v2,v3,l2             " << std::endl;
-        test_file << "v2,v4,l2             " << std::endl;
         test_file << "v3,v4,l2             " << std::endl;
-        test_file << "v3,v5,l2             " << std::endl;
         test_file << "v4,v5,l2             " << std::endl;
+        test_file << "v4,v6,l2             " << std::endl;
+        test_file << "v5,v6,l2             " << std::endl;
         test_file.close();
     }
 

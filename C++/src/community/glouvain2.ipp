@@ -46,7 +46,6 @@ namespace net {
         communities->add(std::move(community));
     }
 
-
     return communities;
 }
 

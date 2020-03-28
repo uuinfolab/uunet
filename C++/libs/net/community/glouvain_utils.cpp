@@ -38,8 +38,8 @@ convert(
             mapping[intralayer_vertex] = metavertex;
             reverse_mapping[metavertex] = intralayer_vertex;
             degrees[intralayer_vertex] = l->edges()->neighbors(v)->size();
-            std::cout << "adding " << (*v) << "@" << l->name <<
-            " as " << (*metavertex) << std::endl;
+            //std::cout << "adding " << (*v) << "@" << l->name <<
+            //" as " << (*metavertex) << std::endl;
         }
 
         for (auto e: *l->edges())
@@ -50,18 +50,12 @@ convert(
             net->set_weight(edge, 1.0);
             mu++;
             
-            std::cout << "adding " << (*v1) << "--" << (*v2) << std::endl;
+            //std::cout << "adding " << (*v1) << "--" << (*v2) << std::endl;
         }
     }
     
     // @todo: ORDERED VERSION
     mu += g->vertices()->size() * g->layers()->size() * (g->layers()->size()-1) / 2; // approximation
-    
-    for (auto p: mapping)
-    {
-        std::cout << "MAP: " << (*p.first.first) << "@" << p.first.second->name <<
-        " -> " << (*p.second) << std::endl;
-    }
     
     for (auto v: *g->vertices())
     {
@@ -83,13 +77,15 @@ convert(
                 
                 auto e = net->edges()->add(v1, v2);
                 // omega - 1.0
-                double factor = omega - 1.0 + degrees.at(intralayer_vertex1)*degrees.at(intralayer_vertex2)/2.0/mu;
+                double factor = omega + degrees.at(intralayer_vertex1)*degrees.at(intralayer_vertex2)/2.0/mu/2;
                 net->set_weight(e, factor);
                 
-                std::cout << "adding " << (*v1) << "--" << (*v2) <<  " " << factor << std::endl;
+                //std::cout << "adding " << (*v1) << "--" << (*v2) <<  " " << factor << std::endl;
             }
         }
     }
+    //std::cout << "conversion done!" << std::endl;
+    
     
     return std::make_pair(std::move(net), reverse_mapping);
 }
