@@ -653,7 +653,8 @@ glouvain::fit(
 
         std::cout << Eigen::MatrixXd(M_) << std::endl;
         std::cout << "--------------------" << std::endl;
-        //std::cout << core::to_string(S2) << std::endl;
+        std::cout << core::to_string(S2) << std::endl;
+        std::cout << "--------------------" << std::endl;
     }
 
     std::vector<unsigned int> partition(S.begin(), S.end());

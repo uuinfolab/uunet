@@ -134,12 +134,17 @@ pass(
 {
     std::cout << "PASS" << std::endl;
 
-    size_t m2 = size(g);
-
     std::unordered_map<const Vertex*, size_t> community;
     std::unordered_map<const Vertex*, double> w_degree;
     size_t comm_id = 0;
 
+    double m = 0; // todo CHECK!! Maybe it's just the number of edges?
+    for (auto e: *g->edges())
+    {
+        m += g->get_weight(e).value;
+        std::cout << " m " << m << " " << g->get_weight(e).null << std::endl;
+    }
+    
     for (auto v: *g->vertices())
     {
         //std::cout << (*v) << ": " << comm_id << std::endl;
@@ -166,9 +171,11 @@ pass(
 
             for (auto n: *g->edges()->neighbors(v))
             {
+                if (n == v) continue;
+                
                 auto e = g->edges()->get(v, n);
                 double A_ij = g->get_weight(e).value;
-                double contribution = A_ij - w_degree.at(v)*w_degree.at(n)/m2/2;
+                double contribution = A_ij - w_degree.at(v)*w_degree.at(n)/m/2;
 
                 auto neighbor_community = community.at(n);
 
@@ -195,7 +202,7 @@ pass(
             {
                 std::cout << " " << it.first << ": " << it.second << std::endl;
             }
-            std::cout << " same: " << loss << std::endl;
+            std::cout << " loss: " << loss << std::endl;
 
             // best choice
             auto new_community = current_community;
@@ -218,6 +225,7 @@ pass(
                 //std::cout << (*v) << " from " << current_community << " to " << new_community << std::endl;
             }
         }
+        std::cout << "---" << std::endl;
     }
     while (change);
 
