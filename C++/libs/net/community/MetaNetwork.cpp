@@ -37,7 +37,8 @@ const Edge*
 MetaNetwork::
 edge(
     const Vertex* u,
-    const Vertex* v
+    const Vertex* v,
+    double weight
 )
 {
     auto u_prime = reverse_mapping.at(u);
@@ -53,7 +54,7 @@ edge(
         previous_weight = w->get_weight(e).value;
     }
 
-    w->set_weight(e, previous_weight+1.0);
+    w->set_weight(e, previous_weight+weight);
     return e;
 }
 

@@ -1,6 +1,7 @@
 #include <unordered_map>
 #include <vector>
-#include "net/community/louvain_utils.hpp"
+#include "net/community/glouvain_utils.hpp"
+#include "net/community/GMetaNetwork.hpp"
 #include "community/louvain.hpp"
 
 namespace uu {
@@ -16,22 +17,24 @@ namespace net {
 
     auto multilayer_metanetwork = convert(g, omega);
     
-    auto weighted = std::move(multilayer_metanetwork.first);
-    auto mapping = multilayer_metanetwork.second;
+    auto meta = std::move(std::get<0>(multilayer_metanetwork));
+    auto mapping = std::get<1>(multilayer_metanetwork);
 
-    std::vector<std::unique_ptr<MetaNetwork>> passes;
+    std::vector<std::unique_ptr<GMetaNetwork>> passes;
     
-    auto meta = pass(weighted.get());
+    //auto meta = pass(meta1.get());
     
     while (meta)
     {
+        //std::cout << "pass" << std::endl;
         passes.push_back(std::move(meta));
-        auto w = passes.back()->get();
+        auto w = passes.back().get();
         meta = pass(w);
     }
+   
     
     auto c = communities(passes);
-
+    
     auto communities = std::make_unique<CommunityStructure<VertexLayerCommunity<const typename M::layer_type>>>();
     
     for (auto meta_community: *c)

@@ -58,6 +58,9 @@ class
     summary(
     ) const;
 
+    
+    bool is_ordered() const {return true;}
+    
 };
 
 /**

@@ -67,13 +67,14 @@ mod_change(
         mod_c[*it]-= mod_current;
     }
 
+    /*
     std::cout << "Mod.change for " << current_node << ":  ";
     for (auto mod_c_it: mod_c)
     {
         std::cout << mod_c_it.second << "  ";
     }
     std::cout << std::endl;
-    
+    */
     return mod_c;
 }
 

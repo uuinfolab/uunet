@@ -605,11 +605,13 @@ glouvain::fit(
     std::iota(S2.begin(), S2.end(), 0);
     Sb.clear();
 
+    /*
     std::cout << Eigen::MatrixXd(M_) << std::endl;
     std::cout << "--------------------" << std::endl;
     std::cout << core::to_string(S2) << std::endl;
     std::cout << "--------------------" << std::endl;
-
+*/
+    
     while (Sb != S2)
     {
         Sb = S2;
@@ -651,10 +653,12 @@ glouvain::fit(
         M_ = metanetwork(B, S2);
         y = cutils::unique(S2);
 
+        /*
         std::cout << Eigen::MatrixXd(M_) << std::endl;
         std::cout << "--------------------" << std::endl;
         std::cout << core::to_string(S2) << std::endl;
         std::cout << "--------------------" << std::endl;
+         */
     }
 
     std::vector<unsigned int> partition(S.begin(), S.end());
