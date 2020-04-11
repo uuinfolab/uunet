@@ -24,7 +24,7 @@ class GMetaNetwork
     std::unordered_map<const Vertex*, const Vertex*> reverse_mapping;
 
     GMetaNetwork();
-    
+
     template <typename VertexIterator>
     const Vertex*
     add(
@@ -51,13 +51,13 @@ class GMetaNetwork
     double
     get_weight(
         const Edge*
-        ) const;
-    
+    ) const;
+
     size_t
     get_type(
-               const Edge*
-               ) const;
-    
+        const Edge*
+    ) const;
+
     const MultiNetwork*
     get(
     ) const;

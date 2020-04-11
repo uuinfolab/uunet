@@ -58,8 +58,12 @@ class
     summary(
     ) const;
 
-    bool is_ordered() const {return false;}
-    
+    bool
+    is_ordered() const
+    {
+        return false;
+    }
+
 };
 
 /**
@@ -77,8 +81,8 @@ std::unique_ptr<AttributedHomogeneousMultilayerNetwork>
 create_attributed_homogeneous_multilayer_network(
     const std::string& name
 );
-    
-    
+
+
 
 }
 }

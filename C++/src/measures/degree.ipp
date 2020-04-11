@@ -165,8 +165,12 @@ degree(
     core::assert_not_null(g, "degree", "g");
     core::assert_not_null(g, "degree", "v");
     auto d = g->edges()->neighbors(v, mode)->size();
+
     if (mode == EdgeMode::INOUT && g->edges()->get(v, v))
-        d++; // for loops
+    {
+        d++;    // for loops
+    }
+
     return d;
 }
 

@@ -53,34 +53,34 @@ edge(
             return edge;
         }
     }
-    
+
     // if no edge of type type exists:
-    
+
     auto e = w->edges()->add(u_prime, v_prime);
     edge_type[e] = type;
     edge_weight[e] = weight;
-    
+
     return e;
 }
 
-    double
-    GMetaNetwork::
-    get_weight(
-           const Edge* e
-           ) const
-    {
-        return edge_weight.at(e);
-    }
-    
-    size_t
-    GMetaNetwork::
-    get_type(
-               const Edge* e
-               ) const
-    {
-        return edge_type.at(e);
-    }
-    
+double
+GMetaNetwork::
+get_weight(
+    const Edge* e
+) const
+{
+    return edge_weight.at(e);
+}
+
+size_t
+GMetaNetwork::
+get_type(
+    const Edge* e
+) const
+{
+    return edge_type.at(e);
+}
+
 const MultiNetwork*
 GMetaNetwork::
 get(

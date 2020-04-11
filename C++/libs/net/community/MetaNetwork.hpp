@@ -22,7 +22,7 @@ class MetaNetwork
     std::unordered_map<const Vertex*, const Vertex*> reverse_mapping;
 
     MetaNetwork();
-    
+
     template <typename VertexIterator>
     const Vertex*
     add(

@@ -32,7 +32,7 @@ edge_subdivision(
     g->edges()->add(e->v1, new_vertex);
     g->edges()->add(new_vertex, e->v2);
     g->edges()->erase(e);
-    
+
     return new_vertex;
 }
 

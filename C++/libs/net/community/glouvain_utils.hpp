@@ -20,42 +20,42 @@ namespace net {
 
 
 std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, std::pair<const Vertex*, const Network*>>, std::vector<std::unique_ptr<const Vertex>>>
-convert(
-        const AttributedHomogeneousMultilayerNetwork* g,
-        double omega
-);
-  
-    std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, std::pair<const Vertex*, const Network*>>, std::vector<std::unique_ptr<const Vertex>>>
-    convert(
+        convert(
+            const AttributedHomogeneousMultilayerNetwork* g,
+            double omega
+        );
+
+std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, std::pair<const Vertex*, const Network*>>, std::vector<std::unique_ptr<const Vertex>>>
+        convert(
             const OrderedMultiplexNetwork* g,
             double omega
-            );
-    
-    void
-    expand(
-           const std::vector<std::unique_ptr<GMetaNetwork>>& levels,
-           size_t i,
-           const Vertex* v,
-           Community<const Vertex*>* com
-           );
-    
-    std::unique_ptr<CommunityStructure<Community<const Vertex*>>>
-    communities(
-                const std::vector<std::unique_ptr<GMetaNetwork>>& levels
-                );
+        );
 
-    std::unique_ptr<GMetaNetwork>
-    aggregate(
-              const GMetaNetwork* meta,
-              std::unordered_map<const Vertex*, size_t> community
-              );
-    
-    std::unique_ptr<GMetaNetwork>
-    pass(
-         const GMetaNetwork* meta
-         );
+void
+expand(
+    const std::vector<std::unique_ptr<GMetaNetwork>>& levels,
+    size_t i,
+    const Vertex* v,
+    Community<const Vertex*>* com
+);
 
-    
+std::unique_ptr<CommunityStructure<Community<const Vertex*>>>
+communities(
+    const std::vector<std::unique_ptr<GMetaNetwork>>& levels
+);
+
+std::unique_ptr<GMetaNetwork>
+aggregate(
+    const GMetaNetwork* meta,
+    std::unordered_map<const Vertex*, size_t> community
+);
+
+std::unique_ptr<GMetaNetwork>
+pass(
+    const GMetaNetwork* meta
+);
+
+
 }
 }
 

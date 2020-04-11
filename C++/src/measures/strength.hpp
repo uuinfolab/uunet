@@ -114,6 +114,7 @@ strength(
         if (!w.null)
         {
             s += w.value;
+
             if (edge->v1 == edge->v2)
             {
                 // loops are counted twice

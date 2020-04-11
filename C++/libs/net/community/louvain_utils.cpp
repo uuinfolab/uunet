@@ -141,12 +141,13 @@ pass(
     size_t comm_id = 0;
 
     double m = 0; // todo CHECK!! Maybe it's just the number of edges?
+
     for (auto e: *g->edges())
     {
         m += g->get_weight(e).value;
         ////std::cout << " m " << m << " " << g->get_weight(e).null << std::endl;
     }
-    
+
     for (auto v: *g->vertices())
     {
         ////std::cout << (*v) << ": " << comm_id << std::endl;
@@ -167,60 +168,65 @@ pass(
         {
             //std::cout << "Vertex " << (*v) << ":" << std::endl;
             w_degree[v] = strength(g, v);
-            
+
             auto current_community = community.at(v);
             std::set<size_t> neighboring_communities;
-            
+
             for (auto n: *g->edges()->neighbors(v))
             {
                 auto c = community.at(n);
+
                 if (c != current_community)
                 {
                     neighboring_communities.insert(c);
                 }
             }
-            
+
             if (neighboring_communities.size() == 0)
             {
                 continue;
             }
-                
+
             std::unordered_map<size_t, double> improvement;
-            
+
             for (auto c: neighboring_communities)
             {
                 improvement[c] = 0;
+
                 for (auto n: vertices_in_community.at(c))
                 {
                     ////// double loss = 0; // price of leaving current community
 
                     auto e = g->edges()->get(v, n);
                     //if (!e) continue; study impact in terms of result and efficiency?
-                    
+
                     double A_ij = e ? g->get_weight(e).value : 0;
-                    
+
                     double contribution = A_ij - w_degree.at(v)*w_degree.at(n)/m/2;
 
                     improvement[c] += contribution;
                 }
             }
-                
+
             double loss = 0; // price for leaving current community
+
             for (auto n: vertices_in_community.at(current_community))
             {
                 if (v == n)
+                {
                     continue;
-                
+                }
+
                 auto e = g->edges()->get(v, n);
-                    //if (!e) continue; study impact in terms of result and efficiency?
-                
+                //if (!e) continue; study impact in terms of result and efficiency?
+
                 double A_ij = e ? g->get_weight(e).value : 0;
-                
+
                 double contribution = A_ij - w_degree.at(v)*w_degree.at(n)/m/2;
-                
+
                 loss += contribution;
             }
-            
+
             /*for (auto it: improvement)
             {
                 //std::cout << " " << it.first << ": " << it.second << std::endl;
@@ -247,10 +253,11 @@ pass(
                 vertices_in_community.at(current_community).erase(v);
                 vertices_in_community.at(new_community).insert(v);
                 community.at(v) = new_community;
-                
+
                 ////std::cout << (*v) << " from " << current_community << " to " << new_community << std::endl;
             }
         }
+
         //std::cout << "---" << std::endl;
     }
     while (change);

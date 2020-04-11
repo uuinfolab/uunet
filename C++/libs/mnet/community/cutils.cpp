@@ -344,10 +344,10 @@ modularity_matrix(
     B.setFromTriplets(tlist.begin(), tlist.end());
 
     twoum = twoum + (N * L * (L - 1) * omega);
-    
+
     //std::cout << Eigen::MatrixXd(B) << std::endl;
     //std::cout << twoum << std::endl;
-    
+
     return B;
 }
 

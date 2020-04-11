@@ -140,17 +140,17 @@ class CSVReader
      */
     void
     set_expected_num_fields(
-                        size_t expected_num_fields
-                        );
-    
-    
+        size_t expected_num_fields
+    );
+
+
     /**
      * Returns the number of lines skipped because of an unexpected number of fields.
      */
     size_t
     skipped_lines(
     ) const;
-    
+
     /**
      * Sets the characters that indicate a comment when at the beginning of
      * a line.

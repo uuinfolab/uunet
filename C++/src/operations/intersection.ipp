@@ -29,7 +29,7 @@ graph_intersection(
 {
     core::assert_not_null(g1, "graph_intersection", "g1");
     core::assert_not_null(g2, "graph_intersection", "g2");
-    
+
     if (g1->is_directed() != g2->is_directed())
     {
         std::string err = "intersection between directed and undirected graphs";

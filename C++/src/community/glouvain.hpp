@@ -610,8 +610,8 @@ glouvain::fit(
     std::cout << "--------------------" << std::endl;
     std::cout << core::to_string(S2) << std::endl;
     std::cout << "--------------------" << std::endl;
-*/
-    
+    */
+
     while (Sb != S2)
     {
         Sb = S2;

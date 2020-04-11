@@ -16,34 +16,34 @@
 
 namespace uu {
 namespace core {
-    
+
 class Stopwatch
 {
-    
-public:
-    
+
+  public:
+
     Stopwatch()
     {
-        
+
     }
-    
+
     void
     start(
     )
     {
         times.push_back(std::chrono::system_clock::now());
     }
-    
+
     void
     lap(
     )
     {
         times.push_back(std::chrono::system_clock::now());
     }
-    
+
     long
     millis(
-            size_t lap
+        size_t lap
     )
     {
         return std::chrono::duration_cast<std::chrono::milliseconds>(times.at(lap)-times.at(lap-1)).count();
@@ -51,15 +51,15 @@ public:
 
     long
     sec(
-                 size_t lap
-                 )
+        size_t lap
+    )
     {
         return std::chrono::duration_cast<std::chrono::seconds>(times.at(lap)-times.at(lap-1)).count();
     }
-    
-private:
-    
-std::vector<std::chrono::time_point<std::chrono::system_clock>> times;
+
+  private:
+
+    std::vector<std::chrono::time_point<std::chrono::system_clock>> times;
 };
 
 }

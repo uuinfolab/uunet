@@ -169,7 +169,7 @@ close()
 bool
 CSVReader::
 has_next(
-    ) const
+) const
 {
     return has_next_;
 }
@@ -177,30 +177,30 @@ has_next(
 void
 CSVReader::
 trim_fields(
-            bool value
-            )
+    bool value
+)
 {
     remove_trailing_spaces_ = value;
 }
 
 
-    void
-    CSVReader::
-    set_expected_num_fields(
-                            size_t expected_num_fields
-                            )
-    {
-        expected_num_fields_ = expected_num_fields;
-    }
-    
+void
+CSVReader::
+set_expected_num_fields(
+    size_t expected_num_fields
+)
+{
+    expected_num_fields_ = expected_num_fields;
+}
+
 size_t
-    CSVReader::
-    skipped_lines(
-    ) const
-    {
-        return lines_skipped_;
-    }
-    
+CSVReader::
+skipped_lines(
+) const
+{
+    return lines_skipped_;
+}
+
 std::vector<std::string>
 CSVReader::
 get_next()
@@ -351,7 +351,9 @@ get_next()
             lines_skipped_++;
             return get_next();
         }
-        else {
+
+        else
+        {
             return quoted_record;
         }
     }
@@ -363,7 +365,9 @@ get_next()
             lines_skipped_++;
             return get_next();
         }
-        else {
+
+        else
+        {
             return record;
         }
     }
