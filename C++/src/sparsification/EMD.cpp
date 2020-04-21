@@ -41,7 +41,7 @@ inline void
 heap_update
 (
     std::set< VertexDiscr, comp > * max_heap,
-    double heap_table [],
+    std::vector<double> & heap_table,
     ProbabilisticNetwork * uncertain_graph,
     const Vertex *vertex,
     double val
@@ -61,7 +61,7 @@ inline void
 heap_insert
 (
     std::set< VertexDiscr, comp > * max_heap,
-    double heap_table [],
+    std::vector<double> & heap_table,
     ProbabilisticNetwork * uncertain_graph,
     const Vertex *vertex,
     double val
@@ -98,19 +98,19 @@ gain_equation
     bool use_absolute
 )
 {
-    double gain = 0;
     double p_e = graph->get_prob(edge).value;
     if (use_absolute){
         double disc = a_discrepancy(graph, other_graph, edge->v1);
         double disc2 = a_discrepancy(graph, other_graph, edge->v2);
-        gain += pow(disc + p_e, 2) - pow(disc + p_e - new_prob , 2) + pow(disc2 + p_e, 2) - pow(disc2 + p_e - new_prob, 2);
+        return pow(disc + p_e, 2) - pow(disc + p_e - new_prob , 2) + pow(disc2 + p_e, 2) - pow(disc2 + p_e - new_prob, 2);
     } else {
         double disc = r_discrepancy(graph, other_graph, edge->v1);
         double disc2 = r_discrepancy(graph, other_graph, edge->v2);
-        gain += pow(disc + p_e, 2) - pow(disc + p_e - new_prob , 2) + pow(disc2 + p_e, 2) - pow(disc2 + p_e - new_prob, 2);
+        return pow(disc + p_e, 2) - pow(disc + p_e - new_prob , 2) + pow(disc2 + p_e, 2) - pow(disc2 + p_e - new_prob, 2);
     }
-    return gain;
 }
+
+
 
 
 /**
@@ -133,8 +133,10 @@ EMD
 {
     auto EMD =  std::make_unique<uu::net::ProbabilisticNetwork> 
                         ("Sparse probabilistic network", EdgeDir::UNDIRECTED, true);
-    double abs_discrepancy [uncertain_graph->vertices()->size()];
-    double heap_table [ uncertain_graph->vertices()->size() ];
+
+    double v_size = uncertain_graph->vertices()->size();
+    std::vector<double> abs_discrepancy (v_size);
+    std::vector<double> heap_table (v_size);
 	double Dcurrent;
     std::unique_ptr<uu::net::ProbabilisticNetwork> temp_graph = nullptr;
     std::unique_ptr<ProbabilisticNetwork> previous_graph = duplicate_graph(uncertain_graph);
@@ -161,52 +163,103 @@ EMD
     }
     std::swap(previous_graph, temp_graph);
 
+    int iteration = 1;
     // Main loop
 	do {
         std::swap(previous_graph, temp_graph);
 		Dcurrent = objective_function(previous_graph.get(), EMD.get(), use_absolute);
+        
+        // std::cout << "iteration: " << iteration << std::endl;
+        if (iteration == 20)
+        {
+            break;
+        }
+        iteration++;
+
+        // std::cout << "Edges before: " ;
+        // for (auto el: *EMD->edges())
+        // {
+        //     std::cout << el->v1->to_string() << "-" << el->v2->to_string() << "  ";
+        // }
+        // std::cout << std::endl;
+
+        // std::cout << "obj func before: " << Dcurrent << std::endl;
         std::set< VertexDiscr, comp > max_heap;
         for (auto vertex: *uncertain_graph->vertices())
         {
             double val = abs_discrepancy[ uncertain_graph->vertices()->index_of(vertex) ];
             heap_insert(&max_heap, heap_table, uncertain_graph, vertex, val);
         }
+
+        
         temp_graph = duplicate_graph(EMD.get());
 		for (auto edge: *temp_graph->edges())
         {
+            //std::cout << "remove e: " << edge->to_string() << std::endl;
             auto u = edge->v1;
             auto v = edge->v2;
             int i_u = EMD->vertices()->index_of( u );
             int i_v = EMD->vertices()->index_of( v );
             
-            //TODO; // replace get_prob() with whatever graph we need to get the probability from
-			auto SA_u = abs_discrepancy[i_u] + EMD->get_prob(edge).value;
-			auto SA_v = abs_discrepancy[i_v] + EMD->get_prob(edge).value;
+            auto SA_u = abs_discrepancy[i_u] + uncertain_graph->get_prob(edge).value;
+			auto SA_v = abs_discrepancy[i_v] + uncertain_graph->get_prob(edge).value;
             abs_discrepancy[i_u] = SA_u;
             abs_discrepancy[i_v] = SA_v;
 
-            //TODO; //  might be wrong graph
-			EMD->set_prob(edge, 0);
+
+            //calculate gain for current edge as well
+			EMD->set_prob(edge, uncertain_graph->get_prob(edge).value);
+            double w = stp(previous_graph.get(), EMD.get(), edge, entropy_step_size, use_absolute, true);
+            double max_gain = gain_equation(previous_graph.get(), EMD.get(), edge, w, use_absolute);
+            const Edge * max_gain_edge = edge;
+
+
+            EMD->set_prob(edge, 0);
 			EMD->edges()->erase(edge);
             heap_update(&max_heap, heap_table, uncertain_graph, u, SA_u);
             heap_update(&max_heap, heap_table, uncertain_graph, v, SA_v);
 
+
+            // std::cout << " disc: ";
+            // for (auto el: abs_discrepancy)
+            // {
+            //     std::cout << el << ", ";
+            // }
+            // std::cout << std::endl;
+
+            // for (auto el: max_heap)
+            // {
+            //     std::cout << el.second << ": " <<  el.first << std::endl;
+            // }
+
 			auto vertex_top = heap_top_vertex(&max_heap, uncertain_graph);
-            double max_gain = std::numeric_limits<double>::min();
-            const Edge * max_gain_edge = nullptr;
 			for (auto adjacent_edge: *uncertain_graph->edges()->incident( vertex_top ))
             {
                 if (EMD->edges()->contains(adjacent_edge))
                     continue;
 
+                EMD->edges()->add(adjacent_edge);
+                EMD->set_prob(adjacent_edge, uncertain_graph->get_prob(adjacent_edge).value);
+
                 double w = stp(previous_graph.get(), EMD.get(), adjacent_edge, entropy_step_size, use_absolute, true);
                 double gain = gain_equation(previous_graph.get(), EMD.get(), adjacent_edge, w, use_absolute);
+                
+                // std::cout << "  adj_e: " << adjacent_edge->to_string() << ", p: "<< uncertain_graph->get_prob(adjacent_edge).value;
+                // std::cout << ", w: " << w << ", g: " << gain << std::endl;
+
+                EMD->set_prob(adjacent_edge, 0);
+                EMD->edges()->erase(adjacent_edge);
                 if (gain > max_gain)
                 {
                     max_gain = gain;
                     max_gain_edge = adjacent_edge;
+
                 }
             }
+
+            // std::cout << " v_top: " << vertex_top->to_string() << std::endl;
+
+            // std::cout << " e_max: " << max_gain_edge->to_string() << std::endl;
 
 			double p_max = uncertain_graph->get_prob(max_gain_edge).value;
 
@@ -217,18 +270,52 @@ EMD
             auto v_max = max_gain_edge->v2;
             int i_u_max = EMD->vertices()->index_of( u_max );
             int i_v_max = EMD->vertices()->index_of( v_max );
-            //TODO; // replace get_prob() with whatever graph we need to get the probability from
-			auto SA_u_max = abs_discrepancy[i_u_max] - p_max;
-			auto SA_v_max = abs_discrepancy[i_v_max] - p_max;
+			double SA_u_max = abs_discrepancy[i_u_max] - p_max;
+			double SA_v_max = abs_discrepancy[i_v_max] - p_max;
             abs_discrepancy[i_u_max] = SA_u_max;
             abs_discrepancy[i_v_max] = SA_v_max;
-
-			heap_update(&max_heap, heap_table, uncertain_graph, u, SA_u_max);
-            heap_update(&max_heap, heap_table, uncertain_graph, v, SA_v_max);
+			heap_update(&max_heap, heap_table, uncertain_graph, u_max, SA_u_max);
+            heap_update(&max_heap, heap_table, uncertain_graph, v_max, SA_v_max);
 		}
+        
+
+
+
+        // std::cout << "Edges after: " ;
+        // for (auto el: *EMD->edges())
+        // {
+        //     std::cout << el->v1->to_string() << "-" << el->v2->to_string() << "  ";
+        // }
+        // std::cout << std::endl;
+        // std::cout << std::endl;
+
 		EMD = GDB(uncertain_graph, EMD.get(), entropy_step_size, improvement_threshold, use_absolute);
+        // std::cout << "obj func after: " << objective_function(temp_graph.get(), EMD.get(), use_absolute) << std::endl;
+        
+        // std::cout << "Edges:" << std::endl;
+        // std::cout << " ";
+        // for (auto el: *EMD->edges())
+        // {
+        //     std::cout << el->v1->to_string() << "-" << el->v2->to_string() << "  ";
+        // }
+        // std::cout << std::endl;
+
+        // std::cout << "Neighbors:" << std::endl;
+        // for (auto el: *EMD->vertices()){
+        //     std::cout << " " <<  el->to_string() << ":  ";
+
+        //     for (auto nei: *EMD->edges()->neighbors(el))
+        //     {
+        //         std::cout << nei->to_string() << ", ";
+        //     }
+        //     std::cout << std::endl;
+        // }
+
+        
+
+
 		
-	} while (! ( fabs(  Dcurrent - objective_function(previous_graph.get(), EMD.get(), use_absolute) ) <= improvement_threshold) );
+	} while (! ( fabs(  Dcurrent - objective_function(temp_graph.get(), EMD.get(), use_absolute) ) <= improvement_threshold) );
 
     return EMD;
 }

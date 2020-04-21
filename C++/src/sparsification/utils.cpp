@@ -33,17 +33,19 @@ stp
     auto v0 = edge->v2;
     auto pi_u = pi(current_graph, u0, use_absolute);
     auto pi_v = pi(current_graph, v0, use_absolute);
-    double SA_v = a_discrepancy(previous_graph, current_graph, v0);
     double SA_u = a_discrepancy(previous_graph, current_graph, u0);
+    double SA_v = a_discrepancy(previous_graph, current_graph, v0);
     double delta = ((pi_v * SA_u + pi_u * SA_v) / (pi_u + pi_v));
+    
 
-    //std::cout << v0->to_string() << ": " << SA_v << ", pi: " << pi_v << ",   " << u0->to_string() << ": " << SA_u << ", pi: " << pi_u << std::endl;
+    // std::cout << v0->to_string() << ": " << SA_v <<  ",  " << u0->to_string() << ": " << SA_u  << std::endl;
 
     double new_p;
     if (always_use_step_size)
     {
         new_p = previous_p + step_size * delta;
-    } else
+    } 
+    else
     {
         new_p = previous_p + delta;
         if (new_p < 0){
@@ -259,8 +261,7 @@ duplicate_graph
     ProbabilisticNetwork* g
 )
 {
-    std::string name = g->name + '*';
-    auto newGraph =  std::make_unique<ProbabilisticNetwork> (name, EdgeDir::UNDIRECTED, true);
+    auto newGraph =  std::make_unique<ProbabilisticNetwork> (g->name, EdgeDir::UNDIRECTED, true);
     graph_add_prob(g, newGraph.get());
     return newGraph;
 }
