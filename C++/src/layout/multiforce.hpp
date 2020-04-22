@@ -52,6 +52,8 @@ multiforce(
 {
     core::assert_not_null(mnet, "multiforce", "mnet");
 
+    double epsilon = .1; // arbitrary distance considered if two vertices end up having the same coordinates
+    
     std::map<std::pair<const Vertex*, const typename M::layer_type*>,XYZCoordinates> pos;
     std::map<std::pair<const Vertex*, const typename M::layer_type*>,XYZCoordinates> disp;
 
@@ -120,7 +122,7 @@ multiforce(
 
                     if (DeltaNorm==0)
                     {
-                        continue;
+                        DeltaNorm = epsilon;
                     }
 
                     disp[v].x = disp[v].x + Delta.x/DeltaNorm*fr(DeltaNorm,k.at(l))*w_intra.at(l);
@@ -132,7 +134,7 @@ multiforce(
 
                 if (DeltaNorm==0)
                 {
-                    continue;
+                    DeltaNorm = epsilon;
                 }
 
                 disp[v].x = disp[v].x - pos[v].x/DeltaNorm*fain(DeltaNorm,k.at(l))*gravity.at(l);
@@ -156,7 +158,7 @@ multiforce(
 
                 if (DeltaNorm==0)
                 {
-                    continue;
+                    DeltaNorm = epsilon;
                 }
 
                 disp[v].x = disp[v].x - Delta.x/DeltaNorm*fain(DeltaNorm,k.at(l))*w_intra.at(l);
@@ -200,7 +202,7 @@ multiforce(
 
                     if (DeltaNorm==0)
                     {
-                        continue;
+                        DeltaNorm = epsilon;
                     }
 
                     disp[v].x = disp[v].x - Delta.x/DeltaNorm*fainter(DeltaNorm,k.at(l1))*w_inter.at(l1);
@@ -221,7 +223,7 @@ multiforce(
 
                 if (dispNorm==0)
                 {
-                    continue;
+                    dispNorm = epsilon;
                 }
 
                 pos[v].x = pos[v].x + (disp[v].x/dispNorm)*std::min(dispNorm,temp);

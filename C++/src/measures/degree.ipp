@@ -164,16 +164,22 @@ degree(
 {
     core::assert_not_null(g, "degree", "g");
     core::assert_not_null(g, "degree", "v");
-    auto d = g->edges()->neighbors(v, mode)->size();
+    auto inc = g->edges()->incident(v, mode);
+    auto d = inc->size();
 
-    if (mode == EdgeMode::INOUT && g->edges()->get(v, v))
+    if (g->allows_loops())
     {
-        d++;    // for loops
+        for (auto e: *inc)
+        {
+            if (e->v1 == e->v2)
+            {
+                d++;    // for loops
+            }
+        }
     }
 
     return d;
 }
-
 
 }
 }

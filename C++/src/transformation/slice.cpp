@@ -1,4 +1,4 @@
-#include "transformation/to_ordered_multiplex.hpp"
+#include "transformation/slice.hpp"
 #include "networks/Network.hpp"
 #include "objects/EdgeDir.hpp"
 #include "core/attributes/conversion.hpp"
@@ -14,7 +14,7 @@ namespace net {
 
 
 std::unique_ptr<OrderedMultiplexNetwork>
-to_ordered_multiplex(
+slice_equal_time(
     const TemporalNetwork* tnet,
     size_t num_partitions
 )

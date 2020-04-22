@@ -1,6 +1,6 @@
 
-#ifndef UU_TNET_TRANSFORMATION_TOORDEREDMULTIPLEX_H_
-#define UU_TNET_TRANSFORMATION_TOORDEREDMULTIPLEX_H_
+#ifndef UU_TNET_TRANSFORMATION_SLICE_H_
+#define UU_TNET_TRANSFORMATION_SLICE_H_
 
 #include <memory>
 #include "networks/TemporalNetwork.hpp"
@@ -17,7 +17,7 @@ namespace net {
 * @return a pointer to an ordered multiplex network
 **/
 std::unique_ptr<OrderedMultiplexNetwork>
-to_ordered_multiplex(
+slice_equal_time(
     const TemporalNetwork* tnet,
     size_t num_partitions
 );
@@ -25,4 +25,4 @@ to_ordered_multiplex(
 }
 }
 
-#endif /* UU_MNET_TRANSFORMATION_H_ */
+#endif
