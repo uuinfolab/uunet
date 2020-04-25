@@ -1,3 +1,2 @@
 .DS_Store
-.tmux
-/C++/build*
+build
