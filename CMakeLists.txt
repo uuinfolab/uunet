@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.1...3.12)
+cmake_minimum_required (VERSION 3.1...3.15)
 
 if (${CMAKE_VERSION} VERSION_LESS 3.12)
 	cmake_policy (VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
@@ -12,14 +12,14 @@ set (PROJECT_URL 			"https://bitbucket.org/uuinfolab/uunet")
 set (PROJECT_DESCRIPTION 		"Network analysis library")
 
 # Setting the project version
-file (READ						"${CMAKE_CURRENT_SOURCE_DIR}/VERSION" PROJECT_VERSION_FULL)
+file (READ				"${CMAKE_CURRENT_SOURCE_DIR}/VERSION" PROJECT_VERSION_FULL)
 string (REGEX REPLACE 			"[\n\r]" "" PROJECT_VERSION_FULL "${PROJECT_VERSION_FULL}")
 string (REGEX REPLACE 			"^([0-9]+)\\.[0-9]+\\.[0-9]+$" "\\1" PROJECT_VERSION_MAJOR "${PROJECT_VERSION_FULL}")
 string (REGEX REPLACE 			"^[0-9]+\\.([0-9]+)\\.[0-9]+$" "\\1" PROJECT_VERSION_MINOR "${PROJECT_VERSION_FULL}")
 string (REGEX REPLACE 			"^[0-9]+\\.[0-9]+\\.([0-9]+)$" "\\1" PROJECT_VERSION_PATCH "${PROJECT_VERSION_FULL}")
 
 set (PROJECT_VERSION 			"${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}")
-math (EXPR LIBRARY_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
+math (EXPR LIBRARY_VERSION_MAJOR 	"${PROJECT_VERSION_MAJOR}")
 set (LIBRARY_VERSION_MINOR 		"${PROJECT_VERSION_MINOR}")
 set (LIBRARY_VERSION_PATCH 		"${PROJECT_VERSION_PATCH}")
 set (LIBRARY_VERSION 			"${LIBRARY_VERSION_MAJOR}.${LIBRARY_VERSION_MINOR}")
@@ -37,7 +37,7 @@ if (CMAKE_CXX_COMPILER MATCHES ".*clang.*" OR CMAKE_CXX_COMPILER_ID STREQUAL "Cl
 	set (CMAKE_COMPILER_IS_CLANGXX 1)
 endif()
 
-# Choosing Debug as default building type.
+# Choosing Release as default building type.
 set (default_build_type "Release")
 
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -73,7 +73,7 @@ file (GLOB_RECURSE SOURCES ext/eclat/*.c ext/infomap/*.cpp libs/*.cpp src/*.cpp)
 add_library (uunet SHARED ${SOURCES})
 
 # Include private components
-target_include_directories (uunet PUBLIC
+target_include_directories (uunet PRIVATE
 	ext/eigen3 
 	ext/spectra
 	ext/eclat/eclat/src
@@ -89,9 +89,7 @@ add_definitions(-DNS_INFOMAP -DONLY_C_LOCALE=1)
 target_include_directories (uunet PUBLIC 
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/libs>
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
-	$<INSTALL_INTERFACE:include>
-	src
-	libs)
+	$<INSTALL_INTERFACE:include>)
 
 # Compile uunet target
 if (${CMAKE_VERSION} VERSION_LESS 3.8)
@@ -130,10 +128,6 @@ install (TARGETS uunet
 	LIBRARY DESTINATION lib
 	ARCHIVE DESTINATION lib
 	RUNTIME DESTINATION bin)
-
-#install(DIRECTORY "include/"			# source directory
-#        DESTINATION "include/libuunet" 	# target directory
-#)
 
 install(DIRECTORY "src/" # source directory
 DESTINATION "include/libuunet" # target directory
