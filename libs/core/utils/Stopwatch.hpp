@@ -4,8 +4,8 @@
  * History: created on 2020-04-10.
  */
 
-#ifndef UU_CORE_UTILS_COUNTER_H_
-#define UU_CORE_UTILS_COUNTER_H_
+#ifndef UU_CORE_UTILS_STOPWATCH_H_
+#define UU_CORE_UTILS_STOPWATCH_H_
 
 #include <algorithm>
 #include <array>
@@ -55,6 +55,14 @@ class Stopwatch
     )
     {
         return std::chrono::duration_cast<std::chrono::seconds>(times.at(lap)-times.at(lap-1)).count();
+    }
+    
+    long
+    sec_last(
+        )
+    {
+        size_t last_lap = times.size()-1;
+        return std::chrono::duration_cast<std::chrono::seconds>(times.at(last_lap)-times.at(last_lap-1)).count();
     }
 
   private:

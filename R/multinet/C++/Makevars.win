@@ -1,5 +1,0 @@
-## This is a C++14 package
-CXX_STD = CXX14
-PKG_CFLAGS = -Ilib/eclat
-PKG_CXXFLAGS = -Imultinet -Ilib -Ilib/spectra -Ilib/eigen3 -Ilib/eclat -Ilib/infomap
-PKG_CPPFLAGS = -DNS_INFOMAP -DONLY_C_LOCALE=1
