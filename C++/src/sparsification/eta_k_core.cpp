@@ -15,7 +15,6 @@ namespace net {
 
 
 /**
- * density_distribution_eta_value
  * This function returns the eta value of a given probability density distribution
  * @param density_distribution probability density distribution
  * @param eta_threshold eta threshold
@@ -40,14 +39,6 @@ density_distribution_eta_value
     {
         dd_ecdf[i] = dd_ecdf[i-1] - density_distribution[i-1];
     }
-
-    std::cout << "dd_ecdf: ";
-    for (auto el: dd_ecdf)
-    {
-        std::cout << el << ", ";
-    }
-    std::cout  << std::endl;
-    
     int i = len;
     while (eta_threshold > dd_ecdf[i])
     {
@@ -90,7 +81,6 @@ Poisson_Binomial_density_add_p
 }
 
 /**
- * Poisson_Binomial_density_delete_p
  * Removes the last element of the destribution
  * @param density_distribution density diftribution
  * @param oldP probability of an event to be removed
@@ -117,7 +107,8 @@ Poisson_Binomial_density_delete_p
 }
 
 /**
- * This function returns density function of a Poisson-Binomial distribution. It is an implementation of the algorithm proposed in "Closed-Form Expression for the Poisson-Binomial Probability Density Function".
+ * This function returns density function of a Poisson-Binomial distribution. 
+ * It is an implementation of the algorithm proposed in "Closed-Form Expression for the Poisson-Binomial Probability Density Function".
  * @param success_prob probability of success in different trials
  * @return probability density function of a Poisson-Binomial distribution up to deg
  **/
@@ -143,13 +134,12 @@ efficient_Poisson_Binomial_density_function
 
 
 /**
- * (eta,k)-core
  * This function returns the (eta_k)-core value of all nodes in a probabilistic graph introduced in paper "Core Decomposition of Uncertain Graphs"
  * @param original_graph input probabilistic graph
  * @param eta_threshold eta threshold
- * @return the (eta,k)-core of a proabilistic graph
+ * @return the (eta,k)-core of a probabilistic graph
   **/
-std::vector<double>
+std::vector<int>
 eta_k_core(
     ProbabilisticNetwork * original_graph,
     double eta_threshold
@@ -162,7 +152,7 @@ eta_k_core(
 
     std::vector<std::string> stringAtIndex (dim);
     std::unordered_map<std::string, int> indexAtString; 
-    std::vector<double> core(dim);
+    std::vector<int> core(dim);
     std::vector<int> ddev(dim);
     std::vector<std::vector<double>> D(n);
     std::vector<std::vector<double>> densities(dim);
@@ -205,7 +195,6 @@ eta_k_core(
             auto rem_node = probGraph->vertices()->get(stringAtIndex[candidate_node]);
             for(auto neighbor: *probGraph->edges()->neighbors(rem_node))
             {
-                std::cout << neighbor->to_string() << std::endl;
                 int neighbor_i = indexAtString[neighbor->to_string()];
                 if (ddev[neighbor_i] > k + 1 ) 
                 {
