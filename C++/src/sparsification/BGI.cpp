@@ -179,12 +179,12 @@ BGI(
     float spanRatio
 )
 {
-    // // set up nano-seconds
-    // struct timespec ts;
-    // clock_gettime(CLOCK_MONOTONIC, &ts);
+    // set up nano-seconds
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
 
-    // // seed rand using nano-seconds
-    // srand((time_t)ts.tv_nsec);
+    // seed rand using nano-seconds
+    srand((time_t)ts.tv_nsec);
 
     auto Gcopy = duplicate_graph(original_graph);
     

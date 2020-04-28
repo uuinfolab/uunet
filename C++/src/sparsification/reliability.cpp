@@ -29,10 +29,10 @@ sample_graph(
     ProbabilisticNetwork * graph
 )
 {
-    // set up nano-seconds
-    // struct timespec ts;
-    // clock_gettime(CLOCK_MONOTONIC, &ts); // Might not work on windows systems
-    // srand((time_t)ts.tv_nsec);
+    // set up nano-seconds seeding
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts); // Might not work on windows systems
+    srand((time_t)ts.tv_nsec);
 
     double mulsum = 1;
     auto sampled_graph = duplicate_graph(graph);
