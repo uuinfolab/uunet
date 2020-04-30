@@ -3,9 +3,9 @@
 #include "networks/OrderedMultiplexNetwork.hpp"
 #include "networks/Network.hpp"
 #include "community/glouvain2.hpp"
-#include "mnet/community/modularity.hpp"
-#include "transformation/shuffle.hpp"
-#include "transformation/slice.hpp"
+#include "community/_impl/modularity.hpp"
+#include "operations/shuffle.hpp"
+#include "operations/slice.hpp"
 
 namespace uu {
 namespace net {

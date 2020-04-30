@@ -108,7 +108,7 @@ macro (add_gtest TESTNAME TARGETNAME)
     add_custom_command(TARGET ${TESTNAME}
 	POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy_directory
-	${CMAKE_SOURCE_DIR}/test/data $<TARGET_FILE_DIR:core-tests>/data
+	${CMAKE_SOURCE_DIR}/test/data $<TARGET_FILE_DIR:run_tests>/data
 	COMMENT "Copying testing datasets"
 	VERBATIM)
 endmacro()

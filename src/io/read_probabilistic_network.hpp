@@ -5,7 +5,7 @@
 #include <string>
 #include <memory>
 #include "networks/ProbabilisticNetwork.hpp"
-#include "net/io/read_common.hpp"
+#include "io/_impl/read_common.hpp"
 
 namespace uu {
 namespace net {

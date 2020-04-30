@@ -12,7 +12,7 @@
 #include "core/exceptions/assert_not_null.hpp"
 #include "objects/Vertex.hpp"
 #include "objects/EdgeMode.hpp"
-#include "net/datastructures/containers/GenericObjectList.hpp"
+#include "networks/_impl/containers/GenericObjectList.hpp"
 #include "measures/neighborhood.hpp"
 
 namespace uu {

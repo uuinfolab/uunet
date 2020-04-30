@@ -3,7 +3,8 @@
 
 #include <dlib/clustering.h>
 
-namespace mlnet {
+namespace uu {
+namespace net {
 
 class lart
 {
@@ -121,6 +122,7 @@ class lart
     get_partition(vector<dlib::bu_cluster> clusters, int maxmodix, size_t L, size_t N);
 };
 
+}
 }
 
 #endif /* LART_H_ */

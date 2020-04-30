@@ -8,30 +8,30 @@
 
 #include <memory>
 #include <string>
-#include "net/datastructures/stores/AttrVertexStore.hpp"
-#include "mnet/datastructures/stores/UserDefinedAttrs.hpp"
-#include "mnet/datastructures/stores/Attributed.hpp"
-#include "mnet/datastructures/stores/Attributes.hpp"
-#include "mnet/datastructures/stores/EmptyEdgeStore.hpp"
+#include "networks/_impl/stores/AttrVertexStore.hpp"
+#include "networks/_impl/stores/UserDefinedAttrs.hpp"
+#include "networks/_impl/stores/Attributed.hpp"
+#include "networks/_impl/stores/Attributes.hpp"
+#include "networks/_impl/stores/EmptyEdgeStore.hpp"
 #include "objects/Vertex.hpp"
-#include "net/datastructures/stores2/GenericSimpleEdgeStore.hpp"
+#include "networks/_impl/stores2/GenericSimpleEdgeStore.hpp"
 #include "networks/Network.hpp"
-#include "mnet/datastructures/stores/VertexOverlappingOrderedLayerStore.hpp"
-#include "mnet/datastructures/graphs/MultilayerNetwork.hpp"
+#include "networks/_impl/stores/VertexOverlappingOrderedLayerStore.hpp"
+#include "networks/_impl/TMultilayerNetwork.hpp"
 
 namespace uu {
 namespace net {
 
 class
     OrderedMultiplexNetwork
-    : public MultilayerNetwork<
+    : public TMultilayerNetwork<
       AttrVertexStore,
       VertexOverlappingOrderedLayerStore<Network>,
       EmptyEdgeStore
       >
 {
 
-    typedef MultilayerNetwork<
+    typedef TMultilayerNetwork<
     AttrVertexStore,
     VertexOverlappingOrderedLayerStore<Network>,
     EmptyEdgeStore
@@ -48,7 +48,7 @@ class
 
     OrderedMultiplexNetwork(
         const std::string& name,
-        MultilayerNetworkType t,
+        TMultilayerNetworkType t,
 
         std::unique_ptr<AttrVertexStore> v,
         std::unique_ptr<VertexOverlappingOrderedLayerStore<Network>> l,

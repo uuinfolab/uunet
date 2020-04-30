@@ -17,7 +17,7 @@
 #include "io/Config.h"
 #include "infomap/InfomapContext.h"
 #include "core/exceptions/ExternalLibException.hpp"
-#include "mnet/community/infomap_utils.hpp"
+#include "community/_impl/infomap_utils.hpp"
 #include "community/VertexLayerCommunity.hpp"
 #include "community/CommunityStructure.hpp"
 

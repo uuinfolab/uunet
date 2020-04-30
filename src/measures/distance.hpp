@@ -13,8 +13,8 @@
 #include "core/utils/Counter.hpp"
 #include "objects/Vertex.hpp"
 #include "objects/EdgeMode.hpp"
-#include "mnet/datastructures/objects/MultidimensionalPathLength.hpp"
-#include "net/datastructures/containers/GenericObjectList.hpp"
+#include "objects/MultidimensionalPathLength.hpp"
+#include "networks/_impl/containers/GenericObjectList.hpp"
 #include "measures/neighborhood.hpp"
 
 namespace uu {

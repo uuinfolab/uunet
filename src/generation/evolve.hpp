@@ -14,7 +14,7 @@
 #include <unordered_map>
 #include "core/utils/random.hpp"
 #include "core/exceptions/ElementNotFoundException.hpp"
-#include "net/datastructures/containers/GenericObjectList.hpp"
+#include "networks/_impl/containers/GenericObjectList.hpp"
 #include "objects/Vertex.hpp"
 #include "generation/EvolutionModel.hpp"
 

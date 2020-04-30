@@ -8,9 +8,9 @@
 
 #include <memory>
 #include <string>
-#include "net/datastructures/graphs/Graph.hpp"
-#include "net/datastructures/stores/AttrVertexStore.hpp"
-#include "net/datastructures/stores/AttrSimpleEdgeStore.hpp"
+#include "networks/_impl/Graph.hpp"
+#include "networks/_impl/stores/AttrVertexStore.hpp"
+#include "networks/_impl/stores/AttrSimpleEdgeStore.hpp"
 
 namespace uu {
 namespace net {

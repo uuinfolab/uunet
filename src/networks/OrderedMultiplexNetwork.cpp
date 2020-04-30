@@ -3,9 +3,9 @@
  * - 2018.03.09 file created, following a restructuring of the previous library.
  */
 #include "networks/OrderedMultiplexNetwork.hpp"
-#include "net/datastructures/observers/PropagateObserver.hpp"
-#include "mnet/datastructures/observers/LayerObserver.hpp"
-#include "net/datastructures/observers/PropagateAddEraseObserver.hpp"
+#include "networks/_impl/observers/PropagateObserver.hpp"
+#include "networks/_impl/observers/LayerObserver.hpp"
+#include "networks/_impl/observers/PropagateAddEraseObserver.hpp"
 
 namespace uu {
 namespace net {
@@ -14,7 +14,7 @@ namespace net {
 OrderedMultiplexNetwork::
 OrderedMultiplexNetwork(
     const std::string& name,
-    MultilayerNetworkType t,
+    TMultilayerNetworkType t,
     std::unique_ptr<AttrVertexStore> v,
     std::unique_ptr<VertexOverlappingOrderedLayerStore<Network>> l,
     std::unique_ptr<EmptyEdgeStore> e
@@ -76,7 +76,7 @@ create_ordered_multiplex_network(
 
     // Add observers @todo
 
-    MultilayerNetworkType t;
+    TMultilayerNetworkType t;
 
     auto net = std::make_unique<OrderedMultiplexNetwork>(
                    name,
@@ -108,7 +108,7 @@ create_shared_ordered_multiplex_network(
 
     // Add observers @todo
 
-    MultilayerNetworkType t;
+    TMultilayerNetworkType t;
 
     auto net = std::make_shared<OrderedMultiplexNetwork>(
                    name,

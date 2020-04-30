@@ -73,7 +73,7 @@ file (GLOB_RECURSE SOURCES ext/eclat/*.c ext/infomap/*.cpp libs/*.cpp src/*.cpp)
 add_library (uunet SHARED ${SOURCES})
 
 # Include private components
-target_include_directories (uunet PRIVATE
+target_include_directories (uunet PUBLIC
 	ext/eigen3 
 	ext/spectra
 	ext/eclat/eclat/src

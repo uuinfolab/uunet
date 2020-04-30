@@ -3,7 +3,7 @@
  * - 2018.03.09 file created, following a restructuring of the previous library.
  */
 #include "networks/MultiNetwork.hpp"
-#include "net/datastructures/observers/NoLoopCheckObserver.hpp"
+#include "networks/_impl/observers/NoLoopCheckObserver.hpp"
 
 namespace uu {
 namespace net {

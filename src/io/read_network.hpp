@@ -11,7 +11,7 @@
 #include <string>
 #include <memory>
 #include "networks/Network.hpp"
-#include "net/io/read_common.hpp"
+#include "io/_impl/read_common.hpp"
 
 namespace uu {
 namespace net {

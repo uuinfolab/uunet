@@ -1,54 +1,66 @@
 # uunet
 
-This repository contains code produced by the Uppsala University Information Laboratory (https://infolab.it.uu.se) for the analysis and mining of networks.
+This repository contains C++ code for the analysis and mining of networks produced by the
+Uppsala University Information Laboratory (https://infolab.it.uu.se). _uunet_ provides most
+of the code behind the R and Python _multinet_ libraries.
 
 ## Requirements
 
-To install, use and develop the library you need:
+To install, use and modify the library you need:
 
 * A recent version of git.
-* A modern, C++14-ready compiler.
 * The *cmake* build system.
-
-If you want to generate the API reference documentation you also need:
-
-* Doxygen
+* A modern, C++14-ready compiler.
+* Doxygen (optional, only to generate the API reference documentation)
 
 ## Installation
 
-To download and install the library use the following commands.
+To download the library:
 
 ```sh
-git clone https://bitbucket.org/uuinfolab/uunet.git
+git clone --recurse-submodules https://bitbucket.org/uuinfolab/uunet.git
 cd uunet
+```
 
+Then create a build directory and cd into it (all the following instructions will be executed inside this directory):
+
+```sh
 mkdir build
 cd build
+```
 
+To install the library:
+
+```sh
 cmake ..
 make
-```
-
-This compiles and generates a shared library into the `build` directory.
-A different location can be specified by executing cmake from another folder.
-
-The documentation is generated inside the `build/doc` directory, while the
-testing suite will reside in `build/test`. In order to run the test suite execute:
-
-```sh
-./core-tests
-./net-tests
-```
-
-To install the library in your system use the generated Makefile script:
-
-```sh
 make install
 ```
+
+To compile the tests, run cmake with the option `-DCMAKE_BUILD_TYPE=Debug`. Make will then also generate
+an executable running all the unit tests:
+
+```
+cmake .. -DCMAKE_BUILD_TYPE=Debug
+make
+./run_tests
+```
+
+To produce the API reference documentation, use the option `-DDOXY=On`:
+
+```
+cmake .. -DDOXY=On
+make doc
+```
+
+The documentation is generated inside the `build/doc` directory.
+
 ## Documentation
 
-* A doxygen generated *API reference* which lists all types and functions of the C++ library.
-* [Unit Tests](test/) which contain small code snippets used to test each library feature.
+* The folder examples/ contains small programmes illustrating the functionality of the library.
+* [Unit Tests](test/) also contains small code snippets used to test most of the features of the library.
+* All classes, functions, etc. are documented inside the .hpp files.
+* This documentation can be compiled into an API reference listing all types and functions using Doxygen, as described above.
 
 ## Contribute
 

@@ -4,7 +4,7 @@
 #include <chrono>
 #include "community/CommunityStructure.hpp"
 #include "community/Community.hpp"
-#include "net/community/cutils.hpp"
+#include "community/_impl/cutils.hpp"
 #include "objects/EdgeMode.hpp"
 #include "objects/Vertex.hpp"
 #include "core/utils/Counter.hpp"

@@ -5,7 +5,7 @@
 #include "core/utils/pretty_printing.hpp"
 #include "community/CommunityStructure.hpp"
 #include "community/VertexLayerCommunity.hpp"
-#include "mnet/community/cutils.hpp"
+#include "community/_impl/cutils.hpp"
 #include "Eigen/Sparse"
 #include "Eigen/Dense"
 #include <list>

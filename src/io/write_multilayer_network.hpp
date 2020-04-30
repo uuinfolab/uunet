@@ -10,9 +10,9 @@
 
 #include <string>
 #include <memory>
-#include "networks/AttributedHomogeneousMultilayerNetwork.hpp"
+#include "networks/MultilayerNetwork.hpp"
 #include "core/utils/string.hpp"
-#include "net/io/read_common.hpp"
+#include "io/_impl/read_common.hpp"
 
 namespace uu {
 namespace net {
@@ -20,7 +20,7 @@ namespace net {
 template <typename LayerIterator>
 void
 write_attributed_homogeneous_multilayer_network(
-    const AttributedHomogeneousMultilayerNetwork* net,
+    const MultilayerNetwork* net,
     LayerIterator begin,
     LayerIterator end,
     const std::string& outfile,
@@ -30,7 +30,7 @@ write_attributed_homogeneous_multilayer_network(
 template <typename LayerIterator>
 void
 write_graphml(
-    const AttributedHomogeneousMultilayerNetwork* mnet,
+    const MultilayerNetwork* mnet,
     LayerIterator begin,
     LayerIterator end,
     const std::string& path,
@@ -45,7 +45,7 @@ write_graphml(
 template <typename LayerIterator>
 void
 write_attributed_homogeneous_multilayer_network(
-    const AttributedHomogeneousMultilayerNetwork* mnet,
+    const MultilayerNetwork* mnet,
     LayerIterator begin,
     LayerIterator end,
     const std::string& path,
@@ -365,7 +365,7 @@ write_attributed_homogeneous_multilayer_network(
 template <typename LayerIterator>
 void
 write_graphml(
-    const AttributedHomogeneousMultilayerNetwork* mnet,
+    const MultilayerNetwork* mnet,
     LayerIterator begin,
     LayerIterator end,
     const std::string& path,
