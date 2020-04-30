@@ -4,6 +4,7 @@
 #include "core/attributes/conversion.hpp"
 #include "core/attributes/Value.hpp"
 #include "core/attributes/Time.hpp"
+#include "core/exceptions/assert_not_null.hpp"
 #include "core/exceptions/OperationNotSupportedException.hpp"
 #include <vector>
 #include <fstream>
@@ -20,7 +21,7 @@ slice_equal_time(
 )
 {
 
-    // @todo assert
+    core::assert_not_null(tnet, "slice_equal_time", "tnet");
 
     auto mpx = std::make_unique<OrderedMultiplexNetwork>(tnet->name);
     std::vector<const Edge*> sorted_edge_vector;
@@ -47,11 +48,7 @@ slice_equal_time(
 
     auto max_time = tnet->get_max_time().value;
     auto min_time = tnet->get_min_time().value;
-    //auto max_t_time = std::chrono::system_clock::to_time_t(max_time);
-    //auto min_t_time = std::chrono::system_clock::to_time_t(min_time);
-
-    //std::cout << core::to_string(min_time) << " - " << core::to_string(max_time) << std::endl;
-
+    
     auto split_time = (max_time - min_time) / (float)num_partitions;
 
     if (max_time == min_time)
