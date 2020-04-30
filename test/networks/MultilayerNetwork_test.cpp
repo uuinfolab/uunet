@@ -1,28 +1,13 @@
 #include "gtest/gtest.h"
 
 #include "networks/MultilayerNetwork.hpp"
-//#include <tuple>
 
-
-class mnet_datastructures_graphs_MultilayerNetwork_test : public ::testing::Test
-{
-  protected:
-
-    virtual void
-    SetUp()
-    {
-    }
-
-
-};
-
-TEST_F(mnet_datastructures_graphs_MultilayerNetwork_test, creation)
+TEST(networks_test, MultilayerNetwork)
 {
 
+    // Creating an empty multilayer network
 
-    // Creating an empty multiplex network
-
-    auto net = uu::net::create_attributed_homogeneous_multilayer_network("a ml net");
+    auto net = std::make_unique<uu::net::MultilayerNetwork>("a ml net");
 
     // Adding vertices
 
@@ -62,7 +47,6 @@ TEST_F(mnet_datastructures_graphs_MultilayerNetwork_test, creation)
 
     net->interlayer_edges()->set_directed(layer2, layer3, true);
     net->interlayer_edges()->add(v1, layer2, v2, layer3);
-
 
     // neighborhood
 
@@ -117,24 +101,12 @@ TEST_F(mnet_datastructures_graphs_MultilayerNetwork_test, creation)
             << "wrong number of directed interlayer neighbors";
 
 
-    // Uncomment to print a summary of the network
-    //std::cout << net->summary() << " " << layer1->vertices()->size() << std::endl;
-    //bool rem =
     layer1->vertices()->erase(v1);
     EXPECT_EQ((size_t)0, net->interlayer_edges()->neighbors(layer3, layer1, v2, uu::net::EdgeMode::INOUT)->size())
             << "wrong number of interlayer neighbors after vertex deletion";
     EXPECT_EQ((size_t)0, net->interlayer_edges()->incident(layer3, layer1, v2, uu::net::EdgeMode::INOUT)->size())
             << "wrong number of interlayer incident edges after vertex deletion";
 
-    // Uncomment to print a summary of the network
-    //std::cout << net->summary() << " " << layer1->vertices()->size() << " " << rem << std::endl;
-    //net->layers()->erase(layer2);
-
-    // Uncomment to print a summary of the network
-    //std::cout << net->summary() << std::endl;
-    //net->vertices()->erase(v2);
-
-    // Uncomment to print a summary of the network
-    //std::cout << net->summary() << std::endl;
+    // @todo More removal tests
 }
 

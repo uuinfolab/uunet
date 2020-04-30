@@ -1,8 +1,5 @@
-/**
- * History:
- * - 2018.03.09 file created, following a restructuring of the previous library.
- */
 #include "networks/OrderedMultiplexNetwork.hpp"
+
 #include "networks/_impl/observers/PropagateObserver.hpp"
 #include "networks/_impl/observers/LayerObserver.hpp"
 #include "networks/_impl/observers/PropagateAddEraseObserver.hpp"
@@ -13,14 +10,59 @@ namespace net {
 
 OrderedMultiplexNetwork::
 OrderedMultiplexNetwork(
-    const std::string& name,
-    TMultilayerNetworkType t,
-    std::unique_ptr<AttrVertexStore> v,
-    std::unique_ptr<VertexOverlappingOrderedLayerStore<Network>> l,
-    std::unique_ptr<EmptyEdgeStore> e
-) :
-    super(name, t, std::move(v), std::move(l), std::move(e))
+    const std::string& name
+)
 {
+    auto vs = std::make_unique<AttrVertexStore>();
+
+    auto ls = std::make_unique<VertexOverlappingOrderedLayerStore<Network>>();
+
+    using EA = Attributes<InterlayerEdge<Vertex,Network>, UserDefinedAttrs<InterlayerEdge<Vertex,Network>>>;
+    auto e_attr = std::make_unique<EA>();
+    auto es = std::make_unique<AttributedDynamicInterlayerSimpleEdgeStore<Vertex,Network,EA>>(std::move(e_attr));
+
+    // @todo add observers
+
+    TMultilayerNetworkType t;
+
+    data_ = std::make_unique<TMultilayerNetwork<AttrVertexStore, MLOrderedLayerStore, MLSimpleEdgeStore>>(name,t,std::move(vs),std::move(ls),std::move(es));
+
+}
+
+
+AttrVertexStore*
+OrderedMultiplexNetwork::
+vertices(
+)
+{
+    return data_->vertices();
+}
+
+
+const AttrVertexStore*
+OrderedMultiplexNetwork::
+vertices(
+) const
+{
+    return data_->vertices();
+}
+
+
+MLOrderedLayerStore*
+OrderedMultiplexNetwork::
+layers(
+)
+{
+    return data_->layers();
+}
+
+
+const MLOrderedLayerStore*
+OrderedMultiplexNetwork::
+layers(
+) const
+{
+    return data_->layers();
 }
 
 std::string
@@ -31,7 +73,7 @@ summary(
 
     size_t num_intra_edges = 0;
 
-    for (auto&& layer: *layers_)
+    for (auto&& layer: *layers())
     {
         num_intra_edges += layer->edges()->size();
     }
@@ -44,7 +86,7 @@ summary(
 
     size_t num_nodes = 0;
 
-    for (auto&& layer: *layers_)
+    for (auto&& layer: *layers())
     {
         num_nodes += layer->vertices()->size();
     }
@@ -61,71 +103,6 @@ summary(
     return summary;
 }
 
-
-
-std::unique_ptr<OrderedMultiplexNetwork>
-create_ordered_multiplex_network(
-    const std::string& name
-)
-{
-    auto vs = std::make_unique<AttrVertexStore>();
-
-    auto ls = std::make_unique<VertexOverlappingOrderedLayerStore<Network>>();
-
-    auto es = std::make_unique<EmptyEdgeStore>();
-
-    // Add observers @todo
-
-    TMultilayerNetworkType t;
-
-    auto net = std::make_unique<OrderedMultiplexNetwork>(
-                   name,
-                   t,
-                   std::move(vs),
-                   std::move(ls),
-                   std::move(es)
-               );
-
-
-    // register an observer to check that new edges have end-vertices in the network
-
-
-    return net;
-
-}
-
-
-std::shared_ptr<OrderedMultiplexNetwork>
-create_shared_ordered_multiplex_network(
-    const std::string& name
-)
-{
-    auto vs = std::make_unique<AttrVertexStore>();
-
-    auto ls = std::make_unique<VertexOverlappingOrderedLayerStore<Network>>();
-
-    auto es = std::make_unique<EmptyEdgeStore>();
-
-    // Add observers @todo
-
-    TMultilayerNetworkType t;
-
-    auto net = std::make_shared<OrderedMultiplexNetwork>(
-                   name,
-                   t,
-                   std::move(vs),
-                   std::move(ls),
-                   std::move(es)
-               );
-
-
-
-    // register an observer to check that new edges have end-vertices in the network
-
-
-    return net;
-
-}
 
 }
 }

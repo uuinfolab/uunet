@@ -4,6 +4,7 @@
  */
 
 #include "core/exceptions/DuplicateElementException.hpp"
+#include "core/exceptions/assert_not_null.hpp"
 #include "io/read_multilayer_network.hpp"
 #include "io/read_network.hpp"
 
@@ -26,7 +27,7 @@ read_attributed_homogeneous_multilayer_network(
 
     // Check metadata consistency (@todo) & create graph & add attributes
 
-    auto net = create_attributed_homogeneous_multilayer_network(name);
+    auto net = std::make_unique<MultilayerNetwork>(name);
 
     for (auto l: meta.layers)
     {
@@ -164,7 +165,7 @@ read_vertex(
     size_t line_number
 )
 {
-    assert_not_null(ml, "read_vertex", "ml");
+    core::assert_not_null(ml, "read_vertex", "ml");
     auto v = read_vertex(ml, fields, 0, line_number);
 
     read_attr_values(ml->vertices()->attr(), v, meta.vertex_attributes, fields, 1, line_number);
@@ -180,7 +181,7 @@ read_intralayer_vertex(
     size_t line_number
 )
 {
-    assert_not_null(ml, "read_intralayer_vertex", "ml");
+    core::assert_not_null(ml, "read_intralayer_vertex", "ml");
     auto v = read_vertex(ml, fields, 0, line_number);
     auto l = read_layer<MultilayerNetwork, Network>(ml, fields, 1, line_number);
     l->vertices()->add(v);
@@ -202,7 +203,7 @@ read_intralayer_edge(
     size_t line_number
 )
 {
-    assert_not_null(ml, "read_intralayer_edge", "ml");
+    core::assert_not_null(ml, "read_intralayer_edge", "ml");
     auto v1 = read_vertex(ml, fields, 0, line_number);
     auto v2 = read_vertex(ml, fields, 1, line_number);
 
@@ -239,7 +240,7 @@ read_interlayer_edge(
 )
 {
     (void)meta; // param not used
-    assert_not_null(ml, "read_interlayer_edge", "ml");
+    core::assert_not_null(ml, "read_interlayer_edge", "ml");
     auto v1 = read_vertex(ml, fields, 0, line_number);
     auto l1 = read_layer<MultilayerNetwork, Network>(ml, fields, 1, line_number);
     auto v2 = read_vertex(ml, fields, 2, line_number);

@@ -90,8 +90,6 @@ class TMultilayerNetwork
 
     const std::string name;
 
-  protected:
-
     /**
      * Returns a pointer to the container of edge stores for each pair of layers.
      */
@@ -106,6 +104,8 @@ class TMultilayerNetwork
     const E*
     interlayer_edges(
     ) const;
+
+  protected:
 
     /** Internal vertex store. */
     std::unique_ptr<V> vertices_;

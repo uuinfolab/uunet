@@ -22,7 +22,7 @@ slice_equal_time(
 
     // @todo assert
 
-    auto mpx = create_ordered_multiplex_network(tnet->name);
+    auto mpx = std::make_unique<OrderedMultiplexNetwork>(tnet->name);
     std::vector<const Edge*> sorted_edge_vector;
     std::vector<std::vector<const Edge*>> partitioned_edge_vector;
 

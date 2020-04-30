@@ -1,87 +1,106 @@
-/**
- * History:
- * - 2018.03.09 file created, following a restructuring of the previous library.
- */
-
 #ifndef UU_MNET_DATASTRUCTURE_GRAPHS_ATTRIBUTEDORDEREDHOMOGENEOUSMULTILAYERNETWORK_H_
 #define UU_MNET_DATASTRUCTURE_GRAPHS_ATTRIBUTEDORDEREDHOMOGENEOUSMULTILAYERNETWORK_H_
 
 #include <memory>
 #include <string>
-#include "networks/_impl/stores/AttrVertexStore.hpp"
-#include "networks/_impl/stores/UserDefinedAttrs.hpp"
-#include "networks/_impl/stores/Attributed.hpp"
-#include "networks/_impl/stores/Attributes.hpp"
-#include "networks/_impl/stores/EmptyEdgeStore.hpp"
-#include "objects/Vertex.hpp"
-#include "networks/_impl/stores2/GenericSimpleEdgeStore.hpp"
-#include "networks/Network.hpp"
-#include "networks/_impl/stores/VertexOverlappingOrderedLayerStore.hpp"
 #include "networks/_impl/TMultilayerNetwork.hpp"
+#include "networks/_impl/stores/AttrVertexStore.hpp"
+#include "networks/_impl/stores/MLOrderedLayerStore.hpp"
+#include "networks/_impl/stores/MLSimpleEdgeStore.hpp"
+
+#include "objects/Vertex.hpp"
+#include "networks/Network.hpp"
 
 namespace uu {
 namespace net {
 
+/**
+ * An OrderedMultiplexNetwork is a set of ordered Networks (called layers).
+ *
+ * Vertices are called actors, and the same actor can be present in multiple layers.
+ * A multilayer vertex (MLVertex) is a pair (actor,layer).
+ */
 class
     OrderedMultiplexNetwork
-    : public TMultilayerNetwork<
-      AttrVertexStore,
-      VertexOverlappingOrderedLayerStore<Network>,
-      EmptyEdgeStore
-      >
 {
 
-    typedef TMultilayerNetwork<
-    AttrVertexStore,
-    VertexOverlappingOrderedLayerStore<Network>,
-    EmptyEdgeStore
-    > super;
-
   public:
+
+    const std::string name;
 
     typedef Network layer_type;
     typedef Vertex vertex_type;
 
-    //using super::super;
-
-    using super::interlayer_edges;
-
     OrderedMultiplexNetwork(
-        const std::string& name,
-        TMultilayerNetworkType t,
+        const std::string& name
+    );
 
-        std::unique_ptr<AttrVertexStore> v,
-        std::unique_ptr<VertexOverlappingOrderedLayerStore<Network>> l,
-        std::unique_ptr<EmptyEdgeStore> e);
+    /**
+     * Returns a pointer to the network's actors.
+     */
+    AttrVertexStore*
+    vertices(
+    );
+
+
+    /**
+     * Returns a pointer to the network's actors.
+     */
+    const AttrVertexStore*
+    vertices(
+    ) const;
+
+
+    /**
+     * Returns a pointer to the network's layers.
+     */
+    MLOrderedLayerStore*
+    layers(
+    );
+
+
+    /**
+     * Returns a pointer to the network's layers.
+     */
+    const MLOrderedLayerStore*
+    layers(
+    ) const;
+
+
+    /**
+     * Checks if the network allows interlayer edges.
+     * Always returns false.
+     */
+    bool
+    is_ordered(
+    ) const
+    {
+        return false;
+    }
+
+
+    /**
+     * Checks if the network allows interlayer edges.
+     * Always returns true.
+     */
+    bool
+    allows_interlayer_edges(
+    ) const
+    {
+        return false;
+    }
+
 
     std::string
     summary(
     ) const;
 
 
-    bool
-    is_ordered() const
-    {
-        return true;
-    }
+  private:
+
+    std::unique_ptr<TMultilayerNetwork<AttrVertexStore, MLOrderedLayerStore, MLSimpleEdgeStore>> data_;
 
 };
-
-/**
- * Creates a multilayer network.
- */
-std::shared_ptr<OrderedMultiplexNetwork>
-create_shared_ordered_multiplex_network(
-    const std::string& name
-);
-
-/**
- * Creates a multilayer network.
- */
-std::unique_ptr<OrderedMultiplexNetwork>
-create_ordered_multiplex_network(
-    const std::string& name
-);
 
 }
 }

@@ -1,27 +1,13 @@
 #include "gtest/gtest.h"
 
 #include "networks/OrderedMultiplexNetwork.hpp"
-//#include <tuple>
 
-
-class net_networks_OrderedMultiplexNetwork_test : public ::testing::Test
-{
-  protected:
-
-    virtual void
-    SetUp()
-    {
-    }
-
-
-};
-
-TEST_F(net_networks_OrderedMultiplexNetwork_test, creation)
+TEST(networks_test, OrderedMultiplexNetwork)
 {
 
-    // Creating an empty multiplex network
+    // Creating an empty ordered multiplex network
 
-    auto net = uu::net::create_ordered_multiplex_network("a ml net");
+    auto net = std::make_unique<uu::net::OrderedMultiplexNetwork>("a ml net");
 
     // Adding vertices
 
@@ -56,8 +42,7 @@ TEST_F(net_networks_OrderedMultiplexNetwork_test, creation)
 
     layer1->edges()->add(v1, v2);
 
-    // Uncomment to print a summary of the network
-    // std::cout << net->summary() << std::endl;
+    // @todo Add removal tests
 
 }
 
