@@ -57,10 +57,10 @@ The documentation is generated inside the `build/doc` directory.
 
 ## Documentation
 
-* The folder examples/ contains small programmes illustrating the functionality of the library.
-* [Unit Tests](test/) also contains small code snippets used to test most of the features of the library.
 * All classes, functions, etc. are documented inside the .hpp files.
 * This documentation can be compiled into an API reference listing all types and functions using Doxygen, as described above.
+* [Short examples](examples/) are provided to illustrate the functionality of the library.
+* [Unit Tests](test/) also provide small code snippets used to test most of the features of the library.
 
 ## Contribute
 
