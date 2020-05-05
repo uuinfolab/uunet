@@ -3,7 +3,7 @@
 #include "networks/OrderedMultiplexNetwork.hpp"
 #include "networks/Network.hpp"
 #include "community/glouvain2.hpp"
-#include "community/_impl/modularity.hpp"
+#include "community/modularity.hpp"
 #include "operations/shuffle.hpp"
 #include "operations/slice.hpp"
 
