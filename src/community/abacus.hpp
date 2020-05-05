@@ -14,6 +14,7 @@
 #include "community/CommunityStructure.hpp"
 #include "community/label_propagation.hpp"
 #include "community/PillarCommunity.hpp"
+#include "community/_impl/abacus_utils.hpp"
 
 
 extern "C" {
