@@ -17,9 +17,6 @@
 #include "community/_impl/abacus_utils.hpp"
 
 
-extern "C" {
-#include <eclat.h>
-}
 
 
 namespace uu {

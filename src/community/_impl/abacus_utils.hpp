@@ -15,6 +15,10 @@
 #include "objects/EdgeMode.hpp"
 #include "objects/Vertex.hpp"
 
+extern "C" {
+#include <eclat.h>
+}
+
 namespace uu {
 namespace net {
 
