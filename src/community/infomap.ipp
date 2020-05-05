@@ -85,4 +85,3 @@ infomap(const M* net,
 }
 }
 
-#endif

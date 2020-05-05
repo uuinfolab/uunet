@@ -112,7 +112,7 @@ write_attributed_homogeneous_multilayer_network(
 
     outfile << "#ACTOR ATTRIBUTES" << std::endl;
 
-    for (auto attr: *mnet->vertices()->attr())
+    for (auto attr: *mnet->actors()->attr())
     {
         outfile << attr->name << sep << core::to_string(attr->type) << std::endl;
     }
@@ -166,10 +166,10 @@ write_attributed_homogeneous_multilayer_network(
 
     outfile << "#ACTORS" << std::endl;
 
-    for (auto actor: *mnet->vertices())
+    for (auto actor: *mnet->actors())
     {
         outfile << actor->name;
-        auto actor_attrs = mnet->vertices()->attr();
+        auto actor_attrs = mnet->actors()->attr();
 
         for (auto attr: *actor_attrs)
         {
@@ -432,7 +432,7 @@ end_loop:
     }
 
     // Actor attributes
-    for (auto attr: *mnet->vertices()->attr())
+    for (auto attr: *mnet->actors()->attr())
     {
         if (attr->type==core::AttributeType::NUMERIC || attr->type==core::AttributeType::DOUBLE)
         {
@@ -501,7 +501,7 @@ end_loop:
     if (merge_actors)
     {
         // one for each actor
-        for (auto actor: *mnet->vertices())
+        for (auto actor: *mnet->actors())
         {
 
             std::string actor_name = actor->name;
@@ -562,7 +562,7 @@ end_loop:
                 }
             }
 
-            auto attrs = mnet->vertices()->attr();
+            auto attrs = mnet->actors()->attr();
 
             for (auto attr: *attrs)
             {
