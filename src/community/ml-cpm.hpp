@@ -75,6 +75,6 @@ find_max_communities(
 }
 }
 
-#import "ml-cpm.ipp"
+#include "ml-cpm.ipp"
 
 #endif

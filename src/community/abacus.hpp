@@ -44,4 +44,6 @@ abacus(
 }
 }
 
+#include "abacus.ipp"
+
 #endif
