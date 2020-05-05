@@ -92,7 +92,7 @@ evolve(
         size_t n = layer_idx.at(layer_names.at(idx));
         available_actors[n] = GenericObjectList<Vertex>();
 
-        for (auto actor: *net->vertices())
+        for (auto actor: *net->actors())
         {
             available_actors[n].add(actor);
         }
