@@ -9,8 +9,8 @@
 //#include "objects/EdgeMode.hpp"
 #include "core/utils/Counter.hpp"
 //#include "networks/_impl/containers/GenericObjectList.hpp"
-#include "objects/_impl/ComparisonResult.hpp"
-#include "objects/_impl/ComparisonType.hpp"
+#include "objects/ComparisonResult.hpp"
+#include "objects/ComparisonType.hpp"
 
 namespace uu {
 namespace net {
