@@ -24,7 +24,7 @@ eclat_merge(
 
             for (auto node: *c)
             {
-                transactions[mnet->vertices()->index_of(node)].push_back(community_str + ":" + layer_str);
+                transactions[mnet->actors()->index_of(node)].push_back(community_str + ":" + layer_str);
             }
 
             community++;
@@ -86,7 +86,7 @@ eclat_merge(
     ISREPORT *report = NULL; /* item set reporter */
     ECLAT    *eclat  = NULL; /* eclat miner object */
 
-    for (size_t i=0; i<mnet->vertices()->size(); i++)
+    for (size_t i=0; i<mnet->actors()->size(); i++)
     {
         for (std::string item: transactions[i])
         {
@@ -379,7 +379,7 @@ read_actors(
         {
             if (reading_number)
             {
-                com->add_actor(mnet->vertices()->at(id-1));
+                com->add_actor(mnet->actors()->at(id-1));
             }
 
             reading_number=false;
