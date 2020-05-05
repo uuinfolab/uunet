@@ -52,9 +52,9 @@ class
      * @return a pointer to the new edge, or nullptr if the edge already exists.
      **/
     virtual
-    const InterlayerEdge<V,L>*
+    const MLEdge<V,L>*
     add(
-        std::shared_ptr<const InterlayerEdge<V,L>>  e
+        std::shared_ptr<const MLEdge<V,L>>  e
     ) override;
 
 
@@ -67,7 +67,7 @@ class
      * of the edge if undirected.
      * @return a pointer to the requested edge, or nullptr if it does not exist.
      **/
-    const InterlayerEdge<V,L>*
+    const MLEdge<V,L>*
     get(
         const V* vertex1,
         const L* layer1,
@@ -80,7 +80,7 @@ class
     virtual
     bool
     erase(
-        const InterlayerEdge<V,L>* e
+        const MLEdge<V,L>* e
     ) override;
 
 
@@ -108,15 +108,15 @@ class
   protected:
 
     // Indexes to objects (Component IDX):
-    std::unordered_map<const L*, std::unordered_map<const L*, std::unordered_map<const V*, std::unordered_map<const V*, const InterlayerEdge<V,L>*>>>> cidx_edge_by_vertexes;
+    std::unordered_map<const L*, std::unordered_map<const L*, std::unordered_map<const V*, std::unordered_map<const V*, const MLEdge<V,L>*>>>> cidx_edge_by_vertexes;
 };
 
 
 template<typename V, typename L>
-const InterlayerEdge<V,L> *
+const MLEdge<V,L> *
 DynamicInterlayerSimpleEdgeStore<V,L>::
 add(
-    std::shared_ptr<const InterlayerEdge<V,L>> e
+    std::shared_ptr<const MLEdge<V,L>> e
 )
 {
     core::assert_not_null(e.get(), "add", "e");
@@ -153,7 +153,7 @@ add(
 
 
 template<typename V, typename L>
-const InterlayerEdge<V,L>*
+const MLEdge<V,L>*
 DynamicInterlayerSimpleEdgeStore<V,L>::
 get(
     const V* vertex1,
@@ -210,7 +210,7 @@ template<typename V, typename L>
 bool
 DynamicInterlayerSimpleEdgeStore<V,L>::
 erase(
-    const InterlayerEdge<V,L>* edge
+    const MLEdge<V,L>* edge
 )
 {
     core::assert_not_null(edge, "erase", "edge");
@@ -261,7 +261,7 @@ erase(
     }
 
 
-    return core::SharedPtrSortedRandomSet<const InterlayerEdge<V,L>>::erase(edge);
+    return core::SharedPtrSortedRandomSet<const MLEdge<V,L>>::erase(edge);
 }
 
 
@@ -278,7 +278,7 @@ erase(
     core::assert_not_null(layer, "erase", "layer");
     core::assert_not_null(vertex, "erase", "vertex");
 
-    std::unordered_set<const InterlayerEdge<V,L>*> to_erase;
+    std::unordered_set<const MLEdge<V,L>*> to_erase;
 
     std::vector<const L*> layers;
 

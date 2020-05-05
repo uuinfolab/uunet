@@ -18,8 +18,8 @@ TEST_F(net_community_VertexCommunity_test, VertexCommunity)
 
     uu::net::VertexCommunity c;
 
-    auto v1 = uu::net::Vertex::create("v1");
-    auto v2 = uu::net::Vertex::create("v2");
+    auto v1 = std::make_shared<uu::net::Vertex>("v1");
+    auto v2 = std::make_shared<uu::net::Vertex>("v2");
 
     // Adding vertices to the community
     c.add(v1.get());

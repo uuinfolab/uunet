@@ -178,7 +178,7 @@ ordered_modularity(const M* mnet, const CS* communities, double omega)
 
     //std::cout << mu << std::endl;
     int num_layers = mnet->layers()->size();
-    int num_actors = mnet->vertices()->size();
+    int num_actors = mnet->actors()->size();
 
     mu += 2*(num_layers-1)*num_actors*omega; // unclear if we should multiply by c
 

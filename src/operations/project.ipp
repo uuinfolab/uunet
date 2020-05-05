@@ -1,10 +1,3 @@
-#include <vector>
-#include "core/exceptions/assert_not_null.hpp"
-#include "core/utils/math.hpp"
-#include "objects/Vertex.hpp"
-#include "objects/EdgeMode.hpp"
-#include "measures/degree.hpp"
-
 namespace uu {
 namespace net {
 

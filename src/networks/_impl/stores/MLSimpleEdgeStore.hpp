@@ -11,7 +11,7 @@
 namespace uu {
 namespace net {
 
-typedef  AttributedDynamicInterlayerSimpleEdgeStore<Vertex,Network,Attributes<InterlayerEdge<Vertex,Network>, UserDefinedAttrs<InterlayerEdge<Vertex,Network>>>> MLSimpleEdgeStore;
+typedef  AttributedDynamicInterlayerSimpleEdgeStore<Vertex,Network,Attributes<MLEdge<Vertex,Network>, UserDefinedAttrs<MLEdge<Vertex,Network>>>> MLSimpleEdgeStore;
 
 }
 }

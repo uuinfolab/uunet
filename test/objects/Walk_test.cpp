@@ -24,18 +24,18 @@ class net_datastructures_connectivity_Walk : public ::testing::Test
     virtual void
     SetUp()
     {
-        v1_ = uu::net::Vertex::create("v1");
+        v1_ = std::make_shared<uu::net::Vertex>("v1");
         v1 = v1_.get();
-        v2_ = uu::net::Vertex::create("v2");
+        v2_ = std::make_shared<uu::net::Vertex>("v2");
         v2 = v2_.get();
-        v3_ = uu::net::Vertex::create("v3");
+        v3_ = std::make_shared<uu::net::Vertex>("v3");
         v3 = v3_.get();
 
-        v2_v1_d_ = uu::net::Edge::create(v2, v1, uu::net::EdgeDir::DIRECTED);
+        v2_v1_d_ = std::make_shared<uu::net::Edge>(v2, v1, uu::net::EdgeDir::DIRECTED);
         v2_v1_d = v2_v1_d_.get();
-        v2_v1_ud_ = uu::net::Edge::create(v2, v1, uu::net::EdgeDir::UNDIRECTED);
+        v2_v1_ud_ = std::make_shared<uu::net::Edge>(v2, v1, uu::net::EdgeDir::UNDIRECTED);
         v2_v1_ud = v2_v1_ud_.get();
-        v2_v3_d_ = uu::net::Edge::create(v2, v3, uu::net::EdgeDir::DIRECTED);
+        v2_v3_d_ = std::make_shared<uu::net::Edge>(v2, v3, uu::net::EdgeDir::DIRECTED);
         v2_v3_d = v2_v3_d_.get();
     }
 };

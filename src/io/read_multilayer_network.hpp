@@ -1,12 +1,5 @@
-/**
- *
- *
- * History:
- * - 2018.03.09 file created, following a restructuring of the previous library.
- */
-
-#ifndef UU_MNET_IO_READATTRIBUTEDHOMOGENEOUSMULTILAYER_H_
-#define UU_MNET_IO_READATTRIBUTEDHOMOGENEOUSMULTILAYER_H_
+#ifndef UU_IO_READMULTILAYERNETWORK_H_
+#define UU_IO_READMULTILAYERNETWORK_H_
 
 #include <string>
 #include <memory>

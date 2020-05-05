@@ -1,12 +1,5 @@
-/**
- * Social Network Analysis measures for multiplex networks.
- *
- * History:
- * - 2018.03.09 file created, following a restructuring of the previous library.
- */
-
-#ifndef MNET_DATASTRUCTURES_OBJECTS_COMPARISONTYPE_H_
-#define MNET_DATASTRUCTURES_OBJECTS_COMPARISONTYPE_H_
+#ifndef UU_OBJECTS_COMPARISONTYPE_H_
+#define UU_OBJECTS_COMPARISONTYPE_H_
 
 namespace uu {
 namespace net {

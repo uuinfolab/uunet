@@ -1,6 +1,5 @@
 #include <unordered_map>
 #include <vector>
-#include "community/_impl/glouvain_utils.hpp"
 #include "community/_impl/GMetaNetwork.hpp"
 #include "community/louvain.hpp"
 

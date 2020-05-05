@@ -40,7 +40,7 @@ ECube(
     cube_ = std::make_unique<core::CCube<MDSimpleEdgeStore<VCube>>>(dimensions, members, elements.begin(), elements.end());
 }
 
-core::SortedRandomBag<const InterlayerEdge<Vertex, VCube>*>::iterator
+core::SortedRandomBag<const MLEdge<Vertex, VCube>*>::iterator
 ECube::
 begin(
 ) const
@@ -48,7 +48,7 @@ begin(
     return cube_->elements()->begin();
 }
 
-core::SortedRandomBag<const InterlayerEdge<Vertex, VCube> *>::iterator
+core::SortedRandomBag<const MLEdge<Vertex, VCube> *>::iterator
 ECube::
 end(
 ) const
@@ -68,14 +68,14 @@ size(
 bool
 ECube::
 contains(
-    const InterlayerEdge<Vertex, VCube>* v
+    const MLEdge<Vertex, VCube>* v
 ) const
 {
     return cube_->elements()->contains(v);
 }
 
 
-const InterlayerEdge<Vertex, VCube>*
+const MLEdge<Vertex, VCube>*
 ECube::
 get(
     const Vertex* v1,
@@ -87,7 +87,7 @@ get(
     return cube_->elements()->get(std::tuple<const Vertex*, const VCube*, const Vertex*, const VCube*>(v1,l1,v2,l2));
 }
 
-const InterlayerEdge<Vertex, VCube>*
+const MLEdge<Vertex, VCube>*
 ECube::
 at(
     size_t pos
@@ -96,7 +96,7 @@ at(
     return cube_->elements()->at(pos);
 }
 
-const InterlayerEdge<Vertex, VCube>*
+const MLEdge<Vertex, VCube>*
 ECube::
 get_at_random(
 ) const
@@ -108,14 +108,14 @@ get_at_random(
 int
 ECube::
 index_of(
-    const InterlayerEdge<Vertex, VCube>* v
+    const MLEdge<Vertex, VCube>* v
 ) const
 {
     return cube_->elements()->index_of(v);
 }
 
 
-core::AttributeStore<InterlayerEdge<Vertex, VCube>>*
+core::AttributeStore<MLEdge<Vertex, VCube>>*
         ECube::
         attr(
         )
@@ -124,7 +124,7 @@ core::AttributeStore<InterlayerEdge<Vertex, VCube>>*
 }
 
 
-const core::AttributeStore<InterlayerEdge<Vertex, VCube>>*
+const core::AttributeStore<MLEdge<Vertex, VCube>>*
         ECube::
         attr(
         ) const
@@ -260,7 +260,7 @@ is_directed(
 void
 ECube::
 attach(
-    core::Observer<const InterlayerEdge<Vertex, VCube>>* obs
+    core::Observer<const MLEdge<Vertex, VCube>>* obs
 )
 {
     cube_->elements()->attach(obs);

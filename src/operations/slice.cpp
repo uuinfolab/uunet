@@ -38,7 +38,7 @@ slice_equal_time(
     // adding all vertices to all the layers
     for (auto vertex: *tnet->vertices())
     {
-        mpx->vertices()->add(vertex);
+        mpx->actors()->add(vertex);
 
         for (auto layer: *mpx->layers())
         {
@@ -48,7 +48,7 @@ slice_equal_time(
 
     auto max_time = tnet->get_max_time().value;
     auto min_time = tnet->get_min_time().value;
-    
+
     auto split_time = (max_time - min_time) / (float)num_partitions;
 
     if (max_time == min_time)

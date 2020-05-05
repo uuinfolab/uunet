@@ -39,7 +39,7 @@ class
      * Returns a pointer to the network's actors.
      */
     AttrVertexStore*
-    vertices(
+    actors(
     );
 
 
@@ -47,7 +47,7 @@ class
      * Returns a pointer to the network's actors.
      */
     const AttrVertexStore*
-    vertices(
+    actors(
     ) const;
 
 

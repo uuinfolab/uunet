@@ -1,12 +1,5 @@
-/**
- *
- *
- * History:
- * - 2018.03.09 file created, following a restructuring of the previous library.
- */
-
-#ifndef UU_NET_IO_READNETWORK_H_
-#define UU_NET_IO_READNETWORK_H_
+#ifndef UU_IO_READNETWORK_H_
+#define UU_IO_READNETWORK_H_
 
 #include <string>
 #include <memory>

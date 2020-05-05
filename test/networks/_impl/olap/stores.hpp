@@ -17,10 +17,10 @@ class net_datastructures_stores : public ::testing::Test
     virtual void
     SetUp()
     {
-        v1 = uu::net::Vertex::create("vertex 1");
-        v2 = uu::net::Vertex::create("vertex 2");
-        v3 = uu::net::Vertex::create("vertex 3");
-        v1b = uu::net::Vertex::create("vertex 1");
+        v1 = std::make_shared<uu::net::Vertex>("vertex 1");
+        v2 = std::make_shared<uu::net::Vertex>("vertex 2");
+        v3 = std::make_shared<uu::net::Vertex>("vertex 3");
+        v1b = std::make_shared<uu::net::Vertex>("vertex 1");
     }
 };
 

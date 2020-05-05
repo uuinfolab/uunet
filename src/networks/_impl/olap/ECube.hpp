@@ -13,7 +13,7 @@
 #include "networks/_impl/stores/MDSimpleEdgeStore.hpp"
 #include "networks/_impl/olap/VCube.hpp"
 #include "objects/Vertex.hpp"
-#include "objects/InterlayerEdge.hpp"
+#include "objects/MLEdge.hpp"
 
 namespace uu {
 namespace net {
@@ -31,7 +31,7 @@ class
 
     std::string name_;
 
-    typedef InterlayerEdge<Vertex, VCube> IEdge;
+    typedef MLEdge<Vertex, VCube> IEdge;
 
   public:
 

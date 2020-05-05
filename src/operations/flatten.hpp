@@ -1,14 +1,5 @@
-/**
- * Functions to transform a set of layers into a single one. A flattening is used when the same actors
- * are present on multiple layers: a new, single layer is created, and edges from all the flattened layers
- * contribute to the connectivity of the new layer.
- *
- * History:
- * - 2018.03.09 file created, following a restructuring of the previous library.
- */
-
-#ifndef MNET_TRANSFORMATION_FLATTEN_H_
-#define MNET_TRANSFORMATION_FLATTEN_H_
+#ifndef UU_OPERATIONS_FLATTEN_H_
+#define UU_OPERATIONS_FLATTEN_H_
 
 namespace uu {
 namespace net {
@@ -66,26 +57,9 @@ LayerSharedPtr
                                 double threshold);
  */
 
-
-
-
-void
-flatten_weighted(
-    LayerIterator begin,
-    LayerIterator end,
-    W* target
-)
-{
-
-    for (auto layer=begin; layer!=end; ++layer)
-    {
-        // force actors? @todo
-
-        weighted_graph_union(*layer,target,target);
-    }
-}
-
 }
 }
+
+#include "flatten.ipp"
 
 #endif

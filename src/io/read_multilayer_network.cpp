@@ -1,8 +1,3 @@
-/**
- * History:
- * - 2018.03.09 file created, following a restructuring of the previous library.
- */
-
 #include "core/exceptions/DuplicateElementException.hpp"
 #include "core/exceptions/assert_not_null.hpp"
 #include "io/read_multilayer_network.hpp"
@@ -74,7 +69,7 @@ read_attributed_homogeneous_multilayer_network(
     for (auto attr: meta.vertex_attributes)
     {
 
-        net->vertices()->attr()->add(attr.name, attr.type);
+        net->actors()->attr()->add(attr.name, attr.type);
 
     }
 
@@ -121,7 +116,7 @@ read_attributed_homogeneous_multilayer_network(
     {
         for (auto layer: *net->layers())
         {
-            for (auto a: *net->vertices())
+            for (auto a: *net->actors())
             {
                 layer->vertices()->add(a);
             }
@@ -166,9 +161,9 @@ read_vertex(
 )
 {
     core::assert_not_null(ml, "read_vertex", "ml");
-    auto v = read_vertex(ml, fields, 0, line_number);
+    auto v = read_actor(ml, fields, 0, line_number);
 
-    read_attr_values(ml->vertices()->attr(), v, meta.vertex_attributes, fields, 1, line_number);
+    read_attr_values(ml->actors()->attr(), v, meta.vertex_attributes, fields, 1, line_number);
 
 }
 
@@ -182,7 +177,7 @@ read_intralayer_vertex(
 )
 {
     core::assert_not_null(ml, "read_intralayer_vertex", "ml");
-    auto v = read_vertex(ml, fields, 0, line_number);
+    auto v = read_actor(ml, fields, 0, line_number);
     auto l = read_layer<MultilayerNetwork, Network>(ml, fields, 1, line_number);
     l->vertices()->add(v);
 
@@ -204,8 +199,8 @@ read_intralayer_edge(
 )
 {
     core::assert_not_null(ml, "read_intralayer_edge", "ml");
-    auto v1 = read_vertex(ml, fields, 0, line_number);
-    auto v2 = read_vertex(ml, fields, 1, line_number);
+    auto v1 = read_actor(ml, fields, 0, line_number);
+    auto v2 = read_actor(ml, fields, 1, line_number);
 
     auto l = read_layer<MultilayerNetwork, Network>(ml, fields, 2, line_number);
 
@@ -241,9 +236,9 @@ read_interlayer_edge(
 {
     (void)meta; // param not used
     core::assert_not_null(ml, "read_interlayer_edge", "ml");
-    auto v1 = read_vertex(ml, fields, 0, line_number);
+    auto v1 = read_actor(ml, fields, 0, line_number);
     auto l1 = read_layer<MultilayerNetwork, Network>(ml, fields, 1, line_number);
-    auto v2 = read_vertex(ml, fields, 2, line_number);
+    auto v2 = read_actor(ml, fields, 2, line_number);
     auto l2 = read_layer<MultilayerNetwork, Network>(ml, fields, 3, line_number);
 
     l1->vertices()->add(v1);

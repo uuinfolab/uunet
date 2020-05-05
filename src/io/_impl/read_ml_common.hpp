@@ -67,17 +67,33 @@ read_multilayer_type(
     size_t line_number
 );
 
-/*
-template <typename G>
-void
-read_vertex(
-    G* g,
+
+template <typename ML>
+const Vertex*
+read_actor(
+    ML* g,
     const std::vector<std::string>& fields,
-    const std::vector<core::Attribute>& vertex_attributes,
+    size_t from_idx,
     size_t line_number
-);
+)
+{
+    (void)line_number; // attribute not used
 
+    core::assert_not_null(g, "read_actor", "g");
 
+    std::string actor_name = fields.at(from_idx);
+
+    auto actor = g->actors()->add(actor_name);
+
+    if (!actor)
+    {
+        actor = g->actors()->get(actor_name);
+    }
+
+    return actor;
+}
+
+/*
 template <typename G>
 void
 read_edge(

@@ -17,7 +17,7 @@ MultilayerNetwork(
 
     auto ls = std::make_unique<VertexOverlappingLayerStore<Network>>();
 
-    using EA = Attributes<InterlayerEdge<Vertex,Network>, UserDefinedAttrs<InterlayerEdge<Vertex,Network>>>;
+    using EA = Attributes<MLEdge<Vertex,Network>, UserDefinedAttrs<MLEdge<Vertex,Network>>>;
     auto e_attr = std::make_unique<EA>();
     auto es = std::make_unique<AttributedDynamicInterlayerSimpleEdgeStore<Vertex,Network,EA>>(std::move(e_attr));
 
@@ -43,7 +43,7 @@ MultilayerNetwork(
 
 AttrVertexStore*
 MultilayerNetwork::
-vertices(
+actors(
 )
 {
     return data_->vertices();
@@ -52,7 +52,7 @@ vertices(
 
 const AttrVertexStore*
 MultilayerNetwork::
-vertices(
+actors(
 ) const
 {
     return data_->vertices();
@@ -109,7 +109,7 @@ summary(
 
     size_t num_inter_edges = interlayer_edges()->size();
 
-    size_t num_actors = vertices()->size();
+    size_t num_actors = actors()->size();
 
     size_t num_layers = layers()->size();
 

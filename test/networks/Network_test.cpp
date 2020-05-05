@@ -55,19 +55,19 @@ TEST(networks_test, Network)
     );
 
     // Exception handling: loops not allowed
-    
+
     EXPECT_THROW(
-                 g->edges()->add(v1, v1),
-                 uu::core::WrongParameterException
-                 );
-    
+        g->edges()->add(v1, v1),
+        uu::core::WrongParameterException
+    );
+
     // The removal of a vertex propagates to the edges
 
     g->vertices()->erase(v1);
 
     EXPECT_EQ((size_t)0, g->edges()->size())
-    << "Vertex removal was not propagated to the edges";
-    
+            << "Vertex removal was not propagated to the edges";
+
     // Checking network properties
 
     EXPECT_FALSE(g->is_directed());

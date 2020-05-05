@@ -12,7 +12,7 @@
 #include "core/datastructures/containers/SharedPtrSortedRandomSet.hpp"
 #include "core/datastructures/observers/Subject.hpp"
 #include "objects/Vertex.hpp"
-#include "objects/InterlayerEdge.hpp"
+#include "objects/MLEdge.hpp"
 #include "objects/EdgeDir.hpp"
 #include "objects/EdgeMode.hpp"
 #include "networks/_impl/containers/GenericObjectList.hpp"
@@ -25,13 +25,13 @@ namespace net {
 
 template <typename VStore>
 class MDEdgeStore:
-    public core::SharedPtrSortedRandomSet<const InterlayerEdge<Vertex,VStore>>,
-            public core::Subject<const InterlayerEdge<Vertex,VStore>>
+    public core::SharedPtrSortedRandomSet<const MLEdge<Vertex,VStore>>,
+            public core::Subject<const MLEdge<Vertex,VStore>>
 {
 
   private:
 
-    typedef core::SharedPtrSortedRandomSet<const InterlayerEdge<Vertex,VStore>> super;
+    typedef core::SharedPtrSortedRandomSet<const MLEdge<Vertex,VStore>> super;
 
   protected:
 
@@ -40,7 +40,7 @@ class MDEdgeStore:
 
   public:
 
-    typedef InterlayerEdge<Vertex,VStore> value_type;
+    typedef MLEdge<Vertex,VStore> value_type;
 
     /**
      * Constructor.
@@ -59,9 +59,9 @@ class MDEdgeStore:
     using super::erase;
 
     virtual
-    const InterlayerEdge<Vertex,VStore>*
+    const MLEdge<Vertex,VStore>*
     add(
-        std::shared_ptr<const InterlayerEdge<Vertex,VStore>> e
+        std::shared_ptr<const MLEdge<Vertex,VStore>> e
     ) override;
 
     /**
@@ -74,7 +74,7 @@ class MDEdgeStore:
      * @return a pointer to the new edge, or nullptr if the edge already exists.
      **/
     virtual
-    const InterlayerEdge<Vertex,VStore> *
+    const MLEdge<Vertex,VStore> *
     add(
         const Vertex* vertex1,
         const VStore* layer1,
@@ -85,12 +85,12 @@ class MDEdgeStore:
     virtual
     bool
     erase(
-        const InterlayerEdge<Vertex,VStore>* e
+        const MLEdge<Vertex,VStore>* e
     ) override = 0;
 
     /*
         virtual
-        GenericObjectList<InterlayerEdge<Vertex,VStore>>*
+        GenericObjectList<MLEdge<Vertex,VStore>>*
                                             get(
                                                 const VStore* layer1,
                                                 const VStore* layer2
@@ -118,12 +118,12 @@ class MDEdgeStore:
      * @return the list of neighbors.
      **/
     const
-    GenericObjectList<InterlayerEdge<Vertex,VStore>>*
-            incident(
-                const Vertex* vertex,
-                const VStore* layer,
-                EdgeMode mode
-            ) const;
+    GenericObjectList<MLEdge<Vertex,VStore>>*
+                                          incident(
+                                                  const Vertex* vertex,
+                                                  const VStore* layer,
+                                                  EdgeMode mode
+                                          ) const;
 
 
     bool
@@ -150,7 +150,7 @@ class MDEdgeStore:
 
 
     /** Edges */
-    std::unique_ptr<GenericObjectList<InterlayerEdge<Vertex,VStore>>> edges_;
+    std::unique_ptr<GenericObjectList<MLEdge<Vertex,VStore>>> edges_;
 
     /** Edge directionality */
     EdgeDir edge_directionality;
@@ -160,9 +160,9 @@ class MDEdgeStore:
     std::unordered_map<const VStore*, std::unordered_map<const VStore*, std::unordered_map<const Vertex*, std::unique_ptr<GenericObjectList<Vertex>>>>> sidx_neighbors_in;
     std::unordered_map<const VStore*, std::unordered_map<const VStore*, std::unordered_map<const Vertex*, std::unique_ptr<GenericObjectList<Vertex>>>>> sidx_neighbors_all;
 
-    std::unordered_map<const VStore*, std::unordered_map<const VStore*, std::unordered_map<const Vertex*, std::unique_ptr<GenericObjectList<InterlayerEdge<Vertex,VStore>>>>>> sidx_incident_out;
-    std::unordered_map<const VStore*, std::unordered_map<const VStore*, std::unordered_map<const Vertex*, std::unique_ptr<GenericObjectList<InterlayerEdge<Vertex,VStore>>>>>> sidx_incident_in;
-    std::unordered_map<const VStore*, std::unordered_map<const VStore*, std::unordered_map<const Vertex*, std::unique_ptr<GenericObjectList<InterlayerEdge<Vertex,VStore>>>>>> sidx_incident_all;
+    std::unordered_map<const VStore*, std::unordered_map<const VStore*, std::unordered_map<const Vertex*, std::unique_ptr<GenericObjectList<MLEdge<Vertex,VStore>>>>>> sidx_incident_out;
+    std::unordered_map<const VStore*, std::unordered_map<const VStore*, std::unordered_map<const Vertex*, std::unique_ptr<GenericObjectList<MLEdge<Vertex,VStore>>>>>> sidx_incident_in;
+    std::unordered_map<const VStore*, std::unordered_map<const VStore*, std::unordered_map<const Vertex*, std::unique_ptr<GenericObjectList<MLEdge<Vertex,VStore>>>>>> sidx_incident_all;
 };
 
 
@@ -178,7 +178,7 @@ MDEdgeStore(
     core::assert_not_null(layer1, "MDEdgeStore", "layer1");
     core::assert_not_null(layer2, "MDEdgeStore", "layer2");
 
-    edges_ = std::make_unique<GenericObjectList<InterlayerEdge<Vertex,VStore>>>();
+    edges_ = std::make_unique<GenericObjectList<MLEdge<Vertex,VStore>>>();
 
     edge_directionality = dir;
 
@@ -200,7 +200,7 @@ MDEdgeStore(
 
 
 template <typename VStore>
-const InterlayerEdge<Vertex,VStore> *
+const MLEdge<Vertex,VStore> *
 MDEdgeStore<VStore>::
 add(
     const Vertex* vertex1,
@@ -214,17 +214,17 @@ add(
     core::assert_not_null(vertex2, "add", "vertex2");
     core::assert_not_null(layer2, "add", "layer2");
 
-    auto edge = InterlayerEdge<Vertex,VStore>::create(vertex1, layer1, vertex2, layer2, edge_directionality);
+    auto edge = MLEdge<Vertex,VStore>::create(vertex1, layer1, vertex2, layer2, edge_directionality);
     return add(edge);
 }
 
 
 
 template <typename VStore>
-const InterlayerEdge<Vertex,VStore>*
+const MLEdge<Vertex,VStore>*
 MDEdgeStore<VStore>::
 add(
-    std::shared_ptr<const InterlayerEdge<Vertex,VStore>> e
+    std::shared_ptr<const MLEdge<Vertex,VStore>> e
 )
 {
     core::assert_not_null(e.get(), "add", "e");
@@ -234,7 +234,7 @@ add(
         throw core::OperationNotSupportedException("wrong edge directionality");
     }
 
-    const InterlayerEdge<Vertex,VStore>* new_edge = super::add(e);
+    const MLEdge<Vertex,VStore>* new_edge = super::add(e);
 
     if (!new_edge) // edge already existing
     {
@@ -246,7 +246,7 @@ add(
     if (sidx_neighbors_out[e->l1][e->l2].count(e->v1)==0)
     {
         sidx_neighbors_out[e->l1][e->l2][e->v1] = std::make_unique<GenericObjectList<Vertex>>();
-        sidx_incident_out[e->l1][e->l2][e->v1] = std::make_unique<GenericObjectList<InterlayerEdge<Vertex,VStore>>>();
+        sidx_incident_out[e->l1][e->l2][e->v1] = std::make_unique<GenericObjectList<MLEdge<Vertex,VStore>>>();
     }
 
     sidx_neighbors_out[e->l1][e->l2][e->v1]->add(e->v2);
@@ -256,7 +256,7 @@ add(
     if (sidx_neighbors_in[e->l2][e->l1].count(e->v2)==0)
     {
         sidx_neighbors_in[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<Vertex>>();
-        sidx_incident_in[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<InterlayerEdge<Vertex,VStore>>>();
+        sidx_incident_in[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<MLEdge<Vertex,VStore>>>();
     }
 
     sidx_neighbors_in[e->l2][e->l1][e->v2]->add(e->v1);
@@ -266,7 +266,7 @@ add(
     if (sidx_neighbors_all[e->l1][e->l2].count(e->v1)==0)
     {
         sidx_neighbors_all[e->l1][e->l2][e->v1] = std::make_unique<GenericObjectList<Vertex>>();
-        sidx_incident_all[e->l1][e->l2][e->v1] = std::make_unique<GenericObjectList<InterlayerEdge<Vertex,VStore>>>();
+        sidx_incident_all[e->l1][e->l2][e->v1] = std::make_unique<GenericObjectList<MLEdge<Vertex,VStore>>>();
     }
 
     sidx_neighbors_all[e->l1][e->l2][e->v1]->add(e->v2);
@@ -275,7 +275,7 @@ add(
     if (sidx_neighbors_all[e->l2][e->l1].count(e->v2)==0)
     {
         sidx_neighbors_all[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<Vertex>>();
-        sidx_incident_all[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<InterlayerEdge<Vertex,VStore>>>();
+        sidx_incident_all[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<MLEdge<Vertex,VStore>>>();
     }
 
     sidx_neighbors_all[e->l2][e->l1][e->v2]->add(e->v1);
@@ -288,7 +288,7 @@ add(
         if (sidx_neighbors_out[e->l2][e->l1].count(e->v2)==0)
         {
             sidx_neighbors_out[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<Vertex>>();
-            sidx_incident_out[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<InterlayerEdge<Vertex,VStore>>>();
+            sidx_incident_out[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<MLEdge<Vertex,VStore>>>();
         }
 
         sidx_neighbors_out[e->l2][e->l1][e->v2]->add(e->v1);
@@ -297,7 +297,7 @@ add(
         if (sidx_neighbors_in[e->l1][e->l2].count(e->v1)==0)
         {
             sidx_neighbors_in[e->l1][e->l2][e->v1] = std::make_unique<GenericObjectList<Vertex>>();
-            sidx_incident_in[e->l1][e->l2][e->v1] = std::make_unique<GenericObjectList<InterlayerEdge<Vertex,VStore>>>();
+            sidx_incident_in[e->l1][e->l2][e->v1] = std::make_unique<GenericObjectList<MLEdge<Vertex,VStore>>>();
         }
 
         sidx_neighbors_in[e->l1][e->l2][e->v1]->add(e->v2);
@@ -307,7 +307,7 @@ add(
         if (sidx_neighbors_all[e->l2][e->l1].count(e->v2)==0)
         {
             sidx_neighbors_all[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<Vertex>>();
-            sidx_incident_all[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<InterlayerEdge<Vertex,VStore>>>();
+            sidx_incident_all[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<MLEdge<Vertex,VStore>>>();
         }
 
         sidx_neighbors_all[e->l2][e->l1][e->v2]->add(e->v1);
@@ -319,7 +319,7 @@ add(
 }
 
 /*
-GenericObjectList<InterlayerEdge<Vertex,VStore>>*
+GenericObjectList<MLEdge<Vertex,VStore>>*
                                     MDEdgeStore<VStore>::
                                     get(
                                         const VStore* layer1,
@@ -386,13 +386,13 @@ neighbors(
 
 template <typename VStore>
 const
-GenericObjectList<InterlayerEdge<Vertex,VStore>>*
-        MDEdgeStore<VStore>::
-        incident(
-            const Vertex* vertex,
-            const VStore* layer,
-            EdgeMode mode
-        ) const
+GenericObjectList<MLEdge<Vertex,VStore>>*
+                                      MDEdgeStore<VStore>::
+                                      incident(
+                                              const Vertex* vertex,
+                                              const VStore* layer,
+                                              EdgeMode mode
+                                      ) const
 {
 
     core::assert_not_null(layer1, "neighbors", "layer");
@@ -402,7 +402,7 @@ GenericObjectList<InterlayerEdge<Vertex,VStore>>*
     {
         if (sidx_incident_in.at(layer).begin()->second.count(vertex)==0)
         {
-            return GenericObjectList<InterlayerEdge<Vertex,VStore>>::empty.get();
+            return GenericObjectList<MLEdge<Vertex,VStore>>::empty.get();
         }
 
         return sidx_incident_in.at(layer).begin()->second.at(vertex).get();
@@ -412,7 +412,7 @@ GenericObjectList<InterlayerEdge<Vertex,VStore>>*
     {
         if (sidx_incident_out.at(layer).begin()->second.count(vertex)==0)
         {
-            return GenericObjectList<InterlayerEdge<Vertex,VStore>>::empty.get();
+            return GenericObjectList<MLEdge<Vertex,VStore>>::empty.get();
         }
 
         return sidx_incident_out.at(layer).begin()->second.at(vertex).get();
@@ -422,7 +422,7 @@ GenericObjectList<InterlayerEdge<Vertex,VStore>>*
     {
         if (sidx_incident_all.at(layer).begin()->second.count(vertex)==0)
         {
-            return GenericObjectList<InterlayerEdge<Vertex,VStore>>::empty.get();
+            return GenericObjectList<MLEdge<Vertex,VStore>>::empty.get();
         }
 
         return sidx_incident_all.at(layer).begin()->second.at(vertex).get();
@@ -482,7 +482,7 @@ erase(
     core::assert_not_null(layer, "erase", "layer");
     core::assert_not_null(vertex, "erase", "vertex");
 
-    std::unordered_set<const InterlayerEdge<Vertex,VStore>*> to_erase;
+    std::unordered_set<const MLEdge<Vertex,VStore>*> to_erase;
 
     for (auto e: *incident(vertex,layer,EdgeMode::INOUT))
     {

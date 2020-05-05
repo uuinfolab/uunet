@@ -1,6 +1,6 @@
 
-#ifndef UU_TRANSFORMATION_SHUFFLE_H_
-#define UU_TRANSFORMATION_SHUFFLE_H_
+#ifndef UU_OPERATIONS_SHUFFLE_H_
+#define UU_OPERATIONS_SHUFFLE_H_
 
 #include <memory>
 #include "networks/TemporalNetwork.hpp"
@@ -24,4 +24,4 @@ shuffle(
 }
 }
 
-#endif 
+#endif

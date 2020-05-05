@@ -1,5 +1,5 @@
 
-#include "community/_impl/glouvain_utils.hpp"
+#include "community/_impl/glouvain2_utils.hpp"
 
 #include <chrono>
 #include <unordered_map>
@@ -112,7 +112,7 @@ std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, std::pair<cons
         }
     }
 
-    for (auto v: *g->vertices())
+    for (auto v: *g->actors())
     {
         for (auto l1: *g->layers())
         {
@@ -198,7 +198,7 @@ std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, std::pair<cons
         }
     }
 
-    for (auto v: *g->vertices())
+    for (auto v: *g->actors())
     {
         for (size_t i = 0; i < g->layers()->size()-1; i++)
         {

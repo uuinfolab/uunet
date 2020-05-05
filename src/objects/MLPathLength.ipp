@@ -1,193 +1,16 @@
-/**
- * Social Network Analysis measures for multiplex networks.
- *
- * History:
- * - 2018.03.09 file created, following a restructuring of the previous library.
- */
-
-#ifndef MNET_DATASTRUCTURES_OBJECTS_MULTIDIMENSIONALPATHLENGTH_H_
-#define MNET_DATASTRUCTURES_OBJECTS_MULTIDIMENSIONALPATHLENGTH_H_
-
-#include <string>
-#include <unordered_map>
-#include "core/exceptions/assert_not_null.hpp"
-#include "core/exceptions/OperationNotSupportedException.hpp"
-#include "objects/Vertex.hpp"
-#include "objects/EdgeMode.hpp"
-#include "networks/_impl/containers/GenericObjectList.hpp"
-#include "core/utils/Counter.hpp"
-#include "objects/ComparisonResult.hpp"
-#include "objects/ComparisonType.hpp"
-
 namespace uu {
 namespace net {
 
-
-/**
- * This class represents the length of a path in a multilayer network.
- * It is represented using a matrix where element {i,j} indicates the number
- * of edges traversed from layer i to layer j.
- */
 template <typename M>
-class MultidimensionalPathLength
-{
-  private:
-    typedef typename M::layer_type L;
-
-    /** The multilayer network to which this distance refers. */
-    const M* mnet;
-
-    /** Number of steps for each pair of layers. (This includes intra-layer steps). */
-    core::PairCounter<const L*, const L*> num_edges;
-
-    /** Total number of steps, irrespective of the layers */
-    long total_length;
-
-  public:
-    long ts;
-
-    /** Constructs an empty distance. */
-    MultidimensionalPathLength(
-        const M* mnet
-    );
-
-    /**
-     * Increases this distance by a new step from a node to another.
-     * @param layer1 the starting layer of the new step.
-     * @param layer2 the arrival layer of the new step.
-     */
-    void
-    step(
-        const typename M::layer_type* layer1,
-        const typename M::layer_type* layer2
-    );
-
-    /**
-     * @return The total number of steps (that is, traversed edges).
-     */
-    long
-    length(
-    ) const;
-
-    /**
-     * @return The number of steps (that is, traversed edges) inside a given layer.
-     * @param layer only edges between nodes in this layer are considered.
-     */
-    long
-    length(
-        const typename M::layer_type* layer
-    ) const;
-
-    /**
-     * @return The number of steps (that is, traversed edges) from a node in layer from to a node in layer to.
-     * @param from first layer.
-     * @param to second layer.
-     */
-    long
-    length(
-        const typename M::layer_type* from,
-        const typename M::layer_type* to
-    ) const;
-
-    /**
-     * @brief Compares two distances according to the comp parameter:
-     * @param other The distance to be compared to.
-     * @param comp This parameter specifies the amount of information used while comparing the two distances.
-     * For the allowed values, see the definition of mlnet::ComparisonType.
-     * @return One relationship of type mlnet::ComparisonResult
-     */
-    ComparisonResult
-    compare(
-        const MultidimensionalPathLength& other,
-        ComparisonType comp
-    ) const;
-
-    /**
-     * Comparison by id. For a comparison considering steps
-     * on different layers as incomparable entities, use compare()
-     * @param other The distance to be compared to.
-     * @return true if this distance's id is shorter than the input one.
-     */
-    bool
-    operator<(
-        const MultidimensionalPathLength& other
-    ) const;
-
-    /**
-     * Comparison by id. For a comparison considering steps
-     * on different layers as incomparable entities, use compare()
-     * @param other The distance to be compared to.
-     * @return true if this distance is longer than the input one.
-     */
-    bool
-    operator>(
-        const MultidimensionalPathLength& other
-    ) const;
-
-    /**
-     * Comparison by id. For a comparison considering steps
-     * on different layers as incomparable entities, use compare()
-     * @param other The distance to be compared to.
-     * @return true if this distance is the same as the input one.
-     */
-    bool
-    operator==(
-        const MultidimensionalPathLength& other
-    ) const;
-
-    /**
-     * Compare the absolute length of the two distances. For a comparison considering steps
-     * on different layers as incomparable entities, use compare()
-     * @param other The distance to be compared to.
-     * @return true if this distance is different from the input one.
-     */
-    bool
-    operator!=(
-        const MultidimensionalPathLength& other
-    ) const;
-
-    /** Returns a string representation of this object */
-    std::string
-    to_string(
-    ) const;
-
-  private:
-
-    ComparisonResult
-    compare_full(
-        const MultidimensionalPathLength& other
-    ) const;
-
-    ComparisonResult
-    compare_switch(
-        const MultidimensionalPathLength& other
-    ) const;
-
-    ComparisonResult
-    compare_multiplex(
-        const MultidimensionalPathLength& other
-    ) const;
-
-    ComparisonResult
-    compare_simple(
-        const MultidimensionalPathLength& other
-    ) const;
-};
-
-
-
-
-
-template <typename M>
-MultidimensionalPathLength<M>::
-MultidimensionalPathLength(
+MLPathLength<M>::
+MLPathLength(
     const M* mnet
 ) : mnet(mnet), total_length(0), ts(0) {}
 
 
 template <typename M>
 void
-MultidimensionalPathLength<M>::
+MLPathLength<M>::
 step(
     const typename M::layer_type* layer1,
     const typename M::layer_type* layer2
@@ -199,7 +22,7 @@ step(
 
 template <typename M>
 long
-MultidimensionalPathLength<M>::
+MLPathLength<M>::
 length(
 ) const
 {
@@ -208,7 +31,7 @@ length(
 
 template <typename M>
 long
-MultidimensionalPathLength<M>::
+MLPathLength<M>::
 length(
     const typename M::layer_type* layer
 ) const
@@ -218,7 +41,7 @@ length(
 
 template <typename M>
 long
-MultidimensionalPathLength<M>::
+MLPathLength<M>::
 length(
     const typename M::layer_type* from,
     const typename M::layer_type* to
@@ -229,9 +52,9 @@ length(
 
 template <typename M>
 ComparisonResult
-MultidimensionalPathLength<M>::
+MLPathLength<M>::
 compare(
-    const MultidimensionalPathLength& other,
+    const MLPathLength& other,
     ComparisonType comp
 ) const
 {
@@ -255,9 +78,9 @@ compare(
 
 template <typename M>
 ComparisonResult
-MultidimensionalPathLength<M>::
+MLPathLength<M>::
 compare_full(
-    const MultidimensionalPathLength& other
+    const MLPathLength& other
 ) const
 {
     bool canBeDominated = true;
@@ -308,9 +131,9 @@ compare_full(
 
 template <typename M>
 ComparisonResult
-MultidimensionalPathLength<M>::
+MLPathLength<M>::
 compare_switch(
-    const MultidimensionalPathLength& other
+    const MLPathLength& other
 ) const
 {
     bool canBeDominated = true;
@@ -381,9 +204,9 @@ compare_switch(
 
 template <typename M>
 ComparisonResult
-MultidimensionalPathLength<M>::
+MLPathLength<M>::
 compare_multiplex(
-    const MultidimensionalPathLength& other
+    const MLPathLength& other
 ) const
 {
     bool canBeDominated = true;
@@ -436,9 +259,9 @@ compare_multiplex(
 
 template <typename M>
 ComparisonResult
-MultidimensionalPathLength<M>::
+MLPathLength<M>::
 compare_simple(
-    const MultidimensionalPathLength& other
+    const MLPathLength& other
 ) const
 {
     bool canBeDominated = true;
@@ -483,9 +306,9 @@ compare_simple(
 
 template <typename M>
 bool
-MultidimensionalPathLength<M>::
+MLPathLength<M>::
 operator<(
-    const MultidimensionalPathLength& other
+    const MLPathLength& other
 ) const
 {
     //return total_length < other.total_length;
@@ -494,9 +317,9 @@ operator<(
 
 template <typename M>
 bool
-MultidimensionalPathLength<M>::
+MLPathLength<M>::
 operator>(
-    const MultidimensionalPathLength& other
+    const MLPathLength& other
 ) const
 {
     //return total_length > other.total_length;
@@ -505,9 +328,9 @@ operator>(
 
 template <typename M>
 bool
-MultidimensionalPathLength<M>::
+MLPathLength<M>::
 operator==(
-    const MultidimensionalPathLength& other
+    const MLPathLength& other
 ) const
 {
     //return total_length == other.total_length;
@@ -516,9 +339,9 @@ operator==(
 
 template <typename M>
 bool
-MultidimensionalPathLength<M>::
+MLPathLength<M>::
 operator!=(
-    const MultidimensionalPathLength& other
+    const MLPathLength& other
 ) const
 {
     //return total_length != other.total_length;
@@ -527,7 +350,7 @@ operator!=(
 
 template <typename M>
 std::string
-MultidimensionalPathLength<M>::
+MLPathLength<M>::
 to_string(
 ) const
 {
@@ -563,4 +386,3 @@ to_string(
 }
 }
 
-#endif

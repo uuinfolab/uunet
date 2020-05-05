@@ -1,24 +1,5 @@
-/**
- * Functions to transform a set of layers into a single one.
- * A projection creates a new layer where actors are taken from one layer and their connections depend
- * on how they are connected to objects in a second layer. Different types of flattening and projection
- *
- * History:
- * - 2018.03.09 file created, following a restructuring of the previous library.
- */
-
-
-/*
- * transformation.h
- *
- * Functions to transform a set of layers into a single one. A flattening is used when the same actors
- * are present on multiple layers: a new, single layer is created, and edges from all the flattened layers
- * contribute to the connectivity of the new layer.
- * exist.
- */
-
-#ifndef MNET_TRANSFORMATION_PROJECT_H_
-#define MNET_TRANSFORMATION_PROJECT_H_
+#ifndef UU_TRANSFORMATION_PROJECT_H_
+#define UU_TRANSFORMATION_PROJECT_H_
 
 #include <vector>
 #include "core/exceptions/assert_not_null.hpp"

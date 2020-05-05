@@ -56,10 +56,10 @@ class Stopwatch
     {
         return std::chrono::duration_cast<std::chrono::seconds>(times.at(lap)-times.at(lap-1)).count();
     }
-    
+
     long
     sec_last(
-        )
+    )
     {
         size_t last_lap = times.size()-1;
         return std::chrono::duration_cast<std::chrono::seconds>(times.at(last_lap)-times.at(last_lap-1)).count();

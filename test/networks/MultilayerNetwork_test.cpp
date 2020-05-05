@@ -9,10 +9,10 @@ TEST(networks_test, MultilayerNetwork)
 
     auto net = std::make_unique<uu::net::MultilayerNetwork>("a ml net");
 
-    // Adding vertices
+    // Adding actors
 
-    auto v1 = net->vertices()->add("miao");
-    auto v2 = net->vertices()->add("bau");
+    auto v1 = net->actors()->add("miao");
+    auto v2 = net->actors()->add("bau");
 
     // Adding layers
 

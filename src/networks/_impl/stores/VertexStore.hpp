@@ -26,8 +26,6 @@ class
 
     std::unique_ptr<core::ObjectStore<Vertex>> store_;
 
-    //typedef core::PtrSortedRandomSet<const Vertex,std::shared_ptr<const Vertex>,core::SharedPtrLT<const Vertex>,core::SharedPtrEQ<const Vertex>>::iterator vertex_iterator;
-
   public:
 
     typedef Vertex value_type;

@@ -1,10 +1,5 @@
-/**
- * History:
- * - 2018.03.09 file created, following a restructuring of the previous library.
- */
-
-#ifndef MNET_TRANSFORMATION_COMMON_H_
-#define MNET_TRANSFORMATION_COMMON_H_
+#ifndef UU_OPERATIONS_COMMON_H_
+#define UU_OPERATIONS_COMMON_H_
 
 #include <string>
 

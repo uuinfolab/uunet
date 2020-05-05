@@ -1,5 +1,6 @@
 #include "networks/_impl/stores/VertexStore.hpp"
 
+#include <memory>
 
 namespace uu {
 namespace net {
@@ -77,7 +78,7 @@ add(
     const std::string& vertex_name
 )
 {
-    return store_->add(Vertex::create(vertex_name));
+    return store_->add(std::make_shared<Vertex>(vertex_name));
 }
 
 bool
