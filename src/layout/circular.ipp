@@ -19,15 +19,15 @@ circular(
     std::map<std::pair<const Vertex*, const typename M::layer_type*>,XYZCoordinates> pos;
     double pi = 3.14159265358979323846;
 
-    if (mnet->vertices()->size()==0)
+    if (mnet->actors()->size()==0)
     {
         return pos;
     }
 
-    double angle_offset = 360.0/mnet->vertices()->size();
+    double angle_offset = 360.0/mnet->actors()->size();
     int i=0;
 
-    for (auto a: *mnet->vertices())
+    for (auto a: *mnet->actors())
     {
         double degree = i*angle_offset;
         double radians = degree*pi/180;

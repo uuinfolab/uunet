@@ -82,7 +82,7 @@ modularity(const M* mnet, const CS* communities, double omega)
     //std::cout << mu << std::endl;
     int num_layers = mnet->layers()->size();
 
-    for (auto actor: *mnet->vertices())
+    for (auto actor: *mnet->actors())
     {
         mu+=num_layers*(num_layers-1)*omega; // unclear if we should multiply by c
     }

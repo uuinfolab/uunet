@@ -21,12 +21,12 @@ multiforce(
     std::map<std::pair<const Vertex*, const typename M::layer_type*>,XYZCoordinates> pos;
     std::map<std::pair<const Vertex*, const typename M::layer_type*>,XYZCoordinates> disp;
 
-    if (mnet->vertices()->size()==0)
+    if (mnet->actors()->size()==0)
     {
         return pos;
     }
 
-    double temp = std::sqrt(mnet->vertices()->size());
+    double temp = std::sqrt(mnet->actors()->size());
     double start_temp = temp;
     double area = width*length;
     std::unordered_map<const typename M::layer_type*,double> k;
@@ -36,7 +36,7 @@ multiforce(
         k[l] = std::sqrt(area/l->vertices()->size());
     }
 
-    for (auto a: *mnet->vertices())
+    for (auto a: *mnet->actors())
     {
         double y = core::drand()*length-length/2;  // suggest to move these here
         double x = core::drand()*width-width/2; // suggest to move these here
@@ -133,7 +133,7 @@ multiforce(
         }
 
         // calculate attractive forces across layers
-        for (auto a: *mnet->vertices())
+        for (auto a: *mnet->actors())
         {
             for (auto l1: *mnet->layers())
             {

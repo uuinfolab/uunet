@@ -63,7 +63,7 @@ multinet_to_infomap(
     std::unordered_map<const Vertex*, size_t> actors_ids;
     size_t a_id = 0;
 
-    for (auto a: *net->vertices())
+    for (auto a: *net->actors())
     {
         actors_ids[a] = a_id++;
     }
@@ -93,7 +93,7 @@ to_communities(
     std::unordered_map<size_t, const Vertex*> actors;
     size_t a_id = 0;
 
-    for (auto a: *net->vertices())
+    for (auto a: *net->actors())
     {
         actors[a_id++] = a;
     }
@@ -159,12 +159,12 @@ multinet_to_infomap(
 )
 {
 
-    size_t num_actors = net->vertices()->size();
+    size_t num_actors = net->actors()->size();
     std::unordered_map<const Vertex*, size_t> actors_ids(num_actors);
     std::vector<const Vertex*> actors;
     size_t a_id = 1;
 
-    for (auto a: *net->vertices())
+    for (auto a: *net->actors())
     {
         actors_ids[a] = a_id++;
         actors.push_back(a);
@@ -174,7 +174,7 @@ multinet_to_infomap(
     outfile.open(filename);
 
     outfile << "# " << filename << std::endl;
-    outfile << "*Vertices " << net->vertices()->size() << std::endl;
+    outfile << "*Vertices " << net->actors()->size() << std::endl;
 
     for (size_t a_id=0; a_id<num_actors; a_id++)
     {
@@ -234,7 +234,7 @@ read_infomap_communities(
     std::unordered_map<size_t, const Vertex*> actors;
     size_t a_id = 1;
 
-    for (auto a: *net->vertices())
+    for (auto a: *net->actors())
     {
         actors[a_id++] = a;
     }

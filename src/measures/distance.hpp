@@ -49,7 +49,7 @@ std::unordered_map<const Vertex*, std::set<MLPathLength<M>> >
     std::unordered_map<const typename M::layer_type*, core::PairCounter<const Vertex*, const Vertex*>> last_updated;
 
     // initialize distance array - for every target vertex there is still no found path leading to it...
-    for (auto actor: *mnet->vertices())
+    for (auto actor: *mnet->actors())
     {
         distances[actor] = std::set<std::pair<MLPathLength<M>,long>,TimestampComparator>();
     } // ...except for the source node, reachable from itself via an empty path
