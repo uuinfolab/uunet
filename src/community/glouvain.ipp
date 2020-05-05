@@ -41,7 +41,7 @@ glouvain::fit(
         move_func = &move;
     }
 
-    std::vector<int> S(mnet->vertices()->size() * mnet->layers()->size());
+    std::vector<int> S(mnet->actors()->size() * mnet->layers()->size());
     std::iota(S.begin(), S.end(), 0);
 
     std::vector<int> y, Sb;

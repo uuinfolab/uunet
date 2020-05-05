@@ -167,7 +167,7 @@ std::vector<Eigen::SparseMatrix<double>>
                                               const std::shared_ptr<M>& mnet)
 {
     size_t L = mnet->layers()->size();
-    size_t N = mnet->vertices()->size();
+    size_t N = mnet->actors()->size();
 
     std::vector<Eigen::SparseMatrix<double>> a(L);
 
@@ -184,8 +184,8 @@ std::vector<Eigen::SparseMatrix<double>>
 
         for (std::shared_ptr<Edge> e: *l->edges())
         {
-            int v1_id = mnet->vertices()->index_of(e->v1);
-            int v2_id = mnet->vertices()->index_of(e->v2);
+            int v1_id = mnet->actors()->index_of(e->v1);
+            int v2_id = mnet->actors()->index_of(e->v2);
 
             tlist.push_back(Eigen::Triplet<double>(v1_id, v2_id, 1));
 
@@ -215,7 +215,7 @@ nodes2communities(
 {
 
     size_t L = mnet->layers()->size();
-    size_t N = mnet->vertices()->size();
+    size_t N = mnet->actors()->size();
 
     std::unordered_map<long, std::vector<IntralayerVertex<G>> > result;
 
@@ -225,7 +225,7 @@ nodes2communities(
 
         for (size_t j = i * N; j < (1 + i) * N; j++)
         {
-            std::shared_ptr<Vertex> a = mnet->vertices()->at(j - (i * N));
+            std::shared_ptr<Vertex> a = mnet->actors()->at(j - (i * N));
 
             // @todo check if node exists
             IntralayerVertex<G> iv(a,l);
@@ -263,7 +263,7 @@ cutils::actors2communities(std::shared_ptr<M> mnet, std::vector<unsigned int> ac
 
     for (size_t i = 0; i < actors2cid.size(); i++)
     {
-        std::shared_ptr<Vertex> a = mnet->vertices()->at(i);
+        std::shared_ptr<Vertex> a = mnet->actors()->at(i);
 
         for (auto l : *mnet->layers())
         {
@@ -319,7 +319,7 @@ std::vector<Eigen::SparseMatrix<double>>
                                       )
 {
     size_t num_layers = mnet->layers()->size();
-    size_t num_actors = mnet->vertices()->size();
+    size_t num_actors = mnet->actors()->size();
 
     std::vector<Eigen::SparseMatrix<double>> result(num_layers);
 
@@ -340,8 +340,8 @@ std::vector<Eigen::SparseMatrix<double>>
 
         for (auto e: *l->edges())
         {
-            size_t v1_id = mnet->vertices()->index_of(e->v1);
-            size_t v2_id = mnet->vertices()->index_of(e->v2);
+            size_t v1_id = mnet->actors()->index_of(e->v1);
+            size_t v2_id = mnet->actors()->index_of(e->v2);
 
             tlist.push_back(Eigen::Triplet<double>(v1_id, v2_id, 1));
             //if (e->directionality == EdgeDir::UNDIRECTED)
@@ -810,7 +810,7 @@ to_community_structure(
 {
 
     size_t num_layers = mnet->layers()->size();
-    size_t num_actors = mnet->vertices()->size();
+    size_t num_actors = mnet->actors()->size();
 
     // group by community id
 
@@ -822,7 +822,7 @@ to_community_structure(
 
         for (size_t j = i * num_actors; j < (1 + i) * num_actors; j++)
         {
-            auto actor = mnet->vertices()->at(j - (i * num_actors));
+            auto actor = mnet->actors()->at(j - (i * num_actors));
 
 
             if (!layer->vertices()->contains(actor))
