@@ -1,12 +1,3 @@
-#ifndef UU_IO_WRITEMULTILAYERNETWORK_H_
-#define UU_IO_WRITEMULTILAYERNETWORK_H_
-
-#include <string>
-#include <memory>
-#include "networks/MultilayerNetwork.hpp"
-#include "core/utils/string.hpp"
-#include "io/_impl/read_common.hpp"
-
 namespace uu {
 namespace net {
 
@@ -766,4 +757,3 @@ end_loop:
 }
 }
 
-#endif
