@@ -18,7 +18,7 @@ namespace net {
  * @param graph input graph
  * @return A vector of ego betweeness for each vertex in the graph
   **/
-std::vector<double>
+std::vector<std::pair<std::string, double>>
 ego_betweeness_approximation(
     ProbabilisticNetwork * graph
 );
