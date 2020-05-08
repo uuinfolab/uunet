@@ -35,7 +35,7 @@ reliability_s_to_t(
  * @param times_to_run amount of times to run
  * @return an array of sums of probabilities for each vertex
   **/
-std::vector<double>
+std::map<std::string, double>
 reliability_s_to_all(
     ProbabilisticNetwork * graph,
     const Vertex * start,
