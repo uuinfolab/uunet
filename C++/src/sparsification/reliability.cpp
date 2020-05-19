@@ -75,9 +75,8 @@ reliability_s_to_all(
         results[vertex->to_string()] = results[vertex->to_string()] / (double)times_to_run;
     }
 
-    // Set starting node to -1
-    // Maybe better to set it to 1 since it can always find itself?
-    results[start->to_string()] = -1;
+    // Set starting node to 1 since it can always find itself
+    results[start->to_string()] = 1;
     return results;
 }
 
@@ -100,7 +99,7 @@ reliability_s_to_t(
 {
    // Initiate random seed using time
     srand(time(NULL));
-    double result;
+    double result=0;
     
     // Run times_to_run times
     for (int i = 0; i < times_to_run; i++)
@@ -142,7 +141,6 @@ reliability_s_to_t(
             }
         }
     }
-    
     // Return avaraged result
     return result / (double)times_to_run;
 }

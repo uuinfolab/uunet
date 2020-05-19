@@ -57,14 +57,14 @@ to_adjacency_matrix(
  * @param graph input graph
  * @return A vector of ego betweeness for each vertex in the graph
   **/
-std::vector<std::pair<std::string, double>>
+std::vector<std::pair<double, std::string>>
 ego_betweeness_approximation(
     ProbabilisticNetwork * graph
 )
 {
     auto adjMatrix = to_adjacency_matrix(graph);
     int numV = graph->vertices()->size();
-    std::vector<std::pair<std::string, double>> approxEgoBtw;
+    std::vector<std::pair<double, std::string>> approxEgoBtw;
     //for (int v = 0; v < numV; v++){
     for (auto vertex: *graph->vertices())
     {
@@ -82,7 +82,7 @@ ego_betweeness_approximation(
                 curr_v += curr_i * adjMatrix[v][j] * (1 - adjMatrix[i][j]);
             }
         }
-        approxEgoBtw.push_back(std::make_pair(vertex->to_string(), curr_v));
+        approxEgoBtw.push_back(std::make_pair(curr_v, vertex->to_string()));
     }
 
     return approxEgoBtw;

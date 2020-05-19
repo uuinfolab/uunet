@@ -31,8 +31,8 @@ stp
     auto previous_p = current_graph->get_prob(edge).value;
     auto u0 = edge->v1;
     auto v0 = edge->v2;
-    auto pi_u = pi(current_graph, u0, use_absolute);
-    auto pi_v = pi(current_graph, v0, use_absolute);
+    double pi_u = pi(current_graph, u0, use_absolute);
+    double pi_v = pi(current_graph, v0, use_absolute);
     double SA_u = a_discrepancy(previous_graph, current_graph, u0);
     double SA_v = a_discrepancy(previous_graph, current_graph, v0);
     double delta = ((pi_v * SA_u + pi_u * SA_v) / (pi_u + pi_v));
@@ -125,7 +125,7 @@ pi
 {
     if(use_absolute)
     {
-        return 1;
+        return 1.0;
     } else {
         return sum_p_from_v(g, v);
     }
