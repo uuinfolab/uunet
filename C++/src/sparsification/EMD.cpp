@@ -169,9 +169,10 @@ EMD
         std::swap(previous_graph, temp_graph);
 		Dcurrent = objective_function(previous_graph.get(), EMD.get(), use_absolute);
         
-        // std::cout << "iteration: " << iteration << std::endl;
-        if (iteration == 20)
+         std::cout << "\nEMD iteration: " << iteration << std::endl;
+        if (iteration == 10)
         {
+            std::cout << "EMD stopped due to too many iterations" << std::endl;
             break;
         }
         iteration++;
@@ -195,26 +196,26 @@ EMD
         temp_graph = duplicate_graph(EMD.get());
 		for (auto edge: *temp_graph->edges())
         {
-            //std::cout << "remove e: " << edge->to_string() << std::endl;
+            // std::cout << "remove e: " << edge->to_string() << std::endl;
             auto u = edge->v1;
             auto v = edge->v2;
             int i_u = EMD->vertices()->index_of( u );
             int i_v = EMD->vertices()->index_of( v );
+            double prob = uncertain_graph->get_prob(edge).value;
             
-            auto SA_u = abs_discrepancy[i_u] + uncertain_graph->get_prob(edge).value;
-			auto SA_v = abs_discrepancy[i_v] + uncertain_graph->get_prob(edge).value;
+            auto SA_u = abs_discrepancy[i_u] + prob;
+			auto SA_v = abs_discrepancy[i_v] + prob;
             abs_discrepancy[i_u] = SA_u;
             abs_discrepancy[i_v] = SA_v;
 
 
             //calculate gain for current edge as well
-			EMD->set_prob(edge, uncertain_graph->get_prob(edge).value);
+			EMD->set_prob(edge, prob);
             double w = stp(previous_graph.get(), EMD.get(), edge, entropy_step_size, use_absolute, true);
             double max_gain = gain_equation(previous_graph.get(), EMD.get(), edge, w, use_absolute);
             const Edge * max_gain_edge = edge;
 
 
-            EMD->set_prob(edge, 0);
 			EMD->edges()->erase(edge);
             heap_update(&max_heap, heap_table, uncertain_graph, u, SA_u);
             heap_update(&max_heap, heap_table, uncertain_graph, v, SA_v);
@@ -227,12 +228,8 @@ EMD
             // }
             // std::cout << std::endl;
 
-            // for (auto el: max_heap)
-            // {
-            //     std::cout << el.second << ": " <<  el.first << std::endl;
-            // }
-
 			auto vertex_top = heap_top_vertex(&max_heap, uncertain_graph);
+            // std::cout << " v_top: " << vertex_top->to_string() << std::endl;
 			for (auto adjacent_edge: *uncertain_graph->edges()->incident( vertex_top ))
             {
                 if (EMD->edges()->contains(adjacent_edge))
@@ -247,7 +244,6 @@ EMD
                 // std::cout << "  adj_e: " << adjacent_edge->to_string() << ", p: "<< uncertain_graph->get_prob(adjacent_edge).value;
                 // std::cout << ", w: " << w << ", g: " << gain << std::endl;
 
-                EMD->set_prob(adjacent_edge, 0);
                 EMD->edges()->erase(adjacent_edge);
                 if (gain > max_gain)
                 {
@@ -257,7 +253,7 @@ EMD
                 }
             }
 
-            // std::cout << " v_top: " << vertex_top->to_string() << std::endl;
+            
 
             // std::cout << " e_max: " << max_gain_edge->to_string() << std::endl;
 
@@ -287,30 +283,11 @@ EMD
         //     std::cout << el->v1->to_string() << "-" << el->v2->to_string() << "  ";
         // }
         // std::cout << std::endl;
-        // std::cout << std::endl;
 
 		EMD = GDB(uncertain_graph, EMD.get(), entropy_step_size, improvement_threshold, use_absolute);
         // std::cout << "obj func after: " << objective_function(temp_graph.get(), EMD.get(), use_absolute) << std::endl;
-        
-        // std::cout << "Edges:" << std::endl;
-        // std::cout << " ";
-        // for (auto el: *EMD->edges())
-        // {
-        //     std::cout << el->v1->to_string() << "-" << el->v2->to_string() << "  ";
-        // }
         // std::cout << std::endl;
-
-        // std::cout << "Neighbors:" << std::endl;
-        // for (auto el: *EMD->vertices()){
-        //     std::cout << " " <<  el->to_string() << ":  ";
-
-        //     for (auto nei: *EMD->edges()->neighbors(el))
-        //     {
-        //         std::cout << nei->to_string() << ", ";
-        //     }
-        //     std::cout << std::endl;
-        // }
-
+        
         
 
 
