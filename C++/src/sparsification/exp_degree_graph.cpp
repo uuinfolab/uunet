@@ -5,28 +5,28 @@
 
 #include "networks/ProbabilisticNetwork.hpp"
 #include "measures/exp_degree.hpp"
-#include "sparsification/pagerank.hpp"
+#include "sparsification/exp_degree_graph.hpp"
 
 namespace uu {
 namespace net {
 
 
 /**
- * Calculates the pagerank for every vertex in a probabilistic graph
+ * Calculates the exp_degree_graph for every vertex in a probabilistic graph
  * @param graph input graph
  * @return a set of each vertex and their expected degree
   **/
-std::set< cutsize_vertex, pagerank_comp >
-pagerank(
+std::vector< std::pair<double, std::string> >
+exp_degree_graph(
     ProbabilisticNetwork * graph
 )
 {
-    std::set< cutsize_vertex, pagerank_comp > vCutsizes;
+    std::vector< std::pair<double, std::string> > vCutsizes;
 
     for (auto vertex: *graph->vertices())
     {
         double cut_size = exp_degree(graph, vertex, uu::net::EdgeMode::INOUT);
-        vCutsizes.insert( std::make_pair(cut_size, vertex->to_string()));
+        vCutsizes.push_back( std::make_pair(cut_size, vertex->to_string()));
     }
     return vCutsizes;
 }
