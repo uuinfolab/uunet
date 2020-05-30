@@ -1,9 +1,7 @@
 #include "gtest/gtest.h"
-
 #include "algorithms_test.hpp"
-
-#include <string>
 #include "algorithms/DFS.hpp"
+#include <string>
 
 TEST_F(net_algorithms_test, DFS)
 {

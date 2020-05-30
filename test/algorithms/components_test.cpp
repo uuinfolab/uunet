@@ -1,90 +1,27 @@
 #include "gtest/gtest.h"
-
-#include <cstdio>
-#include <iostream>
-#include <fstream>
-#include <vector>
-
+#include "algorithms_test.hpp" // defines graph g
 #include "algorithms/components.hpp"
-#include "io/read_network.hpp"
 
-class net_measures_components_test : public ::testing::Test
+TEST_F(net_algorithms_test, components)
 {
-  protected:
+    std::vector<int> comp_id = uu::net::components(g);
 
-    std::string test_file_name = "net_io_read_graph_file.tmp";
-    std::unique_ptr<uu::net::Network> g;
-
-    void
-    SetUp() override
-    {
-        // Create a test file
-        std::ofstream test_file;
-        test_file.open(test_file_name);
-
-        if (!test_file.is_open())
-        {
-            FAIL()
-                    << "Could not create temporary file. Test not executed.";
-        }
-
-        test_file << "#VERSION           " << std::endl;
-        test_file << "2.0                " << std::endl;
-        test_file << "                   " << std::endl;
-        test_file << "#TYPE              " << std::endl;
-        test_file << "undirected         " << std::endl;
-        test_file << "                   " << std::endl;
-        test_file << "#VERTICES          " << std::endl;
-        test_file << "v0                 " << std::endl;
-        test_file << "                   " << std::endl;
-        test_file << "#EDGES             " << std::endl;
-        test_file << "v1,v2              " << std::endl;
-        test_file << "v1,v3              " << std::endl;
-        test_file << "v2,v3              " << std::endl;
-        test_file << "v2,v4              " << std::endl;
-        test_file << "v2,v5              " << std::endl;
-        test_file << "v2,v6              " << std::endl;
-        test_file << "v3,v5              " << std::endl;
-        test_file << "v3,v6              " << std::endl;
-        test_file << "v4,v5              " << std::endl;
-        test_file << "v5,v6              " << std::endl;
-        test_file << "v5,v7              " << std::endl;
-        test_file << "v6,v7              " << std::endl;
-        test_file << "v7,v8              " << std::endl;
-        test_file << "v7,v9              " << std::endl;
-        test_file << "v8,v9              " << std::endl;
-        test_file.close();
-
-        g = uu::net::read_network(test_file_name, "g", ',');
-
-        test_file.close();
-
-    }
-
-    void
-    TearDown() override
-    {
-        std::remove(test_file_name.data());
-    }
-
-};
-
-TEST_F(net_measures_components_test, membership)
-{
-    std::vector<int> comp_id = uu::net::components(g.get());
-
-    auto v0 = g->vertices()->get("v0");
-    size_t pos_v0 = g->vertices()->index_of(v0);
-
-    auto v1 = g->vertices()->get("v1");
     size_t pos_v1 = g->vertices()->index_of(v1);
-
-    auto v8 = g->vertices()->get("v8");
+    size_t pos_v2 = g->vertices()->index_of(v2);
+    size_t pos_v3 = g->vertices()->index_of(v3);
     size_t pos_v8 = g->vertices()->index_of(v8);
+    size_t pos_v9 = g->vertices()->index_of(v9);
 
-    EXPECT_NE(comp_id.at(pos_v0), comp_id.at(pos_v1))
-            << "these vertices should be in two different components";
+    EXPECT_NE(comp_id.at(pos_v1), comp_id.at(pos_v2));
+    EXPECT_NE(comp_id.at(pos_v1), comp_id.at(pos_v3));
+    EXPECT_NE(comp_id.at(pos_v1), comp_id.at(pos_v8));
+    EXPECT_NE(comp_id.at(pos_v1), comp_id.at(pos_v9));
 
-    EXPECT_EQ(comp_id.at(pos_v1), comp_id.at(pos_v8))
-            << "these vertices should be in the same component";
+    EXPECT_NE(comp_id.at(pos_v2), comp_id.at(pos_v8));
+    EXPECT_NE(comp_id.at(pos_v2), comp_id.at(pos_v9));
+    EXPECT_NE(comp_id.at(pos_v3), comp_id.at(pos_v8));
+    EXPECT_NE(comp_id.at(pos_v3), comp_id.at(pos_v9));
+    
+    EXPECT_EQ(comp_id.at(pos_v2), comp_id.at(pos_v3));
+    EXPECT_EQ(comp_id.at(pos_v8), comp_id.at(pos_v9));
 }
