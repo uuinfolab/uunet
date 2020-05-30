@@ -1,15 +1,17 @@
-#ifndef UU_TEST_MEASURES_H_
-#define UU_TEST_MEASURES_H_
+#ifndef UU_TEST_ALGORITHMS_H_
+#define UU_TEST_ALGORITHMS_H_
 
 #include "gtest/gtest.h"
 
 #include "io/read_network.hpp"
 
-class net_measures_test : public ::testing::Test
+class net_algorithms_test : public ::testing::Test
 {
   protected:
 
-    std::unique_ptr<uu::net::Network> g;
+    std::unique_ptr<uu::net::Network> g_uptr;
+
+    uu::net::Network* g;
     const uu::net::Vertex *v1, *v2, *v3, *v4, *v5, *v6, *v7, *v8, *v9;
     const uu::net::Edge *e1, *e2, *e3, *e4, *e5, *e6, *e7, *e8;
 
@@ -17,7 +19,9 @@ class net_measures_test : public ::testing::Test
     SetUp() override
     {
 
-        g = std::make_unique<uu::net::Network>("net");
+        g_uptr = std::make_unique<uu::net::Network>("net");
+
+        g = g_uptr.get();
 
         v1 = g->vertices()->add("v1");
         v2 = g->vertices()->add("v2");
@@ -39,6 +43,11 @@ class net_measures_test : public ::testing::Test
 
     }
 
+    /*void
+    TearDown() override
+    {
+        std::remove(test_file_name.data());
+    }*/
 
 };
 
