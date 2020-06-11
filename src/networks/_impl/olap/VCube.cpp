@@ -5,21 +5,20 @@
 
 #include "core/exceptions/ElementNotFoundException.hpp"
 #include "networks/_impl/olap/VCube.hpp"
-#include "networks/_impl/olap/slice.hpp"
 
 namespace uu {
 namespace net {
 
 VCube::
 VCube(
-    const std::string& name,
+    //const std::string& name,
     const std::vector<std::string>& dimensions,
     const std::vector<std::vector<std::string>>& members
 )
 {
-    name_ = name;
+    name_ = "v-cube"; // @todo is name needed?
 
-    std::vector<std::shared_ptr<VertexStore>> elements;
+    /*std::vector<std::shared_ptr<VertexStore>> elements;
     size_t cube_size = 1;
 
     for (auto dim: members)
@@ -30,12 +29,23 @@ VCube(
     for (size_t i = 0; i < cube_size; i++)
     {
         elements.push_back(std::make_shared<VertexStore>());
-    }
+    }*/
 
-    cube_ = std::make_unique<core::CCube<VertexStore>>(dimensions, members, elements.begin(), elements.end());
+    auto elements = std::make_unique<VertexStore>();
+    cube_ = std::make_unique<MLCube<VertexStore>>(std::move(elements), dimensions, members);
 }
 
+std::unique_ptr<VCube>
+VCube::
+model(
+    const std::vector<std::string>& dim,
+    const std::vector<std::vector<std::string>>& members
+) const
+{
+    return std::make_unique<VCube>(dim, members);
+}
 
+/*
 template <typename Iterator>
 VCube::
 VCube(
@@ -67,58 +77,204 @@ VCube(
 
     cube_ = std::make_unique<core::CCube<VertexStore>>(dimensions, members, begin, end);
 }
+*/
 
-core::SortedRandomBag<const Vertex *>::iterator
+
+const VertexStore*
+VCube::
+vertices(
+) const
+{
+    return cube_->elements();
+}
+
+VertexStore*
+VCube::
+operator[](
+    const std::vector<size_t>& index
+)
+{
+    return (*cube_)[index];
+}
+
+
+VertexStore*
+VCube::
+operator[](
+    const std::vector<std::string>& index
+)
+{
+    return (*cube_)[index];
+}
+
+const VertexStore*
+VCube::
+operator[](
+    const std::vector<size_t>& index
+) const
+{
+    return (*cube_)[index];
+}
+
+const VertexStore*
+VCube::
+operator[](
+    const std::vector<std::string>& index
+) const
+{
+    return (*cube_)[index];
+}
+
+/** Returns the cell at the given position in the cube.
+ * @throw OutOfBoundsException if the index is outside the bounds on the cube
+ */
+VertexStore*
+VCube::
+at(
+    const std::vector<size_t>& index
+)
+{
+    return cube_->at(index);
+}
+
+/** Returns the cell at the given position in the cube.
+ * @throw OutOfBoundsException if the index is outside the bounds on the cube
+ */
+VertexStore*
+VCube::
+at(
+    const std::vector<std::string>& index
+)
+{
+    return cube_->at(index);
+}
+
+/** Returns the cell at the given position in the cube.
+ * @throw OutOfBoundsException if the index is outside the bounds on the cube
+ */
+const VertexStore*
+VCube::
+at(
+    const std::vector<size_t>& index
+) const
+{
+    return cube_->at(index);
+}
+
+/** Returns the cell at the given position in the cube.
+ * @throw OutOfBoundsException if the index is outside the bounds on the cube
+ */
+const VertexStore*
+VCube::
+at(
+    const std::vector<std::string>& index
+) const
+{
+    return cube_->at(index);
+}
+
+/*
+VertexStore::iterator
 VCube::
 begin(
 ) const
 {
-    return cube_->elements()->begin();
+return cube_->elements()->begin();
 }
 
-core::SortedRandomBag<const Vertex *>::iterator
+VertexStore::iterator
 VCube::
 end(
 ) const
 {
-    return cube_->elements()->end();
+return cube_->elements()->end();
 }
+*/
 
-
-size_t
+std::vector<size_t>
 VCube::
 size(
 ) const
 {
-    return cube_->elements()->size();
+    return cube_->size();
 }
 
+/**
+ * Creates a new container in the input cell.
+ * @throw OperationNotSupportedException
+ */
+void
+VCube::
+init(
+)
+{
+    auto iter = core::IndexIterator(size());
+
+    for (auto index: iter)
+    {
+        auto new_store = std::make_shared<VertexStore>();
+        cube_->init(index, new_store);
+    }
+}
+
+/**
+ * Creates a new container in the input cell.
+ * @throw OutOfBoundsException if the index is outside the bounds of the cube
+ * @throw OperationNotSupportedException
+ */
+VertexStore*
+VCube::
+init(
+    const std::vector<size_t>& index
+)
+{
+    auto new_store = std::make_shared<VertexStore>();
+    return cube_->init(index, new_store);
+}
+
+
+/**
+ * Creates a new container in the input cell.
+ * @throw OutOfBoundsException if the index is outside the bounds of the cube
+ * @throw OperationNotSupportedException
+ */
+VertexStore*
+VCube::
+init(
+    const std::vector<size_t>& index,
+    std::shared_ptr<VertexStore> cell
+)
+{
+    return cube_->init(index, cell);
+}
+
+/*
 bool
 VCube::
 contains(
-    const Vertex* v
+const Vertex* v
 ) const
 {
-    return cube_->elements()->contains(v);
+return cube_->elements()->contains(v);
 }
 
 
 const Vertex*
 VCube::
 get(
-    const std::string& key
+const std::string& key
 ) const
 {
-    return cube_->elements()->get(key);
+return cube_->elements()->get(key);
 }
 
 const Vertex*
 VCube::
 at(
-    size_t pos
+size_t pos
 ) const
 {
-    return cube_->elements()->at(pos);
+return cube_->elements()->at(pos);
 }
 
 const Vertex*
@@ -126,19 +282,19 @@ VCube::
 get_at_random(
 ) const
 {
-    return cube_->elements()->get_at_random();
+return cube_->elements()->get_at_random();
 }
 
 
 int
 VCube::
 index_of(
-    const Vertex* v
+const Vertex* v
 ) const
 {
-    return cube_->elements()->index_of(v);
+return cube_->elements()->index_of(v);
 }
-
+*/
 
 core::AttributeStore<Vertex>*
 VCube::
@@ -175,6 +331,13 @@ dim(
     return cube_->dim();
 }
 
+const std::vector<std::vector<std::string>>&
+        VCube::
+        members(
+        ) const
+{
+    return cube_->members();
+}
 
 const std::vector<std::string>&
 VCube::
@@ -185,84 +348,6 @@ members(
     return cube_->members(dim);
 }
 
-
-VertexStore*
-VCube::
-operator[](
-    const std::vector<size_t>& index
-)
-{
-    return cube_->operator[](index);
-}
-
-
-VertexStore*
-VCube::
-operator[](
-    const std::vector<std::string>& index
-)
-{
-    return cube_->operator[](index);
-}
-
-
-const VertexStore*
-VCube::
-operator[](
-    const std::vector<size_t>& index
-) const
-{
-    return cube_->operator[](index);
-}
-
-
-const VertexStore*
-VCube::
-operator[](
-    const std::vector<std::string>& index
-) const
-{
-    return cube_->operator[](index);
-}
-
-
-VertexStore*
-VCube::
-at(
-    const std::vector<size_t>& index
-)
-{
-    return cube_->at(index);
-}
-
-
-VertexStore*
-VCube::
-at(
-    const std::vector<std::string>& index
-)
-{
-    return cube_->at(index);
-}
-
-const VertexStore*
-VCube::
-at(
-    const std::vector<size_t>& index
-) const
-{
-    return cube_->at(index);
-}
-
-
-const VertexStore*
-VCube::
-at(
-    const std::vector<std::string>& index
-) const
-{
-    return cube_->at(index);
-}
 
 std::string
 VCube::
@@ -279,7 +364,8 @@ attach(
     core::Observer<const Vertex>* obs
 )
 {
-    cube_->elements()->attach(obs);
+    // @todo
+    //cube_->elements()->attach(obs);
 }
 
 /*
@@ -309,7 +395,7 @@ return std::make_unique<VCube>(name, dim, members, stores.begin(), stores.end())
 }
 */
 
-
+/*
 void
 VCube::
 resize(
@@ -380,6 +466,7 @@ vslice(
     return res;
 
 }
+*/
 
 }
 }

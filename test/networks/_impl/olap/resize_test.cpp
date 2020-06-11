@@ -1,10 +1,11 @@
 #include "gtest/gtest.h"
 
 #include "networks/_impl/olap/VCube.hpp"
-#include "networks/_impl/olap/resize.hpp"
+//#include "networks/_impl/olap/resize.hpp"
 
 TEST(net_datastructures_olap, resize)
 {
+    /*
     std::vector<std::string> dimensions = {"d1"};
     std::vector<std::vector<std::string>> members = {{"m1", "m2"}};
     auto c = uu::net::VCube("a vcube", dimensions, members);
@@ -16,7 +17,7 @@ TEST(net_datastructures_olap, resize)
     EXPECT_EQ(c.members("d1").size(), (size_t)3);
 
     // Iterating over the containers
-    /*for (auto cont: c)
+    for (auto cont: c)
     {
         std::cout << cont->size() << std::endl;
     }*/

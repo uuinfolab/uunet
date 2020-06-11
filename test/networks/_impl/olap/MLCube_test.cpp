@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "core/olap/datastructures/CCube.hpp"
+#include "networks/_impl/olap/MLCube.hpp"
 #include "core/stores/ObjectStore.hpp"
 
 TEST(core_olap_test, CCube)
@@ -16,14 +16,21 @@ TEST(core_olap_test, CCube)
     };
     auto o1 = std::make_shared<Obj>(1);
     auto o2 = std::make_shared<Obj>(2);
+    auto o3 = std::make_shared<Obj>(3);
 
     std::vector<std::string> dimensions = {"d1"};
     std::vector<std::vector<std::string>> members = {{"m1", "m2"}};
 
     using CONTAINER = uu::core::ObjectStore<Obj>;
 
-    auto init = {std::make_shared<CONTAINER>(), std::make_shared<CONTAINER>()};
-    uu::core::CCube<CONTAINER> c(dimensions, members, init.begin(), init.end());
+    //auto init = {std::make_shared<CONTAINER>(), std::make_shared<CONTAINER>()};
+    //uu::core::CCube<CONTAINER> c(dimensions, members, init.begin(), init.end());
+    auto el = std::make_unique<CONTAINER>();
+    uu::net::MLCube<CONTAINER> c(std::move(el), dimensions, members);
+    std::vector<size_t> idx = {0};
+    c.init(idx, std::make_shared<CONTAINER>());
+    idx[0] = 1;
+    c.init(idx, std::make_shared<CONTAINER>());
 
     // Basic cube info
 
@@ -45,20 +52,17 @@ TEST(core_olap_test, CCube)
     EXPECT_EQ(c.members("d1").at(0), "m1")
             << "Wrong member name";
 
-    std::vector<std::string> index = {"m1"};
-    c[index]->add(o1);
-    c.at(index)->add(o2);
+    std::vector<std::string> m1 = {"m1"};
+    c[m1]->add(o1);
+    c.at(m1)->add(o2);
+    std::vector<std::string> m2 = {"m2"};
+    c[m2]->add(o2);
+    c.at(m2)->add(o3);
 
-    EXPECT_EQ(c[index]->size(), (size_t)2);
+    EXPECT_EQ(c[m1]->size(), (size_t)2);
+    EXPECT_EQ(c[m2]->size(), (size_t)2);
 
-    EXPECT_EQ(c.elements()->size(), (size_t)2);
+    EXPECT_EQ(c.elements()->size(), (size_t)3);
 
-    // Iterating over the containers
-    /*
-    for (auto cont: c)
-    {
-        std::cout << cont->size() << std::endl;
-    }
-     */
 }
 

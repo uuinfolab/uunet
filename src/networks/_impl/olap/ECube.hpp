@@ -9,10 +9,9 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
-#include "core/olap/datastructures/CCube.hpp"
 #include "networks/_impl/stores/MDSimpleEdgeStore.hpp"
-#include "networks/_impl/olap/VCube.hpp"
-#include "objects/Vertex.hpp"
+#include "networks/_impl/stores/VertexStore.hpp"
+#include "networks/_impl/olap/MLCube.hpp"
 #include "objects/MLEdge.hpp"
 
 namespace uu {
@@ -27,49 +26,73 @@ class
 
   private:
 
-    std::unique_ptr<core::CCube<MDSimpleEdgeStore<VCube>>> cube_;
+    std::unique_ptr<MLCube<MDSimpleEdgeStore<VertexStore>>> cube_;
+    const VertexStore* vc1;
+    const VertexStore* vc2;
 
     std::string name_;
 
-    typedef MLEdge<Vertex, VCube> IEdge;
+    typedef MLEdge<Vertex, VertexStore> IEdge;
+    typedef MDSimpleEdgeStore<VertexStore>* entry_type;
+    typedef const IEdge* element_type;
 
   public:
 
     // ECube(const std::vector<size_t>& dim);
 
     ECube(
-        const std::string& name,
-        VCube* vc1,
-        VCube* vc2,
+        //const std::string& name,
+        const VertexStore* vc1,
+        const VertexStore* vc2,
         EdgeDir dir,
         const std::vector<std::string>& dim,
         const std::vector<std::vector<std::string>>& members
     );
 
+    std::unique_ptr<ECube>
+    model(
+        const std::vector<std::string>& dim,
+        const std::vector<std::vector<std::string>>& members
+    ) const;
+
+
+    const VertexStore*
+    vcube1(
+    ) const;
+
+
+    const VertexStore*
+    vcube2(
+    ) const;
+
+    const MDSimpleEdgeStore<VertexStore>*
+    edges(
+    ) const;
+
     /** Returns a const iterator to the first object in the cube
-     @todo should this be const_iterator? */
-    core::SortedRandomBag<const IEdge *>::iterator
+     @todo should this be const_iterator?
+    MDSimpleEdgeStore<VertexStore>::iterator
     begin(
     ) const;
 
-    /** Returns a const iterator after the last object in the cube
-     @todo should this be const_iterator? */
-    core::SortedRandomBag<const IEdge *>::iterator
+    ** Returns a const iterator after the last object in the cube
+     @todo should this be const_iterator?
+    MDSimpleEdgeStore<VertexStore>::iterator
     end(
-    ) const;
+    ) const;*/
 
     /**
-     * Returns the number of vertices in the cube
+     * Returns the size of the cube, that is, the number of members for each dimension.
      */
-    size_t
+    std::vector<size_t>
     size(
     ) const;
 
     /*const core::UnionSortedRandomSet<typename CONTAINER_TYPE::value_type>*
     elements(
-    ) const;*/
+    ) const;*
 
-    /** Returns true if an object with the input id is present in the collection */
+    ** Returns true if an object with the input id is present in the collection
     bool
     contains(
         const IEdge* v
@@ -78,31 +101,75 @@ class
     const IEdge*
     get(
         const Vertex* v1,
-        const VCube* l1,
+        const VertexStore* l1,
         const Vertex* v2,
-        const VCube* l2
-    ) const;
+        const VertexStore* l2
+    ) const;*/
 
-    /** Returns the object at the given position in the collection.
-     * @throw ElementNotFoundException if the index is outside the bounds on the set
+    /**
+    * Returns the cell at the given position in the cube.
+    */
+    MDSimpleEdgeStore<VertexStore>*
+    operator[](
+        const std::vector<size_t>& index
+    );
+
+    /**
+     * Returns the cell at the given position in the cube.
      */
-    const IEdge*
+    MDSimpleEdgeStore<VertexStore>*
+    operator[](
+        const std::vector<std::string>& index
+    );
+
+    /**
+     * Returns the cell at the given position in the cube.
+     */
+    const MDSimpleEdgeStore<VertexStore>*
+    operator[](
+        const std::vector<size_t>& index
+    ) const;
+
+    /**
+     * Returns the cell at the given position in the cube.
+     */
+    const MDSimpleEdgeStore<VertexStore>*
+    operator[](
+        const std::vector<std::string>& index
+    ) const;
+
+
+    /** Returns the cell at the given position in the cube.
+     * @throw OutOfBoundsException if the index is outside the bounds on the cube
+     */
+    MDSimpleEdgeStore<VertexStore>*
     at(
-        size_t pos
+        const std::vector<size_t>& index
+    );
+
+    /** Returns the cell at the given position in the cube.
+     * @throw OutOfBoundsException if the index is outside the bounds on the cube
+     */
+    MDSimpleEdgeStore<VertexStore>*
+    at(
+        const std::vector<std::string>& index
+    );
+
+    /** Returns the cell at the given position in the cube.
+     * @throw OutOfBoundsException if the index is outside the bounds on the cube
+     */
+    const MDSimpleEdgeStore<VertexStore>*
+    at(
+        const std::vector<size_t>& index
     ) const;
 
-    /** Returns a random object, uniform probability */
-    const IEdge*
-    get_at_random(
+    /** Returns the cell at the given position in the cube.
+     * @throw OutOfBoundsException if the index is outside the bounds on the cube
+     */
+    const MDSimpleEdgeStore<VertexStore>*
+    at(
+        const std::vector<std::string>& index
     ) const;
-
-
-    /** Returns the position of the input value in the collection, or -1 */
-    int
-    index_of(
-        const IEdge* v
-    ) const;
-
 
     core::AttributeStore<IEdge>*
     attr(
@@ -129,6 +196,12 @@ class
     dim(
     ) const;
 
+    /**
+     * Returns the members of all dimensions.
+     */
+    const std::vector<std::vector<std::string>>&
+            members(
+            ) const;
 
     /**
      * Returns the members of a dimension.
@@ -138,76 +211,35 @@ class
         const std::string& dim
     ) const;
 
-
     /**
-     * Returns the object at the given position in the cube.
-     * @throw ElementNotFoundException if the index is outside the bounds on the cube
+     * Creates a new container in the input cell.
+     * @throw OperationNotSupportedException
      */
-    MDSimpleEdgeStore<VCube>*
-    operator[](
-        const std::vector<size_t>& index
+    void
+    init(
     );
 
     /**
-     * Returns the object at the given position in the cube.
-     * @throw ElementNotFoundException if the index is outside the bounds on the cube
+     * Creates a new container in the input cell.
+     * @throw OutOfBoundsException if the index is outside the bounds of the cube
+     * @throw OperationNotSupportedException
      */
-    MDSimpleEdgeStore<VCube>*
-    operator[](
-        const std::vector<std::string>& index
+    MDSimpleEdgeStore<VertexStore>*
+    init(
+        const std::vector<size_t>& index
     );
+
 
     /**
-     * Returns the object at the given position in the cube.
-     * @throw ElementNotFoundException if the index is outside the bounds on the cube
+     * Creates a new container in the input cell.
+     * @throw OutOfBoundsException if the index is outside the bounds of the cube
+     * @throw OperationNotSupportedException
      */
-    const MDSimpleEdgeStore<VCube>*
-    operator[](
-        const std::vector<size_t>& index
-    ) const;
-
-    /**
-     * Returns the object at the given position in the cube.
-     * @throw ElementNotFoundException if the index is outside the bounds on the cube
-     */
-    const MDSimpleEdgeStore<VCube>*
-    operator[](
-        const std::vector<std::string>& index
-    ) const;
-
-
-    /** Returns the object at the given position in the cube.
-     * @throw ElementNotFoundException if the index is outside the bounds on the cube
-     */
-    MDSimpleEdgeStore<VCube>*
-    at(
-        const std::vector<size_t>& index
+    MDSimpleEdgeStore<VertexStore>*
+    init(
+        const std::vector<size_t>& index,
+        const std::shared_ptr<MDSimpleEdgeStore<VertexStore>> cell
     );
-
-    /** Returns the object at the given position in the cube.
-     * @throw ElementNotFoundException if the index is outside the bounds on the cube
-     */
-    MDSimpleEdgeStore<VCube>*
-    at(
-        const std::vector<std::string>& index
-    );
-
-    /** Returns the object at the given position in the cube.
-     * @throw ElementNotFoundException if the index is outside the bounds on the cube
-     */
-    const MDSimpleEdgeStore<VCube>*
-    at(
-        const std::vector<size_t>& index
-    ) const;
-
-    /** Returns the object at the given position in the cube.
-     * @throw ElementNotFoundException if the index is outside the bounds on the cube
-     */
-    const MDSimpleEdgeStore<VCube>*
-    at(
-        const std::vector<std::string>& index
-    ) const;
-
     /*
     friend
     std::unique_ptr<CCube<CONTAINER_TYPE>>
@@ -238,7 +270,7 @@ class
 
     bool
     is_directed(
-    );
+    ) const;
 
 
   private:

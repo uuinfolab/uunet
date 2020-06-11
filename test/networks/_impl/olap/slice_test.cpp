@@ -1,29 +1,42 @@
 #include "gtest/gtest.h"
 
-#include "networks/_impl/olap/VCube.hpp"
+#include "./operators.hpp"
+
 #include "networks/_impl/olap/slice.hpp"
 
-TEST(net_datastructures_olap, slice)
+
+TEST_F(net_olap_operators_test, vslice)
 {
-    std::vector<std::string> dimensions = {"d1"};
-    std::vector<std::vector<std::string>> members = {{"m1", "m2"}};
-    auto c = uu::net::VCube("a vcube", dimensions, members);
 
-    // Basic cube info
+    std::vector<std::vector<size_t>> s1 = {{1}, {0,1}, {0,1}};
+    auto slice1 = uu::net::vslice(vcube.get(), s1);
 
-    std::vector<std::vector<size_t>> idx = {{1}};
+    std::vector<size_t> cell011 = {0, 1, 1};
+    EXPECT_EQ((size_t)3, (*slice1)[cell011]->size());
+    EXPECT_EQ((size_t)4, slice1->vertices()->size());
 
+    std::vector<size_t> cell111 = {1, 1, 1};
+    (*vcube)[cell111]->add(o6);
 
-    auto c2 = vslice(&c, idx, "slice");
+    EXPECT_EQ((size_t)4, (*slice1)[cell011]->size());
+    EXPECT_EQ((size_t)5, slice1->vertices()->size());
 
-    EXPECT_EQ(c2->members("d1").size(), (size_t)1);
-
-
-    // Iterating over the containers
-    /*
-    for (auto cont: c)
-    {
-        std::cout << cont->size() << std::endl;
-    }*/
 }
 
+TEST_F(net_olap_operators_test, mslice)
+{
+
+    std::vector<std::vector<size_t>> s1 = {{1}, {0,1}, {0,1}};
+    auto slice1 = uu::net::mslice(vcube.get(), s1);
+
+    std::vector<size_t> cell011 = {0, 1, 1};
+    EXPECT_EQ((size_t)3, (*slice1)[cell011]->size());
+    EXPECT_EQ((size_t)4, slice1->vertices()->size());
+
+    std::vector<size_t> cell111 = {1, 1, 1};
+    (*vcube)[cell111]->add(o6);
+
+    EXPECT_EQ((size_t)3, (*slice1)[cell011]->size());
+    EXPECT_EQ((size_t)4, slice1->vertices()->size());
+
+}

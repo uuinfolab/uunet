@@ -1,15 +1,10 @@
-/**
- * History:
- * - 2019.07.21 File created
- */
-
 #ifndef UU_MNET_OLAP_VCUBE_H_
 #define UU_MNET_OLAP_VCUBE_H_
 
 #include <memory>
 #include <string>
 #include <unordered_map>
-#include "core/olap/datastructures/CCube.hpp"
+#include "networks/_impl/olap/MLCube.hpp"
 #include "networks/_impl/stores/VertexStore.hpp"
 
 namespace uu {
@@ -24,47 +19,124 @@ class
 
   private:
 
-    std::unique_ptr<core::CCube<VertexStore>> cube_;
+    std::unique_ptr<MLCube<VertexStore>> cube_;
 
     std::string name_;
 
   public:
 
     typedef VertexStore* entry_type;
+    typedef const Vertex* element_type;
     // VCube(const std::vector<size_t>& dim);
 
     VCube(
-        const std::string& name,
+        //const std::string& name,
         const std::vector<std::string>& dim,
         const std::vector<std::vector<std::string>>& members
     );
 
+    std::unique_ptr<VCube>
+    model(
+        const std::vector<std::string>& dim,
+        const std::vector<std::vector<std::string>>& members
+    ) const;
+
+    /*
     template <typename Iterator>
     VCube(
-        const std::string& name,
+        //const std::string& name,
         const std::vector<std::string>& dim,
         const std::vector<std::vector<std::string>>& members,
-        Iterator begin,
-        Iterator end
+        //Iterator begin,
+        //Iterator end
     );
-
+     */
 
     /** Returns a const iterator to the first object in the cube
-     @todo should this be const_iterator? */
-    core::SortedRandomBag<const Vertex *>::iterator
+     @todo should this be const_iterator?
+    VertexStore::iterator
     begin(
     ) const;
 
-    /** Returns a const iterator after the last object in the cube
-     @todo should this be const_iterator? */
-    core::SortedRandomBag<const Vertex *>::iterator
+    ** Returns a const iterator after the last object in the cube
+     @todo should this be const_iterator?
+    VertexStore::iterator
     end(
+    ) const;*/
+
+    const VertexStore*
+    vertices(
     ) const;
 
     /**
-     * Returns the number of vertices in the cube
+     * Returns the cell at the given position in the cube.
      */
-    size_t
+    VertexStore*
+    operator[](
+        const std::vector<size_t>& index
+    );
+
+    /**
+     * Returns the cell at the given position in the cube.
+     */
+    VertexStore*
+    operator[](
+        const std::vector<std::string>& index
+    );
+
+    /**
+     * Returns the cell at the given position in the cube.
+     */
+    const VertexStore*
+    operator[](
+        const std::vector<size_t>& index
+    ) const;
+
+    /**
+     * Returns the cell at the given position in the cube.
+     */
+    const VertexStore*
+    operator[](
+        const std::vector<std::string>& index
+    ) const;
+
+
+    /** Returns the cell at the given position in the cube.
+     * @throw OutOfBoundsException if the index is outside the bounds on the cube
+     */
+    VertexStore*
+    at(
+        const std::vector<size_t>& index
+    );
+
+    /** Returns the cell at the given position in the cube.
+     * @throw OutOfBoundsException if the index is outside the bounds on the cube
+     */
+    VertexStore*
+    at(
+        const std::vector<std::string>& index
+    );
+
+    /** Returns the cell at the given position in the cube.
+     * @throw OutOfBoundsException if the index is outside the bounds on the cube
+     */
+    const VertexStore*
+    at(
+        const std::vector<size_t>& index
+    ) const;
+
+    /** Returns the cell at the given position in the cube.
+     * @throw OutOfBoundsException if the index is outside the bounds on the cube
+     */
+    const VertexStore*
+    at(
+        const std::vector<std::string>& index
+    ) const;
+
+    /**
+     * Returns the size of the cube, that is, the number of members for each dimension.
+     */
+    std::vector<size_t>
     size(
     ) const;
 
@@ -72,7 +144,7 @@ class
     elements(
     ) const;*/
 
-    /** Returns true if an object with the input id is present in the collection */
+    /** Returns true if an object with the input id is present in the collection
     bool
     contains(
         const Vertex* v
@@ -83,26 +155,26 @@ class
         const std::string& key
     ) const;
 
-    /** Returns the object at the given position in the collection.
+    ** Returns the object at the given position in the collection.
      * @throw ElementNotFoundException if the index is outside the bounds on the set
-     */
+     *
     const Vertex*
     at(
         size_t pos
     ) const;
 
-    /** Returns a random object, uniform probability */
+    ** Returns a random object, uniform probability *
     const Vertex*
     get_at_random(
     ) const;
 
 
-    /** Returns the position of the input value in the collection, or -1 */
+    ** Returns the position of the input value in the collection, or -1 *
     int
     index_of(
         const Vertex* v
     ) const;
-
+    */
 
     core::AttributeStore<Vertex>*
     attr(
@@ -129,6 +201,12 @@ class
     dim(
     ) const;
 
+    /**
+     * Returns the members of all dimension.
+     */
+    const std::vector<std::vector<std::string>>&
+            members(
+            ) const;
 
     /**
      * Returns the members of a dimension.
@@ -140,73 +218,34 @@ class
 
 
     /**
-     * Returns the object at the given position in the cube.
-     * @throw ElementNotFoundException if the index is outside the bounds on the cube
+     * Creates a new container in the input cell.
+     * @throw OperationNotSupportedException
      */
-    VertexStore*
-    operator[](
-        const std::vector<size_t>& index
+    void
+    init(
     );
 
     /**
-     * Returns the object at the given position in the cube.
-     * @throw ElementNotFoundException if the index is outside the bounds on the cube
+     * Creates a new container in the input cell.
+     * @throw OutOfBoundsException if the index is outside the bounds of the cube
+     * @throw OperationNotSupportedException
      */
     VertexStore*
-    operator[](
-        const std::vector<std::string>& index
+    init(
+        const std::vector<size_t>& index
     );
+
 
     /**
-     * Returns the object at the given position in the cube.
-     * @throw ElementNotFoundException if the index is outside the bounds on the cube
-     */
-    const VertexStore*
-    operator[](
-        const std::vector<size_t>& index
-    ) const;
-
-    /**
-     * Returns the object at the given position in the cube.
-     * @throw ElementNotFoundException if the index is outside the bounds on the cube
-     */
-    const VertexStore*
-    operator[](
-        const std::vector<std::string>& index
-    ) const;
-
-
-    /** Returns the object at the given position in the cube.
-     * @throw ElementNotFoundException if the index is outside the bounds on the cube
+     * Creates a new container in the input cell.
+     * @throw OutOfBoundsException if the index is outside the bounds of the cube
+     * @throw OperationNotSupportedException
      */
     VertexStore*
-    at(
-        const std::vector<size_t>& index
+    init(
+        const std::vector<size_t>& index,
+        std::shared_ptr<VertexStore> cell
     );
-
-    /** Returns the object at the given position in the cube.
-     * @throw ElementNotFoundException if the index is outside the bounds on the cube
-     */
-    VertexStore*
-    at(
-        const std::vector<std::string>& index
-    );
-
-    /** Returns the object at the given position in the cube.
-     * @throw ElementNotFoundException if the index is outside the bounds on the cube
-     */
-    const VertexStore*
-    at(
-        const std::vector<size_t>& index
-    ) const;
-
-    /** Returns the object at the given position in the cube.
-     * @throw ElementNotFoundException if the index is outside the bounds on the cube
-     */
-    const VertexStore*
-    at(
-        const std::vector<std::string>& index
-    ) const;
 
     /*
     friend
@@ -257,7 +296,6 @@ class
     index_of(
         const std::vector<std::string>& pos
     ) const;
-    */
     void
     resize(
         const std::string& dim,
@@ -270,6 +308,7 @@ class
         const std::vector<std::vector<size_t>>& indexes
     );
 
+     */
 };
 
 

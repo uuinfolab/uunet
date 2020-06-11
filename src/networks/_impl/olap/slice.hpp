@@ -1,39 +1,38 @@
-/**
- * History:
- * - 2019.07.21 File created
- */
-
-#ifndef UU_NET_DATASTRUCTURES_OLAP_SLICE_H_
-#define UU_NET_DATASTRUCTURES_OLAP_SLICE_H_
+#ifndef UU_NETWORKS_IMPL_OLAP_SLICE_H_
+#define UU_NETWORKS_IMPL_OLAP_SLICE_H_
 
 #include <memory>
-#include <string>
-#include "networks/_impl/olap/VCube.hpp"
-#include "core/olap/selection/EntryIterator.hpp"
+#include <vector>
 
 namespace uu {
 namespace net {
 
-template <typename C>
-core::sel::EntryIterator<C>
+/*template <typename C>
+sel::EntryIterator<C>
 islice(
     C* cube,
     const std::vector<std::vector<size_t>>& indexes
-)
-{
-    return core::sel::EntryIterator<C>(cube, indexes);
-}
+);*/
 
 
-std::unique_ptr<VCube>
+template <typename C>
+std::unique_ptr<C>
 vslice(
-    VCube* cube,
-    const std::vector<std::vector<size_t>>& indexes,
-    const std::string& name
+    C* const cube,
+    const std::vector<std::vector<size_t>>& indexes
+);
+
+template <typename C>
+std::unique_ptr<C>
+mslice(
+    const C* const cube,
+    const std::vector<std::vector<size_t>>& indexes
 );
 
 
 }
 }
+
+#include "slice.ipp"
 
 #endif

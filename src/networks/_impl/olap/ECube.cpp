@@ -11,20 +11,20 @@ namespace net {
 
 ECube::
 ECube(
-    const std::string& name,
-    VCube* vc1,
-    VCube* vc2,
+    //const std::string& name,
+    const VertexStore* vc1,
+    const VertexStore* vc2,
     EdgeDir dir,
     const std::vector<std::string>& dimensions,
     const std::vector<std::vector<std::string>>& members
 
-)
+) : vc1(vc1), vc2(vc2), edge_directionality(dir)
 {
-    name_ = name;
+    name_ = "e-cube"; // @todo is name necessary?
 
     edge_directionality = dir;
 
-    std::vector<std::shared_ptr<MDSimpleEdgeStore<VCube>>> elements;
+    /*std::vector<std::shared_ptr<MDSimpleEdgeStore<VertexStore>>> elements;
     size_t cube_size = 1;
 
     for (auto dim: members)
@@ -34,88 +34,127 @@ ECube(
 
     for (size_t i = 0; i < cube_size; i++)
     {
-        elements.push_back(std::make_shared<MDSimpleEdgeStore<VCube>>(vc1, vc2, dir));
-    }
+        elements.push_back(std::make_shared<MDSimpleEdgeStore<VertexStore>>(vc1, vc2, dir));
+    }*/
 
-    cube_ = std::make_unique<core::CCube<MDSimpleEdgeStore<VCube>>>(dimensions, members, elements.begin(), elements.end());
+    auto elements = std::make_unique<MDSimpleEdgeStore<VertexStore>>(vc1, vc2, dir);
+    cube_ = std::make_unique<MLCube<MDSimpleEdgeStore<VertexStore>>>(std::move(elements), dimensions, members);
+    //, elements.begin(), elements.end());
 }
 
-core::SortedRandomBag<const MLEdge<Vertex, VCube>*>::iterator
+std::unique_ptr<ECube>
+ECube::
+model(
+    const std::vector<std::string>& dim,
+    const std::vector<std::vector<std::string>>& members
+) const
+{
+    return std::make_unique<ECube>(vc1, vc2, edge_directionality, dim, members);
+}
+
+const VertexStore*
+ECube::
+vcube1(
+) const
+{
+    return vc1;
+}
+
+
+const VertexStore*
+ECube::
+vcube2(
+) const
+{
+    return vc2;
+}
+
+const MDSimpleEdgeStore<VertexStore>*
+ECube::
+edges(
+) const
+{
+    return cube_->elements();
+}
+/*
+MDSimpleEdgeStore<VertexStore>::iterator
 ECube::
 begin(
 ) const
 {
-    return cube_->elements()->begin();
+return cube_->elements()->begin();
 }
 
-core::SortedRandomBag<const MLEdge<Vertex, VCube> *>::iterator
+MDSimpleEdgeStore<VertexStore>::iterator
 ECube::
 end(
 ) const
 {
-    return cube_->elements()->end();
+return cube_->elements()->end();
 }
+*/
 
-
-size_t
+std::vector<size_t>
 ECube::
 size(
 ) const
 {
-    return cube_->elements()->size();
+    return cube_->size();
 }
 
+/*
 bool
 ECube::
 contains(
-    const MLEdge<Vertex, VCube>* v
+const MLEdge<Vertex, VertexStore>* v
 ) const
 {
-    return cube_->elements()->contains(v);
+return cube_->elements()->contains(v);
 }
 
 
-const MLEdge<Vertex, VCube>*
+const MLEdge<Vertex, VertexStore>*
 ECube::
 get(
-    const Vertex* v1,
-    const VCube* l1,
-    const Vertex* v2,
-    const VCube* l2
+const Vertex* v1,
+const VertexStore* l1,
+const Vertex* v2,
+const VertexStore* l2
 ) const
 {
-    return cube_->elements()->get(std::tuple<const Vertex*, const VCube*, const Vertex*, const VCube*>(v1,l1,v2,l2));
+return cube_->elements()->get(v1,l1,v2,l2);
 }
 
-const MLEdge<Vertex, VCube>*
+const MLEdge<Vertex, VertexStore>*
 ECube::
 at(
-    size_t pos
+size_t pos
 ) const
 {
-    return cube_->elements()->at(pos);
+return cube_->elements()->at(pos);
 }
 
-const MLEdge<Vertex, VCube>*
+const MLEdge<Vertex, VertexStore>*
 ECube::
 get_at_random(
 ) const
 {
-    return cube_->elements()->get_at_random();
+return cube_->elements()->get_at_random();
 }
 
 
 int
 ECube::
 index_of(
-    const MLEdge<Vertex, VCube>* v
+const MLEdge<Vertex, VertexStore>* v
 ) const
 {
-    return cube_->elements()->index_of(v);
+return cube_->elements()->index_of(v);
 }
+*/
 
 
-core::AttributeStore<MLEdge<Vertex, VCube>>*
+core::AttributeStore<MLEdge<Vertex, VertexStore>>*
         ECube::
         attr(
         )
@@ -124,7 +163,7 @@ core::AttributeStore<MLEdge<Vertex, VCube>>*
 }
 
 
-const core::AttributeStore<MLEdge<Vertex, VCube>>*
+const core::AttributeStore<MLEdge<Vertex, VertexStore>>*
         ECube::
         attr(
         ) const
@@ -150,6 +189,13 @@ dim(
     return cube_->dim();
 }
 
+const std::vector<std::vector<std::string>>&
+        ECube::
+        members(
+        ) const
+{
+    return cube_->members();
+}
 
 const std::vector<std::string>&
 ECube::
@@ -161,7 +207,7 @@ members(
 }
 
 
-MDSimpleEdgeStore<VCube>*
+MDSimpleEdgeStore<VertexStore>*
 ECube::
 operator[](
     const std::vector<size_t>& index
@@ -171,7 +217,7 @@ operator[](
 }
 
 
-MDSimpleEdgeStore<VCube>*
+MDSimpleEdgeStore<VertexStore>*
 ECube::
 operator[](
     const std::vector<std::string>& index
@@ -181,7 +227,7 @@ operator[](
 }
 
 
-const MDSimpleEdgeStore<VCube>*
+const MDSimpleEdgeStore<VertexStore>*
 ECube::
 operator[](
     const std::vector<size_t>& index
@@ -191,7 +237,7 @@ operator[](
 }
 
 
-const MDSimpleEdgeStore<VCube>*
+const MDSimpleEdgeStore<VertexStore>*
 ECube::
 operator[](
     const std::vector<std::string>& index
@@ -201,7 +247,7 @@ operator[](
 }
 
 
-MDSimpleEdgeStore<VCube>*
+MDSimpleEdgeStore<VertexStore>*
 ECube::
 at(
     const std::vector<size_t>& index
@@ -211,7 +257,7 @@ at(
 }
 
 
-MDSimpleEdgeStore<VCube>*
+MDSimpleEdgeStore<VertexStore>*
 ECube::
 at(
     const std::vector<std::string>& index
@@ -220,7 +266,7 @@ at(
     return cube_->at(index);
 }
 
-const MDSimpleEdgeStore<VCube>*
+const MDSimpleEdgeStore<VertexStore>*
 ECube::
 at(
     const std::vector<size_t>& index
@@ -230,7 +276,7 @@ at(
 }
 
 
-const MDSimpleEdgeStore<VCube>*
+const MDSimpleEdgeStore<VertexStore>*
 ECube::
 at(
     const std::vector<std::string>& index
@@ -251,7 +297,7 @@ to_string(
 bool
 ECube::
 is_directed(
-)
+) const
 {
     return edge_directionality==EdgeDir::DIRECTED?true:false;
 }
@@ -260,11 +306,49 @@ is_directed(
 void
 ECube::
 attach(
-    core::Observer<const MLEdge<Vertex, VCube>>* obs
+    core::Observer<const MLEdge<Vertex, VertexStore>>* obs
 )
 {
-    cube_->elements()->attach(obs);
+    // @todo
+    //cube_->elements()->attach(obs);
 }
+
+void
+ECube::
+init(
+)
+{
+    auto iter = core::IndexIterator(size());
+
+    for (auto index: iter)
+    {
+        auto new_store = std::make_shared<MDSimpleEdgeStore<VertexStore>>(vc1, vc2, edge_directionality);
+        cube_->init(index, new_store);
+    }
+}
+
+
+MDSimpleEdgeStore<VertexStore>*
+ECube::
+init(
+    const std::vector<size_t>& index
+)
+{
+    auto new_store = std::make_shared<MDSimpleEdgeStore<VertexStore>>(vc1, vc2, edge_directionality);
+    return cube_->init(index, new_store);
+}
+
+
+MDSimpleEdgeStore<VertexStore>*
+ECube::
+init(
+    const std::vector<size_t>& index,
+    std::shared_ptr<MDSimpleEdgeStore<VertexStore>> cell
+)
+{
+    return cube_->init(index, cell);
+}
+
 
 /*
 std::unique_ptr<ECube>
@@ -282,11 +366,11 @@ for (auto m: members)
     num_entries *= m.size();
 }
 
-std::vector<const std::shared_ptr<MDSimpleEdgeStore<VCube>>> stores;
+std::vector<const std::shared_ptr<MDSimpleEdgeStore<VertexStore>>> stores;
 
 for (size_t i = 0; i < num_entries; i++)
 {
-    stores.push_back(std::make_shared<MDSimpleEdgeStore<VCube>>());
+    stores.push_back(std::make_shared<MDSimpleEdgeStore<VertexStore>>());
 }
 
 return std::make_unique<ECube>(name, dim, members, stores.begin(), stores.end());

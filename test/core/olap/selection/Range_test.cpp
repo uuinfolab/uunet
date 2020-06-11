@@ -6,7 +6,7 @@
 TEST(core_olap_selection_test, Range)
 {
 
-    uu::core::sel::Range r(1,3);
+    uu::core::Range r(1,3);
 
     EXPECT_THROW(r.eval(3), uu::core::OutOfBoundsException)
             << "Out of bound exception not caught";
@@ -30,7 +30,7 @@ TEST(core_olap_selection_test, Range)
 TEST(core_olap_selection_test, Range_inverse)
 {
 
-    uu::core::sel::Range r(3,1);
+    uu::core::Range r(3,1);
 
     EXPECT_THROW(r.eval(3), uu::core::OutOfBoundsException)
             << "Out of bound exception not caught";
