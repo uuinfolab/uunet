@@ -44,7 +44,8 @@ project (uunet VERSION 0.6.0
 add_subdirectory(src)
 
 # Examples using the library
-add_subdirectory(examples)
+# NOTE(dvladek): Temporally disables while fixing src
+#add_subdirectory(examples)
 
 # Only do these if this is the main project, and not if it is included through add_subdirectory
 if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
@@ -52,12 +53,18 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 		add_subdirectory(docs)
 	endif ()
 
-	if (OPTION_BUILD_TESTS OR (CMAKE_BUILD_TYPE STREQUAL "Debug"))
-		add_subdirectory(test)
-	endif ()
+	# TODO(dvladek): review how to
+	#if (OPTION_BUILD_TESTS OR (CMAKE_BUILD_TYPE STREQUAL "Debug"))
+	#	add_subdirectory(test)
+	#endif ()
 endif ()
 		
 return()
+
+
+
+
+
 #		find_package (Doxygen)	
 #		if (Doxygen_FOUND)
 #			add_subdirectory(docs)
@@ -119,40 +126,7 @@ return()
 #    endif()
 #endif()
 
-
-# Generate uunet target
-file (GLOB_RECURSE SOURCES ext/eclat/*.c ext/infomap/*.cpp libs/*.cpp src/*.cpp)
-add_library (uunet SHARED ${SOURCES})
-
-# Include private components
-target_include_directories (uunet PUBLIC
-	ext/eigen3 
-	ext/spectra
-	ext/eclat/eclat/src
-	ext/eclat/tract/src
-	ext/eclat/math/src
-	ext/eclat/util/src
-	ext/eclat/apriori/src
-	ext/infomap)
-
 add_definitions(-DNS_INFOMAP -DONLY_C_LOCALE=1)
-
-# Include public components
-target_include_directories (uunet PUBLIC 
-	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/libs>
-	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
-	$<INSTALL_INTERFACE:include>)
-
-# Compile uunet target
-# if (${CMAKE_VERSION} VERSION_LESS 3.8)
-#	set_target_properties (uunet PROPERTIES
-#		CXX_STANDARD 14
-#		CXX_STANDARD_REQUIRED YES
-#		CXX_EXTENSIONS NO)
-# else()
-target_compile_features (uunet PUBLIC cxx_std_14)
-#set_target_properties (uunet PROPERTIES CXX_EXTENSIONS OFF)
-# endif()
 
 # Installing targets
 install (TARGETS uunet
