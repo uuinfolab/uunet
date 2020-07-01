@@ -68,21 +68,6 @@ return()
 
 
 
-#		find_package (Doxygen)	
-#		if (Doxygen_FOUND)
-#			add_subdirectory(docs)
-#		else ()
-#			message (FATAL_ERROR "Doxygen is needed to build the documentation.")
-#		endif ()
-#	endif (DOXY)
-
-#	# Generate tests only during Debug.
-#	if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-#		add_subdirectory(test)
-#	endif()
-#endif()
-
-
 # Setting the project version
 #file (READ						"${CMAKE_CURRENT_SOURCE_DIR}/VERSION" PROJECT_VERSION_FULL)
 #string (REGEX REPLACE 			"[\n\r]" "" PROJECT_VERSION_FULL "${PROJECT_VERSION_FULL}")
