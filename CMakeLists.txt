@@ -56,10 +56,10 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 		add_subdirectory(docs)
 	endif ()
 
-	# TODO(dvladek): review how to
-	#if (OPTION_BUILD_TESTS OR (CMAKE_BUILD_TYPE STREQUAL "Debug"))
-	#	add_subdirectory(test)
-	#endif ()
+	if (OPTION_BUILD_TESTS OR (CMAKE_BUILD_TYPE STREQUAL "Debug"))
+		enable_testing()
+		add_subdirectory(test)
+	endif ()
 endif ()
 		
 return()
