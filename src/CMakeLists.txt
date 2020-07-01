@@ -5,29 +5,33 @@ cmake_minimum_required (VERSION 3.15...3.18)
 # TODO(dvladek): use proper name
 file (GLOB_RECURSE HEADERS CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/*.hpp")
 file (GLOB_RECURSE HEADERS_IMP CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/*.ipp")
-file (GLOB_RECURSE SOURCES CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/src/*.cpp)
+file (GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/*.cpp")
 
 #file (GLOB_RECURSE SOURCES ext/eclat/*.c ext/infomap/*.cpp libs/*.cpp src/*.cpp)
 
-add_library(uunet SHARED ${SOURCES} ${HEADERS} ${HEADERS_IMP})
+add_library(uunet SHARED
+	${SOURCES}
+	${HEADERS}
+	${HEADERS_IMP})
 
 include(GNUInstallDirs)
 
-# Include private components
-target_include_directories (uunet PUBLIC
-	${CMAKE_SOURCE_DIR}/ext/eigen3 
-	${CMAKE_SOURCE_DIR}/ext/spectra
-	${CMAKE_SOURCE_DIR}/ext/eclat/eclat/src
-	${CMAKE_SOURCE_DIR}/ext/eclat/tract/src
-	${CMAKE_SOURCE_DIR}/ext/eclat/math/src
-	${CMAKE_SOURCE_DIR}/ext/eclat/util/src
-	${CMAKE_SOURCE_DIR}/ext/eclat/apriori/src
-	${CMAKE_SOURCE_DIR}/ext/infomap)
+message (STATUS "INFO: '${CMAKE_SOURCE_DIR}'.")
 
-
-target_include_directories (uunet PUBLIC 
-	$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>
-	$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+target_include_directories (uunet
+	PRIVATE
+		${CMAKE_SOURCE_DIR}/ext/spectra
+		${CMAKE_SOURCE_DIR}/ext/eclat/eclat/src
+		${CMAKE_SOURCE_DIR}/ext/eclat/tract/src
+		${CMAKE_SOURCE_DIR}/ext/eclat/math/src
+		${CMAKE_SOURCE_DIR}/ext/eclat/util/src
+		${CMAKE_SOURCE_DIR}/ext/eclat/apriori/src
+		${CMAKE_SOURCE_DIR}/ext/infomap
+	
+	PUBLIC
+		$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/ext/eigen3>
+		$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>
+		$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 set_target_properties (uunet PROPERTIES 
 	VERSION ${PROJECT_VERSION}
@@ -79,8 +83,8 @@ install(
 	PATTERN "*.ipp" 									# select header files
 )
 
-#install(
-#    EXPORT uunet-config
-#    NAMESPACE uunet::
-#    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/uunet
-#	COMPONENT uunet-dev)
+install(
+    EXPORT uunet-config
+    NAMESPACE uunet::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/uunet
+	COMPONENT uunet_dev)

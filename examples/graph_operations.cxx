@@ -16,7 +16,6 @@ main()
 {
     
     // Reading a simple graph from file
-    
     const std::string network_file = "data/simple.txt";
     
     auto g = uu::net::read_network(network_file, "simple graph", ',');

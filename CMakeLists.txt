@@ -47,8 +47,8 @@ project (uunet VERSION 0.6.2
 add_subdirectory(src)
 
 # Examples using the library
-# NOTE(dvladek): Temporally disables while fixing src
-#add_subdirectory(examples)
+# NOTE(dvladek): Temporally disabled as the examples are out-of-date
+# add_subdirectory(examples)
 
 # Only do these if this is the main project, and not if it is included through add_subdirectory
 if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
