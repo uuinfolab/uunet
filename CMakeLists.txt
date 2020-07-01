@@ -1,7 +1,10 @@
-cmake_minimum_required (VERSION 3.15...3.18)
+cmake_minimum_required( VERSION 3.15...3.18 )
+
+# TODO(dvladek): Fix the new include
+# include( "${CMAKE_CURRENT_LIST_DIR}/project-meta-info.in" )
 
 # Add aditional cmake scripts
-list (APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+list( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake )
 
 # Include custom cmake scripts
 #include(cmake/GetGitRevisionDescription.cmake)
@@ -32,7 +35,7 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 	set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 endif()
 
-project (uunet VERSION 0.6.0
+project (uunet VERSION 0.6.2
 	DESCRIPTION "Network analysis library"
 	HOMEPAGE_URL "https://bitbucket.org/uuinfolab/uunet"
    	LANGUAGES C CXX)
@@ -129,23 +132,6 @@ return()
 add_definitions(-DNS_INFOMAP -DONLY_C_LOCALE=1)
 
 # Installing targets
-install (TARGETS uunet
-	EXPORT uunet-target
-	LIBRARY DESTINATION lib
-	ARCHIVE DESTINATION lib
-	RUNTIME DESTINATION bin)
-
-install(DIRECTORY "src/" # source directory
-DESTINATION "include/libuunet" # target directory
-FILES_MATCHING # install only matched files
-PATTERN "*.hpp" # select header files
-)
-
-install(DIRECTORY "src/" # source directory
-DESTINATION "include/libuunet" # target directory
-FILES_MATCHING # install only matched files
-PATTERN "*.ipp" # select header files
-)
 
 install(DIRECTORY "libs/" # source directory
 DESTINATION "include/libuunet" # target directory
