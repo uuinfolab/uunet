@@ -64,9 +64,6 @@ if( CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME )
 endif()
 
 
-# Configure health check tools
-# enable_cppcheck(ON)
-
 # The compiled library
 add_subdirectory(src)
 

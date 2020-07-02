@@ -3,6 +3,9 @@ cmake_minimum_required( VERSION 3.15...3.18 )
 # Meta information about the project
 include( "${PROJECT_SOURCE_DIR}/project-meta-info.in" )
 
+# Configure version header
+configure_file(${CMAKE_SOURCE_DIR}/src/config.hpp.in ${CMAKE_CURRENT_BINARY_DIR}/include/config.hpp @ONLY)
+
 file( GLOB_RECURSE HEADERS CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/*.hpp" )
 file( GLOB_RECURSE HEADERS_IMP CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/*.ipp" )
 file( GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/*.cpp" )
@@ -73,6 +76,10 @@ install(
 	FILES_MATCHING 													# install only matched files
 	PATTERN "*.hpp" 												# select header files
 	PATTERN "*.ipp" ) 												# select header files
+
+install(
+	FILES ${CMAKE_CURRENT_BINARY_DIR}/include/config.hpp			# source file
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${META_LIBRARY_NAME} )	# target directory
 
 install(
 	EXPORT ${META_LIBRARY_NAME}-config
