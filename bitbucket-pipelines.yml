@@ -5,8 +5,9 @@ pipelines:
     - step:
         script:
           - uname -a
-          - DEBIAN_FRONTEND=noninteractive
           - apt-get update
+          - DEBIAN_FRONTEND=noninteractive
+          - apt-get install -y tzdata
           - apt-get install build-essential -y --force-yes
           - gcc --version
           - apt-get install cmake doxygen graphviz libblas-dev liblapack-dev -y --force-yes
