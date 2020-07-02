@@ -10,7 +10,7 @@ pipelines:
           - apt-get install -y tzdata
           - apt-get install build-essential -y --force-yes
           - gcc --version
-          - apt-get install cmake doxygen graphviz libblas-dev liblapack-dev -y --force-yes
+          - apt-get install git cmake doxygen graphviz libblas-dev liblapack-dev -y --force-yes
           - cmake --version
           - mkdir build
           - cd build
