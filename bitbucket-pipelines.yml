@@ -6,7 +6,7 @@ pipelines:
         script:
           - uname -a
           - apt-get update
-          - apt-get install build-essential
+          - apt-get install build-essential -y --force-yes
           - gcc --version
           - apt-get install cmake doxygen graphviz libblas-dev liblapack-dev -y --force-yes
           - cmake --version
