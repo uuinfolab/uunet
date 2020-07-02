@@ -11,6 +11,6 @@ pipelines:
           - cmake --version
           - mkdir build
           - cd build
-          - cmake .. -D CMAKE_BUILD_TYPE=Debug -D OPTION_BUILD_DOCS=ON
+          - cmake -DCMAKE_BUILD_TYPE=Debug -DOPTION_BUILD_DOCS=ON ..
           - make
           - ./run_tests
