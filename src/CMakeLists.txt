@@ -1,24 +1,20 @@
-cmake_minimum_required (VERSION 3.15...3.18)
+cmake_minimum_required( VERSION 3.15...3.18 )
 
+# Meta information about the project
+include( "${PROJECT_SOURCE_DIR}/project-meta-info.in" )
 
-# TODO(dvladek): move to use BUILD_SHARED_LIBS		
-# TODO(dvladek): use proper name
-file (GLOB_RECURSE HEADERS CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/*.hpp")
-file (GLOB_RECURSE HEADERS_IMP CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/*.ipp")
-file (GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/*.cpp")
+file( GLOB_RECURSE HEADERS CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/*.hpp" )
+file( GLOB_RECURSE HEADERS_IMP CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/*.ipp" )
+file( GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/*.cpp" )
 
-#file (GLOB_RECURSE SOURCES ext/eclat/*.c ext/infomap/*.cpp libs/*.cpp src/*.cpp)
-
-add_library(uunet SHARED
+add_library( ${META_LIBRARY_NAME} SHARED
 	${SOURCES}
 	${HEADERS}
-	${HEADERS_IMP})
+	${HEADERS_IMP} )
 
-include(GNUInstallDirs)
+include( GNUInstallDirs )
 
-message (STATUS "INFO: '${CMAKE_SOURCE_DIR}'.")
-
-target_include_directories (uunet
+target_include_directories ( ${META_LIBRARY_NAME}
 	PRIVATE
 		${CMAKE_SOURCE_DIR}/ext/spectra
 		${CMAKE_SOURCE_DIR}/ext/eclat/eclat/src
@@ -31,60 +27,55 @@ target_include_directories (uunet
 	PUBLIC
 		$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/ext/eigen3>
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>
-		$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+		$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}> )
 
-set_target_properties (uunet PROPERTIES 
-	VERSION ${PROJECT_VERSION}
-	SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-)
+set_target_properties ( ${META_LIBRARY_NAME} PROPERTIES
+	LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+	VERSION ${META_LIBRARY_VERSION_FULL}
+	SOVERSION ${META_LIBRARY_VERSION} )
 
-set_target_properties (uunet PROPERTIES 
+set_target_properties ( ${META_LIBRARY_NAME} PROPERTIES 
 	CXX_STANDARD 14
 	CXX_STANDARD_REQUIRED YES
-	CXX_EXTENSIONS OFF
-) 
+	CXX_EXTENSIONS OFF ) 
 
-if (MSVC)
-	set (UUNET_DEBUG_OPTIONS /W4 /WX)
-else ()
-	set (UUNET_DEBUG_OPTIONS -Wall -Wextra -Wpedantic)
-endif ()
+if( MSVC )
+	set ( LIBRARY_DEBUG_OPTIONS /W4 /WX )
+else()
+	set ( LIBRARY_DEBUG_OPTIONS -Wall -Wextra -Wpedantic )
+endif()
 
-target_compile_features (uunet PUBLIC cxx_std_14)
-target_compile_options (uunet PUBLIC "$<$<CONFIG:DEBUG>:${UUNET_DEBUG_OPTIONS}>")
+target_compile_features( ${META_LIBRARY_NAME} PUBLIC cxx_std_14 )
+target_compile_options( ${META_LIBRARY_NAME} PUBLIC "$<$<CONFIG:DEBUG>:${LIBRARY_DEBUG_OPTIONS}>" )
 
 # IDEs should put the headers in a nice place
-source_group(TREE "${PROJECT_SOURCE_DIR}/include" PREFIX "Header Files" FILES ${HEADER_LIST})
+source_group( TREE "${PROJECT_SOURCE_DIR}/include" PREFIX "Header Files" FILES ${HEADER_LIST} )
 
 install(
-	TARGETS uunet
+	TARGETS ${META_LIBRARY_NAME}
 	EXPORT
-		uunet-config
-		COMPONENT uunet_dev
+	${META_LIBRARY_NAME}-config
+	COMPONENT ${META_LIBRARY_NAME}_dev
 	RUNTIME
 		DESTINATION ${CAMKE_INSTALL_BINDIR}
-		COMPONENT uunet_rt
+		COMPONENT ${META_LIBRARY_NAME}_rt
 	LIBRARY
 		DESTINATION ${CMAKE_INSTALL_LIBDIR}
-		COMPONENT uunet_rt
-		NAMELINK_COMPONENT uunet_dev 
+		COMPONENT ${META_LIBRARY_NAME}_rt
+		NAMELINK_COMPONENT ${META_LIBRARY_NAME}_dev 
 	ARCHIVE
 		DESTINATION ${CMAKE_INSTALL_LIBDIR}
-		COMPONENT uunet_dev
-)
-
-message (STATUS "INFO: '${CMAKE_CURRENT_LIST_DIR}'.")
+		COMPONENT ${META_LIBRARY_NAME}_dev )
 
 install(
-	DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/				# source directory
-	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/uunet		# target directory
-	FILES_MATCHING 										# install only matched files
-	PATTERN "*.hpp" 									# select header files
-	PATTERN "*.ipp" 									# select header files
-)
+	DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/							# source directory
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${META_LIBRARY_NAME}	# target directory
+	FILES_MATCHING 													# install only matched files
+	PATTERN "*.hpp" 												# select header files
+	PATTERN "*.ipp" ) 												# select header files
 
 install(
-    EXPORT uunet-config
-    NAMESPACE uunet::
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/uunet
-	COMPONENT uunet_dev)
+	EXPORT ${META_LIBRARY_NAME}-config
+    NAMESPACE {PROJECT_NAME}::
+	DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${META_LIBRARY_NAME}
+	COMPONENT ${META_LIBRARY_NAME}_dev )
