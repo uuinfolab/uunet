@@ -1,12 +1,13 @@
-image: gcc:6.5
+image: ubuntu
 
 pipelines:
   default:
     - step:
         script:
           - uname -a
-          - gcc --version
           - apt-get update
+          - apt-get install build-essential
+          - gcc --version
           - apt-get install cmake doxygen graphviz libblas-dev liblapack-dev -y --force-yes
           - cmake --version
           - mkdir build
