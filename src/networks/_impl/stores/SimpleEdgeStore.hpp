@@ -30,6 +30,8 @@ class SimpleEdgeStore :
         super(dir)
     {}
 
+    virtual ~SimpleEdgeStore() {}
+    
     /**
      * Adds a new edge.
      * @param e edge to be added.

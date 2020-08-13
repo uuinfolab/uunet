@@ -72,6 +72,35 @@ class SortedRandomSet
     SortedRandomSet(
     );
 
+    
+    SortedRandomSet& operator=(const SortedRandomSet& srs)
+    {
+        clear();
+        num_entries = 0;
+        capacity = 1;
+        MAX_LEVEL = 0;
+        level = 0;
+        header = std::make_shared<SortedRandomSetEntry<ELEMENT_TYPE> >(MAX_LEVEL);
+        for (auto el: srs)
+        {
+            add(el);
+        }
+        return *this;
+    }
+    
+    SortedRandomSet(const SortedRandomSet& srs)
+    {
+        num_entries = 0; // unnecessary, I guess
+        capacity = 1;
+        MAX_LEVEL = 0;
+        level = 0;
+        header = std::make_shared<SortedRandomSetEntry<ELEMENT_TYPE> >(MAX_LEVEL);
+        for (auto el: srs)
+        {
+            add(el);
+        }
+    }
+    
     /**
      * Destructs a sorted set, making sure that this does not result in a long
      * sequence of nested calls to entry destructors that would fill in the stack
@@ -132,6 +161,7 @@ class SortedRandomSet
 
       private:
 
+        
         /** Entry currently pointed to by this iterator */
         std::shared_ptr<SortedRandomSetEntry<ELEMENT_TYPE>> current;
 
@@ -224,6 +254,11 @@ class SortedRandomSet
         KEY
     );
 
+private:
+    
+    void
+    clear(
+          );
 };
 
 /* TEMPLATE CODE */
@@ -240,6 +275,14 @@ SortedRandomSet(
 template <class ELEMENT_TYPE>
 SortedRandomSet<ELEMENT_TYPE>::
 ~SortedRandomSet()
+{
+    clear();
+}
+
+template <class ELEMENT_TYPE>
+void
+SortedRandomSet<ELEMENT_TYPE>::
+clear()
 {
     std::vector<std::shared_ptr<SortedRandomSetEntry<ELEMENT_TYPE>> > tmp(size());
 

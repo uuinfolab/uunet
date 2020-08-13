@@ -12,7 +12,7 @@ TEST(core_olap_selection_test, EntryIterator)
     // @todo make test
     uu::core::Cube<int> c({3,3});
 
-    uu::core::sel::IndexIterator index_it({{0,1,2}, {0,1,2}});
+    uu::core::IndexIterator index_it({{0,1,2}, {0,1,2}});
     int i = 0;
 
     for (auto index: index_it)
@@ -20,7 +20,7 @@ TEST(core_olap_selection_test, EntryIterator)
         c[index] = i++;
     }
 
-    uu::core::sel::EntryIterator<uu::core::Cube<int>> it(&c, {{1,2}, {0,2}});
+    uu::core::EntryIterator<uu::core::Cube<int>> it(&c, {{1,2}, {0,2}});
 
     size_t iteration = 0;
 

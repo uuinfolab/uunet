@@ -35,10 +35,10 @@ expand(
     const std::vector<std::unique_ptr<MetaNetwork>>& levels,
     size_t i,
     const Vertex* v,
-    Community<const Vertex*>* com
+    Community<Network>* com
 );
 
-std::unique_ptr<CommunityStructure<Community<const Vertex*>>>
+std::unique_ptr<CommunityStructure<Network>>
 communities(
     const std::vector<std::unique_ptr<MetaNetwork>>& levels
 );

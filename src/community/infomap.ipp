@@ -2,7 +2,7 @@ namespace uu {
 namespace net {
 
 template <typename M>
-std::unique_ptr<CommunityStructure<VertexLayerCommunity<const typename M::layer_type>>>
+std::unique_ptr<CommunityStructure<M>>
 infomap(const M* net,
         bool overlapping,
         bool directed,

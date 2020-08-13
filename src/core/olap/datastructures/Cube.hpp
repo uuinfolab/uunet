@@ -9,6 +9,7 @@
 
 #include "core/exceptions/ElementNotFoundException.hpp"
 #include "core/exceptions/WrongParameterException.hpp"
+#include "core/utils/pretty_printing.hpp"
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -288,7 +289,7 @@ operator[](
 {
 
     size_t idx = pos(index);
-
+    
     return data_[idx];
 }
 

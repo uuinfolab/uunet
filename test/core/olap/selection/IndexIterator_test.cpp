@@ -5,7 +5,7 @@
 TEST(core_olap_selection_test, IndexIterator)
 {
 
-    uu::core::sel::IndexIterator idx({{1,2},{0,4},{2}});
+    uu::core::IndexIterator idx({{1,2},{0,4},{2}});
 
     std::vector<size_t> vidx2 = {1, 4, 2};
     std::vector<size_t> vidx3 = {2, 4, 2};

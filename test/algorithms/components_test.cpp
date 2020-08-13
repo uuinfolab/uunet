@@ -21,7 +21,7 @@ TEST_F(net_algorithms_test, components)
     EXPECT_NE(comp_id.at(pos_v2), comp_id.at(pos_v9));
     EXPECT_NE(comp_id.at(pos_v3), comp_id.at(pos_v8));
     EXPECT_NE(comp_id.at(pos_v3), comp_id.at(pos_v9));
-    
+
     EXPECT_EQ(comp_id.at(pos_v2), comp_id.at(pos_v3));
     EXPECT_EQ(comp_id.at(pos_v8), comp_id.at(pos_v9));
 }

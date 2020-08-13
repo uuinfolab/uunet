@@ -1,22 +1,19 @@
 #include "gtest/gtest.h"
 
-#include "community/VertexCommunity.hpp"
-#include "objects/Vertex.hpp"
+#include "community/Community.hpp"
+#include "networks/Network.hpp"
 
-/**
- * All the classes tested in this file are not supposed to be used directly,
- * but will be composed together to define more complex structures (graphs, ...).
- */
-class net_community_VertexCommunity_test : public ::testing::Test
+
+class net_community_test : public ::testing::Test
 {
   protected:
 
 };
 
-TEST_F(net_community_VertexCommunity_test, VertexCommunity)
+TEST_F(net_community_test, VertexCommunity)
 {
 
-    uu::net::VertexCommunity c;
+    uu::net::Community<uu::net::Network> c;
 
     auto v1 = std::make_shared<uu::net::Vertex>("v1");
     auto v2 = std::make_shared<uu::net::Vertex>("v2");

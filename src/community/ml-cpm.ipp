@@ -3,7 +3,7 @@ namespace net {
 
 
 template <typename M>
-std::unique_ptr<CommunityStructure<VertexLayerCommunity<const typename M::layer_type>>>
+std::unique_ptr<CommunityStructure<M>>
 mlcpm(
     const M* mnet,
     size_t k,
@@ -15,7 +15,7 @@ mlcpm(
 
     if (cliques.size()==0)
     {
-        return std::make_unique<CommunityStructure<VertexLayerCommunity<const typename M::layer_type>>>();
+        return std::make_unique<CommunityStructure<M>>();
     }
 
     // Step 2: bluid adjacency graph
@@ -38,7 +38,7 @@ mlcpm(
     auto comm = find_max_communities(adjacency,m);
 
     // Translate the result, so that it is compatible with the other clustering algorithms
-    auto result = std::make_unique<CommunityStructure<VertexLayerCommunity<const typename M::layer_type>>>();
+    auto result = std::make_unique<CommunityStructure<M>>();
 
     for (auto c: comm)
     {

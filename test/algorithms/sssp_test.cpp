@@ -4,7 +4,7 @@
 
 TEST_F(net_algorithms_test, sssp)
 {
-    
+
     auto spl = uu::net::single_source_path_length(g, v2);
 
     size_t pos_v1 = g->vertices()->index_of(v1);
