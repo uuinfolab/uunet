@@ -41,6 +41,8 @@ class
     ObjectStore(
     );
 
+    virtual ~ObjectStore() {}
+    
     using super::add;
     using super::size;
     using core::Subject<const OBJECT_TYPE>::observers;

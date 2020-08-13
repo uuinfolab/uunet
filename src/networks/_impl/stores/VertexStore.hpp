@@ -36,7 +36,9 @@ class
     VertexStore(
     );
 
-
+    
+    virtual ~VertexStore() {}
+    
     /** Returns an iterator to the first object in the collection */
     iterator
     begin(

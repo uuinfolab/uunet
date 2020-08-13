@@ -83,7 +83,7 @@ target_include_directories (uunet PUBLIC
 	ext/eclat/apriori/src
 	ext/infomap)
 
-add_definitions(-DNS_INFOMAP -DONLY_C_LOCALE=1)
+add_definitions(-DNS_INFOMAP -DONLY_C_LOCALE=1 -DISR_CLOMAX)
 
 # Include public components
 target_include_directories (uunet PUBLIC 
@@ -165,14 +165,13 @@ install(DIRECTORY "ext/spectra" # source directory
         PATTERN "*.h" # select header files
 )
 
-install(DIRECTORY "ext/eclat/" # source directory
+file (GLOB_RECURSE ECLAT_HEADERS ext/eclat/*.h)
+install(FILES ${ECLAT_HEADERS} # source directory
         DESTINATION "include/eclat" # target directory
-        FILES_MATCHING # install only matched files
-        PATTERN "*.h" # select header files
 )
 
 install(DIRECTORY "ext/infomap" # source directory
-        DESTINATION "include/infomap" # target directory
+        DESTINATION "include" # target directory
         FILES_MATCHING # install only matched files
         PATTERN "*.h" # select header files
 )
