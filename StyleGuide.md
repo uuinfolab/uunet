@@ -11,10 +11,9 @@ Many of the following conventions can be automatically formatted using the astyl
 
 ## Structure
 
-The code is contained in four main top-level folders:
+The code is contained in the following main top-level folders:
  - `ext/` (external libraries)
  - `test/` (unit tests)
- - `examples/` (examples showing how to use the library)
  - `src/` (original library code)
 
 The folder `src/` contains eleven folders, each providing some homogeneous set of classes and functions:
