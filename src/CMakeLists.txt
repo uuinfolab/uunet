@@ -8,7 +8,7 @@ configure_file(${CMAKE_SOURCE_DIR}/src/config.hpp.in ${CMAKE_CURRENT_BINARY_DIR}
 
 file( GLOB_RECURSE HEADERS CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/*.hpp" )
 file( GLOB_RECURSE HEADERS_IMP CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/*.ipp" )
-file( GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/*.cpp" "${CMAKE_SOURCE_DIR}/ext/eclat/*.c" "${CMAKE_SOURCE_DIR}/ext/infomap/*.cpp")
+file( GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "${CMAKE_SOURCE_DIR}/src/*.cpp" "${CMAKE_SOURCE_DIR}/ext/eclat/*.c" "${CMAKE_SOURCE_DIR}/ext/infomap/*.cpp" "${CMAKE_SOURCE_DIR}/ext/w2v/*.cpp")
 
 add_library( ${META_LIBRARY_NAME} SHARED
 	${SOURCES}
@@ -27,6 +27,7 @@ target_include_directories ( ${META_LIBRARY_NAME}
 		$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}>/ext/eclat/apriori/src
 		$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}>/ext/infomap
 		$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}>/ext/eigen3
+		$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}>/ext/w2v
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>
 		$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}> )
 
@@ -89,6 +90,11 @@ install(
 
 install(DIRECTORY "${PROJECT_SOURCE_DIR}/ext/eigen3/" # source directory
         DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/eigen3" # target directory
+        FILES_MATCHING # install only matched files
+        PATTERN "*" # select header files
+)
+install(DIRECTORY "${PROJECT_SOURCE_DIR}/ext/w2v/" # source directory
+        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/w2v" # target directory
         FILES_MATCHING # install only matched files
         PATTERN "*" # select header files
 )
