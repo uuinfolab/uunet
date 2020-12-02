@@ -3,6 +3,8 @@
 #include <cmath>
 #include <random>
 #include <include/word2vec.hpp>
+#include "io/read_multilayer_network.hpp"
+#include "community/CommunityStructure.hpp"
 namespace uu
 {
     namespace net
@@ -11,11 +13,7 @@ namespace uu
         {
 
         public:
-            int K, num_of_iterations;
-            int dimensions, num_of_points;
-            std::default_random_engine *generator;
-            const std::unordered_map<std::string, w2v::vector_t> &point_map;
-
+            std::unique_ptr<uu::net::CommunityStructure<uu::net::MultilayerNetwork>> communities;
             class Point
             {
             public:
@@ -42,12 +40,12 @@ namespace uu
                 void reset_points();
             };
 
-            std::vector<std::unique_ptr<Cluster>> K_clusters;
-            std::vector<std::unique_ptr<Point>> all_points;
+            //std::vector<std::unique_ptr<Cluster>> K_clusters;
+            //std::vector<std::unique_ptr<Cluster>> K_clusters_current;
+            
 
-            KMeans(int K, int iterations, int vec_dimensions, int num_points, const std::unordered_map<std::string, w2v::vector_t> &input_map,
-                   std::default_random_engine *gen);
-            void run();
+            KMeans(int k_min,int k_max, uu::net::MultilayerNetwork * ml_net, int iterations, int vec_dimensions, int num_points, const std::unordered_map<std::string, w2v::vector_t> &input_map);
+            
             void run_cos();
             void print_means();
             void print_cluster(int k);
@@ -55,13 +53,21 @@ namespace uu
             void summary();
 
         private:
+            std::vector<std::unique_ptr<Point>> all_points;
+            
+            int dimensions, num_of_points;
+            std::default_random_engine generator = std::default_random_engine();
+            const std::unordered_map<std::string, w2v::vector_t> &point_map;
+            std::vector<std::shared_ptr<KMeans::Cluster>> create_clustering(int,int);
             float distance(Point &point, Cluster *target);
             float distance_cos(Point &point, Cluster *target);
             const w2v::vector_t get_position(Point &point);
-            void find_join_nearest(Point &point, std::vector<std::unique_ptr<Cluster>> &clusters);
-            void find_join_nearest_cos(Point &point, std::vector<std::unique_ptr<Cluster>> &clusters);
+            void find_join_nearest(Point &point, std::vector<std::shared_ptr<Cluster>> &clusters);
+            void find_join_nearest_cos(Point &point, std::vector<std::shared_ptr<Cluster>> &clusters);
             void initialize_mean(Cluster *cluster);
-            void update_mean(Cluster *cluster);  
+            void update_mean(Cluster *cluster);
+            float distance(Point &point, Point &point_1);
+            double silhouette_score(std::vector<std::shared_ptr<KMeans::Cluster>> & K_clusters, int K);
         };
     } // namespace net
 } // namespace uu
