@@ -1,11 +1,3 @@
-/**
- * @file
- * @brief Huffman encoding tree implementation based on std::priority_queue
- * @author Max Fomichev
- * @date 19.12.2016
- * @copyright Apache License v.2 (http://www.apache.org/licenses/LICENSE-2.0)
-*/
-
 #ifndef PEPROCESSNETWORK__H
 #define PEPROCESSNETWORK__H
 
@@ -17,15 +9,20 @@
 
 #include "AliasTable.hpp"
 #include "include/word2vec.hpp"
+#include "LayerSwapMetric.hpp"
 
 namespace uu
 {
     namespace net
     {
 
-        void set_rw_probs(uu::net::WeightedNetwork *net, std::unordered_map<const uu::net::Vertex *, std::unordered_map<const uu::net::Vertex *, AliasTable>> &king_map, float p, float q, uu::net::EdgeMode edge_mode = uu::net::EdgeMode::INOUT);
+        void set_rw_probs(uu::net::WeightedNetwork *net, std::unordered_map<const uu::net::Vertex *, std::unordered_map<const uu::net::Vertex *, AliasTable<uu::net::Vertex>>> &king_map, float p, float q, uu::net::EdgeMode edge_mode = uu::net::EdgeMode::INOUT);
 
-        void set_rw_probs(uu::net::Network *net, std::unordered_map<const uu::net::Vertex *, std::unordered_map<const uu::net::Vertex *, AliasTable>> &king_map, float p, float q, uu::net::EdgeMode edge_mode = uu::net::EdgeMode::INOUT);
+        void set_rw_probs(uu::net::Network *net, std::unordered_map<const uu::net::Vertex *, std::unordered_map<const uu::net::Vertex *, AliasTable<uu::net::Vertex>>> &king_map, float p, float q, uu::net::EdgeMode edge_mode = uu::net::EdgeMode::INOUT);
+
+        void set_interlayer_probs(uu::net::MultilayerNetwork *ml_net, std::unordered_map<const uu::net::Vertex *, std::unordered_map<const uu::net::Network *, AliasTable<uu::net::Network>>> &interlayer_map, LayerSwapMetric metric);
+
+        void set_interlayer_probs_nor(uu::net::MultilayerNetwork *ml_net, std::unordered_map<const uu::net::Vertex *, std::unordered_map<const uu::net::Network *, AliasTable<uu::net::Network>>> &interlayer_map, LayerSwapMetric metric);
 
     } // namespace net
 } // namespace uu

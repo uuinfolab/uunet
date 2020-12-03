@@ -28,6 +28,18 @@ namespace uu
                    int window = 40, int cluster_iterations = 50, std::string alpha = "0.05", std::string sample = "1e-3",
                    int iterations = 5, int min_word_freq = 1, int negative_sample = 5, int threads = 8);
 
+
+    std::unordered_map<std::string, w2v::vector_t> algo_3_MG_new(uu::net::MultilayerNetwork *ml_net, LayerSwapMetric lswap_metric = LayerSwapMetric::LAYERS_JACC_SIM, float r=0.5, float p=0.5, 
+                                    float q = 0.5, int size_of_embedding = 20, int len_rand_walk = 80, int numb_rand_walks = 1000, int clusters = 8,
+                                    int window = 40, int cluster_iterations = 50, std::string alpha = "0.05",  std::string sample = "1e-3",
+                                    int iterations = 5, int min_word_freq = 1, int negative_sample = 5, int threads = 8 );
+
+    std::unordered_map<std::string, w2v::vector_t> algo_3_MG_new_nor(uu::net::MultilayerNetwork *ml_net, LayerSwapMetric lswap_metric = LayerSwapMetric::LAYERS_JACC_SIM, float p=0.5, float q = 0.5, int size_of_embedding = 20, int len_rand_walk = 80, int numb_rand_walks = 1000, int clusters = 8,
+                            int window = 40, int cluster_iterations = 50, std::string alpha = "0.05",  std::string sample = "1e-3",
+                             int iterations = 5, int min_word_freq = 1, int negative_sample = 5, int threads = 8);
+
+ 
+
   } // namespace net
 } // namespace uu
 

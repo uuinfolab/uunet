@@ -8,16 +8,21 @@ namespace uu
 {
     namespace net
     {
+        template<typename ObjType>
         class AliasTable
         {
         private:
             std::vector<double> prob_table;
             std::vector<int> alias_table;
-            std::vector<const Vertex *> nodes; //should be replaced by pointers to nodes inside
+            std::vector<const ObjType *> objects;
         public:
-            AliasTable(std::vector<double> probabilities, std::vector<const uu::net::Vertex *> _nodes);
-            const uu::net::Vertex *alias_sampling(std::default_random_engine *generator);
+            //template <typename ObjType>
+            AliasTable(std::vector<double> probabilities, std::vector<const ObjType *> _objects);
+            //template <typename ObjType>
+            const ObjType* alias_sampling(std::default_random_engine *generator);
+            int size();
         };
     } // namespace net
 } // namespace uu
+#include "AliasTable.ipp"
 

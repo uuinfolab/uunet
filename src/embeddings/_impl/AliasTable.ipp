@@ -1,12 +1,11 @@
-
-#include "AliasTable.hpp"
 namespace uu
 {
     namespace net
     {
-            AliasTable::AliasTable(std::vector<double> probabilities, std::vector<const uu::net::Vertex *> _nodes)
+            template<typename ObjType>
+            AliasTable<ObjType>::AliasTable(std::vector<double> probabilities, std::vector<const ObjType *> _objects)
             {
-                nodes = _nodes;
+                objects = _objects;
                 int num_of_elements = probabilities.size();
                 prob_table = std::vector<double>(num_of_elements);
                 alias_table = std::vector<int>(num_of_elements);
@@ -76,7 +75,8 @@ namespace uu
                     }
                 }
             }
-            const uu::net::Vertex * AliasTable::alias_sampling(std::default_random_engine *generator)
+            template <typename ObjType>
+            const ObjType * AliasTable<ObjType>::alias_sampling(std::default_random_engine *generator)
             {
                 std::uniform_real_distribution<double> distribution(0.0, 1.0);
                 double x = distribution(*generator);
@@ -84,12 +84,14 @@ namespace uu
                 double y = alias_table.size() * x - i;
                 if (y < prob_table[i])
                 {
-                    return nodes[i];
+                    return objects[i];
                 }
                 else
                 {
-                    return nodes[alias_table[i]];
+                    return objects[alias_table[i]];
                 }
             }
+            template <typename ObjType>
+            int AliasTable<ObjType>::size(){return prob_table.size();}
     } // namespace net
 } // namespace uu
