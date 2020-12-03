@@ -57,10 +57,6 @@ namespace uu
             double silhouette_score_current = -2; //magic number
             double silhouette_score_best = silhouette_score_current;
             int k_best = k_min;
-
-            // std::vector<std::shared_ptr<Cluster>> K_clusters_best;
-
-            std::cout << "start with silhoueetee stuff" << std::endl;
        
             for (int i = k_min; i <= k_max; i++)
             {
@@ -93,6 +89,8 @@ namespace uu
             }
         }
 
+
+
         float KMeans::distance(Point &point, Cluster *target)
         {
             float distance = 0;
@@ -103,6 +101,7 @@ namespace uu
             }
             return sqrt(distance);
         }
+
 
         float KMeans::distance_cos(Point &point, Cluster *target)
         {
@@ -124,10 +123,12 @@ namespace uu
             return sqrt(distance);
         }
 
+
         const w2v::vector_t KMeans::get_position(Point &point)
         {
             return point_map.at(point.name);
         }
+
 
         void KMeans::find_join_nearest(Point &point, std::vector<std::shared_ptr<Cluster>> &clusters)
         {
@@ -145,6 +146,7 @@ namespace uu
             target->add(point);
         }
 
+
         void KMeans::find_join_nearest_cos(Point &point, std::vector<std::shared_ptr<Cluster>> &clusters)
         {
             Cluster *target = clusters.at(0).get();
@@ -160,6 +162,7 @@ namespace uu
             }
             target->add(point);
         }
+
 
         void KMeans::initialize_mean(Cluster *cluster)
         {
@@ -202,13 +205,10 @@ namespace uu
             {
                 K_clusters.emplace_back(std::make_unique<Cluster>(dimensions, &generator));
             }
-            //std::cout << std::endl << "Running K-means, K=" << (K) << "," << (num_of_iterations) << " iterations.\n" << std::endl;
-            //cout << "Initializing clusters\n";
             for (auto &cluster : K_clusters)
             {
                 initialize_mean(cluster.get());
             }
-            //cout << "Initialized clusters\n";
             for (int i = 1; i <= iters; i++)
             {
                 for (auto &point : all_points)
@@ -227,6 +227,8 @@ namespace uu
             }
             return K_clusters;
         }
+
+
         float KMeans::distance(Point &point, Point &point_1)
         {
             float distance = 0;
@@ -237,6 +239,8 @@ namespace uu
             }
             return sqrt(distance);
         }
+
+
         double KMeans::silhouette_score(std::vector<std::shared_ptr<KMeans::Cluster>> &K_clusters, int K)
         {
             std::vector<double> s_i = std::vector<double>(all_points.size());
@@ -246,26 +250,20 @@ namespace uu
             int cluster_counter = 0;
             for (auto &&c : K_clusters)
             {
-                //std::cout << "hej!!" << std::endl;
-
                 for (auto p : c->my_points)
                 {
                     a_i = 0;
                     b_i = 0;
-                    //std::cout << "hej!" << std::endl;
                     if (c->cluster_size == 1)
                     {
-                        //std::cout << "hej" << std::endl;
                         s_i[index] = 0;
                         index++;
                     }
                     else
                     {
-                        //std::cout << "enters active zone" << std::endl;
                         for (auto p_neighb : c->my_points)
                         {
                             a_i += distance(p, p_neighb);
-                            //std::cout << a_i[index] << std::endl;
                         }
                         a_i /= (c->cluster_size - 1);
                         auto dist = std::vector<double>(K - 1);
@@ -295,63 +293,6 @@ namespace uu
             }
             return std::accumulate(s_i.begin(), s_i.end(), 0.0) / s_i.size();
         }
-        /*
-        void KMeans::run_cos()
-        {
-            std::cout << std::endl
-                 << "Running K-means, K=" << (K) << "," << (num_of_iterations) << " iterations, cos distance.\n"
-                 << std::endl;
-            std::cout << "Initializing clusters\n";
-            for (auto &cluster : K_clusters)
-            {
-                initialize_mean(cluster.get());
-            }
-            std::cout << "Initialized clusters\n";
-            for (int i = 1; i <= num_of_iterations; i++)
-            {
-                for (auto &point : all_points)
-                {
-                    find_join_nearest_cos(*point, K_clusters);
-                }
-                for (auto &cluster : K_clusters)
-                {
-                    update_mean(cluster.get());
-                    cluster->reset_points();
-                }
-            }
-            for (auto &point : all_points)
-            {
-                find_join_nearest_cos(*point, K_clusters);
-            }
-            for (auto &cluster : K_clusters)
-            {
-                update_mean(cluster.get());
-            }
-        } */
-        /*
-        void KMeans::print_means()
-        {
-            for (int i = 1; i <= K; i++)
-            {
-                std::cout << "Cluster:" << (i) << ", size:" << (K_clusters[i - 1]->cluster_size) << std::endl;
-                std::cout << "Cluster:" << (i) << ", centroid: [";
-                for (auto value : K_clusters[i - 1]->cluster_mean)
-                {
-                    std::cout << (value) << " ";
-                }
-                std::cout << "]\n";
-            }
-        }
-        /*
-        void KMeans::print_points()
-        {
-            std::cout << "ppoints\n";
-            for (auto &point : all_points)
-            {
-                std::cout << "Point:" << point->name << " [";
-                std::cout << "]\n";
-            }
-        } */
         
         void KMeans::print_cluster(int k)
         {
@@ -367,30 +308,22 @@ namespace uu
         void KMeans::print_clusters()
         {   
 
-            auto clusterCOCK = 1;
+            auto clusterCLOCK = 1;
            
             for (auto cluster : K_clusters_best)
             {
-            std::cout << "Cluster:" << clusterCOCK << "\n";
+            std::cout << "Cluster:" << clusterCLOCK << "\n";
             std::cout << "[ ";
 
                 for (auto point : cluster->my_points) {
                         std::cout << point.name << " ";
                 }
-              clusterCOCK += 1;
+              clusterCLOCK += 1;
             std::cout << "]\n";
             }
             
             
         }
-
-        // void KMeans::summary()
-        // {
-        //     std::cout << std::endl
-        //          << "K-means, K=" << (K) << "," << (num_of_iterations) << " iterations.\n"
-        //          << std::endl;
-        //     print_means();
-        // } 
 
     } // namespace net
 } // namespace uu
