@@ -58,7 +58,8 @@ namespace uu
             double silhouette_score_best = silhouette_score_current;
             int k_best = k_min;
 
-            std::vector<std::shared_ptr<Cluster>> K_clusters_best;
+            // std::vector<std::shared_ptr<Cluster>> K_clusters_best;
+
             std::cout << "start with silhoueetee stuff" << std::endl;
             for (int i = k_min; i <= k_max; i++)
             {
@@ -72,6 +73,8 @@ namespace uu
                     k_best = i;
                 }
             }
+
+
             std::cout << "start with communities" << std::endl;
             communities = std::make_unique<uu::net::CommunityStructure<uu::net::MultilayerNetwork>>();
             for (int i = 1; i <= k_best; i++)
@@ -351,12 +354,12 @@ namespace uu
                 std::cout << "]\n";
             }
         } */
-        /*
+        
         void KMeans::print_cluster(int k)
         {
             std::cout << "Cluster:" << k << "\n";
             std::cout << "[ ";
-            for (auto point : K_clusters[k]->my_points)
+            for (auto point : K_clusters_best[k]->my_points)
             {
                 std::cout << point.name << " ";
             }
@@ -364,20 +367,32 @@ namespace uu
         }
 
         void KMeans::print_clusters()
-        {
-            for (int i = 0; i < K; i++)
+        {   
+
+            auto clusterCOCK = 1;
+           
+            for (auto cluster : K_clusters_best)
             {
-                print_cluster(i);
+            std::cout << "Cluster:" << clusterCOCK << "\n";
+            std::cout << "[ ";
+
+                for (auto point : cluster->my_points) {
+                        std::cout << point.name << " ";
+                }
+              clusterCOCK += 1;
+            std::cout << "]\n";
             }
+            
+            
         }
 
-        void KMeans::summary()
-        {
-            std::cout << std::endl
-                 << "K-means, K=" << (K) << "," << (num_of_iterations) << " iterations.\n"
-                 << std::endl;
-            print_means();
-        } */
+        // void KMeans::summary()
+        // {
+        //     std::cout << std::endl
+        //          << "K-means, K=" << (K) << "," << (num_of_iterations) << " iterations.\n"
+        //          << std::endl;
+        //     print_means();
+        // } 
 
     } // namespace net
 } // namespace uu
