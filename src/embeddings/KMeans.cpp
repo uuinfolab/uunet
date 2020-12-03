@@ -58,9 +58,13 @@ namespace uu
             double silhouette_score_best = silhouette_score_current;
             int k_best = k_min;
 
+<<<<<<< HEAD
             // std::vector<std::shared_ptr<Cluster>> K_clusters_best;
 
             std::cout << "start with silhoueetee stuff" << std::endl;
+=======
+            std::vector<std::shared_ptr<Cluster>> K_clusters_best;
+>>>>>>> 60aa5a41662deea04e40ba2d707b03b5abf8a1db
             for (int i = k_min; i <= k_max; i++)
             {
                 auto K_clusters_current = create_clustering(i, iterations);
@@ -73,14 +77,17 @@ namespace uu
                     k_best = i;
                 }
             }
+<<<<<<< HEAD
 
 
             std::cout << "start with communities" << std::endl;
+=======
+>>>>>>> 60aa5a41662deea04e40ba2d707b03b5abf8a1db
             communities = std::make_unique<uu::net::CommunityStructure<uu::net::MultilayerNetwork>>();
-            for (int i = 1; i <= k_best; i++)
+            for (int i = 0; i < k_best; i++)
             {
                 auto community = std::make_unique<uu::net::Community<uu::net::MultilayerNetwork>>();
-                for (auto value : K_clusters_best[i - 1]->my_points)
+                for (auto value : K_clusters_best[i]->my_points)
                 {
                     for (auto layer : *ml_net->layers())
                     {
