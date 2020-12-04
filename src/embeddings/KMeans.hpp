@@ -44,7 +44,7 @@ namespace uu
             //std::vector<std::unique_ptr<Cluster>> K_clusters_current;
             std::unique_ptr<uu::net::CommunityStructure<uu::net::MultilayerNetwork>> communities;
             std::vector<std::shared_ptr<Cluster>> K_clusters_best;
-            KMeans(int k_min,int k_max, uu::net::MultilayerNetwork * ml_net, int iterations, int vec_dimensions, int num_points, const std::unordered_map<std::string, w2v::vector_t> &input_map);
+            KMeans(int k_min,int k_max, uu::net::MultilayerNetwork * ml_net, int iterations, const std::unordered_map<std::string, w2v::vector_t> &input_map);
             
             void run_cos();
             void print_means();

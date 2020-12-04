@@ -46,10 +46,10 @@ namespace uu
             cluster_size = 0;
         }
 
-        KMeans::KMeans(int k_min, int k_max, uu::net::MultilayerNetwork *ml_net, int iterations, int vec_dimensions, int num_points, const std::unordered_map<std::string, w2v::vector_t> &input_map) : point_map(input_map)
+        KMeans::KMeans(int k_min, int k_max, uu::net::MultilayerNetwork *ml_net, int iterations, const std::unordered_map<std::string, w2v::vector_t> &input_map) : point_map(input_map)
         {
-            dimensions = vec_dimensions;
-            num_of_points = num_points;
+            dimensions = input_map.begin()->second.size();
+            num_of_points = ml_net->actors()->size();
             for (auto map_entry : point_map)
             {
                 all_points.emplace_back(std::make_unique<Point>(map_entry.first));
