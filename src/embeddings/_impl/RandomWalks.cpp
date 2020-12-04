@@ -59,12 +59,20 @@ namespace uu
             }
             for (int i = 0; i < numb_rand_walks; ++i)
             {
+
                 auto node_second = multi_net->actors()->get_at_random();
                 auto layer = multi_net->layers()->get_at_random();
                 while (!layer->vertices()->contains(node_second))
                 {
                     layer = multi_net->layers()->get_at_random();
                 }
+
+                
+                if (layer->edges()->neighbors(node_second, uu::net::EdgeMode::INOUT)->size() == 0) {        //Guarantees node is not isolated maybe
+         
+                    continue;
+                }
+
                 auto node_first = layer->edges()->neighbors(node_second, uu::net::EdgeMode::INOUT)->get_at_random();
 
                 auto node_sentence = std::string();
@@ -75,6 +83,8 @@ namespace uu
                 }
                 else
                 {
+
+                    
                     node_sentence.append(node_first->name);
                     for (int j = 0; j < (len_rand_walk - 1); ++j)
                     {
@@ -86,12 +96,20 @@ namespace uu
                         {
                             layer = multi_net->layers()->get_at_random();
                         }
+
+                        if (layer->edges()->neighbors(node_second, uu::net::EdgeMode::INOUT)->size() == 0) {        //Guarantees node is not isolated maybe
+                               continue;
+                        }
+
+
                         node_first = layer->edges()->neighbors(node_second, uu::net::EdgeMode::INOUT)->get_at_random();
 
                         auto node_tmp = sampling_map_ml.at(layer).at(node_first).at(node_second).alias_sampling(&generator);
                         node_first = node_second;
                         node_sentence.append(" " + node_first->name);
                         node_second = node_tmp;
+                     
+                     
                         node_sentence.append(" " + node_first->name);
                     }
                     node_sentence += ". ";
