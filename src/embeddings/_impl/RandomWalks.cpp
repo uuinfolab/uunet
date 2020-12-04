@@ -69,7 +69,7 @@ namespace uu
 
                 
                 if (layer->edges()->neighbors(node_second, uu::net::EdgeMode::INOUT)->size() == 0) {        //Guarantees node is not isolated maybe
-         
+                    output.push_back(node_second->name + ". ");
                     continue;
                 }
 
@@ -79,38 +79,36 @@ namespace uu
 
                 if (len_rand_walk == 1)
                 {
-                    output.push_back(node_first->name + ". ");
+                    output.push_back(node_second->name + ". ");
                 }
                 else
                 {
-
-                    
-                    node_sentence.append(node_first->name);
-                    for (int j = 0; j < (len_rand_walk - 1); ++j)
+                    node_sentence.append(node_second->name);
+                    for (int j = 0; j < (len_rand_walk-1); ++j)
                     {
                         if (distribution(generator) < r)
                         {
-                            layer = multi_net->layers()->get_at_random();
+                            while (!layer->vertices()->contains(node_second))
+                            {
+                                layer = multi_net->layers()->get_at_random(); //quite inefficient for certain problems
+                            }
+                            if (layer->edges()->neighbors(node_second, uu::net::EdgeMode::INOUT)->size() == 0) {  
+                                node_sentence.append(" " + node_second->name);      //Guarantees node is not isolated maybe
+                                break;
+                            }
+                            node_first = layer->edges()->neighbors(node_second, uu::net::EdgeMode::INOUT)->get_at_random();
                         }
-                        while (!layer->vertices()->contains(node_second))
-                        {
-                            layer = multi_net->layers()->get_at_random();
-                        }
-
-                        if (layer->edges()->neighbors(node_second, uu::net::EdgeMode::INOUT)->size() == 0) {        //Guarantees node is not isolated maybe
-                               continue;
-                        }
-
-
-                        node_first = layer->edges()->neighbors(node_second, uu::net::EdgeMode::INOUT)->get_at_random();
+        
+                        //if (layer->edges()->neighbors(node_second, uu::net::EdgeMode::INOUT)->size() == 0) {  
+                          //  node_sentence.append(" " + node_second->name);      //Guarantees node is not isolated maybe
+                            //break;
+                        //}
 
                         auto node_tmp = sampling_map_ml.at(layer).at(node_first).at(node_second).alias_sampling(&generator);
                         node_first = node_second;
-                        node_sentence.append(" " + node_first->name);
                         node_second = node_tmp;
-                     
-                     
-                        node_sentence.append(" " + node_first->name);
+                        node_sentence.append(" " + node_second->name);
+                        //node_sentence.append(" " + node_second->name);
                     }
                     node_sentence += ". ";
                     output.push_back(node_sentence);
@@ -144,32 +142,24 @@ namespace uu
 
                 if (len_rand_walk == 1)
                 {
-                    output.push_back(node_first->name + ". ");
+                    output.push_back(node_second->name + ". ");
                 }
                 else
                 {
-                    node_sentence.append(node_first->name);
-                    for (int j = 0; j < (len_rand_walk - 1); ++j)
+                    node_sentence.append(node_second->name);
+                    for (int j = 0; j < (len_rand_walk-1); ++j)
                     {
-                        std::cout << "pre layersampling" << std::endl;
 
                         if (interlayer_map.at(node_second).at(layer).size() != 0 && distribution(generator) < r)
                         {
-                            std::cout << node_second->name << "inner mapsize " << interlayer_map.at(node_second).size() << std::endl;
                             layer = interlayer_map.at(node_second).at(layer).alias_sampling(&generator);
+                            node_first = layer->edges()->neighbors(node_second, uu::net::EdgeMode::INOUT)->get_at_random();
                         }
-
-                        std::cout << "post layer sampling" << std::endl;
-
-                        node_first = layer->edges()->neighbors(node_second, uu::net::EdgeMode::INOUT)->get_at_random();
-
-                        std::cout << "no neighbour shinenigans?" << std::endl;
 
                         auto node_tmp = sampling_map_ml.at(layer).at(node_first).at(node_second).alias_sampling(&generator);
                         node_first = node_second;
-                        node_sentence.append(" " + node_first->name);
                         node_second = node_tmp;
-                        node_sentence.append(" " + node_first->name);
+                        node_sentence.append(" " + node_second->name);
                     }
                     node_sentence += ". ";
                     output.push_back(node_sentence);
@@ -210,16 +200,11 @@ namespace uu
                     node_sentence.append(node_first->name);
                     for (int j = 0; j < (len_rand_walk - 1); ++j)
                     {
-                        std::cout << "pre layersampling" << std::endl;
 
                         //std::cout << node_second->name << "inner mapsize " << interlayer_map.at(node_second).size() << std::endl;
                         layer = interlayer_map.at(node_second).at(layer).alias_sampling(&generator);
 
-                        std::cout << "post layer sampling" << std::endl;
-
                         node_first = layer->edges()->neighbors(node_second, uu::net::EdgeMode::INOUT)->get_at_random();
-
-                        std::cout << "no neighbour shinenigans?" << std::endl;
 
                         auto node_tmp = sampling_map_ml.at(layer).at(node_first).at(node_second).alias_sampling(&generator);
                         node_first = node_second;
