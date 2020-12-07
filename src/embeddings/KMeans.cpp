@@ -29,16 +29,7 @@ namespace uu
             my_points.push_back(p);
             cluster_size += 1;
         }
-
-        void KMeans::Cluster::randomize_mean()
-        {
-            std::uniform_real_distribution<float> distribution(0.0, 2.0);
-            for (auto &value : cluster_mean)
-            {
-                value = distribution(*generator) - 1.0;
-            }
-        }
-
+        
         void KMeans::Cluster::reset_points()
         {
             points_within.resize(0);
@@ -164,14 +155,26 @@ namespace uu
         }
 
 
-        void KMeans::initialize_mean(Cluster *cluster)
+        void KMeans::initialize_means(std::vector<std::shared_ptr<uu::net::KMeans::Cluster>>& K_clusters, int K)
         {
             std::uniform_real_distribution<float> distribution(0, num_of_points - 1);
-            int rand_index = distribution(generator);
-            for (int i = 0; i < dimensions; i++)
+            std::set<int> init_index;            
+            while(init_index.size() < K)
             {
-                cluster->cluster_mean[i] = get_position(*all_points[rand_index]).at(i);
+                int rand_index = distribution(generator);
+                init_index.insert(rand_index);
             }
+            for(int j=0; j<K; j++)
+            {
+                auto index= *std::next(init_index.begin(), j);
+                auto position = get_position(*all_points[index]);
+                for (int i = 0; i < dimensions; i++)
+                {
+                K_clusters.at(j)->cluster_mean[i] = position.at(i);
+                }
+            }
+            
+            
         }
 
         void KMeans::update_mean(Cluster *cluster)
@@ -205,10 +208,7 @@ namespace uu
             {
                 K_clusters.emplace_back(std::make_unique<Cluster>(dimensions, &generator));
             }
-            for (auto &cluster : K_clusters)
-            {
-                initialize_mean(cluster.get());
-            }
+            initialize_means(K_clusters,K);
             for (int i = 1; i <= iters; i++)
             {
                 for (auto &point : all_points)

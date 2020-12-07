@@ -152,6 +152,11 @@ namespace uu
                         double node_union, prob_metric;
                         switch (metric)
                         {
+                        case LayerSwapMetric::UNIFORM:
+                        {    
+                            double prob_metric = 1;
+                            break;
+                        }
                         case LayerSwapMetric::LAYERS_JACC_SIM:
                         {
                             for (auto node : *current_layer->vertices())
@@ -245,6 +250,11 @@ namespace uu
                         double node_union, prob_metric;
                         switch (metric)
                         {
+                        case LayerSwapMetric::UNIFORM:
+                        {    
+                            double prob_metric = 1;
+                            break;
+                        }
                         case LayerSwapMetric::LAYERS_JACC_SIM:
                         {
                             for (auto node : *current_layer->vertices())

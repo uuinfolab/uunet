@@ -64,7 +64,7 @@ namespace uu
             const w2v::vector_t get_position(Point &point);
             void find_join_nearest(Point &point, std::vector<std::shared_ptr<Cluster>> &clusters);
             void find_join_nearest_cos(Point &point, std::vector<std::shared_ptr<Cluster>> &clusters);
-            void initialize_mean(Cluster *cluster);
+            void initialize_means(std::vector<std::shared_ptr<uu::net::KMeans::Cluster>>& K_clusters, int K);
             void update_mean(Cluster *cluster);
             float distance(Point &point, Point &point_1);
             double silhouette_score(std::vector<std::shared_ptr<KMeans::Cluster>> & K_clusters, int K);

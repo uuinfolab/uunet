@@ -11,7 +11,8 @@ namespace uu
             LAYERS_JACC_SIM,
             LAYERS_JACC_DIST,
             NEIGH_JACC_SIM,
-            NEIGH_JACC_DIST
+            NEIGH_JACC_DIST,
+            UNIFORM
         };
     } // namespace net
 } // namespace uu
