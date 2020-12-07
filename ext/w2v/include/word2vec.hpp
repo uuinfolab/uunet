@@ -36,7 +36,7 @@ namespace w2v {
         uint8_t iterations = 5; ///< train iterations
         float alpha = 0.05f; ///< starting learn rate
         bool withSG = false; ///< use Skip-Gram instead of CBOW
-        std::string wordDelimiterChars = " \n,.-!?:;/\"#$%&'()*+<=>@[]\\^_`{|}~\t\v\f\r";
+        std::string wordDelimiterChars = " .\n";
         std::string endOfSentenceChars = ".\n?!";
         trainSettings_t() = default;
     };
@@ -357,7 +357,7 @@ namespace w2v {
          */
         doc2vec_t(const std::unique_ptr<w2vModel_t> &_model,
                   const std::string &_doc,
-                  const std::string &_wordDelimiterChars = " \n,.-!?:;/\"#$%&'()*+<=>@[]\\^`{|}~\t\v\f\r");
+                  const std::string &_wordDelimiterChars = " .");
     };
 
 }
