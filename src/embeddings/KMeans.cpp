@@ -68,15 +68,12 @@ namespace uu
                 auto community = std::make_unique<uu::net::Community<uu::net::MultilayerNetwork>>();
                 for (auto value : K_clusters_best[i]->my_points)
                 {
-                    std::cout << value.name << std::endl;
                     for (auto layer : *ml_net->layers())
                     {
-                        std::cout << layer->name << std::endl;
                         if (layer->vertices()->contains(ml_net->actors()->get(value.name)))
                         {
                             auto v = uu::net::MLVertex<uu::net::MultilayerNetwork>(ml_net->actors()->get(value.name), layer);
                             community->add(v);
-                            std::cout << "hej hopp " << std::endl;
                         }
 
                     }
