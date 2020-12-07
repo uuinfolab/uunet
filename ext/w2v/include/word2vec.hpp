@@ -357,7 +357,7 @@ namespace w2v {
          */
         doc2vec_t(const std::unique_ptr<w2vModel_t> &_model,
                   const std::string &_doc,
-                  const std::string &_wordDelimiterChars = " \n,.-!?:;/\"#$%&'()*+<=>@[]\\^_`{|}~\t\v\f\r");
+                  const std::string &_wordDelimiterChars = " \n,.-!?:;/\"#$%&'()*+<=>@[]\\^`{|}~\t\v\f\r");
     };
 
 }
