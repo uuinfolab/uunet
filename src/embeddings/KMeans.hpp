@@ -44,30 +44,39 @@ namespace uu
             //std::vector<std::unique_ptr<Cluster>> K_clusters_current;
             std::unique_ptr<uu::net::CommunityStructure<uu::net::MultilayerNetwork>> communities;
             std::vector<std::shared_ptr<Cluster>> K_clusters_best;
-            KMeans(int k_min,int k_max, uu::net::MultilayerNetwork * ml_net, int iterations, const std::unordered_map<std::string, w2v::vector_t> &input_map);
+            KMeans(int k_min,int k_max, uu::net::MultilayerNetwork * ml_net, int iterations, const std::unordered_map<std::string, w2v::vector_t> &input_map, std::string metric = "Euclidian");
             
-            void run_cos();
             void print_means();
-            void print_cluster(int k);
+            //void print_cluster(int k);
             void print_clusters();
             void summary();
 
         private:
             std::vector<std::unique_ptr<Point>> all_points;
-            
             int dimensions, num_of_points;
             std::default_random_engine generator = std::default_random_engine();
             const std::unordered_map<std::string, w2v::vector_t> &point_map;
-            std::vector<std::shared_ptr<KMeans::Cluster>> create_clustering(int,int);
+            std::vector<std::shared_ptr<KMeans::Cluster>> create_clustering(int,int,std::string metric = "Euclidian");
+
             float distance(Point &point, Cluster *target);
             float distance_cos(Point &point, Cluster *target);
+
             const w2v::vector_t get_position(Point &point);
+
             void find_join_nearest(Point &point, std::vector<std::shared_ptr<Cluster>> &clusters);
             void find_join_nearest_cos(Point &point, std::vector<std::shared_ptr<Cluster>> &clusters);
+
             void initialize_means(std::vector<std::shared_ptr<uu::net::KMeans::Cluster>>& K_clusters, int K);
+            void initialize_means_cos(std::vector<std::shared_ptr<uu::net::KMeans::Cluster>>& K_clusters, int K);
+
             void update_mean(Cluster *cluster);
+            void update_mean_cos(Cluster *cluster);
+
             float distance(Point &point, Point &point_1);
-            double silhouette_score(std::vector<std::shared_ptr<KMeans::Cluster>> & K_clusters, int K);
+            float distance_cos(Point &point,Point &point_1);
+
+            float silhouette_score(std::vector<std::shared_ptr<KMeans::Cluster>> & K_clusters, int K);
+            float silhouette_score_cos(std::vector<std::shared_ptr<KMeans::Cluster>> & K_clusters, int K);
         };
     } // namespace net
 } // namespace uu
