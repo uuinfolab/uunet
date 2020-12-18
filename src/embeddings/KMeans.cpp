@@ -48,10 +48,13 @@ namespace uu
             float silhouette_score_current = -2; //magic number
             float silhouette_score_best = silhouette_score_current;
             int k_best = k_min;
+            if(k_max > num_of_points) {
+                std::cout << "kmax was bigger than number of points, changed it to number of points" << std::endl;
+                k_max = num_of_points;
+            }
             for (int i = k_min; i <= k_max; i++)
             {
                 auto K_clusters_current = create_clustering(i, iterations, metric);
-                std::cout << "hello world it's Siraj" << std::endl;
                 if (metric == "Euclidian")
                 {
                     silhouette_score_current = silhouette_score(K_clusters_current, i);
@@ -72,7 +75,6 @@ namespace uu
                     k_best = i;
                 }
             }
-            std::cout << "hello world it's Siraj!" << std::endl;
 
             communities = std::make_unique<uu::net::CommunityStructure<uu::net::MultilayerNetwork>>();
             for (int i = 0; i < k_best; i++)
@@ -92,7 +94,7 @@ namespace uu
                 }
                 communities->add(std::move(community));
             }
-        } // namespace net
+        }
 
         float KMeans::distance(Point &point, Cluster *target)
         {
@@ -114,8 +116,6 @@ namespace uu
                 length_point += get_position(point)[i] * get_position(point)[i];
                 length_mean += (target->cluster_mean)[i] * (target->cluster_mean)[i];
             }
-            //length_point = sqrt(length_point);
-            //length_mean = sqrt(length_mean);
             float normalizing_const = std::sqrt(length_point * length_mean);
 
             float distance = 0;
@@ -165,21 +165,8 @@ namespace uu
 
         void KMeans::initialize_means(std::vector<std::shared_ptr<uu::net::KMeans::Cluster>> &K_clusters, int K)
         {
-            std::cout << "number of points: " << num_of_points << std::endl;
-            std::cout << "K: " << K << std::endl;
 
             std::uniform_real_distribution<float> distribution(0, num_of_points - 1);
-            try {
-                if (K > num_of_points)
-            {
-                throw std::string("Error, more clusters than points");
-            }
-            }
-            catch (std::string e) {
-                std::cout << e << std::endl;
-                return;
-            }
-            
 
             std::set<int> init_index;
             while (init_index.size() < K)
@@ -201,16 +188,6 @@ namespace uu
         void KMeans::initialize_means_cos(std::vector<std::shared_ptr<uu::net::KMeans::Cluster>> &K_clusters, int K)
         {
             std::uniform_real_distribution<float> distribution(0, num_of_points - 1);
-            try {
-                if (K > num_of_points)
-            {
-                throw std::string("Error, more clusters than points");
-            }
-            }
-            catch (std::string e) {
-                std::cout << e << std::endl;
-                return;
-            }
             std::set<int> init_index;
             while (init_index.size() < K)
             {
@@ -318,31 +295,22 @@ namespace uu
             }
             else if (metric == "Cosine")
             {
-                //std::cout << "hello!" << std::endl;
-
                 initialize_means_cos(K_clusters, K);
-                //std::cout << "hello!!" << std::endl;
 
                 for (int i = 1; i <= iters; i++)
                 {
                     for (auto &point : all_points)
                     {
-                       // std::cout << "hello!!!" << std::endl;
-
                         find_join_nearest_cos(*point, K_clusters);
                     }
                     for (auto &cluster : K_clusters)
                     {
-                        //std::cout << "hello!!!!" << std::endl;
-
                         update_mean_cos(cluster.get());
                         cluster->reset_points();
                     }
                 }
                 for (auto &point : all_points)
                 {
-                    //std::cout << "hello!!!!!!" << std::endl;
-
                     find_join_nearest_cos(*point, K_clusters);
                 }
                 return K_clusters;
@@ -373,8 +341,6 @@ namespace uu
                 length_point += get_position(point)[i] * get_position(point)[i];
                 length_point_1 += get_position(point_1)[i] * get_position(point_1)[i];
             }
-            //length_point = sqrt(length_point);
-            //length_mean = sqrt(length_mean);
             float normalizing_const = std::sqrt(length_point * length_point_1);
 
             float distance = 0;
@@ -490,17 +456,6 @@ namespace uu
             }
             return std::accumulate(s_i.begin(), s_i.end(), 0.0) / s_i.size();
         }
-        /*
-        void KMeans::print_cluster(int k)
-        {
-            std::cout << "Cluster:" << k << "\n";
-            std::cout << "[ ";
-            for (auto point : K_clusters_best[k]->my_points)
-            {
-                std::cout << point.name << " ";
-            }
-            std::cout << "]\n";
-        } */
 
         void KMeans::print_clusters()
         {

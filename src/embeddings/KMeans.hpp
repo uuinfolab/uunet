@@ -40,14 +40,11 @@ namespace uu
                 void reset_points();
             };
 
-            //std::vector<std::unique_ptr<Cluster>> K_clusters;
-            //std::vector<std::unique_ptr<Cluster>> K_clusters_current;
             std::unique_ptr<uu::net::CommunityStructure<uu::net::MultilayerNetwork>> communities;
             std::vector<std::shared_ptr<Cluster>> K_clusters_best;
             KMeans(int k_min,int k_max, uu::net::MultilayerNetwork * ml_net, int iterations, const std::unordered_map<std::string, w2v::vector_t> &input_map, std::string metric = "Euclidian");
             
             void print_means();
-            //void print_cluster(int k);
             void print_clusters();
             void summary();
 
