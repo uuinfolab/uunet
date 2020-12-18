@@ -48,7 +48,8 @@ namespace uu
             float silhouette_score_current = -2; //magic number
             float silhouette_score_best = silhouette_score_current;
             int k_best = k_min;
-            if(k_max > num_of_points) {
+            if (k_max > num_of_points)
+            {
                 std::cout << "kmax was bigger than number of points, changed it to number of points" << std::endl;
                 k_max = num_of_points;
             }
@@ -201,7 +202,7 @@ namespace uu
                 float normalizing_const = 0.0;
                 for (int i = 0; i < dimensions; i++)
                 {
-                    normalizing_const += position.at(i)*position.at(i);
+                    normalizing_const += position.at(i) * position.at(i);
                 }
                 normalizing_const = std::sqrt(normalizing_const);
                 for (int i = 0; i < dimensions; i++)
@@ -248,7 +249,7 @@ namespace uu
                     float normalizing_const = 0.0;
                     for (int i = 0; i < dimensions; i++)
                     {
-                        normalizing_const += (get_position(point))[i]*(get_position(point))[i];
+                        normalizing_const += (get_position(point))[i] * (get_position(point))[i];
                     }
                     normalizing_const = std::sqrt(normalizing_const);
                     for (int i = 0; i < dimensions; i++)
@@ -360,44 +361,41 @@ namespace uu
             int cluster_counter = 0;
             for (auto &&c : K_clusters)
             {
+                if (c->cluster_size == 1 && c->cluster_size == 0)
+                {
+                    s_i[index] = 0;
+                    index++;
+                }
                 for (auto p : c->my_points)
                 {
                     a_i = 0;
                     b_i = 0;
-                    if (c->cluster_size == 1)
+                    for (auto p_neighb : c->my_points)
                     {
-                        s_i[index] = 0;
-                        index++;
+                        a_i += distance(p, p_neighb);
                     }
-                    else
+                    a_i /= (c->cluster_size - 1);
+                    auto dist = std::vector<float>(K - 1);
+                    int local_cluster_counter = 0;
+                    int local_index = 0;
+                    for (auto &&c_other : K_clusters)
                     {
-                        for (auto p_neighb : c->my_points)
+                        if (local_cluster_counter == cluster_counter)
                         {
-                            a_i += distance(p, p_neighb);
-                        }
-                        a_i /= (c->cluster_size - 1);
-                        auto dist = std::vector<float>(K - 1);
-                        int local_cluster_counter = 0;
-                        int local_index = 0;
-                        for (auto &&c_other : K_clusters)
-                        {
-                            if (local_cluster_counter == cluster_counter)
-                            {
-                                local_cluster_counter++;
-                                continue;
-                            }
-                            for (auto p_other_cluster : c_other->my_points)
-                            {
-                                dist[local_index] += distance(p, p_other_cluster);
-                            }
                             local_cluster_counter++;
-                            dist[local_index] /= c_other->cluster_size;
-                            local_index++;
+                            continue;
                         }
-                        b_i = *min_element(dist.begin(), dist.end());
-                        s_i[index] = (b_i - a_i) / std::max(b_i, a_i);
-                        index++;
+                        for (auto p_other_cluster : c_other->my_points)
+                        {
+                            dist[local_index] += distance(p, p_other_cluster);
+                        }
+                        local_cluster_counter++;
+                        dist[local_index] /= c_other->cluster_size;
+                        local_index++;
                     }
+                    b_i = *min_element(dist.begin(), dist.end());
+                    s_i[index] = (b_i - a_i) / std::max(b_i, a_i);
+                    index++;
                 }
                 cluster_counter++;
             }
@@ -413,44 +411,42 @@ namespace uu
             int cluster_counter = 0;
             for (auto &&c : K_clusters)
             {
+                if (c->cluster_size == 1 && c->cluster_size == 0)
+                {
+                    s_i[index] = 0;
+                    index++;
+                }
                 for (auto p : c->my_points)
                 {
                     a_i = 0;
                     b_i = 0;
-                    if (c->cluster_size == 1)
+
+                    for (auto p_neighb : c->my_points)
                     {
-                        s_i[index] = 0;
-                        index++;
+                        a_i += distance_cos(p, p_neighb);
                     }
-                    else
+                    a_i /= (c->cluster_size - 1);
+                    auto dist = std::vector<float>(K - 1);
+                    int local_cluster_counter = 0;
+                    int local_index = 0;
+                    for (auto &&c_other : K_clusters)
                     {
-                        for (auto p_neighb : c->my_points)
+                        if (local_cluster_counter == cluster_counter)
                         {
-                            a_i += distance_cos(p, p_neighb);
-                        }
-                        a_i /= (c->cluster_size - 1);
-                        auto dist = std::vector<float>(K - 1);
-                        int local_cluster_counter = 0;
-                        int local_index = 0;
-                        for (auto &&c_other : K_clusters)
-                        {
-                            if (local_cluster_counter == cluster_counter)
-                            {
-                                local_cluster_counter++;
-                                continue;
-                            }
-                            for (auto p_other_cluster : c_other->my_points)
-                            {
-                                dist[local_index] += distance_cos(p, p_other_cluster);
-                            }
                             local_cluster_counter++;
-                            dist[local_index] /= c_other->cluster_size;
-                            local_index++;
+                            continue;
                         }
-                        b_i = *min_element(dist.begin(), dist.end());
-                        s_i[index] = (b_i - a_i) / std::max(b_i, a_i);
-                        index++;
+                        for (auto p_other_cluster : c_other->my_points)
+                        {
+                            dist[local_index] += distance_cos(p, p_other_cluster);
+                        }
+                        local_cluster_counter++;
+                        dist[local_index] /= c_other->cluster_size;
+                        local_index++;
                     }
+                    b_i = *min_element(dist.begin(), dist.end());
+                    s_i[index] = (b_i - a_i) / std::max(b_i, a_i);
+                    index++;
                 }
                 cluster_counter++;
             }
@@ -472,9 +468,9 @@ namespace uu
                     std::cout << point.name << " ";
                 }
                 std::cout << " Cluster mean: ";
-                for (auto p : cluster->cluster_mean) {
-                    std::cout <<  p << " "; 
-
+                for (auto p : cluster->cluster_mean)
+                {
+                    std::cout << p << " ";
                 }
                 clusterCLOCK += 1;
                 std::cout << "]\n";
