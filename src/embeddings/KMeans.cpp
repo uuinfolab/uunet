@@ -171,7 +171,7 @@ namespace uu
             std::set<int> init_index;
             while (init_index.size() < K)
             {
-                int rand_index = distribution(generator);
+                int rand_index = std::round(distribution(generator));
                 init_index.insert(rand_index);
             }
             for (int j = 0; j < K; j++)
@@ -191,7 +191,7 @@ namespace uu
             std::set<int> init_index;
             while (init_index.size() < K)
             {
-                int rand_index = distribution(generator);
+                int rand_index = std::round(distribution(generator));
                 init_index.insert(rand_index);
             }
             for (int j = 0; j < K; j++)
