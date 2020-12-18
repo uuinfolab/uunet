@@ -35,6 +35,9 @@ namespace net
                     node_sentence.append(node_second->name);
                     for (int j = 0; j < (len_rand_walk - 1); ++j)
                     {
+                        if(sampling_map_sl.at(node_first).at(node_second).size()==0){                        
+                            break;
+                        }
                         auto node_tmp = sampling_map_sl.at(node_first).at(node_second).alias_sampling(&generator);
                         node_sentence.append(" " + node_tmp->name);
                         node_first = node_second;
@@ -53,14 +56,12 @@ namespace net
     {
         std::vector<std::string> output = std::vector<std::string>();
         std::uniform_real_distribution<double> distribution(0.0, 1.0);
-        double x = 1.0;
         if (len_rand_walk == 0 || numb_rand_walks == 0)
         {
             return output;
         }
         for (int i = 0; i < numb_rand_walks; ++i)
         {
-
             auto node_second = multi_net->actors()->get_at_random();
             auto layer = multi_net->layers()->get_at_random();
             while (!layer->vertices()->contains(node_second))
@@ -106,7 +107,9 @@ namespace net
                         //  node_sentence.append(" " + node_second->name);      //Guarantees node is not isolated maybe
                         //break;
                     //}
-
+                    if(sampling_map_ml.at(layer).at(node_first).at(node_second).size()==0){
+                        break;
+                    }
                     auto node_tmp = sampling_map_ml.at(layer).at(node_first).at(node_second).alias_sampling(&generator);
                     node_first = node_second;
                     node_second = node_tmp;

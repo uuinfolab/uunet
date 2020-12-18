@@ -160,6 +160,11 @@ namespace uu
         void KMeans::initialize_means(std::vector<std::shared_ptr<uu::net::KMeans::Cluster>>& K_clusters, int K)
         {
             std::uniform_real_distribution<float> distribution(0, num_of_points - 1);
+            if(K > num_of_points)
+            {
+                std::cout << "Error! More clusters than points." << std::endl;
+                return;
+            }
             std::set<int> init_index;            
             while(init_index.size() < K)
             {
@@ -174,9 +179,7 @@ namespace uu
                 {
                 K_clusters.at(j)->cluster_mean[i] = position.at(i);
                 }
-            }
-            
-            
+            }            
         }
 
         void KMeans::update_mean(Cluster *cluster)

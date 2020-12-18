@@ -21,7 +21,10 @@ namespace net
                 probabilities.push_back(weight);
                 store_neighbs.push_back(neigh);
             }
-            scale = 1.0 / scale;
+            if(scale!=0)
+            {
+                scale = 1.0 / scale;
+            }
             for (auto &prob : probabilities)
             {
                 prob = prob * scale;
