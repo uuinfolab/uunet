@@ -165,11 +165,22 @@ namespace uu
 
         void KMeans::initialize_means(std::vector<std::shared_ptr<uu::net::KMeans::Cluster>> &K_clusters, int K)
         {
+            std::cout << "number of points: " << num_of_points << std::endl;
+            std::cout << "K: " << K << std::endl;
+
             std::uniform_real_distribution<float> distribution(0, num_of_points - 1);
-            if (K > num_of_points)
+            try {
+                if (K > num_of_points)
             {
-                throw "Error, more clusters than points";
+                throw std::string("Error, more clusters than points");
             }
+            }
+            catch (std::string e) {
+                std::cout << e << std::endl;
+                return;
+            }
+            
+
             std::set<int> init_index;
             while (init_index.size() < K)
             {
@@ -190,9 +201,15 @@ namespace uu
         void KMeans::initialize_means_cos(std::vector<std::shared_ptr<uu::net::KMeans::Cluster>> &K_clusters, int K)
         {
             std::uniform_real_distribution<float> distribution(0, num_of_points - 1);
-            if (K > num_of_points)
+            try {
+                if (K > num_of_points)
             {
-                throw "Error, more clusters than points";
+                throw std::string("Error, more clusters than points");
+            }
+            }
+            catch (std::string e) {
+                std::cout << e << std::endl;
+                return;
             }
             std::set<int> init_index;
             while (init_index.size() < K)
