@@ -1,10 +1,6 @@
 #ifndef UU_NETWORKS_MULTILAYERNETWORK_H_
 #define UU_NETWORKS_MULTILAYERNETWORK_H_
 
-/**
- *
- */
-
 #include <memory>
 #include <string>
 #include "networks/_impl/TMultilayerNetwork.hpp"

@@ -838,11 +838,11 @@ to_community_structure(
 
     // build community structure
 
-    auto communities = std::make_unique<CommunityStructure<G>>();
+    auto communities = std::make_unique<CommunityStructure<M>>();
 
     for (auto pair: result)
     {
-        auto c = std::make_unique<Community<G>>();
+        auto c = std::make_unique<Community<M>>();
 
         for (auto vertex_layer_pair: pair.second)
         {
