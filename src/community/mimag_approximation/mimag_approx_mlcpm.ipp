@@ -7,11 +7,12 @@ std::unique_ptr<CommunityStructure<M>>
 mimag_approx_mlcpm(
     const M* mnet,
     size_t k,
-    size_t m
+    size_t m,
+    double gamma
 )
 {
     // Step 1: find max-cliques
-    auto cliques = mimag_approx(mnet,k,m);
+    auto cliques = mimag_approx(mnet,k,m,gamma);
 
     if (cliques.size()==0)
     {

@@ -26,7 +26,8 @@ std::unordered_set<std::shared_ptr<MultiplexClique<M>>>
 mimag_approx(
     const M* mnet,
     size_t k,
-    size_t m
+    size_t m,
+    double gamma = .5
 );
 
 
@@ -205,7 +206,8 @@ find_clusters(
     uu::net::subtree root,
     std::vector<std::vector<uu::net::vertex_layer>>,
     size_t k,
-    size_t m
+    size_t m,
+    double gamma
 );
 
 
@@ -279,7 +281,8 @@ average_degree_all_layers(
 bool
 isQuasiClique(
     double number_of_layers,
-    double average_degree
+    double average_degree,
+    double gamma
 );
 
 

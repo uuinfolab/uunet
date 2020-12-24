@@ -26,7 +26,8 @@ std::unique_ptr<CommunityStructure<M>>
 mimag_approx_mlcpm(
     const M* mnet,
     size_t k,
-    size_t m
+    size_t m,
+    double gamma
 );
 
 

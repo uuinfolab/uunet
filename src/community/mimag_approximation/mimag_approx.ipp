@@ -46,7 +46,8 @@ std::unordered_set<std::shared_ptr<MultiplexClique<M>>>
 mimag_approx(
     const M* mnet,
     size_t k,
-    size_t m
+    size_t m,
+    double gamma
 )
 {
     // Step 1: create an empty result set
@@ -133,7 +134,7 @@ mimag_approx(
             // Step 4: select first object
             auto subtree_to_be_processed = queue_of_subtrees.top();
             queue_of_subtrees.pop();
-            std::tuple<std::shared_ptr<MultiplexClique<M>>,bool,int> clique = find_clusters(mnet,subtree_to_be_processed,list_of_vertex_layers, k, m);
+            std::tuple<std::shared_ptr<MultiplexClique<M>>,bool,int> clique = find_clusters(mnet,subtree_to_be_processed,list_of_vertex_layers, k, m, gamma);
             std::shared_ptr<MultiplexClique<M>> multiplex_clique = std::get<0>(clique); //  result.insert(multiplex_clique);
             subtree_to_be_processed.is_cluster = std::get<1>(clique);
 
@@ -223,7 +224,8 @@ find_clusters(
     uu::net::subtree root,
     std::vector<std::vector<uu::net::vertex_layer>> list_of_vertex_layers,
     size_t k,
-    size_t m
+    size_t m,
+    double gamma
 )
 {
     // result
@@ -274,7 +276,7 @@ find_clusters(
 
     // if subgraph contains at least k vertices which exist in at least m layers
     // and quasi clique
-    if ((subgraph.size() >= k) && isQuasiClique(subgraph.size(), average_degree_all_layers(mnet, layers_root_exist_in, subgraph)))
+    if ((subgraph.size() >= k) && isQuasiClique(subgraph.size(), average_degree_all_layers(mnet, layers_root_exist_in, subgraph),gamma))
     {
         // create multiplex clique
         std::unordered_set<const Vertex*> new_actors;
@@ -420,10 +422,11 @@ average_degree_all_layers(
 bool
 isQuasiClique(
   double number_of_layers,
-  double average_degree
+  double average_degree,
+  double gamma
 )
 {
-    int x = 0.5*(number_of_layers-1);
+    double x = gamma*(number_of_layers-1);
 
     if (average_degree >= x)
     {
