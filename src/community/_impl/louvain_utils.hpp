@@ -12,6 +12,7 @@
 #include "objects/Vertex.hpp"
 #include "measures/size.hpp"
 #include "measures/strength.hpp"
+#include "networks/ProbabilisticNetwork.hpp"
 
 namespace uu {
 namespace net {
@@ -22,6 +23,10 @@ convert(
     const Network* g
 );
 
+std::unique_ptr<MetaNetwork>
+convert(
+    const ProbabilisticNetwork* g
+);
 
 std::unique_ptr<MetaNetwork>
 aggregate(
@@ -29,16 +34,18 @@ aggregate(
     std::unordered_map<const Vertex*, size_t> community
 );
 
-
+template <typename G>
 void
 expand(
     const std::vector<std::unique_ptr<MetaNetwork>>& levels,
     size_t i,
     const Vertex* v,
-    Community<Network>* com
+    Community<G>* com
 );
 
-std::unique_ptr<CommunityStructure<Network>>
+
+template <typename G>
+std::unique_ptr<CommunityStructure<G>>
 communities(
     const std::vector<std::unique_ptr<MetaNetwork>>& levels
 );
@@ -51,5 +58,7 @@ pass(
 
 }
 }
+
+#include "./louvain_utils.ipp"
 
 #endif

@@ -5,11 +5,78 @@
 #include <numeric>
 #include <utility>
 #include "objects/EdgeMode.hpp"
+#include "networks/ProbabilisticNetwork.hpp"
 
 #undef CS
 
 namespace uu {
 namespace net {
+
+template <typename G, typename CS>
+double
+modularity(const G* g, const CS* communities)
+{
+
+    double res = 0;
+    size_t m = g->edges()->size();
+    if (m==0) return 0;
+
+    for (auto community: *communities)
+    {
+        for (auto i: *community)
+        {
+            for (auto j: *community)
+            {
+                int k_i = g->edges()->neighbors(i,EdgeMode::OUT)->size();
+                int k_j = g->edges()->neighbors(j,EdgeMode::IN)->size();
+                int a_ij = g->edges()->get(i, j) ? 1 : 0;
+                res += a_ij - (double)k_i * k_j / (2.0*m);
+                //std::cout << i->name << " " << j->name << " " << a_ij << " " << k_i << " " <<  k_j << " " <<  m << std::endl;
+                //std::cout << "  ->" << res << std::endl;
+            }
+        }
+    }
+
+    return res / (2.0*m);
+}
+
+template <typename CS>
+double
+modularity(const ProbabilisticNetwork* g, const CS* communities)
+{
+
+    double res = 0;
+    double m = 0;
+    for (auto e: *g->edges())
+    {
+        auto p = g->get_prob(e);
+        if (!p.null) m += p.value;
+    }
+    if (m==0) return 0;
+
+    for (auto community: *communities)
+    {
+        for (auto i: *community)
+        {
+            for (auto j: *community)
+            {
+                double k_i = exp_degree(g, i);
+                double k_j = exp_degree(g, j);
+                auto e = g->edges()->get(i, j);
+                double a_ij = 0;
+                if (e) {
+                    auto p = g->get_prob(e);
+                    if (!p.null) a_ij = p.value;
+                }
+                res += a_ij - (double)k_i * k_j / (2*m);
+                //std::cout << i->name << " " << j->name << " " << k_i << " " <<  k_j << " " <<  m << std::endl;
+                //std::cout << "->" << res << std::endl;
+            }
+        }
+    }
+
+    return res / (2*m);
+}
 
 
 template <typename M, typename CS>

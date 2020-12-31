@@ -34,6 +34,31 @@ convert(
     return meta;
 }
 
+std::unique_ptr<MetaNetwork>
+convert(
+    const ProbabilisticNetwork* g
+)
+{
+    auto meta = std::make_unique<MetaNetwork>();
+
+    for (auto v: *g->vertices())
+    {
+        meta->add(v);
+        ////std::cout << (*v) << " -> " << (*meta_v) << std::endl;
+    }
+
+    for (auto e: *g->edges())
+    {
+        auto p = g->get_prob(e);
+        
+        if (!p.null)
+        {
+            meta->edge(e->v1, e->v2, p.value);
+        }
+    }
+
+    return meta;
+}
 
 std::unique_ptr<MetaNetwork>
 aggregate(
@@ -81,52 +106,6 @@ aggregate(
 }
 
 
-void
-expand(
-    const std::vector<std::unique_ptr<MetaNetwork>>& levels,
-    size_t i,
-    const Vertex* v,
-    Community<Network>* com
-)
-{
-    if (i==0)
-    {
-        for (auto original_vertex: levels.at(i)->mapping.at(v))
-        {
-            ////std::cout << "adding " << (*original_vertex) << std::endl;
-            com->add(original_vertex);
-        }
-    }
-
-    else
-    {
-        for (auto previous_vertex: levels.at(i)->mapping.at(v))
-        {
-            expand(levels, i-1, previous_vertex, com);
-        }
-    }
-}
-
-std::unique_ptr<CommunityStructure<Network>>
-communities(
-    const std::vector<std::unique_ptr<MetaNetwork>>& levels
-)
-{
-    auto res = std::make_unique<CommunityStructure<Network>>();
-
-    size_t i = levels.size()-1;
-
-    for (auto v: *levels.at(i)->get()->vertices())
-    {
-        auto community = std::make_unique<Community<Network>>();
-
-        expand(levels, i, v, community.get());
-
-        res->add(std::move(community));
-    }
-
-    return res;
-}
 
 std::unique_ptr<MetaNetwork>
 pass(
