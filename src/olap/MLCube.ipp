@@ -308,7 +308,7 @@ cell(
 )
 {
     size_t idx = pos(index);
-    return data_.at(idx);
+    return data_[idx].get();
 }
 
 
@@ -320,7 +320,7 @@ cell(
 )
 {
     size_t idx = pos(index);
-    return data_.at(idx);
+    return data_[idx].get();
 }
 
 template <class STORE>
@@ -331,7 +331,7 @@ cell(
 ) const
 {
     size_t idx = pos(index);
-    return data_.at(idx);
+    return data_[idx].get();
 }
 
 
@@ -343,7 +343,7 @@ cell(
 ) const
 {
     size_t idx = pos(index);
-    return data_.at(idx);
+    return data_[idx].get();
 }
 
 /*
@@ -476,7 +476,7 @@ init(
     return store.get();
 }
 
-
+ 
 template <typename STORE>
 template <typename Iterator>
 void
@@ -550,6 +550,146 @@ data_ =
 }
 */
 
+
+template <class STORE>
+void
+MLCube<STORE>::
+extend(
+    const std::string& name,
+    const std::vector<std::string>& members,
+    std::vector<bool> (*discretize)(typename STORE::value_type*)
+)
+{
+
+    if (order() == 0)
+    {
+        // Temporarily saving current data
+        
+        std::unique_ptr<STORE> old_data_ = std::move(elements_);
+        
+        // Create new data
+        
+        size_t new_num_cells = members.size();
+        data_ = std::vector<std::shared_ptr<STORE>>(new_num_cells);
+        
+        reset();
+        
+        off_.push_back(1);
+        size_.push_back(members.size());
+        dim_.push_back(name);
+        dim_idx_[name] = 0;
+        members_.resize(members_.size() + 1);
+        members_idx_.resize(members_.size());
+        for (auto m_name: members)
+        {
+            members_.back().push_back(m_name);
+            members_idx_.back()[m_name] = members_.back().size() - 1;
+        }
+        
+        // Copy elements from each cell in the previous cube to the new corresponding cells
+        
+        for (auto el: *old_data_)
+        {
+            std::vector<bool> new_cells = discretize(el);
+            
+            for (size_t i = 0; i < new_cells.size(); i++)
+            {
+                if (new_cells[i])
+                {
+                    std::vector<size_t> index = {i};
+                    data_[pos(index)]->add(el);
+                }
+            }
+        }
+    }
+    else
+    {
+        // Temporarily saving current data
+        
+        std::vector<std::shared_ptr<STORE>> old_data_ = data_;
+        core::IndexIterator old_indexes(size_);
+        
+        // Create new data
+        
+        size_t new_num_cells = data_.size() * members.size();
+        data_ = std::vector<std::shared_ptr<STORE>>(new_num_cells);
+        
+        reset();
+        
+        off_.push_back(off_.back() * size_.back());
+        size_.push_back(members.size());
+        dim_.push_back(name);
+        dim_idx_[name] = dim_.size() - 1;
+        members_.resize(members_.size() + 1);
+        members_idx_.resize(members_.size());
+        for (auto m_name: members)
+        {
+            members_.back().push_back(m_name);
+            members_idx_.back()[m_name] = members_.back().size() - 1;
+        }
+        
+        // Copy elements from each cell in the previous cube to the new corresponding cells
+        
+        size_t old_pos = 0;
+        for (auto index: old_indexes)
+        {
+            for (auto el: *old_data_[old_pos++])
+            {
+                std::vector<bool> new_cells = discretize(el);
+                
+                for (size_t i = 0; i < new_cells.size(); i++)
+                {
+                    if (new_cells[i])
+                    {
+                        index.push_back(i);
+                        data_[pos(index)]->add(el);
+                        index.pop_back();
+                    }
+                }
+            }
+        }
+
+    }
+    
+}
+
+template <class STORE>
+void
+MLCube<STORE>::
+reset(
+)
+{
+    elements_ = std::make_unique<STORE>();
+    union_obs = std::make_unique<core::UnionObserver<STORE, typename STORE::value_type>>(elements_.get());
+    
+    for (size_t i = 0; i < data_.size(); i++)
+    {
+        data_[i] = std::make_shared<STORE>();
+        data_[i]->attach(union_obs.get());
+    }
+}
+
+template <class STORE>
+void
+MLCube<STORE>::
+init(
+    size_t pos
+)
+{
+    data_[pos] = std::make_shared<STORE>();
+    data_[pos]->attach(union_obs.get());
+}
+
+template <class STORE>
+size_t
+MLCube<STORE>::
+pos(
+    const std::vector<std::string>& members
+) const
+{
+    return pos(index_of(members));
+}
+
 template <class STORE>
 size_t
 MLCube<STORE>::
@@ -578,7 +718,39 @@ pos(
     return idx;
 }
 
+template <class STORE>
+std::vector<size_t>
+MLCube<STORE>::
+index_of(
+    const std::vector<std::string>& members
+) const
+{
 
+    if (dim_.size() != members.size())
+    {
+        throw core::WrongParameterException("parameter must have the same size as the cube order");
+    }
+
+    std::vector<size_t> res;
+
+    for (size_t i = 0; i < members.size(); i++)
+    {
+        auto member = members[i];
+        auto f = members_idx_[i].find(member);
+
+        if (f != members_idx_[i].end())
+        {
+            res.push_back(f->second);
+        }
+
+        else
+        {
+            throw core::ElementNotFoundException("member " + member);
+        }
+    }
+
+    return res;
+}
 }
 }
 

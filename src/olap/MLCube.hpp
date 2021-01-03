@@ -191,12 +191,13 @@ class MLCube
 
     /**
      * Adds a new dimension.
-     
+     */
     void
-    add_dim(
+    extend(
         const std::string& name,
-        const std::vector<std::string>& members
-    );*/
+        const std::vector<std::string>& members,
+        std::vector<bool> (*discretize)(typename STORE::value_type*) 
+    );
     
     /**
      * Returns the cell at the given position in the cube.
@@ -334,10 +335,30 @@ class MLCube
     */
 protected:
     
+    std::vector<size_t>
+    index_of(
+        const std::vector<std::string>& members
+             ) const;
+    
       size_t
       pos(
-          const std::vector<size_t>& index
+          const std::vector<std::string>& index
       ) const;
+  
+
+    size_t
+    pos(
+        const std::vector<size_t>& index
+    ) const;
+    
+    void
+    reset(
+    );
+    
+    void
+    init(
+        size_t pos
+    );
     
   private:
 
@@ -354,7 +375,7 @@ protected:
     // contains all the elements contained in the cube's cells.
     std::unique_ptr<core::UnionObserver<STORE, const typename STORE::value_type>> union_obs;
 
-    // Dimensions (that is, number of memberf for each dimension)
+    // Dimensions (that is, number of members for each dimension)
     std::vector<size_t> size_;
 
     // Offsets

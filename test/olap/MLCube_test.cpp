@@ -14,11 +14,9 @@ TEST(olap_test, MLCube)
     
     // Basic cube info
 
-    EXPECT_EQ(c.order(), (size_t)0)
-            << "Wrong order (number of dimensions)";
+    EXPECT_EQ(c.order(), (size_t)0);
 
-    EXPECT_EQ(c.dimensions().size(), (size_t)0)
-            << "Wrong dimensions";
+    EXPECT_EQ(c.dimensions().size(), (size_t)0);
 
     // Adding/retrieving/erasing some elements, created in different ways.
     // The cube has order 0, so we can do this directly on it.
@@ -37,6 +35,44 @@ TEST(olap_test, MLCube)
     EXPECT_EQ(c.get("v2"), nullptr);
     
     EXPECT_NE(c.get_at_random(), nullptr);
+    
+    
+    /* ORDER 1 */
+    
+    auto discretize = [](const uu::net::Vertex* v) {
+        if (v->name == "v1") return std::vector<bool>({false, true});
+        else return std::vector<bool>({true, true});
+    };
+    
+    c.extend("d0", {"m0", "m1"}, discretize);
+    
+    EXPECT_EQ(c.order(), (size_t)1);
+    
+    std::vector<std::string> m0 = {"m0"};
+    std::vector<std::string> m1 = {"m1"};
+    
+    EXPECT_EQ(c.size(), (size_t)2);
+    EXPECT_EQ(c.cell(m0)->size(), (size_t)1);
+    EXPECT_EQ(c.cell(m1)->size(), (size_t)2);
+    
+    /* ORDER 2 */
+    
+    c.extend("d1", {"m0", "m1"}, discretize);
+    
+    EXPECT_EQ(c.order(), (size_t)2);
+    
+    std::vector<std::string> m00 = {"m0","m0"};
+    std::vector<std::string> m01 = {"m0","m1"};
+    std::vector<std::string> m10 = {"m1","m0"};
+    std::vector<std::string> m11 = {"m1","m1"};
+    
+    EXPECT_EQ(c.size(), (size_t)2);
+    EXPECT_EQ(c.cell(m00)->size(), (size_t)1);
+    EXPECT_EQ(c.cell(m01)->size(), (size_t)1);
+    EXPECT_EQ(c.cell(m10)->size(), (size_t)1);
+    EXPECT_EQ(c.cell(m11)->size(), (size_t)2);
+    
+    /* ORDER 2 */
     
     /*EXPECT_EQ(c.dim().at(0), "d1")
             << "Wrong dimension name";
