@@ -34,6 +34,26 @@ convert(
     return meta;
 }
 
+std::unique_ptr<MetaNetwork>
+convert(
+    const Network2* g
+)
+{
+    auto meta = std::make_unique<MetaNetwork>();
+
+    for (auto v: *g->vertices())
+    {
+        meta->add(v);
+        ////std::cout << (*v) << " -> " << (*meta_v) << std::endl;
+    }
+
+    for (auto e: *g->edges())
+    {
+        meta->edge(e->v1, e->v2);
+    }
+
+    return meta;
+}
 
 std::unique_ptr<MetaNetwork>
 aggregate(

@@ -1,14 +1,11 @@
 #include "gtest/gtest.h"
 
-#include "olap/MLCube.hpp"
-#include "networks/_impl/stores/VertexStore.hpp"
+#include "olap/VCube.hpp"
 
-TEST(olap_test, MLCube)
+TEST(olap_test, VCube)
 {
     
-    auto vstore = std::make_unique<uu::net::VertexStore>();
-
-    uu::net::MLCube<uu::net::VertexStore> c(std::move(vstore));
+    uu::net::VCube c;
 
     /* ORDER 0 */
     

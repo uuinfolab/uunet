@@ -23,10 +23,13 @@ class
     public MDEdgeStore<VStore>,
     public std::enable_shared_from_this<MDSimpleEdgeStore<VStore>>
 {
+    
     typedef MDEdgeStore<VStore> super;
+    
 
   public:
-
+    
+    
     MDSimpleEdgeStore(
         const VStore* layer1,
         const VStore* layer2,
@@ -71,7 +74,12 @@ class
         std::shared_ptr<const MLEdge<Vertex,VStore>>  e
     ) override;
 
-
+    const MLEdge<Vertex,VStore> *
+    add(
+        const Vertex* vertex1,
+        const Vertex* vertex2
+        );
+    
     /**
      * Returns an edge.
      * This function can also be used to check if an edge is present.
@@ -182,7 +190,22 @@ add(
     return new_edge;
 }
 
-
+template <typename VStore>
+const MLEdge<Vertex,VStore> *
+MDSimpleEdgeStore<VStore>::
+add(
+    const Vertex* vertex1,
+    const Vertex* vertex2
+)
+{
+    if (layer1 != layer2)
+    {
+        std::string err = "ending vertex cubes cannot be inferred and must be specified";
+        throw core::OperationNotSupportedException(err);
+    }
+        
+    return add(vertex1, layer1, vertex2, layer2);
+}
 
 template <typename VStore>
 const MLEdge<Vertex,VStore>*

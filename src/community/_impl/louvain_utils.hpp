@@ -12,6 +12,7 @@
 #include "objects/Vertex.hpp"
 #include "measures/size.hpp"
 #include "measures/strength.hpp"
+#include "networks/Network2.hpp"
 
 namespace uu {
 namespace net {
@@ -20,6 +21,12 @@ namespace net {
 std::unique_ptr<MetaNetwork>
 convert(
     const Network* g
+);
+
+
+std::unique_ptr<MetaNetwork>
+convert(
+    const Network2* g
 );
 
 

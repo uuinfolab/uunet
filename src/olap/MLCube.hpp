@@ -351,16 +351,17 @@ protected:
         const std::vector<size_t>& index
     ) const;
     
+    virtual
     void
     reset(
-    );
+    ) = 0;
     
-    void
+    /*void
     init(
         size_t pos
-    );
+    );*/
     
-  private:
+  protected:
 
     // A STORE containing all the elements in the cube.
     // If the cube has order 0, this is the only STORE.

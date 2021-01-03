@@ -40,8 +40,9 @@ class MDEdgeStore:
 
   public:
 
-    typedef MLEdge<Vertex,VStore> value_type;
-
+    typedef const MLEdge<Vertex,VStore> value_type;
+    typedef std::tuple<const Vertex*, const VStore*, const Vertex*, const VStore*> key_type;
+    
     /**
      * Constructor.
      */

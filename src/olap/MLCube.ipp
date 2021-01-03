@@ -653,6 +653,7 @@ extend(
     
 }
 
+/*
 template <class STORE>
 void
 MLCube<STORE>::
@@ -668,7 +669,8 @@ reset(
         data_[i]->attach(union_obs.get());
     }
 }
-
+*/
+/*
 template <class STORE>
 void
 MLCube<STORE>::
@@ -678,7 +680,7 @@ init(
 {
     data_[pos] = std::make_shared<STORE>();
     data_[pos]->attach(union_obs.get());
-}
+}*/
 
 template <class STORE>
 size_t
