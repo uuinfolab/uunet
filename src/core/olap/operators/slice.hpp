@@ -2,7 +2,7 @@
 #define UU_OLAP_OPERATORS_SLICE_H_
 
 #include <memory>
-#include "core/olap/datastructures/CCube.hpp"
+//#include "core/olap/datastructures/CCube.hpp"
 
 namespace uu {
 namespace core {

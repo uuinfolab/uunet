@@ -9,13 +9,13 @@ namespace core {
 
 
 /*    template <typename C>
-    sel::EntryIterator<C>
+    EntryIterator<C>
     islice(
            C* cube,
            const std::vector<std::vector<size_t>>& indexes
            )
     {
-        return sel::EntryIterator<C>(cube, indexes);
+        return EntryIterator<C>(cube, indexes);
     }
   */
 
@@ -53,8 +53,8 @@ vslice(
 
     // indexes in the new cube corresponding to the input indexes
 
-    sel::IndexIterator in_idx(indexes);
-    sel::IndexIterator out_idx(out_cube->size());
+    IndexIterator in_idx(indexes);
+    IndexIterator out_idx(out_cube->size());
 
     auto in_idx_iter = in_idx.begin();
     auto out_idx_iter = out_idx.begin();
@@ -62,7 +62,7 @@ vslice(
     while (in_idx_iter != in_idx.end())
     {
         auto cell = cube->at(*in_idx_iter)->shared_from_this();
-        out_cube->insert(cell, *out_idx_iter);
+        out_cube->init(*out_idx_iter, cell);
         ++in_idx_iter;
         ++out_idx_iter;
     }
@@ -104,8 +104,8 @@ mslice(
 
     // indexes in the new cube corresponding to the input indexes
 
-    sel::IndexIterator in_idx(indexes);
-    sel::IndexIterator out_idx(out_cube->size());
+    IndexIterator in_idx(indexes);
+    IndexIterator out_idx(out_cube->size());
 
     auto in_idx_iter = in_idx.begin();
     auto out_idx_iter = out_idx.begin();

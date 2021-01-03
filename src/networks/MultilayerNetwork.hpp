@@ -16,9 +16,12 @@ namespace uu {
 namespace net {
 
 /**
- * A MultilayerNetwork is a set of Networks (called layers) allowing edges across layers.
+ * A generalized MultilayerNetwork is a Vertex Cube with N dimensions.
+ * Each cell of the Vertex Cube has an Edge Cube defined on it, with one dimension.
+ * Edge Cubes can also be added between pairs of Vertex Cells, allowing edges across layers.
  *
- * Vertices are called actors, and the same actor can be present in multiple layers.
+ * In generalized MultilayerNetworks, vertices are called actors, and the same actor can be
+ * present in multiple layers.
  * A multilayer vertex (MLVertex) is a pair (actor,layer).
  * A multilayer edge (MLEdge) is an edge connecting multilayer vertices.
  */
@@ -35,7 +38,7 @@ class
     typedef MLVertex<MultilayerNetwork> community_element_type;
 
     /**
-     * Creates a Network with no layers.
+     * Creates an empty Network.
      */
     MultilayerNetwork(
         const std::string& name

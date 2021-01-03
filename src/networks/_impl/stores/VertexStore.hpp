@@ -1,8 +1,3 @@
-/**
- * History:
- * - 2018.03.09 file created, following a restructuring of the previous library.
- */
-
 #ifndef UU_NET_STORES_VERTEXSTORE_H_
 #define UU_NET_STORES_VERTEXSTORE_H_
 
@@ -29,7 +24,7 @@ class
 
   public:
 
-    typedef Vertex value_type;
+    typedef const Vertex value_type;
     typedef std::string key_type;
     typedef core::PtrSortedRandomSet<const Vertex,std::shared_ptr<const Vertex>,core::SharedPtrLT<const Vertex>,core::SharedPtrEQ<const Vertex>>::iterator iterator;
 
