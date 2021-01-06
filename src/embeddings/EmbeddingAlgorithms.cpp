@@ -8,7 +8,7 @@ namespace uu
                                                                  int window, int cluster_iterations, std::string alpha, std::string sample,
                                                                  int iterations, int min_word_freq, int negative_sample, int threads)
         {
-            std::unique_ptr<uu::net::WeightedNetwork> flat_net = std::make_unique<uu::net::WeightedNetwork>("flat_net");
+            std::unique_ptr<uu::net::WeightedNetwork> flat_net = std::make_unique<uu::net::WeightedNetwork>("flat_net",EdgeDir::UNDIRECTED,true);
             flatten_weighted(ml_net->layers()->begin(), ml_net->layers()->end(), flat_net.get());
 
             auto sampling_map_sl = std::unordered_map<const uu::net::Vertex *, std::unordered_map<const uu::net::Vertex *, AliasTable<Vertex>>>();

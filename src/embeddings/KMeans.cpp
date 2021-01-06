@@ -318,7 +318,7 @@ namespace uu
             }
             else
             {
-                throw "not a valid metric";
+                throw (std::string)"not a valid metric";
             }
         }
 
