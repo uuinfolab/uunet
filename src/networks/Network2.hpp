@@ -35,9 +35,15 @@ class Network2
     Network2(
         const std::string& name,
         EdgeDir dir = EdgeDir::UNDIRECTED,
-        bool allow_loops = false
+        LoopMode loops = LoopMode::ALLOWED
     );
 
+    Network2(
+        const std::string& name,
+        std::unique_ptr<VCube> vertices,
+        std::unique_ptr<ECube> edges
+    );
+    
     virtual ~Network2()
     {}
     
@@ -85,8 +91,8 @@ class Network2
 
   private:
 
-    std::shared_ptr<VCube> vertices_;
-    std::shared_ptr<ECube> edges_;
+    std::unique_ptr<VCube> vertices_;
+    std::unique_ptr<ECube> edges_;
 
 };
 

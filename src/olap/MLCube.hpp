@@ -9,6 +9,7 @@
 #include "core/datastructures/containers/UnionSortedRandomSet.hpp"
 #include "core/olap/datastructures/NCube.hpp"
 #include "core/olap/selection/IndexIterator.hpp"
+#include "core/datastructures/observers/ObserverStore.hpp"
 #include "core/datastructures/observers/UnionObserver.hpp"
 #include <string>
 #include <unordered_map>
@@ -18,7 +19,21 @@ namespace uu {
 namespace net {
 
 template <class STORE>
+class MLCube;
+
+template <typename STORE>
+std::unique_ptr<MLCube<STORE>>
+vslice(
+const std::string& cube_name,
+    MLCube<STORE>* cube,
+    const std::vector<std::vector<size_t>>& indexes
+       );
+
+
+template <class STORE>
 class MLCube
+: public core::ObserverStore,
+public core::Subject<const typename STORE::value_type>
 {
 
   public:
@@ -27,11 +42,16 @@ class MLCube
     typedef STORE container_type;
     typedef const typename STORE::value_type value_type;
 
+    
+    // Name of the cube
+    const std::string name;
+    
     /**
      * Creates a cube of order 0
      */
     MLCube(
-        std::unique_ptr<STORE> el
+        const std::string& name,
+        const std::shared_ptr<STORE>& el
         //const std::vector<std::string>& dim,
         //const std::vector<std::vector<std::string>>& members
     );
@@ -112,7 +132,6 @@ class MLCube
         typename STORE::value_type* v
     );
 
-
     /**
      * Creates a new vertex and adds it to the store.
      */
@@ -158,10 +177,10 @@ class MLCube
         typename STORE::value_type * v
     );
 
-    void
+    /*void
     attach(
         core::Observer<typename STORE::value_type>* obs
-    );
+    );*/
 
     core::AttributeStore<typename STORE::value_type>*
     attr(
@@ -193,10 +212,20 @@ class MLCube
      * Adds a new dimension.
      */
     void
-    extend(
+    add_dimension(
         const std::string& name,
         const std::vector<std::string>& members,
-        std::vector<bool> (*discretize)(typename STORE::value_type*) 
+        std::vector<bool> (*discretize)(typename STORE::value_type*) = nullptr
+    );
+    
+    /**
+     * Adds a member to an existing dimension.
+     */
+    void
+    add_member(
+        const std::string& name,
+        const std::string& member//,
+        //bool (*copy)(typename STORE::value_type*) = nullptr
     );
     
     /**
@@ -264,8 +293,21 @@ class MLCube
         const std::vector<std::string>& index
     ) const;
 
+protected:
+    
     /**
-     * Creates a new container in the input cell.
+     * Creates a cube of order 0
+     */
+    MLCube(
+        const std::string& name,
+        const std::shared_ptr<STORE>& el,
+        const std::vector<std::string>& dim,
+        const std::vector<std::vector<std::string>>& members
+    );
+    
+    
+    /**
+     * Adds a new container to the input cell.
      * @throw OutOfBoundsException if the index is outside the bounds of the cube
      * @throw OperationNotSupportedException
      */
@@ -275,8 +317,14 @@ class MLCube
         const std::shared_ptr<STORE>& store
     );
 
+    STORE*
+    init(
+        size_t pos,
+        const std::shared_ptr<STORE>& store
+    );
+    
     /**
-     * Creates a new container in the input cell.
+     * Adds a new container to the input cell.
      * @throw OutOfBoundsException if the index is outside the bounds of the cube
      * @throw OperationNotSupportedException
      */
@@ -286,6 +334,39 @@ class MLCube
         const std::shared_ptr<STORE>& store
     );
 
+    /**
+     * Creates a new container in the input cell.
+     * @throw OutOfBoundsException if the index is outside the bounds of the cube
+     * @throw OperationNotSupportedException
+     */
+    STORE*
+    init(
+        const std::vector<size_t>& index
+    );
+    
+    
+    virtual
+    STORE*
+    init(
+        size_t pos
+    ) = 0;
+    
+    
+    virtual
+    void
+    init(
+    ) = 0;
+    
+void
+    register_obs(
+        size_t pos
+    );
+    
+void
+    register_obs(
+    const std::vector<size_t>& index
+    );
+    
     /* index of a dimension
     size_t
     index_of(
@@ -335,22 +416,40 @@ class MLCube
     */
 protected:
     
+    /*std::unique_ptr<MLCube<STORE>>
+    virtual
+    model(
+    const std::string& cube_name,
+        const std::vector<std::string>& dim,
+        const std::vector<std::vector<std::string>>& members
+    ) const = 0;
+    */
+    
+    size_t
+    pos(
+        const std::vector<size_t>& index,
+        const std::vector<size_t>& dimensions
+    ) const;
+    
+      size_t
+      pos(
+          const std::vector<size_t>& index
+      ) const;
+      
+    
     std::vector<size_t>
     index_of(
         const std::vector<std::string>& members
              ) const;
     
-      size_t
-      pos(
-          const std::vector<std::string>& index
-      ) const;
-  
-
-    size_t
-    pos(
-        const std::vector<size_t>& index
-    ) const;
     
+
+        size_t
+        pos(
+            const std::vector<std::string>& index
+        ) const;
+    
+
     virtual
     void
     reset(
@@ -362,12 +461,12 @@ protected:
     );*/
     
   protected:
-
+    
     // A STORE containing all the elements in the cube.
     // If the cube has order 0, this is the only STORE.
     // If the cube has order > 0, this store cannot be directly modified but is automatically
     // updated to mirror all the elements contained in the cube's cells.
-    std::unique_ptr<STORE> elements_;
+    std::shared_ptr<STORE> elements_;
     
     // The cells of the cube.
     std::vector<std::shared_ptr<STORE>> data_;
@@ -380,7 +479,7 @@ protected:
     std::vector<size_t> size_;
 
     // Offsets
-    std::vector<size_t> off_;
+    //std::vector<size_t> off_;
 
     // Dimension names
     std::vector<std::string> dim_;
@@ -396,6 +495,7 @@ protected:
     
     // Element attributes
     std::unique_ptr<core::AttributeStore<typename STORE::value_type>> attr_;
+
 
 };
 

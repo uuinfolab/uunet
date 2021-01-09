@@ -44,7 +44,6 @@ convert(
     for (auto v: *g->vertices())
     {
         meta->add(v);
-        ////std::cout << (*v) << " -> " << (*meta_v) << std::endl;
     }
 
     for (auto e: *g->edges())

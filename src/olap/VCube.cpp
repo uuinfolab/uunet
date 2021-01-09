@@ -1,20 +1,16 @@
-/**
- * History:
- * - 2019.07.21 File created
- */
+#include "olap/VCube.hpp"
 
 #include "core/exceptions/ElementNotFoundException.hpp"
-#include "olap/VCube.hpp"
 
 namespace uu {
 namespace net {
 
 VCube::
 VCube(
-    //const std::string& name,
+    const std::string& name
     //const std::vector<std::string>& dimensions,
     //const std::vector<std::vector<std::string>>& members
-) : super(std::make_unique<VertexStore>())
+) : super(name, std::make_unique<VertexStore>())
 {
     //name_ = "v-cube"; // @todo is name needed?
 
@@ -33,6 +29,16 @@ VCube(
 
     //auto elements = std::make_unique<VertexStore>();
     //cube_ = std::make_unique<MLCube<VertexStore>>(std::move(elements), dimensions, members);
+}
+
+VCube::
+VCube(
+const std::string& cube_name,
+    const std::vector<std::string>& dimensions,
+    const std::vector<std::vector<std::string>>& members
+)
+: super(cube_name, std::make_unique<VertexStore>(), dimensions, members)
+{
 }
 
 /*
@@ -373,15 +379,15 @@ members(
     return cube_->members(dim);
 }
 
+*/
 
 std::string
 VCube::
 to_string(
 ) const
 {
-    return name_;
+    return "V(" + name + ")";
 }
-
 
 void
 VCube::
@@ -390,10 +396,10 @@ attach(
 )
 {
     // @todo
-    //cube_->elements()->attach(obs);
+    elements_->attach(obs);
 }
 
-
+/*
 std::unique_ptr<VCube>
 VCube::
 create(
@@ -492,6 +498,23 @@ vslice(
 
 }
 */
+
+VertexStore*
+VCube::
+init(
+    size_t pos
+)
+{
+    return init(pos, std::make_shared<VertexStore>());
+}
+
+void
+VCube::
+init(
+)
+{
+    elements_ = std::make_shared<VertexStore>();
+}
 
 void
 VCube::

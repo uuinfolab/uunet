@@ -7,7 +7,7 @@
 #include "networks/_impl/stores/MDSimpleEdgeStore.hpp"
 #include "olap/VCube.hpp"
 #include "olap/MLCube.hpp"
-#include "objects/MLEdge.hpp"
+#include "objects/MLEdge2.hpp"
 
 namespace uu {
 namespace net {
@@ -17,31 +17,31 @@ namespace net {
  */
 class
     ECube
-    : public MLCube<MDSimpleEdgeStore<VCube>>
+    : public MLCube<MDSimpleEdgeStore>
 {
 
   private:
 
-    const VCube* vc1;
-    const VCube* vc2;
+    VCube* cube1_;
+    VCube* cube2_;
 
     //std::string name_;
     
-    typedef MLCube<MDSimpleEdgeStore<VCube>> super;
-    typedef MDSimpleEdgeStore<VCube> EStore;
-    typedef MLEdge<Vertex, VCube> IEdge;
-    typedef MDSimpleEdgeStore<VCube>* entry_type;
-    typedef const IEdge* element_type;
+    typedef MLCube<MDSimpleEdgeStore> super;
+    typedef MDSimpleEdgeStore EStore;
+    typedef MDSimpleEdgeStore* entry_type;
+    typedef const MLEdge2* element_type;
 
   public:
 
     // ECube(const std::vector<size_t>& dim);
 
     ECube(
-        //const std::string& name,
-        const VCube* vc1,
-        const VCube* vc2,
-        EdgeDir dir
+        const std::string& name,
+        VCube* cube1,
+        VCube* cube2,
+        EdgeDir dir = EdgeDir::UNDIRECTED,
+        LoopMode loops = LoopMode::ALLOWED
     );
 
     /*
@@ -52,20 +52,49 @@ class
     ) const;
 */
 
-    const MLEdge<Vertex,VCube> *
+    const MLEdge2 *
     add(
         const Vertex* vertex1,
-        const VCube* layer1,
+        const VCube* cube1,
         const Vertex* vertex2,
-        const VCube* layer2
+        const VCube* cube2
     );
     
-    const MLEdge<Vertex,VCube> *
+    const MLEdge2 *
     add(
         const Vertex* vertex1,
         const Vertex* vertex2
     );
     
+    
+    /**
+     * @brief Returns the nodes with an edge from/to the input vertex.
+     * @param node pointer to the node.
+     * @param mode IN, OUT or INOUT.
+     * @return the list of neighbors.
+     **/
+    const
+    GenericObjectList<Vertex>*
+    neighbors(
+        const Vertex* vertex,
+        const VCube* cube,
+        EdgeMode mode
+    ) const;
+
+    /**
+     * @brief Returns the nodes with an edge from/to the input vertex.
+     * @param node pointer to the node.
+     * @param mode IN, OUT or INOUT.
+     * @return the list of neighbors.
+     **/
+    const
+    GenericObjectList<MLEdge2>*
+                                          incident(
+                                                  const Vertex* vertex,
+                                                  const VCube* cube,
+                                                  EdgeMode mode
+                                          ) const;
+
     const VCube*
     vcube1(
     ) const;
@@ -82,22 +111,44 @@ class
 
     void
     attach(
-        core::Observer<const IEdge>* obs
+        core::Observer<const MLEdge2>* obs
     );
 
     bool
     is_directed(
     ) const;
 
+    void
+    erase(
+    const VCube* vcube,
+    const Vertex* vertex
+    );
+    
+  protected:
 
-  private:
+    using super::init;
+    
+    virtual
+    MDSimpleEdgeStore*
+    init(
+        size_t pos
+    ) override;
+    
+     void
+     init(
+     ) override;
 
+    
     void
     reset(
-          );
+          ) override;
     
     /** Edge directionality */
-    EdgeDir dir;
+    EdgeDir dir_;
+    
+    /** Loop mode (ALLOWED or DISALLOWED) */
+    LoopMode loops_;
+    
 
 };
 

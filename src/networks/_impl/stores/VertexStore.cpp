@@ -142,7 +142,7 @@ attach(
     core::Observer<const Vertex>* obs
 )
 {
-    return store_->attach(obs);
+    store_->attach(obs);
 }
 
 std::string

@@ -5,8 +5,9 @@
 TEST(olap_test, VCube)
 {
     
-    uu::net::VCube c;
+    uu::net::VCube c("V");
 
+    
     /* ORDER 0 */
     
     // Basic cube info
@@ -15,8 +16,13 @@ TEST(olap_test, VCube)
 
     EXPECT_EQ(c.dimensions().size(), (size_t)0);
 
+    
+    /* ORDER 1, 1 cell */
+    
     // Adding/retrieving/erasing some elements, created in different ways.
-    // The cube has order 0, so we can do this directly on it.
+    // The cube has one cell, so we can do this directly on it.
+    
+    c.add_dimension("d0", {"m0"});
     
     auto v1 = c.add("v1");
     auto v2 = c.add(std::make_shared<uu::net::Vertex>("v2"));
@@ -34,34 +40,34 @@ TEST(olap_test, VCube)
     EXPECT_NE(c.get_at_random(), nullptr);
     
     
-    /* ORDER 1 */
+    /* ORDER 2 */
     
     auto discretize = [](const uu::net::Vertex* v) {
         if (v->name == "v1") return std::vector<bool>({false, true});
         else return std::vector<bool>({true, true});
     };
     
-    c.extend("d0", {"m0", "m1"}, discretize);
+    c.add_dimension("d1", {"m0", "m1"}, discretize);
     
-    EXPECT_EQ(c.order(), (size_t)1);
+    EXPECT_EQ(c.order(), (size_t)2);
     
-    std::vector<std::string> m0 = {"m0"};
-    std::vector<std::string> m1 = {"m1"};
+    std::vector<std::string> m0 = {"m0","m0"};
+    std::vector<std::string> m1 = {"m0","m1"};
     
     EXPECT_EQ(c.size(), (size_t)2);
     EXPECT_EQ(c.cell(m0)->size(), (size_t)1);
     EXPECT_EQ(c.cell(m1)->size(), (size_t)2);
     
-    /* ORDER 2 */
+    /* ORDER 3 */
     
-    c.extend("d1", {"m0", "m1"}, discretize);
+    c.add_dimension("d2", {"m0", "m1"}, discretize);
     
-    EXPECT_EQ(c.order(), (size_t)2);
+    EXPECT_EQ(c.order(), (size_t)3);
     
-    std::vector<std::string> m00 = {"m0","m0"};
-    std::vector<std::string> m01 = {"m0","m1"};
-    std::vector<std::string> m10 = {"m1","m0"};
-    std::vector<std::string> m11 = {"m1","m1"};
+    std::vector<std::string> m00 = {"m0","m0","m0"};
+    std::vector<std::string> m01 = {"m0","m0","m1"};
+    std::vector<std::string> m10 = {"m0","m1","m0"};
+    std::vector<std::string> m11 = {"m0","m1","m1"};
     
     EXPECT_EQ(c.size(), (size_t)2);
     EXPECT_EQ(c.cell(m00)->size(), (size_t)1);
