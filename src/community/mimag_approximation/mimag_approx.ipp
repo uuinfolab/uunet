@@ -202,9 +202,6 @@ mimag_approx(
       }
 
     // Step 11 -> return the result set
-    //std::cout << layer_count << std::endl;
-
-    //std::cout << result.size() << std::endl;
     return result;
 
 }
@@ -296,6 +293,58 @@ find_clusters(
         return std::make_tuple(result, true, subgraph.size());
         //return result;
     }
+
+    if (subgraph.size() >= k)
+    {
+        std::unordered_set<const Vertex*> new_actors;
+        std::unordered_set<const typename M::layer_type*> layers_that_satisfy;
+
+        // degree which must be satisfied  - bad since if you want to change quasi clique arg to 0.6, you have to find manually
+        double degree = 0.5*((subgraph.size())-1);
+
+
+
+        // check which layers satify the constraints given by size of subgraph e.g., if 4 0.5(4-1) = 1.5, then if the degree satisfies 1.5, then its added , if more than m layers , than return that
+        for (int i= 0; i < layers_root_exist_in.size(); i++)
+        {
+            // for every layer, check if they satisfy constraints
+            double avg_degree = 0;
+            auto layer = get_layer(mnet, layers_root_exist_in[i]);
+            auto v_subgraph = uu::net::vertex_induced_subgraph(layer, subgraph.begin(), subgraph.end());
+
+
+            for (auto v: *v_subgraph->vertices())
+            {
+                double deg = uu::net::degree(v_subgraph.get(), v);
+                if(deg < degree)
+                {
+                  avg_degree = 0;
+                  break;
+                }
+                avg_degree = avg_degree + deg;
+            }
+
+
+            //avg_degree = uu::net::average_degree(v_subgraph.get());
+
+            if (avg_degree >= degree)
+            {
+                layers_that_satisfy.insert(get_layer(mnet, layers_root_exist_in[i]));
+            }
+
+        }
+
+        if (layers_that_satisfy.size()>=m)
+        {
+            for (int i = 0; i < subgraph.size(); i++)
+            {
+                new_actors.insert(subgraph[i]);
+            }
+            result = std::make_shared<MultiplexClique<M>>(new_actors,layers_that_satisfy);
+            return std::make_tuple(result, true, subgraph.size());
+        }
+    }
+
     return std::make_tuple(result, false, 0);
     //return result;
 
@@ -397,21 +446,32 @@ average_degree_all_layers(
     std::vector<const uu::net::Vertex*> subgraph
 )
 {
+    // hard coded
+    double threshold = (subgraph.size() - 1) * 0.5;
     double degree_in_layers = 0;
+    double avg_deg = 0;
     double average_degree_across_all_layers = 0;
     for (int i = 0; i < layers_root_exist_in.size(); i++)
     {
         auto layer = get_layer(mnet, layers_root_exist_in[i]);
         auto v_subgraph = uu::net::vertex_induced_subgraph(layer, subgraph.begin(), subgraph.end());
-        auto avg_deg = uu::net::average_degree(v_subgraph.get());
-        degree_in_layers = degree_in_layers + avg_deg;
+        for (auto v: *v_subgraph->vertices())
+        {
+            double deg = uu::net::degree(v_subgraph.get(), v);
 
+            if (deg < threshold)
+            {
+
+                return 0;
+            }
+            avg_deg = avg_deg + deg;
+        }
+        degree_in_layers = degree_in_layers + avg_deg;
+        avg_deg = 0;
     }
     average_degree_across_all_layers = (degree_in_layers / layers_root_exist_in.size());
     return average_degree_across_all_layers;
 }
-
-
 /**
  * Determines if a quasi_clique
  *
@@ -424,8 +484,7 @@ isQuasiClique(
   double average_degree
 )
 {
-
-    int x = 0.5*(number_of_vertices);
+    double x = 0.5*(number_of_vertices);
     if (average_degree >= x)
     {
         return true;
@@ -473,11 +532,13 @@ isRedundantCluster(
     // if result set is empty add first clique
     if (result_set_size == 0)
     {
+        /*
         for (auto v :multiplex_clique->actors)
         {
             std::cout << *v << std::endl;
 
         }
+        */
         return false;
     }
 
@@ -493,8 +554,7 @@ isRedundantCluster(
     {
         new_layers.push_back(l);
     }
-
-    //std::cout << "size of new clique: " << new_actors.size() << std::endl;
+ 
     // if new clique is equal to any clique in the result set then disregard
     for (std::shared_ptr<MultiplexClique<M>> c: result)
     {
@@ -696,7 +756,6 @@ isRedundantCluster(
             // if all layers in smaller are in bigger then check for redundancy
             if (count_l == new_layers.size())
             {
-              //std::cout << "if all layers of the smaller one are in the current one" << std::endl;
               std::vector<const uu::net::Vertex*> existing_actors;
 
               for (auto v: c->actors)
