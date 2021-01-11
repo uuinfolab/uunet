@@ -456,11 +456,11 @@ namespace uu
         void KMeans::print_clusters()
         {
 
-            auto clusterCLOCK = 1;
+            int cluster_clock = 1;
 
             for (auto cluster : K_clusters_best)
             {
-                std::cout << "Cluster:" << clusterCLOCK << "\n";
+                std::cout << "Cluster:" << cluster_clock << "\n";
                 std::cout << "[ ";
 
                 for (auto point : cluster->my_points)
@@ -472,9 +472,32 @@ namespace uu
                 {
                     std::cout << p << " ";
                 }
-                clusterCLOCK += 1;
+                cluster_clock += 1;
                 std::cout << "]\n";
             }
+        }
+
+        void KMeans::print_cluster_data_to_file(std::string output_file_name) {
+            std::ofstream  output(output_file_name);
+
+            int cluster_clock = 1;
+
+            for (auto cluster : K_clusters_best) {
+                for (auto point : cluster->my_points) {
+                    output << cluster_clock << " " <<point.name  << " " << "Point coord.: ";
+                    for (auto point_coord : point_map.at(point.name)) {
+                        output << point_coord << " ";
+                    }
+                    output << "Cluster mean: ";
+                    for (auto mean_coord : cluster->cluster_mean)
+                    {
+                        output << mean_coord << " ";
+                    }
+                    output << "\n";
+                }
+                cluster_clock += 1;
+            }
+            output.close();
         }
 
     } // namespace net

@@ -44,9 +44,9 @@ namespace uu
             std::vector<std::shared_ptr<Cluster>> K_clusters_best;
             KMeans(int k_min,int k_max, uu::net::MultilayerNetwork * ml_net, int iterations, const std::unordered_map<std::string, w2v::vector_t> &input_map, std::string metric = "Euclidian");
             
-            void print_means();
+            
             void print_clusters();
-            void summary();
+            void print_cluster_data_to_file(std::string output_file_name);
 
         private:
             std::vector<std::unique_ptr<Point>> all_points;
