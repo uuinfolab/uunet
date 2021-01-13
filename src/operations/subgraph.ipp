@@ -1,6 +1,7 @@
 #include "generation/empty_copy.hpp"
 #include "core/exceptions/WrongParameterException.hpp"
 #include "core/utils/Counter.hpp"
+#include "objects/MLEdge2.hpp"
 
 namespace uu {
 namespace net {
@@ -16,7 +17,7 @@ vertex_induced_subgraph(
 {
     auto g_sub = empty_copy(g);
 
-    core::Counter<const Edge*> edges;
+    core::Counter<const MLEdge2*> edges;
 
     for (auto v_iter = first; v_iter != last; ++v_iter)
     {
@@ -41,7 +42,8 @@ vertex_induced_subgraph(
     {
         if (pair.second == 2)
         {
-            g_sub->edges()->add(pair.first);
+            auto edge = pair.first;
+            g_sub->edges()->add(edge->v1, edge->v2);
         }
     }
 
