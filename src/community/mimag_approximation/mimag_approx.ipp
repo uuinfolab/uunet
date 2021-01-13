@@ -302,7 +302,7 @@ find_clusters(
         std::unordered_set<const typename M::layer_type*> layers_that_satisfy;
 
         // degree which must be satisfied  - bad since if you want to change quasi clique arg to 0.6, you have to find manually
-        double degree = 0.5*((subgraph.size())-1);
+        double degree = gamma*((subgraph.size())-1);
 
 
 
@@ -449,7 +449,7 @@ average_degree_all_layers(
 )
 {
     // hard coded
-    double threshold = (subgraph.size() - 1) * 0.5;
+    double threshold = (subgraph.size() - 1) * gamma;
     double degree_in_layers = 0;
     double avg_deg = 0;
     double average_degree_across_all_layers = 0;
