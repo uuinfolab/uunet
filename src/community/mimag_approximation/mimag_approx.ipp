@@ -347,40 +347,41 @@ candidate_set(
     int layer = vertex.layer;
     // neighbors of root
     auto neigh = get_layer(vertex.mnet, vertex.layer)->edges()->neighbors(vertex.vertex);
+    auto net = vertex.mnet;
     // neighbors in vector for traversal
     std::vector<const uu::net::Vertex*> vertices;
+    std::vector<const uu::net::Vertex*> already_found;
 
     // add to vector for traversal
     for (auto v: *neigh)
     {
         vertices.push_back(v);
+        already_found.push_back(v);
     }
-    // TODO: make efficient
 
-    // list_of_vertex_layers[layer].erase(list_of_vertex_layers[layer].begin()+3); // deletes a vertex_layer
-
-    for (int i = 0; i < list_of_vertex_layers[layer].size(); i++)
+    // start shady
+    for (auto v: *neigh)
     {
-        for (int j = 0; j < vertices.size(); j++)
+        auto neighbour_neighbours = get_layer(net, layer)->edges()->neighbors(v);
+
+        for (auto z: *neighbour_neighbours)
         {
-            if (list_of_vertex_layers[layer][i].vertex == vertices[j])
+            if (!(std::find(vertices.begin(), vertices.end(), z)!=vertices.end()))
             {
-              result.push(list_of_vertex_layers[layer][i]);
-              vertices.erase(vertices.begin());
+                if (!(std::find(already_found.begin(), already_found.end(), z)!=already_found.end()))
+                {
+                    if (z!= vertex.vertex)
+                    {
+                        vertices.push_back(z);
+                    }
+                }
+
             }
         }
+
     }
 
-    std::vector<const uu::net::Vertex*> candidate_list;
-
-    while (result.size()!=0)
-    {
-        auto x = result.top().vertex;
-        candidate_list.push_back(x);
-        result.pop();
-    }
-
-    return candidate_list;
+    return vertices;
 }
 
 /**
@@ -421,13 +422,14 @@ average_degree_all_layers(
 
 bool
 isQuasiClique(
-  double number_of_layers,
+  double number_of_vertices,
   double average_degree,
-  double gamma
+              double gamma
 )
 {
-    double x = gamma*(number_of_layers-1);
-
+    //double x = gamma*(number_of_layers-1);
+    double x = gamma*(number_of_vertices-1);
+    //double x = 0.5*(number_of_vertices);
     if (average_degree >= x)
     {
         return true;
@@ -475,11 +477,12 @@ isRedundantCluster(
     // if result set is empty add first clique
     if (result_set_size == 0)
     {
+        /*
         for (auto v :multiplex_clique->actors)
         {
             std::cout << *v << std::endl;
 
-        }
+        }*/
         return false;
     }
 
@@ -500,54 +503,6 @@ isRedundantCluster(
     // if new clique is equal to any clique in the result set then disregard
     for (std::shared_ptr<MultiplexClique<M>> c: result)
     {
-
-
-        // if layers are the same , then delete if smaller
-        /*
-        if( (c->layers.size() == new_layers.size()) && (new_actors.size() < c->actors.size()))
-        {
-
-
-          std::vector<const uu::net::Network*> existing_layers;
-          for (auto l: c->layers)
-          {
-              existing_layers.push_back(l);
-          }
-
-          std::vector<const uu::net::Vertex*> existing_actors;
-          for (auto v: c->actors)
-          {
-              existing_actors.push_back(v);
-          }
-
-
-          if(existing_layers == new_layers)
-          {
-              std::cout << "same layers" << std::endl;
-              int count = 0;
-
-              for (int i = 0; i < new_actors.size(); i++)
-              {
-                  if (std::find(existing_actors.begin(), existing_actors.end(), new_actors[i]) != existing_actors.end())
-                  {
-                    count++;
-                  }
-
-                  if (count == new_actors.size())
-                  {
-                      std::cout << "new actors size : " << new_actors.size() << std::endl;
-
-                      std::cout << "plz man" << std::endl;
-                      return true;
-                  }
-              }
-              count = 0;
-          }
-
-        }
-        */
-
-
 
         // if same size check if equal
         if (c->actors.size() == new_actors.size() && c->layers.size() == new_layers.size())

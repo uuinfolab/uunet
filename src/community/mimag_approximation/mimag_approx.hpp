@@ -282,7 +282,7 @@ bool
 isQuasiClique(
     double number_of_layers,
     double average_degree,
-    double gamma
+    double gamma = .5
 );
 
 
