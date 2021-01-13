@@ -19,7 +19,7 @@ summary_short(
     auto m = std::to_string(size(g));
     auto dir = g->is_directed()?"Dir":"Und";
     auto loops = g->allows_loops()?", Loops":"";
-    return "net(" + n + ", " + m  + ", " + dir + loops + ")";
+    return g->name + "(" + n + ", " + m  + ", " + dir + loops + ")";
 }
 
 template<>

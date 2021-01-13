@@ -111,6 +111,14 @@ is_directed(
 }
 
 
+bool
+ECube::
+allows_loops(
+) const
+{
+    return loops_==LoopMode::ALLOWED?true:false;
+}
+
 
 const
 GenericObjectList<Vertex>*
@@ -126,18 +134,52 @@ neighbors(
 
 
 const
+GenericObjectList<Vertex>*
+ECube::
+neighbors(
+    const Vertex* vertex,
+    EdgeMode mode
+) const
+{
+    if (cube1_ != cube2_)
+    {
+        std::string err = "ending vertex cubes cannot be inferred and must be specified";
+        throw core::OperationNotSupportedException(err);
+    }
+    
+    return elements_->neighbors(vertex, cube1_, mode);
+}
+
+
+const
 GenericObjectList<MLEdge2>*
 ECube::
-                                      incident(
-                                              const Vertex* vertex,
-                                              const VCube* cube,
-                                              EdgeMode mode
-                                      ) const
-                                      {
-                                          return elements_->incident(vertex, cube, mode);
-                                      }
+incident(
+      const Vertex* vertex,
+      const VCube* cube,
+      EdgeMode mode
+) const
+{
+  return elements_->incident(vertex, cube, mode);
+}
 
 
+const
+GenericObjectList<MLEdge2>*
+ECube::
+incident(
+      const Vertex* vertex,
+      EdgeMode mode
+) const
+{
+    if (cube1_ != cube2_)
+    {
+        std::string err = "ending vertex cubes cannot be inferred and must be specified";
+        throw core::OperationNotSupportedException(err);
+    }
+    
+  return elements_->incident(vertex, cube1_, mode);
+}
 
 void
 ECube::

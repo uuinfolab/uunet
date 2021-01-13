@@ -87,6 +87,14 @@ class Network2
     is_directed(
     ) const;
 
+    
+    /**
+     * Checks if the network allows loops.
+     */
+    virtual
+    bool
+    allows_loops(
+    ) const;
 
 
   private:

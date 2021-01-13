@@ -146,15 +146,16 @@ allows_multi_edges(
 }
 
 
+ */
+
 bool
 Network2::
 allows_loops(
 ) const
 {
-    return data_->allows_loops();
+    return edges_->allows_loops();
 }
 
-*/
 }
 }
 

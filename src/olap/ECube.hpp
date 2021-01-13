@@ -78,9 +78,18 @@ class
     neighbors(
         const Vertex* vertex,
         const VCube* cube,
-        EdgeMode mode
+        EdgeMode mode = EdgeMode::INOUT
     ) const;
 
+    
+    const
+    GenericObjectList<Vertex>*
+    neighbors(
+        const Vertex* vertex,
+        EdgeMode mode = EdgeMode::INOUT
+    ) const;
+    
+    
     /**
      * @brief Returns the nodes with an edge from/to the input vertex.
      * @param node pointer to the node.
@@ -89,12 +98,21 @@ class
      **/
     const
     GenericObjectList<MLEdge2>*
-                                          incident(
-                                                  const Vertex* vertex,
-                                                  const VCube* cube,
-                                                  EdgeMode mode
-                                          ) const;
+  incident(
+          const Vertex* vertex,
+          const VCube* cube,
+          EdgeMode mode = EdgeMode::INOUT
+  ) const;
 
+
+      const
+      GenericObjectList<MLEdge2>*
+    incident(
+            const Vertex* vertex,
+            EdgeMode mode = EdgeMode::INOUT
+    ) const;
+    
+    
     const VCube*
     vcube1(
     ) const;
@@ -116,6 +134,10 @@ class
 
     bool
     is_directed(
+    ) const;
+    
+    bool
+    allows_loops(
     ) const;
 
     void
