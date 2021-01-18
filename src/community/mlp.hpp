@@ -405,7 +405,7 @@ mlp(
             {
                 if (layer->vertices()->contains(actor))
                 {
-                    c->add(MLVertex<M>(actor, layer));
+                    c->add(MLVertex2(actor, layer));
                 }
             }
         }

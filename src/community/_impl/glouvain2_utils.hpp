@@ -12,16 +12,16 @@
 #include "objects/Vertex.hpp"
 #include "measures/size.hpp"
 #include "measures/strength.hpp"
-#include "networks/MultilayerNetwork.hpp"
+#include "networks/MultilayerNetwork2.hpp"
 #include "networks/OrderedMultiplexNetwork.hpp"
 
 namespace uu {
 namespace net {
 
 
-std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, MLVertex<MultilayerNetwork>>, std::vector<std::unique_ptr<const Vertex>>>
+std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, MLVertex2>, std::vector<std::unique_ptr<const Vertex>>>
         convert(
-            const MultilayerNetwork* g,
+            const MultilayerNetwork2* g,
             double omega
         );
 
@@ -39,7 +39,7 @@ expand(
     Community<const Vertex*>* com
 );
 
-std::unique_ptr<CommunityStructure<Network>>
+std::unique_ptr<CommunityStructure<Network2>>
 communities(
     const std::vector<std::unique_ptr<GMetaNetwork>>& levels
 );

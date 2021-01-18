@@ -34,7 +34,7 @@ MLCube(
     elements_->attach(attr_.get());
 }
 
-
+/*
 template <class STORE>
 MLCube<STORE>::
 MLCube(
@@ -65,6 +65,37 @@ MLCube(
     data_ = std::vector<std::shared_ptr<STORE>>(length);
     
 }
+*/
+
+template <class STORE>
+std::unique_ptr<MLCube<STORE>>
+MLCube<STORE>::
+skeleton(
+    const std::string& name,
+    const std::vector<std::string>& dimensions,
+    const std::vector<std::vector<std::string>>& members
+) const
+{
+    auto cube = MLCube(name);
+    
+    size_t length = 1;
+    for (size_t d_idx = 0; d_idx < members.size(); d_idx++)
+    {
+        length *= members[d_idx].size();
+        dim_.push_back(dimensions[d_idx]);
+        dim_idx_[dimensions[d_idx]] = d_idx;
+        size_.push_back(members[d_idx].size());
+        members_idx_.push_back(std::unordered_map<std::string, size_t>());
+        for (size_t m_idx = 0; m_idx < members[d_idx].size(); m_idx++)
+        {
+            members_[d_idx].push_back(members[d_idx][m_idx]);
+            members_idx_[d_idx][members[d_idx][m_idx]] = m_idx;
+        }
+    }
+    
+    data_ = std::vector<std::shared_ptr<STORE>>(length);
+}
+
 
 template <class STORE>
 size_t
@@ -89,7 +120,7 @@ template <class STORE>
 template <class STORE>
  std::vector<size_t>
  MLCube<STORE>::
- dimensions(
+ dsize(
  ) const
  {
      return size_;
@@ -99,7 +130,7 @@ template <class STORE>
 template <class STORE>
  const std::vector<std::string>&
  MLCube<STORE>::
- dimension_names(
+ dimensions(
  ) const
  {
      return dim_;
@@ -136,6 +167,16 @@ template <class STORE>
          throw core::ElementNotFoundException("dimension " + dimension_name);
      }
  }
+
+template <class STORE>
+const std::vector<std::string>&
+MLCube<STORE>::
+members(
+    size_t dim_idx
+) const
+{
+    return members_.at(dim_idx);
+}
 
 template <class STORE>
 typename STORE::iterator
@@ -231,6 +272,20 @@ contains(
 }
 
 template <class STORE>
+bool
+MLCube<STORE>::
+contains(
+    const typename STORE::key_type& key
+) const
+{
+    auto v = get(key);
+    if (v) return true;
+    else return false;
+}
+
+
+
+template <class STORE>
 typename STORE::value_type*
 MLCube<STORE>::
 get(
@@ -293,6 +348,17 @@ erase(
     return elements_->erase(v);
 }
 
+template <class STORE>
+bool
+MLCube<STORE>::
+erase(
+    const typename STORE::key_type& key
+)
+{
+    auto v = get(key);
+    if (v) return erase(v);
+    else return false;
+}
 /*
 template <class STORE>
 void

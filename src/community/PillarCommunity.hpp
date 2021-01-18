@@ -78,7 +78,7 @@ std::unique_ptr<Community<M>>
     {
         for (auto l: com->get_layers())
         {
-            res->add(MLVertex<M>(a,l));
+            res->add(MLVertex2(a,l));
         }
     }
 

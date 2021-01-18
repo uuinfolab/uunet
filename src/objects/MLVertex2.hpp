@@ -6,7 +6,8 @@
 #include <string>
 #include <utility>
 #include "objects/Vertex.hpp"
-#include "olap/VCube.hpp"
+//#include "olap/VCube.hpp"
+#include "networks/Network2.hpp"
 
 namespace uu {
 namespace net {
@@ -19,11 +20,11 @@ class
 
   public:
 
-    typedef std::pair<const Vertex*, const VCube*> key_type;
+    typedef std::pair<const Vertex*, const Network2*> key_type;
 
     MLVertex2(
         const Vertex* v,
-        const VCube* c
+        const Network2* c
     );
 
     MLVertex2(
@@ -56,7 +57,7 @@ class
 
     const Vertex* v;
 
-    const VCube* c;
+    const Network2* c;
 
     key_type key;
 

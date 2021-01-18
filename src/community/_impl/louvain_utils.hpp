@@ -45,7 +45,7 @@ expand(
     Community<Network>* com
 );
 
-std::unique_ptr<CommunityStructure<Network>>
+std::unique_ptr<CommunityStructure<Network2>>
 communities(
     const std::vector<std::unique_ptr<MetaNetwork>>& levels
 );

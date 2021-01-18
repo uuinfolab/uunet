@@ -8,7 +8,7 @@ namespace net {
 MLVertex2::
 MLVertex2(
     const Vertex* v,
-    const VCube* c
+    const Network2* c
 ) :
     v(v),
     c(c),
@@ -70,7 +70,7 @@ MLVertex2::
 to_string(
 ) const
 {
-    return v->to_string() + "@" + c->to_string();
+    return v->name + "@" + c->name;
 }
 
 

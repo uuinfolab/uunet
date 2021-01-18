@@ -32,6 +32,23 @@ add(
     return get(layer1, layer2)->add(vertex1, layer1->vertices(), vertex2, layer2->vertices());
 }
 
+const MLEdge2 *
+MLECubeStore::
+get(
+    const Vertex* vertex1,
+    const Network2* layer1,
+    const Vertex* vertex2,
+    const Network2* layer2
+)
+{
+    core::assert_not_null(vertex1, "MLECubeStore::add", "vertex1");
+    core::assert_not_null(layer1, "MLECubeStore::add", "layer1");
+    core::assert_not_null(vertex2, "MLECubeStore::add", "vertex2");
+    core::assert_not_null(layer2, "MLECubeStore::add", "layer2");
+
+    return get(layer1, layer2)->get(vertex1, layer1->vertices(), vertex2, layer2->vertices());
+}
+
 
 /*
 const MLEdge2*

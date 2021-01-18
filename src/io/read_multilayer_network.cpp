@@ -7,8 +7,8 @@
 namespace uu {
 namespace net {
 
-std::unique_ptr<MultilayerNetwork>
-read_attributed_homogeneous_multilayer_network(
+std::unique_ptr<MultilayerNetwork2>
+read_multilayer_network(
     const std::string& infile,
     const std::string& name,
     char separator,
@@ -22,7 +22,7 @@ read_attributed_homogeneous_multilayer_network(
 
     // Check metadata consistency (@todo) & create graph & add attributes
 
-    auto net = std::make_unique<MultilayerNetwork>(name);
+    auto net = std::make_unique<MultilayerNetwork2>(name);
 
     for (auto l: meta.layers)
     {
@@ -30,9 +30,9 @@ read_attributed_homogeneous_multilayer_network(
         auto layer_type = l.second;
         
         //std::cout << "creating layer " << l.first << " " << layer_type.is_directed << std::endl;
-        auto dir = layer_type.is_directed?EdgeDir::DIRECTED:EdgeDir::UNDIRECTED;
-        auto layer = std::make_unique<Network>(layer_name, dir, layer_type.allows_loops);
-        net->layers()->add(std::move(layer));
+        auto dir = layer_type.is_directed ? EdgeDir::DIRECTED : EdgeDir::UNDIRECTED;
+        auto loops = layer_type.allows_loops ? LoopMode::ALLOWED : LoopMode::DISALLOWED;
+        net->layers()->add(layer_name, dir, loops);
     }
 
     /*for (auto l: meta.layers)
@@ -45,10 +45,10 @@ read_attributed_homogeneous_multilayer_network(
         net->layers()->add(std::move(layer));
     }*/
 
-    for (auto dir: meta.interlayer_dir)
+    for (auto inter: meta.interlayer_dir)
     {
-        std::string layer_name1 = dir.first.first;
-        std::string layer_name2 = dir.first.second;
+        std::string layer_name1 = inter.first.first;
+        std::string layer_name2 = inter.first.second;
         auto layer1 = net->layers()->get(layer_name1);
         
         if (!layer1)
@@ -63,7 +63,9 @@ read_attributed_homogeneous_multilayer_network(
             throw core::WrongFormatException("unknown layer name (" + layer_name2 + ")");
         }
 
-        net->interlayer_edges()->set_directed(layer1, layer2, dir.second);
+        auto dir = inter.second ? EdgeDir::DIRECTED : EdgeDir::UNDIRECTED;
+        net->interlayer_edges()->init(layer1, layer2, dir);
+        
     }
 
 
@@ -84,10 +86,12 @@ read_attributed_homogeneous_multilayer_network(
         }
     }
 
+    /* @todo add to all edge layers?
     for (auto attr: meta.interlayer_edge_attributes)
     {
         net->interlayer_edges()->attr()->add(attr.name, attr.type);
     }
+    */
 
     for (auto layer_attr: meta.intralayer_edge_attributes)
     {
@@ -102,11 +106,6 @@ read_attributed_homogeneous_multilayer_network(
                 throw core::DuplicateElementException("edge attribute " + attr.name);
             }
         }
-    }
-
-    for (auto attr: meta.interlayer_edge_attributes)
-    {
-        net->interlayer_edges()->attr()->add(attr.name, attr.type);
     }
 
     // Read data (vertices, edges, attribute values)
@@ -130,9 +129,9 @@ read_attributed_homogeneous_multilayer_network(
 
 
 template <>
-Network*
+Network2*
 read_layer(
-    MultilayerNetwork* ml,
+    MultilayerNetwork2* ml,
     const std::vector<std::string>& fields,
     size_t from_idx,
     size_t line_number
@@ -145,8 +144,7 @@ read_layer(
 
     if (!layer)
     {
-        auto ptr = std::make_unique<uu::net::Network>(layer_name, uu::net::EdgeDir::UNDIRECTED);
-        layer = ml->layers()->add(std::move(ptr));
+        layer = ml->layers()->add(layer_name, uu::net::EdgeDir::UNDIRECTED);
     }
 
     return layer;
@@ -155,32 +153,32 @@ read_layer(
 template <>
 void
 read_vertex(
-    MultilayerNetwork* ml,
+    MultilayerNetwork2* ml,
     const std::vector<std::string>& fields,
     const MultilayerMetadata& meta,
     size_t line_number
 )
 {
     core::assert_not_null(ml, "read_vertex", "ml");
-    auto v = read_actor(ml, fields, 0, line_number);
+    // @todo actors not read
+    //auto v = read_actor(ml, fields, 0, line_number);
 
-    read_attr_values(ml->actors()->attr(), v, meta.vertex_attributes, fields, 1, line_number);
+    //read_attr_values(ml->actors()->attr(), v, meta.vertex_attributes, fields, 1, line_number);
 
 }
 
 template <>
 void
 read_intralayer_vertex(
-    MultilayerNetwork* ml,
+    MultilayerNetwork2* ml,
     const std::vector<std::string>& fields,
     const MultilayerMetadata& meta,
     size_t line_number
 )
 {
     core::assert_not_null(ml, "read_intralayer_vertex", "ml");
-    auto v = read_actor(ml, fields, 0, line_number);
-    auto l = read_layer<MultilayerNetwork, Network>(ml, fields, 1, line_number);
-    l->vertices()->add(v);
+    auto l = read_layer<MultilayerNetwork2, Network2>(ml, fields, 1, line_number);
+    auto v = read_actor(l, fields, 0, line_number);
 
     auto v_attr = meta.intralayer_vertex_attributes.find(l->name);
 
@@ -193,20 +191,18 @@ read_intralayer_vertex(
 template <>
 void
 read_intralayer_edge(
-    MultilayerNetwork* ml,
+    MultilayerNetwork2* ml,
     const std::vector<std::string>& fields,
     const MultilayerMetadata& meta,
     size_t line_number
 )
 {
     core::assert_not_null(ml, "read_intralayer_edge", "ml");
-    auto v1 = read_actor(ml, fields, 0, line_number);
-    auto v2 = read_actor(ml, fields, 1, line_number);
-
-    auto l = read_layer<MultilayerNetwork, Network>(ml, fields, 2, line_number);
-
-    l->vertices()->add(v1);
-    l->vertices()->add(v2);
+    
+    auto l = read_layer<MultilayerNetwork2, Network2>(ml, fields, 2, line_number);
+    
+    auto v1 = read_actor(l, fields, 0, line_number);
+    auto v2 = read_actor(l, fields, 1, line_number);
 
     /*if (!meta.layers.at(l->name).allows_loops)
     if (v1 == v2)
@@ -229,7 +225,7 @@ read_intralayer_edge(
 template <>
 void
 read_interlayer_edge(
-    MultilayerNetwork* ml,
+    MultilayerNetwork2* ml,
     const std::vector<std::string>& fields,
     const MultilayerMetadata& meta,
     size_t line_number
@@ -237,13 +233,10 @@ read_interlayer_edge(
 {
     (void)meta; // param not used
     core::assert_not_null(ml, "read_interlayer_edge", "ml");
-    auto v1 = read_actor(ml, fields, 0, line_number);
-    auto l1 = read_layer<MultilayerNetwork, Network>(ml, fields, 1, line_number);
-    auto v2 = read_actor(ml, fields, 2, line_number);
-    auto l2 = read_layer<MultilayerNetwork, Network>(ml, fields, 3, line_number);
-
-    l1->vertices()->add(v1);
-    l2->vertices()->add(v2);
+    auto l1 = read_layer<MultilayerNetwork2, Network2>(ml, fields, 1, line_number);
+    auto v1 = read_actor(l1, fields, 0, line_number);
+    auto l2 = read_layer<MultilayerNetwork2, Network2>(ml, fields, 3, line_number);
+    auto v2 = read_actor(l2, fields, 2, line_number);
 
     if (l1==l2)
     {
@@ -259,9 +252,11 @@ read_interlayer_edge(
 
     else
     {
-        auto e = ml->interlayer_edges()->add(v1,l1,v2,l2);
+        //auto e =
+        ml->interlayer_edges()->add(v1,l1,v2,l2);
 
-        read_attr_values(ml->interlayer_edges()->attr(), e, meta.interlayer_edge_attributes, fields, 4, line_number);
+        // @todo attr
+        //read_attr_values(ml->interlayer_edges()->attr(), e, meta.interlayer_edge_attributes, fields, 4, line_number);
 
     }
 

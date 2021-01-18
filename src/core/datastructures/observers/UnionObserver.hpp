@@ -71,7 +71,7 @@ notify_add(
 )
 {
     assert_not_null(obj, "UnionObserver::notify_add", "obj");
-
+    
     auto el = ++(count[obj]);
 
     if (el == 1)

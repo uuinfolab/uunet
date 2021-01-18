@@ -66,6 +66,13 @@ MLECubeStore
         const Network2* layer2
     );
 
+    const MLEdge2 *
+    get(
+        const Vertex* vertex1,
+        const Network2* layer1,
+        const Vertex* vertex2,
+        const Network2* layer2
+    );
     
     bool
     erase(

@@ -6,7 +6,7 @@ namespace uu {
 namespace net {
 
 template <typename G>
-std::unique_ptr<CommunityStructure<Network>>
+std::unique_ptr<CommunityStructure<Network2>>
 louvain(
     const G* g
 )

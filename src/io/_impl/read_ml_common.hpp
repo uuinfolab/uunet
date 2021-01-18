@@ -68,6 +68,7 @@ read_multilayer_type(
 );
 
 
+
 template <typename ML>
 const Vertex*
 read_actor(
@@ -83,11 +84,11 @@ read_actor(
 
     std::string actor_name = fields.at(from_idx);
 
-    auto actor = g->actors()->add(actor_name);
+    auto actor = g->vertices()->add(actor_name);
 
     if (!actor)
     {
-        actor = g->actors()->get(actor_name);
+        actor = g->vertices()->get(actor_name);
     }
 
     return actor;
@@ -151,8 +152,8 @@ read_multilayer_data(
         {
         case MultilayerIOFileSection::ACTORS:
         {
-
-            read_vertex(ml, fields, meta, csv.row_num());
+            // @todo no longer actors before layers
+            //read_vertex(ml, fields, meta, csv.row_num());
             break;
         }
 

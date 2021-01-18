@@ -126,7 +126,21 @@ get(
     }
 }
 
-
+const MLEdge2*
+MDSimpleEdgeStore::
+get(
+    const Vertex* vertex1,
+    const Vertex* vertex2
+) const
+{
+    if (cube1_ != cube2_)
+    {
+        std::string err = "ending vertex cubes cannot be inferred and must be specified";
+        throw core::OperationNotSupportedException(err);
+    }
+        
+    return get(vertex1, cube1_, vertex2, cube2_);
+}
 
 
 bool

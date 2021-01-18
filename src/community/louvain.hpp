@@ -4,7 +4,7 @@
 
 #include "community/CommunityStructure.hpp"
 #include "community/Community.hpp"
-#include "networks/Network.hpp"
+#include "networks/Network2.hpp"
 #include "objects/Vertex.hpp"
 #include <memory>
 
@@ -13,7 +13,7 @@ namespace uu {
 namespace net {
 
 template <typename G>
-std::unique_ptr<CommunityStructure<Network>>
+std::unique_ptr<CommunityStructure<Network2>>
 louvain(
     const G* g
 );

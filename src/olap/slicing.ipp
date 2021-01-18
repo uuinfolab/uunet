@@ -21,13 +21,71 @@ const std::string& cube_name,
 )
 {
     
-   // @todo check not null, dimensions, ...
-    size_t num_dimensions = indexes.size();
-    auto dim_names = cube->dimension_names(); // slicing does not change dimensionality
-    std::vector<std::vector<std::string>> new_members;
-    for (size_t i = 0; i < num_dimensions; i++)
+    // checking the parameters
+    
+    core::assert_not_null(cube, "vslice", "cube");
+    if (cube->order() != indexes.size())
     {
-        auto member_names = cube->members(dim_names[i]);
+        std::string err = "a slice operator must have the same dimensionality of the input cube";
+        throw core::WrongParameterException(err);
+    }
+    
+    // create a new empty cube
+    
+    auto dimensions = cube->dimensions();
+    auto members = filter_members(cube, indexes);
+    std::unique_ptr<C> out_cube = cube->skeleton(cube_name, dimensions, members);
+
+    
+    // indexes in the new cube corresponding to the input indexes
+    
+    core::IndexIterator in_idx(indexes);
+    core::IndexIterator out_idx(out_cube->dsize());
+
+    auto in_idx_iter = in_idx.begin();
+    auto out_idx_iter = out_idx.begin();
+
+    if (out_cube->data_.size() == 1)
+    {
+        
+    }
+    
+    /*
+    while (in_idx_iter != in_idx.end())
+    {
+        auto cell = cube->cell(*in_idx_iter)->shared_from_this();
+        out_cube->init(*out_idx_iter, cell);
+        out_cube->register_obs(*out_idx_iter); // @todo also when data_.size() = 1?
+        ++in_idx_iter;
+        ++out_idx_iter;
+    }
+
+    std::cout << "input cube" << std::endl;
+    for (auto idx: core::IndexIterator(cube->dsize()))
+    {
+        std::cout << cube->cell(idx) << std::endl;
+    }
+    std::cout << "output cube" << std::endl;
+    for (auto idx: core::IndexIterator(out_cube->dsize()))
+    {
+        std::cout << out_cube->cell(idx) << std::endl;
+    }
+    */
+    return out_cube;
+}
+
+
+template <typename C>
+std::vector<std::vector<std::string>>
+filter_members(
+    const C* cube,
+    const std::vector<std::vector<size_t>>& indexes
+)
+{
+    std::vector<std::vector<std::string>> new_members;
+    for (size_t i = 0; i < indexes.size(); i++)
+    {
+        auto member_names = cube->members(i);
         
         std::vector<std::string> members;
         for (auto idx: indexes[i])
@@ -36,27 +94,7 @@ const std::string& cube_name,
         }
         new_members.push_back(members);
     }
-
-    // Generalize to work with all types of cubes
-    auto out_cube = std::unique_ptr<C>(new C(cube_name, dim_names, new_members));
-
-    // indexes in the new cube corresponding to the input indexes
-    
-    core::IndexIterator in_idx(indexes);
-    core::IndexIterator out_idx(out_cube->dimensions());
-
-    auto in_idx_iter = in_idx.begin();
-    auto out_idx_iter = out_idx.begin();
-
-    while (in_idx_iter != in_idx.end())
-    {
-        auto cell = cube->cell(*in_idx_iter)->shared_from_this();
-        out_cube->init(*out_idx_iter, cell);
-        ++in_idx_iter;
-        ++out_idx_iter;
-    }
-
-    return out_cube;
+    return new_members;
 }
 
 }

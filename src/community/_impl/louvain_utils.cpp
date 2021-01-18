@@ -105,7 +105,7 @@ expand(
     const std::vector<std::unique_ptr<MetaNetwork>>& levels,
     size_t i,
     const Vertex* v,
-    Community<Network>* com
+    Community<Network2>* com
 )
 {
     if (i==0)
@@ -126,18 +126,18 @@ expand(
     }
 }
 
-std::unique_ptr<CommunityStructure<Network>>
+std::unique_ptr<CommunityStructure<Network2>>
 communities(
     const std::vector<std::unique_ptr<MetaNetwork>>& levels
 )
 {
-    auto res = std::make_unique<CommunityStructure<Network>>();
+    auto res = std::make_unique<CommunityStructure<Network2>>();
 
     size_t i = levels.size()-1;
 
     for (auto v: *levels.at(i)->get()->vertices())
     {
-        auto community = std::make_unique<Community<Network>>();
+        auto community = std::make_unique<Community<Network2>>();
 
         expand(levels, i, v, community.get());
 

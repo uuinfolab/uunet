@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include "objects/MLVertex2.hpp"
 #include "olap/VCube.hpp"
 #include "olap/ECube.hpp"
 #include "networks/Network2.hpp"
@@ -29,6 +30,12 @@ class
 {
 
     friend LayerStore;
+    
+public:
+    
+    typedef Network2 layer_type;
+    typedef Vertex vertex_type;
+    typedef MLVertex2 community_element_type;
     
   private:
     

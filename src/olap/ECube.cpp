@@ -14,28 +14,10 @@ ECube(
     EdgeDir dir,
     LoopMode loops
 
-) : super(name, std::make_unique<EStore>(cube1, cube2, dir, loops)), cube1_(cube1), cube2_(cube2), dir_(dir), loops_(loops)
+) cube1_(cube1), cube2_(cube2), dir_(dir), loops_(loops)
 {
-    //name_ = "e-cube"; // @todo is name necessary?
-
-    //dir = dir;
-
-    /*std::vector<std::shared_ptr<MDSimpleEdgeStore>> elements;
-    size_t cube_size = 1;
-
-    for (auto dim: members)
-    {
-        cube_size *= dim.size();
-    }
-
-    for (size_t i = 0; i < cube_size; i++)
-    {
-        elements.push_back(std::make_shared<MDSimpleEdgeStore>(cube1_, cube2_, dir));
-    }*/
-
-    //auto elements = std::make_unique<MDSimpleEdgeStore>(cube1_, cube2_, dir);
-    //cube_ = std::make_unique<MLCube<MDSimpleEdgeStore>>(std::move(elements), dimensions, members);
-    //, elements.begin(), elements.end());
+    cube_ = std::make_unique<MLCube<MDSimpleEdgeStore>>(name, std::make_unique<EStore>(cube1, cube2, dir, loops));
+    
     // register an observer to propagate the removal of vertices to the edge store
     auto obs1 = std::make_unique<VCubeObserver<ECube>>(cube1_, this);
     cube1_->attach(obs1.get());
@@ -59,6 +41,17 @@ add(
     return elements_->add(vertex1, cube1, vertex2, cube2);
 }
 
+
+const MLEdge2 *
+ECube::
+add(
+    const MLEdge2* e
+)
+{
+    return elements_->add(e->v1, e->c1, e->v2, e->c2);
+}
+
+
 const MLEdge2 *
 ECube::
 add(
@@ -73,6 +66,34 @@ add(
     }
         
     return elements_->add(vertex1, cube1_, vertex2, cube2_);
+}
+
+const MLEdge2 *
+ECube::
+get(
+    const Vertex* vertex1,
+    const VCube* cube1,
+    const Vertex* vertex2,
+    const VCube* cube2
+)
+{
+    return elements_->get(vertex1, cube1, vertex2, cube2);
+}
+
+const MLEdge2 *
+ECube::
+get(
+    const Vertex* vertex1,
+    const Vertex* vertex2
+)
+{
+    if (cube1_ != cube2_)
+    {
+        std::string err = "ending vertex cubes cannot be inferred and must be specified";
+        throw core::OperationNotSupportedException(err);
+    }
+        
+    return elements_->get(vertex1, cube1_, vertex2, cube2_);
 }
 
 const VCube*

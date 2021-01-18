@@ -37,7 +37,7 @@ graph_union(
         v_union.insert(vertex);
     }
 
-    std::set<const Edge*> e_union;
+    std::set<const MLEdge2*> e_union;
 
     for (auto edge: *g1->edges())
     {
@@ -64,13 +64,7 @@ graph_union(
 
     for (auto edge: e_union)
     {
-        auto success = res->edges()->add(edge);
-
-        if (!success)
-        {
-            std::string err = "the two networks contain different edges with the same end-vertices";
-            throw core::OperationNotSupportedException(err);
-        }
+        res->edges()->add(edge->v1, edge->v2);
     }
 
     return res;
@@ -95,14 +89,14 @@ graph_add(
 
     for (auto edge: *g->edges())
     {
-        target->edges()->add(edge->v1,edge->v2);
+        target->edges()->add(edge->v1, edge->v2);
     }
 
     if (!g->is_directed() && target->is_directed())
     {
         for (auto edge: *g->edges())
         {
-            target->edges()->add(edge->v2,edge->v1);
+            target->edges()->add(edge->v2, edge->v1);
         }
     }
 }

@@ -19,18 +19,6 @@ namespace uu {
 namespace net {
 
 template <class STORE>
-class MLCube;
-
-template <typename STORE>
-std::unique_ptr<MLCube<STORE>>
-vslice(
-const std::string& cube_name,
-    MLCube<STORE>* cube,
-    const std::vector<std::vector<size_t>>& indexes
-       );
-
-
-template <class STORE>
 class MLCube
 : public core::ObserverStore,
 public core::Subject<const typename STORE::value_type>
@@ -42,7 +30,6 @@ public core::Subject<const typename STORE::value_type>
     typedef STORE container_type;
     typedef const typename STORE::value_type value_type;
 
-    
     // Name of the cube
     const std::string name;
     
@@ -52,12 +39,10 @@ public core::Subject<const typename STORE::value_type>
     MLCube(
         const std::string& name,
         const std::shared_ptr<STORE>& el
-        //const std::vector<std::string>& dim,
-        //const std::vector<std::vector<std::string>>& members
     );
 
 
-    virtual ~MLCube()
+    ~MLCube()
     {
     }
     
@@ -79,14 +64,14 @@ public core::Subject<const typename STORE::value_type>
      * Returns the number of members for each dimension.
      */
     std::vector<size_t>
-    dimensions(
+    dsize(
     ) const;
 
     /**
      * Returns the names of the dimensions of this cube.
      */
     const std::vector<std::string>&
-    dimension_names(
+    dimensions(
     ) const;
     
     /**
@@ -104,6 +89,14 @@ public core::Subject<const typename STORE::value_type>
         const std::string& dim
     ) const;
     
+    /**
+     * Returns the members of a dimension.
+     */
+    const std::vector<std::string>&
+    members(
+        size_t dim_idx
+    ) const;
+    
     /** Returns an iterator to the first object in the collection */
     typename STORE::iterator
     begin(
@@ -116,7 +109,7 @@ public core::Subject<const typename STORE::value_type>
 
     /**
      * Inserts a new object in the collection.
-     * @ret
+     * @return a pointer to the object
      */
     typename STORE::value_type*
     add(
@@ -125,7 +118,7 @@ public core::Subject<const typename STORE::value_type>
 
     /**
      * Inserts a new object in the collection.
-     * @ret
+     * @return a pointer to the object
      */
     typename STORE::value_type*
     add(
@@ -133,7 +126,8 @@ public core::Subject<const typename STORE::value_type>
     );
 
     /**
-     * Creates a new vertex and adds it to the store.
+     * Creates a new object and adds it to the store.
+     * @return a pointer to the object
      */
     typename STORE::value_type*
     add(
@@ -145,7 +139,14 @@ public core::Subject<const typename STORE::value_type>
     contains(
         typename STORE::value_type* v
     ) const;
-
+    
+    /** Returns true if an object with the input key is present in the collection */
+    bool
+    contains(
+        const typename STORE::key_type& key
+    ) const;
+    
+    /** Returns the object with the input key if present in the collection, or nullptr */
     typename STORE::value_type*
     get(
         const typename STORE::key_type& key
@@ -164,49 +165,33 @@ public core::Subject<const typename STORE::value_type>
     get_at_random(
     ) const;
 
-
     /** Returns the position of the input value in the collection, or -1 */
     int
     index_of(
         typename STORE::value_type* v
     ) const;
 
-
+    /**
+     * Erases obj from the cube, if present.
+     * @return true if the object has been erased
+     */
     bool
     erase(
-        typename STORE::value_type * v
+        typename STORE::value_type * obj
     );
-
-    /*void
-    attach(
-        core::Observer<typename STORE::value_type>* obs
-    );*/
+    
+    /**
+     * Erases obj from the cube, if present.
+     * @return true if the object has been erased
+     */
+    bool
+    erase(
+        const typename STORE::key_type& key
+    );
 
     core::AttributeStore<typename STORE::value_type>*
     attr(
     ) const;
-
-    /** Returns a const iterator to the first object in the cube
-    typename std::vector<std::shared_ptr<const STORE>>::const_iterator
-            begin(
-            ) const;*/
-
-    /** Returns a const iterator after the last object in the cube
-    typename std::vector<std::shared_ptr<const STORE>>::const_iterator
-            end(
-            ) const;*/
-
-    /** Returns an iterator to the first object in the cube
-    typename std::vector<std::shared_ptr<STORE>>::iterator
-            begin(
-            );*/
-
-    /** Returns an iterator after the last object in the cube
-    typename std::vector<std::shared_ptr<STORE>>::iterator
-            end(
-            ); */
-
-
 
     /**
      * Adds a new dimension.
@@ -230,38 +215,6 @@ public core::Subject<const typename STORE::value_type>
     
     /**
      * Returns the cell at the given position in the cube.
-     
-    STORE*
-    operator[](
-        const std::vector<size_t>& index
-    );
-
-    **
-     * Returns the cell at the given position in the cube.
-     
-    const STORE*
-    operator[](
-        const std::vector<size_t>& index
-    ) const;
-    
-    **
-     * Returns the cell at the given position in the cube.
-     *
-    STORE*
-    operator[](
-        const std::vector<std::string>& index
-    );
-
-    **
-     * Returns the cell at the given position in the cube.
-     *
-    const STORE*
-    operator[](
-        const std::vector<std::string>& index
-    ) const;
-*/
-
-    /** Returns the cell at the given position in the cube.
      * @throw OutOfBoundsException if the index is outside the bounds on the cube
      */
     STORE*
@@ -269,7 +222,8 @@ public core::Subject<const typename STORE::value_type>
         const std::vector<size_t>& index
     );
 
-    /** Returns the cell at the given position in the cube.
+    /**
+     * Returns the cell at the given position in the cube.
      * @throw OutOfBoundsException if the index is outside the bounds on the cube
      */
     const STORE*
@@ -277,7 +231,8 @@ public core::Subject<const typename STORE::value_type>
         const std::vector<size_t>& index
     ) const;
 
-    /** Returns the cell at the given position in the cube.
+    /**
+     * Returns the cell at the given position in the cube.
      * @throw OutOfBoundsException if the index is outside the bounds on the cube
      */
     STORE*
@@ -285,7 +240,8 @@ public core::Subject<const typename STORE::value_type>
         const std::vector<std::string>& index
     );
 
-    /** Returns the cell at the given position in the cube.
+    /**
+     * Returns the cell at the given position in the cube.
      * @throw OutOfBoundsException if the index is outside the bounds on the cube
      */
     const STORE*
@@ -297,13 +253,13 @@ protected:
     
     /**
      * Creates a cube of order 0
-     */
+     
     MLCube(
         const std::string& name,
         const std::shared_ptr<STORE>& el,
         const std::vector<std::string>& dim,
         const std::vector<std::vector<std::string>>& members
-    );
+    );*/
     
     
     /**
@@ -344,7 +300,7 @@ protected:
         const std::vector<size_t>& index
     );
     
-    
+    /*
     virtual
     STORE*
     init(
@@ -356,6 +312,7 @@ protected:
     void
     init(
     ) = 0;
+     */
     
 void
     register_obs(
@@ -416,6 +373,13 @@ void
     */
 protected:
     
+    std::unique_ptr<MLCube<STORE>>
+    skeleton(
+        const std::string& name,
+        const std::vector<std::string>& dimensions,
+        const std::vector<std::vector<std::string>>& members
+    )  const;
+    
     /*std::unique_ptr<MLCube<STORE>>
     virtual
     model(
@@ -449,11 +413,12 @@ protected:
             const std::vector<std::string>& index
         ) const;
     
-
+/*
     virtual
     void
     reset(
     ) = 0;
+    */
     
     /*void
     init(

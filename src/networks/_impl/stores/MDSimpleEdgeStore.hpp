@@ -87,6 +87,12 @@ class
         const Vertex* vertex2,
         const VCube* cube2
     ) const;
+    
+    const MLEdge2*
+    get(
+        const Vertex* vertex1,
+        const Vertex* vertex2
+    ) const;
 
 
 

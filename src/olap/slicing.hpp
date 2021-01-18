@@ -15,6 +15,15 @@ const std::string& cube_name,
     const std::vector<std::vector<size_t>>& indexes
        );
 
+// utility functions
+
+template <typename C>
+std::vector<std::vector<std::string>>
+filter_members(
+    const C* cube,
+    const std::vector<std::vector<size_t>>& indexes
+               );
+
 }
 }
 

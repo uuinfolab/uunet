@@ -5,43 +5,46 @@
 
 #include <memory>
 
-#include "networks/MultilayerNetwork.hpp"
+#include "networks/MultilayerNetwork2.hpp"
 #include "community/CommunityStructure.hpp"
 
 class multilayer_community_algorithms_test : public ::testing::Test
 {
   protected:
 
-    std::unique_ptr<uu::net::MultilayerNetwork> net;
-    const uu::net::Vertex *v1, *v2, *v3, *v4, *v5, *v6;
-    const uu::net::Network *l1, *l2;
+    std::unique_ptr<uu::net::MultilayerNetwork2> net;
+    //const uu::net::Vertex *v1, *v2, *v3, *v4, *v5, *v6;
+    //const uu::net::Network2 *l1, *l2;
     
     void
     SetUp() override
     {
         
-        net = std::make_unique<uu::net::MultilayerNetwork>("net");
+        net = std::make_unique<uu::net::MultilayerNetwork2>("net");
          // Adding actors
 
-           auto v1 = net->actors()->add("v1");
-           auto v2 = net->actors()->add("v2");
-           auto v3 = net->actors()->add("v3");
-           auto v4 = net->actors()->add("v4");
-           auto v5 = net->actors()->add("v5");
-           auto v6 = net->actors()->add("v6");
 
            // Adding layers
 
-           auto l1 = net->layers()->add(std::make_unique<uu::net::Network>("l1"));
-           auto l2 = net->layers()->add(std::make_unique<uu::net::Network>("l2"));
+           auto l1 = net->layers()->add("l1");
+           auto l2 = net->layers()->add("l2");
 
            // Adding vertices to layers
 
-            for (auto actor: *net->actors())
-            {
-                l1->vertices()->add(actor);
-                l2->vertices()->add(actor);
-            }
+        auto v1 = l1->vertices()->add("v1");
+        auto v2 = l1->vertices()->add("v2");
+        auto v3 = l1->vertices()->add("v3");
+        auto v4 = l1->vertices()->add("v4");
+        auto v5 = l1->vertices()->add("v5");
+        auto v6 = l1->vertices()->add("v6");
+        
+        
+        l2->vertices()->add(v1);
+        l2->vertices()->add(v2);
+        l2->vertices()->add(v3);
+        l2->vertices()->add(v4);
+        l2->vertices()->add(v5);
+        l2->vertices()->add(v6);
         
         // Adding edges
         
@@ -52,7 +55,6 @@ class multilayer_community_algorithms_test : public ::testing::Test
            l1->edges()->add(v4, v6);
            l1->edges()->add(v5, v6);
         
-
         l1->edges()->add(v1, v4);
         
            l2->edges()->add(v1, v2);

@@ -9,7 +9,7 @@ TEST(net_operations_test, vertex_induced_subgraph)
 
     // creating a simple graph
 
-    auto g = std::make_unique<uu::net::Network>("g");
+    auto g = std::make_unique<uu::net::Network2>("g");
 
     auto v1 = g->vertices()->add("v1");
     auto v2 = g->vertices()->add("v2");

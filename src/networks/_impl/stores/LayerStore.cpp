@@ -12,6 +12,22 @@ LayerStore::
                ) : actors_(actors)
     {}
 
+core::LabeledUniquePtrSortedRandomSet<Network2>::iterator
+LayerStore::
+begin(
+      ) const
+{
+    return store.begin();
+}
+
+core::LabeledUniquePtrSortedRandomSet<Network2>::iterator
+LayerStore::
+end(
+    ) const
+{
+    return store.end();
+}
+
     Network2 *
     LayerStore::
     add(
@@ -48,7 +64,8 @@ LayerStore::
         // Slice
         
         std::vector<std::vector<size_t>> dim = {{store.size()}};
-        std::unique_ptr<VCube> vertices = vslice<VCube>(layer_name, actors_, dim);
+        std::unique_ptr<VCube> vertices = vslice(layer_name, actors_, dim);
+        
         
         // Add egdes
         
@@ -57,6 +74,8 @@ LayerStore::
         // Package them inside a network to create a layer
         
         auto g = std::make_unique<Network2>(layer_name, std::move(vertices), std::move(edges));
+        
+        
         return store.add(std::move(g));
     }
 
@@ -68,16 +87,54 @@ LayerStore::
     {
         return store.contains(layer);
     }
+
+    size_t
+    LayerStore::
+    index_of(
+             const Network2* layer
+             ) const
+{
+    //@todo assert_not_null
+    return store.index_of(layer);
+}
+
+    size_t
+    LayerStore::
+    size(
+        ) const
+{
+    //@todo assert_not_null
+    return store.size();
+}
+
+const Network2*
+LayerStore::
+at(
+         size_t pos
+         ) const
+{
+    return store.at(pos);
     
-    bool
+}
+
+    Network2*
     LayerStore::
     get(
              const std::string& layer_name
-             ) const
+             )
     {
         return store.get(layer_name);
     }
     
+const Network2*
+LayerStore::
+get(
+         const std::string& layer_name
+         ) const
+{
+    return store.get(layer_name);
+}
+
 }
 }
 

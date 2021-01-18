@@ -24,6 +24,16 @@ public:
                VCube* actors
                );
     
+    // @todo add const versions
+    
+    core::LabeledUniquePtrSortedRandomSet<Network2>::iterator
+    begin(
+          ) const;
+    
+    core::LabeledUniquePtrSortedRandomSet<Network2>::iterator
+    end(
+        ) const;
+    
     Network2 *
     add(
         const std::string layer_name,
@@ -36,11 +46,32 @@ public:
              const Network2* layer
              ) const;
     
-    bool
+    
+    size_t
+    index_of(
+             const Network2* layer
+             ) const;
+    
+    
+    const Network2*
+    at(
+             size_t pos
+             ) const;
+    
+    size_t
+    size(
+         ) const;
+    
+    const Network2*
     get(
              const std::string& layer_name
         ) const;
     
+    
+    Network2*
+    get(
+             const std::string& layer_name
+        );
 };
 
 }
