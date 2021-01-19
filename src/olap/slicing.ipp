@@ -45,20 +45,26 @@ const std::string& cube_name,
     auto in_idx_iter = in_idx.begin();
     auto out_idx_iter = out_idx.begin();
 
-    if (out_cube->data_.size() == 1)
-    {
-        
-    }
-    
-    /*
-    while (in_idx_iter != in_idx.end())
+    if (out_cube->num_cells() == 1)
     {
         auto cell = cube->cell(*in_idx_iter)->shared_from_this();
+        out_cube->init(cell);
         out_cube->init(*out_idx_iter, cell);
-        out_cube->register_obs(*out_idx_iter); // @todo also when data_.size() = 1?
-        ++in_idx_iter;
-        ++out_idx_iter;
     }
+    else
+    {
+        out_cube->init();
+        while (in_idx_iter != in_idx.end())
+        {
+            auto cell = cube->cell(*in_idx_iter)->shared_from_this();
+            out_cube->init(*out_idx_iter, cell);
+            out_cube->register_obs(*out_idx_iter);
+            ++in_idx_iter;
+            ++out_idx_iter;
+        }
+    }
+    /*
+
 
     std::cout << "input cube" << std::endl;
     for (auto idx: core::IndexIterator(cube->dsize()))

@@ -16,11 +16,11 @@ namespace net {
 template <class STORE>
 MLCube<STORE>::
 MLCube(
-    const std::string& name,
+    //const std::string& name,
     const std::shared_ptr<STORE>& el
     //const std::vector<std::string>& dim,
     //const std::vector<std::vector<std::string>>& members
-) : name(name)
+) //: name(name)
 {
     elements_ = el;
 
@@ -68,16 +68,13 @@ MLCube(
 */
 
 template <class STORE>
-std::unique_ptr<MLCube<STORE>>
 MLCube<STORE>::
-skeleton(
-    const std::string& name,
+MLCube(
+    //const std::string& name,
     const std::vector<std::string>& dimensions,
     const std::vector<std::vector<std::string>>& members
-) const
+)
 {
-    auto cube = MLCube(name);
-    
     size_t length = 1;
     for (size_t d_idx = 0; d_idx < members.size(); d_idx++)
     {
@@ -470,6 +467,15 @@ cell(
     return data_[idx].get();
 }
 
+template <class STORE>
+size_t
+MLCube<STORE>::
+num_cells(
+) const
+{
+    return data_.size();
+}
+
 /*
 template <class STORE>
 void
@@ -555,6 +561,19 @@ template <class STORE>
 STORE*
 MLCube<STORE>::
 init(
+    const std::shared_ptr<STORE>& store
+)
+{
+    elements_ = store;
+    elements_->attach(attr_.get());
+    return elements_.get();
+}
+
+
+template <class STORE>
+STORE*
+MLCube<STORE>::
+init(
     size_t pos,
     const std::shared_ptr<STORE>& store
 )
@@ -584,6 +603,7 @@ init(
     return init(pos(index), store);
 }
 
+/*
 template <class STORE>
 STORE*
 MLCube<STORE>::
@@ -593,6 +613,7 @@ init(
 {
     return init(pos(index));
 }
+*/
 
 template <class STORE>
 void
@@ -716,11 +737,13 @@ data_ =
 
 
 template <class STORE>
+template <class SF>
 void
 MLCube<STORE>::
 add_dimension(
     const std::string& name,
     const std::vector<std::string>& members,
+    SF store_factory,
     std::vector<bool> (*discretize)(typename STORE::value_type*)
 )
 {
@@ -763,12 +786,12 @@ add_dimension(
         size_t new_num_cells = members.size();
         data_ = std::vector<std::shared_ptr<STORE>>(new_num_cells);
         
-        init(); // initialize elements_
+        init(store_factory->get_store()); // initialize elements_
         union_obs = std::make_unique<core::UnionObserver<STORE, const typename STORE::value_type>>(elements_.get());
         
         for (size_t p = 0; p < data_.size(); p++)
         {
-            init(p);
+            init(p, store_factory->get_store());
             register_obs(p);
         }
 
@@ -804,12 +827,12 @@ add_dimension(
         size_t new_num_cells = data_.size() * members.size();
         data_ = std::vector<std::shared_ptr<STORE>>(new_num_cells);
         
-        init(); // initialize elements_
+        init(store_factory->get_store()); // initialize elements_
         union_obs = std::make_unique<core::UnionObserver<STORE, const typename STORE::value_type>>(elements_.get());
         
         for (size_t p = 0; p < data_.size(); p++)
         {
-            init(p);
+            init(p, store_factory->get_store());
             register_obs(p);
         }
         
@@ -845,11 +868,13 @@ add_dimension(
 }
 
 template <class STORE>
+template <class SF>
 void
 MLCube<STORE>::
 add_member(
     const std::string& dim_name,
-    const std::string& memb_name//,
+    const std::string& memb_name,
+    SF store_factory
     //bool (*copy)(typename STORE::value_type*)
 )
 {
@@ -875,12 +900,12 @@ add_member(
     if (data_.size() == 1)
     {
         data_ = std::vector<std::shared_ptr<STORE>>(2);
-        init(); // initialize elements_
+        init(store_factory->get_store()); // initialize elements_
         union_obs = std::make_unique<core::UnionObserver<STORE, const typename STORE::value_type>>(elements_.get());
         
         init(0, old_data[0]);
         register_obs(0);
-        init(1);
+        init(1, store_factory->get_store());
         register_obs(1);
     }
     else
@@ -907,7 +932,7 @@ add_member(
                 auto new_cell = cell(index_new_cell);
                 if (!new_cell)
                 {
-                    new_cell = init(index_new_cell);
+                    new_cell = init(index_new_cell, store_factory->get_store());
                     register_obs(index_new_cell);
                 }
         //

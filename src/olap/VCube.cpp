@@ -8,9 +8,9 @@ namespace net {
 VCube::
 VCube(
     const std::string& name
-)
+) : name(name)
 {
-    cube_ = std::make_unique<MLCube<VertexStore>>(name, std::make_unique<VertexStore>());
+    cube_ = std::make_unique<MLCube<VertexStore>>(std::make_unique<VertexStore>());
 }
 
 /*
@@ -231,10 +231,10 @@ VCube::
 add_dimension(
     const std::string& name,
     const std::vector<std::string>& members,
-    std::vector<bool> (*discretize)(const Vertex*) = nullptr
+    std::vector<bool> (*discretize)(const Vertex*)
 )
 {
-    return cube_->add_dimension(name, members, discretize);
+    return cube_->add_dimension(name, members, this, discretize);
 }
 
 
@@ -246,7 +246,7 @@ add_member(
     //bool (*copy)(const Vertex*) = nullptr
 )
 {
-    return cube_->add_member(name, member);
+    return cube_->add_member(name, member, this);
 }
 
 
@@ -287,6 +287,15 @@ cell(
 ) const
 {
     return cube_->cell(index);
+}
+
+
+size_t
+VCube::
+num_cells(
+) const
+{
+    return cube_->num_cells();
 }
 
 
@@ -304,8 +313,7 @@ attach(
     core::Observer<const Vertex>* obs
 )
 {
-    // @todo
-    elements_->attach(obs);
+    cube_->elements_->attach(obs);
 }
 
 /*
@@ -408,36 +416,100 @@ vslice(
 }
 */
 
+std::unique_ptr<VCube>
+VCube::
+skeleton(
+    const std::string& name,
+    const std::vector<std::string>& dimensions,
+    const std::vector<std::vector<std::string>>& members
+) const
+{
+    auto res = std::make_unique<VCube>(name);
+    res->cube_ = std::make_unique<MLCube<VertexStore>>(dimensions, members);
+    return res;
+}
+
+
 VertexStore*
 VCube::
 init(
-    size_t pos
 )
 {
-    return init(pos, std::make_shared<VertexStore>());
+    return cube_->init(std::make_shared<VertexStore>());
 }
 
-void
-VCube::
-init(
-)
-{
-    elements_ = std::make_shared<VertexStore>();
-}
+ VertexStore*
+ VCube::
+ init(
+     const std::shared_ptr<VertexStore>& store
+ )
+ {
+     return cube_->init(store);
+ }
+ 
+ VertexStore*
+ VCube::
+ init(
+     const std::vector<size_t>& index,
+     const std::shared_ptr<VertexStore>& store
+ )
+ {
+     return cube_->init(index, store);
+ }
 
-void
+ VertexStore*
+ VCube::
+ init(
+     size_t pos,
+     const std::shared_ptr<VertexStore>& store
+ )
+ {
+     return cube_->init(pos, store);
+ }
+ 
+ VertexStore*
+ VCube::
+ init(
+      const std::vector<size_t>& index
+ )
+ {
+     return cube_->init(index, get_store());
+ }
+ 
+ VertexStore*
+ VCube::
+ init(
+     size_t pos
+ )
+ {
+     return cube_->init(pos, get_store());
+ }
+ 
+     void
+     VCube::
+     register_obs(
+     const std::vector<size_t>& index
+     )
+     {
+         cube_->register_obs(index);
+     }
+ 
+ void
+ VCube::
+     register_obs(
+         size_t pos
+     )
+     {
+         cube_->register_obs(pos);
+     }
+ 
+
+std::shared_ptr<VertexStore>
 VCube::
-reset(
-)
+get_store(
+          ) const
 {
-    elements_ = std::make_unique<VertexStore>();
-    union_obs = std::make_unique<core::UnionObserver<VertexStore, const Vertex>>(elements_.get());
-    
-    for (size_t i = 0; i < data_.size(); i++)
-    {
-        data_[i] = std::make_shared<VertexStore>();
-        data_[i]->attach(union_obs.get());
-    }
+    return std::make_shared<VertexStore>();
 }
 
 }

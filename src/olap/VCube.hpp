@@ -31,11 +31,14 @@ private:
     std::unique_ptr<MLCube<VertexStore>> cube_;
     
     public:
-
+    
+    const std::string name;
+    
     VCube(
     const std::string& name
     );
     
+    virtual
     ~VCube()
     {
     }
@@ -246,6 +249,11 @@ private:
         const std::vector<std::string>& index
     ) const;
 
+    
+    size_t
+    num_cells(
+    ) const;
+    
     /**
      * Returns a string representation of the cube.
      */
@@ -259,6 +267,11 @@ private:
     );
     
     
+    
+    std::shared_ptr<VertexStore>
+    get_store(
+              ) const;
+    
     friend
     std::unique_ptr<VCube>
     vslice<VCube>(
@@ -269,12 +282,45 @@ private:
     
   protected:
     
-
+    std::unique_ptr<VCube>
+    skeleton(
+        const std::string& name,
+        const std::vector<std::string>& dimensions,
+        const std::vector<std::vector<std::string>>& members
+    )  const;
+    
     /*
     VCube(
     const std::string& cube_name,
         const std::vector<std::string>& dim,
         const std::vector<std::vector<std::string>>& members
+    );
+    */
+    
+    VertexStore*
+    init(
+    );
+    
+    VertexStore*
+    init(
+        const std::shared_ptr<VertexStore>& store
+    );
+    
+    VertexStore*
+    init(
+        const std::vector<size_t>& index,
+        const std::shared_ptr<VertexStore>& store
+    );
+
+    VertexStore*
+    init(
+        size_t pos,
+        const std::shared_ptr<VertexStore>& store
+    );
+    
+    VertexStore*
+    init(
+         const std::vector<size_t>& index
     );
     
     VertexStore*
@@ -282,6 +328,18 @@ private:
         size_t pos
     );
     
+        void
+        register_obs(
+        const std::vector<size_t>& index
+        );
+    
+    void
+        register_obs(
+            size_t pos
+        );
+    
+    
+    /*
     void
     init(
     );

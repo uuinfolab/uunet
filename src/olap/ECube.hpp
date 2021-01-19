@@ -19,9 +19,13 @@ class
     ECube
 {
 
+    public:
+
+      const std::string name;
+    
   private:
     
-    MLCube<MDSimpleEdgeStore> cube_;
+    std::unique_ptr<MLCube<MDSimpleEdgeStore>> cube_;
     
     VCube* cube1_;
     VCube* cube2_;
@@ -45,6 +49,7 @@ class
         LoopMode loops = LoopMode::ALLOWED
     );
 
+    virtual
     ~ECube()
     {
     }
@@ -293,7 +298,7 @@ class
     add_dimension(
         const std::string& name,
         const std::vector<std::string>& members,
-        std::vector<bool> (*discretize)(const Vertex*) = nullptr
+        std::vector<bool> (*discretize)(const MLEdge2*) = nullptr
     );
     
     /**
@@ -342,6 +347,15 @@ class
         const std::vector<std::string>& index
     ) const;
 
+    size_t
+    num_cells(
+              ) const;
+    
+    
+    std::shared_ptr<MDSimpleEdgeStore>
+    get_store(
+              ) const;
+    
     std::string
     to_string(
     ) const;
@@ -367,20 +381,54 @@ class
     
   protected:
 
-    virtual
+    std::unique_ptr<ECube>
+    skeleton(
+        const std::string& name,
+        const std::vector<std::string>& dimensions,
+        const std::vector<std::vector<std::string>>& members
+    )  const;
+    
+    MDSimpleEdgeStore*
+    init(
+    );
+    
+    MDSimpleEdgeStore*
+    init(
+        const std::shared_ptr<MDSimpleEdgeStore>& store
+    );
+    
+    MDSimpleEdgeStore*
+    init(
+        const std::vector<size_t>& index,
+        const std::shared_ptr<MDSimpleEdgeStore>& store
+    );
+
+    MDSimpleEdgeStore*
+    init(
+        size_t pos,
+        const std::shared_ptr<MDSimpleEdgeStore>& store
+    );
+    
+    MDSimpleEdgeStore*
+    init(
+         const std::vector<size_t>& index
+    );
+    
     MDSimpleEdgeStore*
     init(
         size_t pos
     );
     
-     void
-     init(
-     );
-
+        void
+        register_obs(
+        const std::vector<size_t>& index
+        );
     
     void
-    reset(
-          );
+        register_obs(
+            size_t pos
+        );
+    
     
     /** Edge directionality */
     EdgeDir dir_;

@@ -26,11 +26,11 @@ name(name)
     edges_ = std::make_unique<ECube>("E", vertices_.get(), vertices_.get(), dir, loops);
     edges_->add_dimension("V", {"V"});
 
+    /*
     auto obs1 = std::make_unique<VCubeObserver<ECube>>(vertices_.get(), edges_.get());
     vertices_->attach(obs1.get());
     edges_->register_observer(std::move(obs1));
     
-    /* @TODO push down to EdgeStore
     if (!allows_loops)
     {
         auto obs = std::make_unique<NoLoopCheckObserver>();
@@ -47,12 +47,17 @@ Network2(
 ):
 name(name)
 {
+    core::assert_not_null(vertices.get(), "Network2::Network2", "vertices");
+    core::assert_not_null(edges.get(), "Network2::Network2", "edges");
+    
+    if (edges->vcube1() != vertices.get() || edges->vcube2() != vertices.get())
+    {
+        std::string err = "edges must be defined on the vertices in the network";
+        throw core::WrongParameterException(err);
+    }
     vertices_ = std::move(vertices);
     edges_ = std::move(edges);
     
-    auto obs1 = std::make_unique<VCubeObserver<ECube>>(vertices_.get(), edges_.get());
-    vertices_->attach(obs1.get());
-    edges_->register_observer(std::move(obs1));
 }
 
 VCube*

@@ -18,12 +18,18 @@
 namespace uu {
 namespace net {
 
+class VCube;
+class ECube;
+
 template <class STORE>
 class MLCube
 : public core::ObserverStore,
 public core::Subject<const typename STORE::value_type>
 {
 
+    friend class VCube;
+    friend class ECube;
+    
   public:
 
     typedef STORE* entry_type;
@@ -31,17 +37,22 @@ public core::Subject<const typename STORE::value_type>
     typedef const typename STORE::value_type value_type;
 
     // Name of the cube
-    const std::string name;
+    // const std::string name;
     
     /**
      * Creates a cube of order 0
      */
     MLCube(
-        const std::string& name,
+        //const std::string& name,
         const std::shared_ptr<STORE>& el
     );
 
-
+    // skeleton
+    MLCube(
+        const std::vector<std::string>& dimensions,
+        const std::vector<std::vector<std::string>>& members
+    );
+    
     ~MLCube()
     {
     }
@@ -196,20 +207,24 @@ public core::Subject<const typename STORE::value_type>
     /**
      * Adds a new dimension.
      */
+    template <class SF>
     void
     add_dimension(
         const std::string& name,
         const std::vector<std::string>& members,
+        SF store_factory,
         std::vector<bool> (*discretize)(typename STORE::value_type*) = nullptr
     );
     
     /**
      * Adds a member to an existing dimension.
      */
+     template <class SF>
     void
     add_member(
         const std::string& name,
-        const std::string& member//,
+        const std::string& member,
+        SF store_factory
         //bool (*copy)(typename STORE::value_type*) = nullptr
     );
     
@@ -249,10 +264,14 @@ public core::Subject<const typename STORE::value_type>
         const std::vector<std::string>& index
     ) const;
 
+    size_t
+    num_cells(
+    ) const;
+    
 protected:
     
     /**
-     * Creates a cube of order 0
+     * Creates a skeleton cube
      
     MLCube(
         const std::string& name,
@@ -262,6 +281,11 @@ protected:
     );*/
     
     
+    STORE*
+    init(
+        const std::shared_ptr<STORE>& store
+    );
+
     /**
      * Adds a new container to the input cell.
      * @throw OutOfBoundsException if the index is outside the bounds of the cube
@@ -294,12 +318,12 @@ protected:
      * Creates a new container in the input cell.
      * @throw OutOfBoundsException if the index is outside the bounds of the cube
      * @throw OperationNotSupportedException
-     */
+  
     STORE*
     init(
         const std::vector<size_t>& index
     );
-    
+       */
     /*
     virtual
     STORE*
@@ -373,12 +397,6 @@ void
     */
 protected:
     
-    std::unique_ptr<MLCube<STORE>>
-    skeleton(
-        const std::string& name,
-        const std::vector<std::string>& dimensions,
-        const std::vector<std::vector<std::string>>& members
-    )  const;
     
     /*std::unique_ptr<MLCube<STORE>>
     virtual
