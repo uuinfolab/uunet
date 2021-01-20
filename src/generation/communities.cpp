@@ -14,7 +14,7 @@ create_eq_seeds(
 {
     if (num_actors % num_communities != 0)
     {
-        throw core::WrongParameterException("the number of actors must be a multiple of the number of seeds");
+        throw core::WrongParameterException("the number of actors must be a multiple of the number of communities");
     }
     std::vector<size_t> seeds;
     seeds.push_back(0);
