@@ -46,6 +46,49 @@ namespace uu
             //ktest.print_clusters();
             //ktest.summary();
         }
+         std::unordered_map<std::string, w2v::vector_t> algo_1_MG_unweighted(uu::net::MultilayerNetwork *ml_net, float p, float q, int size_of_embedding, int len_rand_walk, int numb_rand_walks, int clusters,
+                                                                 int window, int cluster_iterations, std::string alpha, std::string sample,
+                                                                 int iterations, int min_word_freq, int negative_sample, int threads)
+        {
+            std::unique_ptr<uu::net::Network> flat_net = std::make_unique<uu::net::WeightedNetwork>("flat_net",EdgeDir::UNDIRECTED,true);
+            flatten_unweighted(ml_net->layers()->begin(), ml_net->layers()->end(), flat_net.get());
+
+            auto sampling_map_sl = std::unordered_map<const uu::net::Vertex *, std::unordered_map<const uu::net::Vertex *, AliasTable<Vertex>>>();
+            set_rw_probs(flat_net.get(), sampling_map_sl, p, q);
+
+            std::default_random_engine generator;
+            std::ofstream myfile;
+            std::string trainFile = "word2vecinput.txt";
+            std::string modelFile = "trained_nodes.w2v";
+            myfile.open(trainFile);
+            for (auto node : *flat_net.get()->vertices())
+            {
+                std::vector<std::string> some_random_walks = random_walks_sl(flat_net.get(), sampling_map_sl, generator, node, len_rand_walk, numb_rand_walks);
+                for (auto sentence : some_random_walks)
+                {
+                    myfile << sentence;
+                }
+            }
+            myfile.close();
+            w2v::trainSettings_t trainSettings;
+            trainSettings.size = static_cast<uint16_t>(size_of_embedding);
+            trainSettings.window = static_cast<uint8_t>(window);
+            trainSettings.sample = std::stof(sample);
+            trainSettings.negative = static_cast<uint8_t>(negative_sample);
+            trainSettings.threads = static_cast<uint8_t>(threads);
+            trainSettings.iterations = static_cast<uint8_t>(iterations);
+            trainSettings.minWordFreq = static_cast<uint16_t>(min_word_freq);
+            trainSettings.alpha = std::stof(alpha);
+            trainSettings.withSG = true;
+
+            auto w2v_model = train_w2v(trainFile, modelFile, trainSettings);
+            return w2v_model.map();
+            //KMeans ktest = KMeans(clusters, cluster_iterations, size_of_embedding, ml_net->actors()->size(), w2v_model.map(), &generator);
+            //ktest.run();
+            //ktest.print_clusters();
+            //ktest.summary();
+        }
+
         std::unordered_map<std::string, w2v::vector_t> algo_2_MG(uu::net::MultilayerNetwork *ml_net, float p, float q, int size_of_embedding, int len_rand_walk, int numb_rand_walks, int clusters,
                                                                  int window, int cluster_iterations, std::string alpha, std::string sample,
                                                                  int iterations, int min_word_freq, int negative_sample, int threads)
