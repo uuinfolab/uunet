@@ -14,6 +14,7 @@
 #include "networks/Network.hpp"
 #include "objects/EdgeMode.hpp"
 #include "objects/Vertex.hpp"
+#include "objects/MLVertex.hpp"
 
 namespace uu {
 namespace net {
@@ -838,15 +839,16 @@ to_community_structure(
 
     // build community structure
 
-    auto communities = std::make_unique<CommunityStructure<G>>();
+    auto communities = std::make_unique<CommunityStructure<M>>();
 
     for (auto pair: result)
     {
-        auto c = std::make_unique<Community<G>>();
+        auto c = std::make_unique<Community<M>>();
 
         for (auto vertex_layer_pair: pair.second)
         {
-            c->add(vertex_layer_pair);
+            auto v = MLVertex<M>(vertex_layer_pair.first, vertex_layer_pair.second);
+            c->add(v);
         }
 
         communities->add(std::move(c));

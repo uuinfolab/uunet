@@ -1,8 +1,6 @@
 #ifndef UU_NET_COMMUNITY_OMEGAINDEX_H_
 #define UU_NET_COMMUNITY_OMEGAINDEX_H_
 
-#undef CS
-
 #include <map>
 
 #include "core/exceptions/assert_not_null.hpp"
