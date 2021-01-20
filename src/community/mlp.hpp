@@ -52,62 +52,6 @@ double get_sum_of_w0(
     return sum_of_w0;
 }
 
-/**
- * @brief evaluate the relevance of a group of layers to an actor "act".
- * This is called "Dimensions relevance" (according to Berlingerio) and it is a ratio of the actor neighbours that can be
- * exclusively reached within the given set of dimensions (layers) to the total number of actor neighbours in all dimensions (layers)
- * @mnet : the multi-layer network instance
- * @dims : a subset of layers (dimensions)
- * @act : an actor
- * @return : a real number [0..1] reflecting the relevance of the given "dimensions" to the actor.
-
-
-double get_dimentions_relevance_for_actor(const vector<typename M::layer_type*>& dims,
-                                 const std::unordered_map<const Vertex*,vector<typename M::layer_type*>>& actor_neighbours){
-
-
-
-    //count the number of actors that are exclusively neighbours with "actr" within "dims"
-    int num_of_all_neighbours=0 ;
-    int num_of_exclusive_neighbours = 0;
-    for(std::unordered_map<const Vertex*,vector<typename M::layer_type*>>::const_iterator itr = actor_neighbours.begin();itr!=actor_neighbours.end();++itr){
-         num_of_all_neighbours++;
-        if(is_subset(itr->second,dims)) num_of_exclusive_neighbours++;
-    }
-    double relevance = (double)(num_of_exclusive_neighbours)/num_of_all_neighbours;
-    return relevance;
-
-} **/
-
-/**
- * @brief recover the actor community structure given their memberships
- * @membership : the memberships of the actors
- * @return : actor communities
- **/
-
-/*
-ActorCommunityStructureSharedPtr to_community_structure(std::unordered_map<const Vertex*,int> membership,std::unordered_map<const Vertex*,vector<typename M::layer_type*>> actors_relevant_layers){
-
-    ActorCommunityStructureSharedPtr result = actor_community_structure::create();
-    std::unordered_map<int,hash_set<const Vertex*> > communities;
-    for (auto pair: membership) {
-         communities[pair.second].insert(pair.first);
-    }
-    for (auto pair: communities) {
-        ActorCommunitySharedPtr c = actor_community::create();
-        for (const Vertex* actor: pair.second){
-            c->add_actor(actor);
-            //add the layers of this actor to the community
-            for(typename M::layer_type* layer: actors_relevant_layers[actor]){
-                if(c->get_layers().find(layer)==c->get_layers().end()){
-                    c->add_layer(layer);
-                }
-            }
-        }
-         result->add_community(c);
-    }
-    return result;
-}*/
 
 template <typename Obj>
 std::set<Obj>
@@ -145,7 +89,7 @@ mlp(
 {
 
     core::assert_not_null(mnet, "mlp", "mnet");
-     /*(1) calculate the initinal attraction weights w0 for actors (affinity of actors to their neighbours)*/
+     /*(1) calculate the initial attraction weights w0 for actors (affinity of actors to their neighbours)*/
 
          //initialization
          std::unordered_map<const Vertex*, std::unordered_map<const Vertex*, double>> initial_attraction_weights; //w0 in the article
@@ -177,6 +121,7 @@ mlp(
              }
          }
              
+
     
      // (2) recover the relevant dimensions (layers) Dv for each actor using equation(8) in the reference
          for (const Vertex* actor: *mnet->actors())
@@ -224,7 +169,7 @@ mlp(
           }
           std::cout << std::endl;*/
          }
-
+    
      // (3)  calculate the new attraction weights w for actors (equation (7) in the article)
      for(auto pair: initial_attraction_weights){
       for (auto sub_pair: pair.second){
@@ -250,6 +195,7 @@ mlp(
        }
      }
 
+    
       // (4)The labeling step
       //ActorListSharedPtr actors = mnet->get_actors();
       std::unordered_map<const Vertex*, size_t> membership; // community membership
@@ -260,10 +206,10 @@ mlp(
       for (const Vertex* actor: *mnet->actors())
        {
         membership[actor] = label;
-        order.push_back(actor);
+           if (updated_attraction_weights.find(actor) != updated_attraction_weights.end()) order.push_back(actor);
         label++;
       }
-
+    
 /*
     for (auto pair: membership)
     {
@@ -274,11 +220,10 @@ mlp(
     bool stop = false;
       while (!stop) {
           
-          
                  // shuffle the order of the actors
                  unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
                  std::shuffle(order.begin(), order.end(), std::default_random_engine(seed));
-
+          
                  // re-assign labels
                  for (const Vertex* actor: order) {
                      //group the neighbours according to their labels calculate the sum of w within each group
@@ -287,19 +232,20 @@ mlp(
                      {
                          neigh_groups_weights[membership.at(pair.first)] += updated_attraction_weights[actor][pair.first];
                      }
+                     
                      //find the label in the group of neighbours that has the maximum sum of w
                      size_t winning_label = neigh_groups_weights.begin()->first;
-                     double max = neigh_groups_weights.begin()->second;
-                     for (auto pair: neigh_groups_weights)
-                     {
-                         if (pair.second >max)
+                         double max = neigh_groups_weights.begin()->second;
+                         for (auto pair: neigh_groups_weights)
                          {
-                             winning_label=pair.first;
-                             max=pair.second;
+                             if (pair.second >max)
+                             {
+                                 winning_label=pair.first;
+                                 max=pair.second;
+                             }
                          }
-                     }
-                     //assign the winning label to the actor
-                     membership[actor]=winning_label;
+                         //assign the winning label to the actor
+                         membership[actor]=winning_label;
 
                      //update the relevant dimensions Dv for this actor according to equation (10) in the article
                      std::set<typename M::layer_type*> union_Dvu;
@@ -343,53 +289,53 @@ mlp(
                       }
 
                  }
-         
           
 /*
           for (auto pair: membership)
           {
               std::cout << (*pair.first) << " " << pair.second << std::endl;
-          }*/
+          }
 
-          //std::cout << "CHECK STOP" << std::endl;
+          std::cout << "CHECK STOP" << std::endl;*/
           stop = true;
-              //check the stopping condition
-               for (const Vertex* actor: order)
+          //check the stopping condition
+           for (const Vertex* actor: order)
+           {
+               //std::cout << (*actor) << ": " << std::endl;
+               //group the neighbours according to their labels calculate the sum of w within each group
+                 std::unordered_map<size_t, double> neigh_groups_weights;
+                 for (auto pair:updated_attraction_weights[actor])
+                 {
+                     //std::cout << " neighbor " << (*pair.first) << " + " << updated_attraction_weights[actor][pair.first] << " -> " << membership.at(pair.first) << std::endl;
+                     neigh_groups_weights[membership.at(pair.first)] += updated_attraction_weights[actor][pair.first];
+                 }
+                 //find the label in the group of neighbours that has the maximum sum of w
+               double max = 0;
+               for (auto pair: neigh_groups_weights)
                {
-                   //std::cout << (*actor) << ": " << std::endl;
-                   //group the neighbours according to their labels calculate the sum of w within each group
-                     std::unordered_map<size_t, double> neigh_groups_weights;
-                     for (auto pair:updated_attraction_weights[actor])
-                     {
-                         //std::cout << " neighbor " << (*pair.first) << " + " << updated_attraction_weights[actor][pair.first] << " -> " << membership.at(pair.first) << std::endl;
-                         neigh_groups_weights[membership.at(pair.first)] += updated_attraction_weights[actor][pair.first];
-                     }
-                     //find the label in the group of neighbours that has the maximum sum of w
-                   double max = 0;
-                   for (auto pair: neigh_groups_weights)
-                   {
-                       if (pair.second>max)
-                           max = pair.second;
-                   }
-                   
-                     std::vector<size_t> winning_groups_labels;
-                     for (auto pair: neigh_groups_weights)
-                     {
-                         if (pair.second == max) // Correction
-                         {
-                             //std::cout << " winning label: " << pair.first << std::endl;
-                            winning_groups_labels.push_back(pair.first);
-
-                         }
-                     }
-                     if (std::find(winning_groups_labels.begin(), winning_groups_labels.end(), membership[actor])==winning_groups_labels.end())
-                     {
-                         stop = false;
-                     }
+                   if (pair.second>max)
+                       max = pair.second;
                }
-               //break;
-         }
+               
+                 std::vector<size_t> winning_groups_labels;
+                 for (auto pair: neigh_groups_weights)
+                 {
+                     if (pair.second == max) // Correction
+                     {
+                         //std::cout << " winning label: " << pair.first << std::endl;
+                        winning_groups_labels.push_back(pair.first);
 
+                     }
+                 }
+                 if (std::find(winning_groups_labels.begin(), winning_groups_labels.end(), membership[actor])==winning_groups_labels.end())
+                 {
+                     stop = false;
+                 }
+           }
+           //break;
+     }
+
+    
     std::unordered_map<size_t, std::vector<const Vertex*>> group_by_community_id;
     for (auto pair: membership)
     {
@@ -401,6 +347,7 @@ mlp(
         auto c = std::make_unique<Community<M>>();
         for (auto actor: pair.second)
         {
+
             for (auto layer: *mnet->layers())
             {
                 if (layer->vertices()->contains(actor))
@@ -409,7 +356,10 @@ mlp(
                 }
             }
         }
-        res->add(std::move(c));
+        if (c->size() > 0)
+        {
+            res->add(std::move(c));
+        }
     }
     return  res;
 }
