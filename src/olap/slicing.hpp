@@ -29,13 +29,13 @@ mslice(
     const std::vector<std::vector<size_t>>& indexes
 );
 
-    template <typename C>
-    std::unique_ptr<C>
-    mslice(
-           const C* const cube,
-           size_t dim_idx,
-           const std::vector<size_t>& indexes
-           );
+template <typename C>
+std::unique_ptr<C>
+mslice(
+    const C* const cube,
+    size_t dim_idx,
+    const std::vector<size_t>& indexes
+);
 
 }
 }

@@ -9,18 +9,18 @@
 namespace uu {
 namespace net {
 
-    
+
 template <typename C>
 std::unique_ptr<C>
 contract_members(
     const C* const cube
 );
 
-    template <typename C>
-    std::unique_ptr<C>
-    contract_members_view(
-                     C* const cube
-                     );
+template <typename C>
+std::unique_ptr<C>
+contract_members_view(
+    C* const cube
+);
 }
 }
 

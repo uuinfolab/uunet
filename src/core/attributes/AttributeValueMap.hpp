@@ -32,8 +32,9 @@ class AttributeValueMap :
 
   public:
 
-    virtual ~AttributeValueMap() {}
-    
+    virtual
+    ~AttributeValueMap() {}
+
     using super::add;
     using super::erase;
     using super::get;

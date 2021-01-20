@@ -360,9 +360,9 @@ std::vector<Eigen::SparseMatrix<double>>
 
 
 std::unique_ptr<CommunityStructure<Network>>
-to_community_structure(
-    std::unordered_map<const Vertex*, size_t> membership
-);
+        to_community_structure(
+            std::unordered_map<const Vertex*, size_t> membership
+        );
 
 class glouvain
 {
@@ -389,13 +389,13 @@ class glouvain
      */
     template <typename M, typename G>
     std::unique_ptr<CommunityStructure<M>>
-    fit(
-        const M* mnet,
-        const std::string& m,
-        double gamma,
-        double omega,
-        size_t limit
-    );
+                                        fit(
+                                            const M* mnet,
+                                            const std::string& m,
+                                            double gamma,
+                                            double omega,
+                                            size_t limit
+                                        );
 
     /* Map indexes of b to values of a:
      https://stackoverflow.com/questions/5691218/matlab-mapping-values-to-index-of-other-array*/
@@ -804,10 +804,10 @@ class metanet
 
 template <typename M, typename G>
 std::unique_ptr<CommunityStructure<M>>
-to_community_structure(
-    const M* mnet,
-    const std::vector<unsigned int>& nodes2cid
-)
+                                    to_community_structure(
+                                        const M* mnet,
+                                        const std::vector<unsigned int>& nodes2cid
+                                    )
 {
 
     size_t num_layers = mnet->layers()->size();

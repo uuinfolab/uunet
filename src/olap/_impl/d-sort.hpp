@@ -16,9 +16,9 @@ vsort_dimensions(
 
 template <typename C>
 std::unique_ptr<C>
-    msort_dimensions(
-                     const C* const cube,
-                     const std::vector<size_t>& perm
+msort_dimensions(
+    const C* const cube,
+    const std::vector<size_t>& perm
 );
 
 

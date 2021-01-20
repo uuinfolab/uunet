@@ -36,24 +36,24 @@ class
 
     bool
     operator==(
-               const MLVertex<M>& v
+        const MLVertex<M>& v
     ) const;
-    
+
     bool
     operator<(
-    const MLVertex<M>& v
+        const MLVertex<M>& v
     ) const;
-    
+
     bool
     operator!=(
-    const MLVertex<M>& v
+        const MLVertex<M>& v
     ) const;
-    
+
     bool
     operator>(
-    const MLVertex<M>& v
+        const MLVertex<M>& v
     ) const;
-    
+
     /** Output function, presenting a complete description of the edge. */
     std::string
     to_string(
@@ -104,7 +104,7 @@ template<typename M>
 bool
 MLVertex<M>::
 operator==(
-const MLVertex<M>& mlv
+    const MLVertex<M>& mlv
 ) const
 {
     return v==mlv.v && l==mlv.l;
@@ -114,7 +114,7 @@ template<typename M>
 bool
 MLVertex<M>::
 operator<(
-const MLVertex<M>& mlv
+    const MLVertex<M>& mlv
 ) const
 {
     return v<mlv.v || (v==mlv.v && l<mlv.l);
@@ -124,7 +124,7 @@ template<typename M>
 bool
 MLVertex<M>::
 operator!=(
-const MLVertex<M>& mlv
+    const MLVertex<M>& mlv
 ) const
 {
     return v!=mlv.v || l!=mlv.l;
@@ -134,7 +134,7 @@ template<typename M>
 bool
 MLVertex<M>::
 operator>(
-const MLVertex<M>& mlv
+    const MLVertex<M>& mlv
 ) const
 {
     return v>mlv.v || (v==mlv.v && l>mlv.l);

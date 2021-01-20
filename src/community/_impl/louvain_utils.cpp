@@ -108,9 +108,9 @@ expand(
 }
 
 std::unique_ptr<CommunityStructure<Network>>
-communities(
-    const std::vector<std::unique_ptr<MetaNetwork>>& levels
-)
+        communities(
+            const std::vector<std::unique_ptr<MetaNetwork>>& levels
+        )
 {
     auto res = std::make_unique<CommunityStructure<Network>>();
 

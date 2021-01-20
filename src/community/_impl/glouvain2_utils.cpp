@@ -38,9 +38,9 @@ std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, MLVertex<Multi
     for (size_t i = 0; i < g->layers()->size(); i++)
     {
         auto l = g->layers()->at(i);
-        
+
         //std::cout << "layer: " << l->name << std::endl;
-        
+
         for (auto v: *l->vertices())
         {
             //std::cout << (*v) << std::endl;
@@ -211,9 +211,9 @@ expand(
 }
 
 std::unique_ptr<CommunityStructure<Network>>
-communities(
-    const std::vector<std::unique_ptr<GMetaNetwork>>& levels
-)
+        communities(
+            const std::vector<std::unique_ptr<GMetaNetwork>>& levels
+        )
 {
     auto res = std::make_unique<CommunityStructure<Network>>();
 

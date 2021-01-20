@@ -26,9 +26,10 @@ class MainMemoryAttributeValueMap :
   public:
 
     MainMemoryAttributeValueMap();
-    
-    virtual ~MainMemoryAttributeValueMap() {}
-    
+
+    virtual
+    ~MainMemoryAttributeValueMap() {}
+
     using super::add;
     using super::erase;
     using super::get;

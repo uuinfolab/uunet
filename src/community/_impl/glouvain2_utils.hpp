@@ -40,9 +40,9 @@ expand(
 );
 
 std::unique_ptr<CommunityStructure<Network>>
-communities(
-    const std::vector<std::unique_ptr<GMetaNetwork>>& levels
-);
+        communities(
+            const std::vector<std::unique_ptr<GMetaNetwork>>& levels
+        );
 
 std::unique_ptr<GMetaNetwork>
 aggregate(

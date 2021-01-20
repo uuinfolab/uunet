@@ -25,8 +25,9 @@ class MultiEdgeStore :
         EdgeDir dir
     );
 
-    virtual ~MultiEdgeStore() {}
-    
+    virtual
+    ~MultiEdgeStore() {}
+
     /**
      * Adds a new edge.
      * Multiple edges between the same pair of vertices are allowed.

@@ -14,15 +14,15 @@ namespace net {
 
 template <typename M>
 std::unique_ptr<CommunityStructure<M>>
-flat_nw(
-    const M* g
-);
+                                    flat_nw(
+                                        const M* g
+                                    );
 
 template <typename M>
 std::unique_ptr<CommunityStructure<M>>
-flat_ec(
-    const M* g
-);
+                                    flat_ec(
+                                        const M* g
+                                    );
 
 }
 }

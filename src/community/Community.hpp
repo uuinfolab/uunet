@@ -15,7 +15,7 @@ namespace net {
 template <typename NET>
 class
     Community :
-public core::SortedRandomSet<typename NET::community_element_type>
+    public core::SortedRandomSet<typename NET::community_element_type>
 {};
 
 }

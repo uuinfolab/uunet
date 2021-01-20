@@ -91,9 +91,9 @@ class
     ) const;
 
     std::unique_ptr<Community<M>>
-            to_community(
-                //const M* net
-            ) const;
+                               to_community(
+                                   //const M* net
+                               ) const;
 
     int
     size(
@@ -206,10 +206,10 @@ get_layers(
 
 template <typename M>
 std::unique_ptr<Community<M>>
-        MLCPMCommunity<M>::
-        to_community(
-            //const M* net
-        ) const
+                           MLCPMCommunity<M>::
+                           to_community(
+                               //const M* net
+                           ) const
 {
     auto result = std::make_unique<Community<M>>();
 

@@ -8,14 +8,14 @@ namespace net {
 
 template <typename M>
 std::unique_ptr<CommunityStructure<M>>
-glouvain2(
-    const M* g,
-    double omega
-)
+                                    glouvain2(
+                                        const M* g,
+                                        double omega
+                                    )
 {
-    
+
     auto multilayer_metanetwork = convert(g, omega);
-    
+
     auto meta = std::move(std::get<0>(multilayer_metanetwork));
     auto mapping = std::get<1>(multilayer_metanetwork);
 
@@ -32,11 +32,11 @@ glouvain2(
         meta = pass(w);
     }
 
-    
+
     auto c = communities(passes);
-    
+
     auto communities = std::make_unique<CommunityStructure<M>>();
-    
+
     for (auto meta_community: *c)
     {
         auto community = std::make_unique<Community<M>>();
@@ -48,7 +48,7 @@ glouvain2(
 
         communities->add(std::move(community));
     }
-    
+
     return communities;
 }
 

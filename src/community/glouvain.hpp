@@ -15,12 +15,12 @@ namespace net {
 
 template <typename M, typename G>
 std::unique_ptr<CommunityStructure<M>>
-generalized_louvain(
-    const M* mnet,
-    double gamma,
-    double omega,
-    size_t limit
-);
+                                    generalized_louvain(
+                                        const M* mnet,
+                                        double gamma,
+                                        double omega,
+                                        size_t limit
+                                    );
 
 
 }

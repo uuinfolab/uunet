@@ -17,16 +17,16 @@ islice(
 
 template <typename C>
 std::unique_ptr<C>
-    vsort_members(
-                  C* const cube,
-                  const std::vector<size_t>& indexes
+vsort_members(
+    C* const cube,
+    const std::vector<size_t>& indexes
 );
 
 template <typename C>
 std::unique_ptr<C>
-    msort_members(
-                  const C* const cube,
-                  const std::vector<size_t>& indexes
+msort_members(
+    const C* const cube,
+    const std::vector<size_t>& indexes
 );
 
 

@@ -44,10 +44,10 @@ multinet_to_infomap(
 
 template <typename M>
 std::unique_ptr<CommunityStructure<M>>
-read_infomap_communities(
-    const M* net,
-    const std::string& filename_prefix
-);
+                                    read_infomap_communities(
+                                        const M* net,
+                                        const std::string& filename_prefix
+                                    );
 
 
 
@@ -84,10 +84,10 @@ multinet_to_infomap(
 
 template <typename M>
 std::unique_ptr<CommunityStructure<M>>
-to_communities(
-    const M* net,
-    infomap::HierarchicalNetwork& resultNetwork
-)
+                                    to_communities(
+                                        const M* net,
+                                        infomap::HierarchicalNetwork& resultNetwork
+                                    )
 {
     std::unordered_map<size_t, const Vertex*> actors;
     size_t a_id = 0;
@@ -210,10 +210,10 @@ multinet_to_infomap(
 
 template <typename M>
 std::unique_ptr<CommunityStructure<M>>
-read_infomap_communities(
-    const M* net,
-    const std::string& filename
-)
+                                    read_infomap_communities(
+                                        const M* net,
+                                        const std::string& filename
+                                    )
 {
 
     // read id -> name mapping for actors
