@@ -39,7 +39,7 @@ project(
 
         for (auto v: *vc1)
         {
-            std::cout << (*v) << std::endl;
+            //std::cout << (*v) << std::endl;
             auto neigh = (*cube)[idx]->neighbors(v, vc1, EdgeMode::OUT);
 
             for (auto it1 = neigh->begin(); it1 != neigh->end(); ++it1)
