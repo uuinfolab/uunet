@@ -8,20 +8,23 @@ namespace net {
 
 std::vector<size_t>
 create_eq_seeds(
-                size_t num_actors,
-                size_t num_communities
-                )
+    size_t num_actors,
+    size_t num_communities
+)
 {
     if (num_actors % num_communities != 0)
     {
         throw core::WrongParameterException("the number of actors must be a multiple of the number of communities");
     }
+
     std::vector<size_t> seeds;
     seeds.push_back(0);
+
     for (size_t i=1; i<=num_communities; i++)
     {
         seeds.push_back(seeds.at(i-1) + num_actors/num_communities);
     }
+
     return seeds;
 }
 
@@ -50,29 +53,32 @@ generate_peo(
 )
 {
     auto net = null_multiplex(num_actors, num_layers);
-    
+
     // define communities
     auto com = std::make_unique<CommunityStructure<MultilayerNetwork>>();
     std::vector<size_t> seeds = create_eq_seeds(num_actors, num_communities);
-    
+
     for (size_t i=0; i<seeds.size()-1; i++)
     {
         auto c = std::make_unique<Community<MultilayerNetwork>>();
+
         for (size_t l=0; l<num_layers; l++)
         {
             auto layer = net->layers()->at(l);
+
             for (size_t a = seeds[i]; a < seeds[i+1]+overlapping_size && a < net->actors()->size(); a++)
             {
                 auto actor = net->actors()->at(a);
                 c->add(MLVertex<MultilayerNetwork>(actor, layer));
             }
         }
+
         com->add(std::move(c));
     }
-    
+
     // sample edges
     sample(net.get(), com.get(), p_internal, p_external);
-    
+
     return std::make_pair(std::move(net), std::move(com));
 }
 
@@ -104,43 +110,50 @@ generate_seo(
     {
         throw core::WrongParameterException("the number of communities must be even");
     }
-    
+
     auto net = null_multiplex(num_actors, num_layers);
-    
+
     // define communities
     auto com = std::make_unique<CommunityStructure<MultilayerNetwork>>();
     std::vector<size_t> seeds = create_eq_seeds(num_actors, num_communities/2);
-    
+
     for (size_t i=0; i<seeds.size()-1; i++)
     {
         auto c = std::make_unique<Community<MultilayerNetwork>>();
+
         for (size_t l=0; l<num_layers-1; l++)
         {
             auto layer = net->layers()->at(l);
+
             for (size_t a = seeds[i]; a < seeds[i+1]+overlapping_size && a < net->actors()->size(); a++)
             {
                 auto actor = net->actors()->at(a);
                 c->add(MLVertex<MultilayerNetwork>(actor, layer));
             }
         }
+
         com->add(std::move(c));
     }
+
     //create communities on the last layer
     auto layer = net->layers()->at(num_layers-1);
+
     for (size_t s=0; s<num_communities/2; s++)
     {
         auto c = std::make_unique<uu::net::Community<uu::net::MultilayerNetwork>>();
+
         for (size_t a = s; a < net->actors()->size(); a += (num_actors/num_communities*2))
         {
             auto actor = net->actors()->at(a);
             c->add(uu::net::MLVertex<uu::net::MultilayerNetwork>(actor, layer));
         }
+
         com->add(std::move(c));
     }
-    
+
     // sample edges
     sample(net.get(), com.get(), p_internal, p_external);
-    
+
     return std::make_pair(std::move(net), std::move(com));
 }
 

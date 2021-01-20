@@ -12,8 +12,8 @@ template <typename C>
 std::unique_ptr<C>
 flatten(
     C* const cube,
-        size_t i,
-        const std::string& new_member,
+    size_t i,
+    const std::string& new_member,
     const std::set<size_t>& indexes
 );
 

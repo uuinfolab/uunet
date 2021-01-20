@@ -53,24 +53,24 @@ class
 
 template <typename M>
 std::unique_ptr<Community<M>>
-        to_vertex_layer_community(
-            PillarCommunity<M>* com
-        );
+                           to_vertex_layer_community(
+                               PillarCommunity<M>* com
+                           );
 
 
 template <typename M>
 std::unique_ptr<CommunityStructure<M>>
-to_vertex_layer_community_structure(
-    const std::set<std::unique_ptr<PillarCommunity<M>>>& com
-);
+                                    to_vertex_layer_community_structure(
+                                        const std::set<std::unique_ptr<PillarCommunity<M>>>& com
+                                    );
 // Definitions
 
 
 template <typename M>
 std::unique_ptr<Community<M>>
-        to_vertex_layer_community(
-        PillarCommunity<M>* com
-        )
+                           to_vertex_layer_community(
+                               PillarCommunity<M>* com
+                           )
 {
     auto res = std::make_unique<Community<M>>();
 
@@ -87,9 +87,9 @@ std::unique_ptr<Community<M>>
 
 template <typename M>
 std::unique_ptr<CommunityStructure<M>>
-to_vertex_layer_community_structure(
-    const std::set<std::unique_ptr<PillarCommunity<M>>>& com
-)
+                                    to_vertex_layer_community_structure(
+                                        const std::set<std::unique_ptr<PillarCommunity<M>>>& com
+                                    )
 {
     auto res = std::make_unique<CommunityStructure<M>>();
 

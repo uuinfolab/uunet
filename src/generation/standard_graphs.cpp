@@ -33,25 +33,31 @@ null_multiplex(
 {
     std::string name = "N_" + std::to_string(n) + "_" + std::to_string(dir.size());
     auto g = std::make_unique<MultilayerNetwork>(name);
+
     if (dir.size() != allows_loops.size())
     {
         std::string err = "parameter lengths do not match";
         throw core::WrongParameterException(err);
     }
+
     // Adding layers
     core::NameIterator layer_names("l", dir.size());
     size_t l = 0;
+
     for (auto layer_name: layer_names)
     {
         g->layers()->add(std::make_unique<Network>(layer_name, dir[l], allows_loops[l]));
         l++;
     }
+
     // Adding actors
     core::NameIterator actor_names("a", n);
+
     for (auto actor_name: actor_names)
     {
         g->actors()->add(actor_name);
     }
+
     // Adding vertices
     for (auto l: *g->layers())
     {
@@ -60,6 +66,7 @@ null_multiplex(
             l->vertices()->add(a);
         }
     }
+
     return g;
 }
 

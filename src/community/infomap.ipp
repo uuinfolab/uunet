@@ -3,11 +3,11 @@ namespace net {
 
 template <typename M>
 std::unique_ptr<CommunityStructure<M>>
-infomap(const M* net,
-        bool overlapping,
-        bool directed,
-        bool include_self_links
-       )
+                                    infomap(const M* net,
+                                            bool overlapping,
+                                            bool directed,
+                                            bool include_self_links
+                                           )
 {
 
     try

@@ -9,7 +9,7 @@
 namespace uu {
 namespace net {
 
-    
+
 template <typename C>
 std::unique_ptr<C>
 contract_dimension(

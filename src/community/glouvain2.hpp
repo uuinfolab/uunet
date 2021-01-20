@@ -13,10 +13,10 @@ namespace net {
 
 template <typename M>
 std::unique_ptr<CommunityStructure<M>>
-glouvain2(
-    const M* g,
-    double omega
-);
+                                    glouvain2(
+                                        const M* g,
+                                        double omega
+                                    );
 
 }
 }

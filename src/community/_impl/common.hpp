@@ -74,10 +74,10 @@ range(
 
 template <typename M, typename G>
 std::unique_ptr<CommunityStructure<M>>
-to_community_structure(
-    const M* mnet,
-    const std::vector<unsigned int>& nodes2cid
-);
+                                    to_community_structure(
+                                        const M* mnet,
+                                        const std::vector<unsigned int>& nodes2cid
+                                    );
 
 
 
@@ -191,10 +191,10 @@ std::vector<Eigen::SparseMatrix<double>>
 
 template <typename M, typename G>
 std::unique_ptr<CommunityStructure<M>>
-to_community_structure(
-    const M* mnet,
-    const std::vector<unsigned int>& nodes2cid
-)
+                                    to_community_structure(
+                                        const M* mnet,
+                                        const std::vector<unsigned int>& nodes2cid
+                                    )
 {
     size_t num_layers = mnet->layers()->size();
     size_t num_actors = mnet->vertices()->size();

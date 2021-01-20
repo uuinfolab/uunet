@@ -289,7 +289,7 @@ operator[](
 {
 
     size_t idx = pos(index);
-    
+
     return data_[idx];
 }
 

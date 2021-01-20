@@ -10,9 +10,9 @@ namespace net {
 
 template <typename C>
 std::unique_ptr<C>
-    contract(
-             C* const cube,
-             size_t idx
+contract(
+    C* const cube,
+    size_t idx
 )
 {
     core::assert_not_null(cube, "contract", "cube");

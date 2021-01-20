@@ -39,9 +39,9 @@ expand(
 );
 
 std::unique_ptr<CommunityStructure<Network>>
-communities(
-    const std::vector<std::unique_ptr<MetaNetwork>>& levels
-);
+        communities(
+            const std::vector<std::unique_ptr<MetaNetwork>>& levels
+        );
 
 std::unique_ptr<MetaNetwork>
 pass(
