@@ -46,8 +46,7 @@ std::unordered_set<std::shared_ptr<MultiplexClique<M>>>
 mimag_approx(
     const M* mnet,
     size_t k,
-    size_t m,
-    double gamma
+    size_t m
 )
 {
     // Step 1: create an empty result set
@@ -134,46 +133,52 @@ mimag_approx(
             // Step 4: select first object
             auto subtree_to_be_processed = queue_of_subtrees.top();
             queue_of_subtrees.pop();
-            std::tuple<std::shared_ptr<MultiplexClique<M>>,bool,int> clique = find_clusters(mnet,subtree_to_be_processed,list_of_vertex_layers, k, m, gamma);
-            std::shared_ptr<MultiplexClique<M>> multiplex_clique = std::get<0>(clique); //  result.insert(multiplex_clique);
-            subtree_to_be_processed.is_cluster = std::get<1>(clique);
+            std::vector<std::tuple<std::shared_ptr<MultiplexClique<M>>,bool,int>> clique = find_clusters(mnet,subtree_to_be_processed,list_of_vertex_layers, k, m);
 
-            // Step 5: if object is cluster
-
-            //subtree_to_be_processed.is_cluster = true;
-            if (isCluster(subtree_to_be_processed))
-            {
-                if (!isRedundantCluster(std::get<2>(clique), multiplex_clique, result))
-                {
-                    result.insert(multiplex_clique);
-                    expanded_vertices.push_back(subtree_to_be_processed.vertex_set[0].vertex);
-                }
-            }
-            if (queue_of_subtrees.size()==0)
+            for (int i = 0; i < clique.size(); i++)
             {
 
-                std::vector<uu::net::subtree> new_candidates = expandSubtree(subtree_to_be_processed, list_of_vertex_layers, expanded_vertices, layer_count , vertex_count);
-                for (uu::net::subtree x: new_candidates)
-                {
-                    queue_of_subtrees.push(x);
-                }
-                if (vertex_count < list_of_vertex_layers[layer_count].size()-1)
-                {
-                    vertex_count ++;
-                }
-                if (vertex_count == list_of_vertex_layers[layer_count].size()-1)
-                {
-                    if (layer_count < list_of_vertex_layers.size()-1)
-                    {
-                        layer_count += 1;
-                        vertex_count = 0;
-                    }
-                    else
-                    {
-                        list_of_vertex_layers.clear();
-                    }
-                }
+                std::shared_ptr<MultiplexClique<M>> multiplex_clique = std::get<0>(clique[i]); //  result.insert(multiplex_clique);
+                subtree_to_be_processed.is_cluster = std::get<1>(clique[i]);
 
+                // Step 5: if object is cluster
+
+                //subtree_to_be_processed.is_cluster = true;
+                if (isCluster(subtree_to_be_processed))
+                {
+                    if (!isRedundantCluster(std::get<2>(clique[i]), multiplex_clique, result))
+                    {
+                        result.insert(multiplex_clique);
+
+                        expanded_vertices.push_back(subtree_to_be_processed.vertex_set[0].vertex);
+                    }
+                }
+                if (queue_of_subtrees.size()==0)
+                {
+
+                    std::vector<uu::net::subtree> new_candidates = expandSubtree(subtree_to_be_processed, list_of_vertex_layers, expanded_vertices, layer_count , vertex_count);
+                    for (uu::net::subtree x: new_candidates)
+                    {
+                        queue_of_subtrees.push(x);
+                    }
+                    if (vertex_count < list_of_vertex_layers[layer_count].size()-1)
+                    {
+                        vertex_count ++;
+                    }
+                    if (vertex_count == list_of_vertex_layers[layer_count].size()-1)
+                    {
+                        if (layer_count < list_of_vertex_layers.size()-1)
+                        {
+                            layer_count += 1;
+                            vertex_count = 0;
+                        }
+                        else
+                        {
+                            list_of_vertex_layers.clear();
+                        }
+                    }
+
+                }
             }
         }
 
@@ -215,17 +220,21 @@ mimag_approx(
  */
 
 template <typename M>
-std::tuple<std::shared_ptr<MultiplexClique<M>>,bool, int>
+std::vector<std::tuple<std::shared_ptr<MultiplexClique<M>>,bool, int>>
 find_clusters(
     const M*mnet,
     uu::net::subtree root,
     std::vector<std::vector<uu::net::vertex_layer>> list_of_vertex_layers,
     size_t k,
-    size_t m,
-    double gamma
+    size_t m
 )
 {
     // result
+
+    std::vector<std::tuple<std::shared_ptr<MultiplexClique<M>>,bool, int>> list_of_cliques;
+
+
+    // ---
     std::shared_ptr<MultiplexClique<M>> result;
 
     // layers current root exists in
@@ -273,7 +282,7 @@ find_clusters(
 
     // if subgraph contains at least k vertices which exist in at least m layers
     // and quasi clique
-    if ((subgraph.size() >= k) && isQuasiClique(subgraph.size(), average_degree_all_layers(mnet, layers_root_exist_in, subgraph),gamma))
+    if ((subgraph.size() >= k) && isQuasiClique((subgraph.size()), average_degree_all_layers(mnet, layers_root_exist_in, subgraph)))
     {
         // create multiplex clique
         std::unordered_set<const Vertex*> new_actors;
@@ -292,8 +301,10 @@ find_clusters(
 
         result = std::make_shared<MultiplexClique<M>>(new_actors,new_layers);
 
-        return std::make_tuple(result, true, subgraph.size());
-        //return result;
+        auto x = std::make_tuple(result, true, subgraph.size());
+        list_of_cliques.push_back(x);
+
+        return list_of_cliques;
     }
 
     if (subgraph.size() >= k)
@@ -302,7 +313,7 @@ find_clusters(
         std::unordered_set<const typename M::layer_type*> layers_that_satisfy;
 
         // degree which must be satisfied  - bad since if you want to change quasi clique arg to 0.6, you have to find manually
-        double degree = gamma*((subgraph.size())-1);
+        double degree = 0.5*((subgraph.size())-1);
 
 
 
@@ -326,9 +337,10 @@ find_clusters(
                 avg_degree = avg_degree + deg;
             }
 
+            avg_degree = avg_degree/(subgraph.size());
 
             //avg_degree = uu::net::average_degree(v_subgraph.get());
-
+            ///std::cout << "the average degree: " << avg_degree << std::endl;
             if (avg_degree >= degree)
             {
                 layers_that_satisfy.insert(get_layer(mnet, layers_root_exist_in[i]));
@@ -343,11 +355,113 @@ find_clusters(
                 new_actors.insert(subgraph[i]);
             }
             result = std::make_shared<MultiplexClique<M>>(new_actors,layers_that_satisfy);
-            return std::make_tuple(result, true, subgraph.size());
+
+            auto x = std::make_tuple(result, true, subgraph.size());
+            list_of_cliques.push_back(x);
+            return list_of_cliques;
+
         }
     }
 
-    return std::make_tuple(result, false, 0);
+
+
+    if (subgraph.size() > k)
+    {
+
+        int size = (subgraph.size()-1);
+        std::vector<const uu::net::Vertex*> empty_subgraph;
+        int i = 0;
+        int n = subgraph.size();
+        int j = (subgraph.size() - 1);
+        std::vector<std::vector<const uu::net::Vertex*>> empty_list;
+
+
+        // for result
+        std::unordered_set<const Vertex*> new_actors;
+        std::unordered_set<const typename M::layer_type*> layers_that_satisfy;
+
+        do
+        {
+            empty_list.clear();
+            subgraph_combinations(subgraph, empty_subgraph, i, n, j, empty_list);
+            double degree = 0.5*((empty_list[0].size()) - 1);
+
+            new_actors.clear();
+            layers_that_satisfy.clear();
+
+
+            // for every subgraph in list of subgraphs
+            for (int x = 0; x < empty_list.size(); x++)
+            {
+
+                auto new_subgraph = empty_list[x];
+
+                // check for every layer it satisfies
+
+                for (int i= 0; i < layers_root_exist_in.size(); i++)
+                {
+                    // for every layer, check if they satisfy constraints
+                    double avg_degree = 0;
+                    auto layer = get_layer(mnet, layers_root_exist_in[i]);
+                    auto v_subgraph = uu::net::vertex_induced_subgraph(layer, new_subgraph.begin(), new_subgraph.end());
+
+                    int satisfied = 0;
+
+
+                    for (auto v: *v_subgraph->vertices())
+                    {
+                        double deg = uu::net::degree(v_subgraph.get(), v);
+
+                        if(deg >= degree)
+                        {
+                          satisfied++;
+                        }
+                    }
+
+                    if (satisfied == empty_list[x].size())
+                    {
+                        layers_that_satisfy.insert(get_layer(mnet, layers_root_exist_in[i]));
+                    }
+
+                }
+
+
+                if (layers_that_satisfy.size() >= m)
+                {
+                    for (auto *v: empty_list[x])
+                    {
+                        new_actors.insert(v);
+                    }
+
+                    result = std::make_shared<MultiplexClique<M>>(new_actors,layers_that_satisfy);
+                    auto x = std::make_tuple(result, true, new_subgraph.size());
+                    list_of_cliques.push_back(x);
+                    layers_that_satisfy.clear();
+                    new_actors.clear();
+                }
+
+            }
+
+            if (list_of_cliques.size()>0)
+            {
+                return list_of_cliques;
+            }
+
+            size = size-1;
+            i = 0;
+            j = (j-1);
+            empty_subgraph.clear();
+
+      }
+      while (size >= k);
+
+    }
+
+
+    auto x = std::make_tuple(result, false, 0);
+    list_of_cliques.push_back(x);
+    return list_of_cliques;
+    //return std::make_tuple(result, false, 0);
     //return result;
 
 }
@@ -449,7 +563,7 @@ average_degree_all_layers(
 )
 {
     // hard coded
-    double threshold = (subgraph.size() - 1) * gamma;
+    double threshold = (subgraph.size() - 1) * 0.5;
     double degree_in_layers = 0;
     double avg_deg = 0;
     double average_degree_across_all_layers = 0;
@@ -463,7 +577,6 @@ average_degree_all_layers(
 
             if (deg < threshold)
             {
-
                 return 0;
             }
             avg_deg = avg_deg + deg;
@@ -483,11 +596,13 @@ average_degree_all_layers(
 bool
 isQuasiClique(
   double number_of_vertices,
-  double average_degree,
-              double gamma
+  double average_degree
 )
 {
-    double x = gamma*(number_of_vertices-1);
+
+
+    double x = 0.5*(number_of_vertices-1);
+
     if (average_degree >= x)
     {
         return true;
@@ -539,6 +654,7 @@ isRedundantCluster(
         for (auto v :multiplex_clique->actors)
         {
             std::cout << *v << std::endl;
+
         }
         */
         return false;
@@ -556,7 +672,7 @@ isRedundantCluster(
     {
         new_layers.push_back(l);
     }
- 
+
     // if new clique is equal to any clique in the result set then disregard
     for (std::shared_ptr<MultiplexClique<M>> c: result)
     {
@@ -856,6 +972,11 @@ most_promising_subtree(
 }
 
 
+/**
+ *
+ * neighbouring vertex layer
+ *
+ */
 
 int
 neighboring_vertex_layer(
@@ -921,6 +1042,59 @@ expandSubtree(
     }
     return new_candidates;
 };
+
+
+
+// test
+
+std::vector<std::vector<const uu::net::Vertex*>>
+save_subgraph(
+    std::vector<const uu::net::Vertex*> subgraph,
+    std::vector<std::vector<const uu::net::Vertex*>> sendhelp
+)
+{
+    /*
+    std::cout << "-------------" << std::endl;
+    for(auto *v: subgraph)
+    {
+        std::cout << *v << std::endl;
+    }
+    std::cout << "-------------" << std::endl;
+    */
+
+    sendhelp.push_back(subgraph);
+    return sendhelp;
+}
+
+
+void
+subgraph_combinations(
+    std::vector<const uu::net::Vertex*> subgraph, // the subgraph
+    std::vector<const uu::net::Vertex*> combinations, // the subgraph combinations
+    int i,
+    int n, // size of subgraph
+    int j, // the length of combinations
+    std::vector<std::vector<const uu::net::Vertex*>> &empty_list // empty list to store subgraph_combinations
+)
+{
+    if (j == 0)
+    {
+        empty_list = save_subgraph(combinations, empty_list);
+        return;
+    }
+
+    if (i == n)
+    {
+        return;
+    }
+
+    combinations.push_back(subgraph[i]);
+    subgraph_combinations(subgraph, combinations, i + 1, n, j - 1, empty_list);
+
+    combinations.pop_back();
+    subgraph_combinations(subgraph, combinations, i + 1, n, j, empty_list);
+}
+
 
 
 }
