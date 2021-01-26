@@ -26,8 +26,7 @@ std::unordered_set<std::shared_ptr<MultiplexClique<M>>>
 mimag_approx(
     const M* mnet,
     size_t k,
-    size_t m,
-    double gamma = .5
+    size_t m
 );
 
 
@@ -200,14 +199,13 @@ candidate_set(
 
 
 template <typename M>
-std::tuple<std::shared_ptr<MultiplexClique<M>>,bool,int>
+std::vector<std::tuple<std::shared_ptr<MultiplexClique<M>>,bool,int>>
 find_clusters(
     const M* mnet,
     uu::net::subtree root,
     std::vector<std::vector<uu::net::vertex_layer>>,
     size_t k,
-    size_t m,
-    double gamma
+    size_t m
 );
 
 
@@ -281,8 +279,7 @@ average_degree_all_layers(
 bool
 isQuasiClique(
     double number_of_layers,
-    double average_degree,
-    double gamma = .5
+    double average_degree
 );
 
 
@@ -326,9 +323,36 @@ has_been_expanded(
 );
 
 
-}
-}
 
+/**
+ * Helper function to get subgraph combination
+ *
+ */
+std::vector<std::vector<const uu::net::Vertex*>>
+save_subgraph(
+    std::vector<const uu::net::Vertex*> subgraph,
+    std::vector<std::vector<const uu::net::Vertex*>> sendhelp
+);
+
+
+/**
+ * Helper function to find subgraph combinations
+ *
+ */
+void
+subgraph_combinations(
+    std::vector<const uu::net::Vertex*> subgraph, // the subgraph
+    std::vector<const uu::net::Vertex*> combinations, // the subgraph combinations
+    int i,
+    int n, // size of subgraph
+    int j, // the length of combinations
+    std::vector<std::vector<const uu::net::Vertex*>> &empty_list
+);
+
+
+
+}
+}
 
 
 
