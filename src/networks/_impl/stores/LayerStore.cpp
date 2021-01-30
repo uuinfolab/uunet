@@ -59,13 +59,11 @@ end(
             //actors_->add_member("L", layer_name, [](const uu::net::Vertex* v) {(void)v; return false;});
             actors_->add_member("L", layer_name);
         }
-        
 
         // Slice
         
         std::vector<std::vector<size_t>> dim = {{store.size()}};
         std::unique_ptr<VCube> vertices = vslice(layer_name, actors_, dim);
-        
         
         // Add egdes
         

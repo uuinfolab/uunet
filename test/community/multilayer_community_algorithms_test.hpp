@@ -23,21 +23,19 @@ class multilayer_community_algorithms_test : public ::testing::Test
         net = std::make_unique<uu::net::MultilayerNetwork2>("net");
          // Adding actors
 
-
            // Adding layers
 
            auto l1 = net->layers()->add("l1");
            auto l2 = net->layers()->add("l2");
 
            // Adding vertices to layers
-
+        
         auto v1 = l1->vertices()->add("v1");
         auto v2 = l1->vertices()->add("v2");
         auto v3 = l1->vertices()->add("v3");
         auto v4 = l1->vertices()->add("v4");
         auto v5 = l1->vertices()->add("v5");
         auto v6 = l1->vertices()->add("v6");
-        
         
         l2->vertices()->add(v1);
         l2->vertices()->add(v2);

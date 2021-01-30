@@ -338,6 +338,10 @@ protected:
     ) = 0;
      */
     
+    core::UnionObserver<STORE, const typename STORE::value_type>*
+    register_obs(
+                 );
+    
 void
     register_obs(
         size_t pos

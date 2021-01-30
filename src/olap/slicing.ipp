@@ -35,7 +35,6 @@ const std::string& cube_name,
     auto dimensions = cube->dimensions();
     auto members = filter_members(cube, indexes);
     std::unique_ptr<C> out_cube = cube->skeleton(cube_name, dimensions, members);
-
     
     // indexes in the new cube corresponding to the input indexes
     
@@ -54,9 +53,14 @@ const std::string& cube_name,
     else
     {
         out_cube->init();
+        auto obs = out_cube->register_obs();
         while (in_idx_iter != in_idx.end())
         {
             auto cell = cube->cell(*in_idx_iter)->shared_from_this();
+            for (auto el: *cell)
+            {
+                obs->notify_add(el);
+            }
             out_cube->init(*out_idx_iter, cell);
             out_cube->register_obs(*out_idx_iter);
             ++in_idx_iter;

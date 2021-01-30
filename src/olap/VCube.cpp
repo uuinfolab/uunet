@@ -485,6 +485,14 @@ init(
      return cube_->init(pos, get_store());
  }
  
+core::UnionObserver<VertexStore, const typename VertexStore::value_type>*
+VCube::
+register_obs(
+)
+{
+    return cube_->register_obs();
+}
+
      void
      VCube::
      register_obs(

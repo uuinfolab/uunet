@@ -27,7 +27,7 @@ MLCube(
     size_ = {};
     //off_ = {};
     
-    // union_obs = std::make_unique<core::UnionObserver<STORE, const typename STORE::value_type>>(elements_.get());
+    //union_obs = std::make_unique<core::UnionObserver<STORE, const typename STORE::value_type>>(elements_.get());
 
     // Element attributes
     attr_ = std::make_unique<core::AttributeStore<typename STORE::value_type>>();
@@ -82,6 +82,7 @@ MLCube(
         dim_.push_back(dimensions[d_idx]);
         dim_idx_[dimensions[d_idx]] = d_idx;
         size_.push_back(members[d_idx].size());
+        members_.push_back(std::vector<std::string>());
         members_idx_.push_back(std::unordered_map<std::string, size_t>());
         for (size_t m_idx = 0; m_idx < members[d_idx].size(); m_idx++)
         {
@@ -91,6 +92,8 @@ MLCube(
     }
     
     data_ = std::vector<std::shared_ptr<STORE>>(length);
+    
+    attr_ = std::make_unique<core::AttributeStore<typename STORE::value_type>>();
 }
 
 
@@ -614,6 +617,16 @@ init(
     return init(pos(index));
 }
 */
+
+template <class STORE>
+core::UnionObserver<STORE, const typename STORE::value_type>*
+MLCube<STORE>::
+register_obs(
+)
+{
+    union_obs = std::make_unique<core::UnionObserver<STORE, const typename STORE::value_type>>(elements_.get());
+    return union_obs.get();
+}
 
 template <class STORE>
 void

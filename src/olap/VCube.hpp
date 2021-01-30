@@ -328,6 +328,11 @@ private:
         size_t pos
     );
     
+    
+    core::UnionObserver<VertexStore, const typename VertexStore::value_type>*
+        register_obs(
+        );
+    
         void
         register_obs(
         const std::vector<size_t>& index
