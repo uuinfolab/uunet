@@ -2,161 +2,158 @@
 
 #include "olap/VCube.hpp"
 
-TEST(olap_test, VCube)
+TEST(olap_test, VCube_set_functionality)
 {
+    auto V = std::make_unique<uu::net::VCube>("V");
+    auto v1 = V->add("v1"); // v1 has type const Vertex*
+    EXPECT_EQ(V->size(), (size_t) 1);
+    EXPECT_EQ(V->contains(v1), true);
+    EXPECT_EQ(V->contains("v1"), true);
+    EXPECT_EQ(V->get("v1"), v1);
+    EXPECT_EQ(V->get_at_random(), v1);
+    EXPECT_EQ(V->at(0), v1);
+    EXPECT_EQ(V->index_of(v1), 0);
+    EXPECT_EQ(V->erase(v1), true);
+    EXPECT_EQ(V->erase("v1"), false);
     
-    uu::net::VCube c("V");
+    auto v2_sharedptr = std::make_shared<const uu::net::Vertex>("v2");
+    auto v2 = v2_sharedptr.get();
+    EXPECT_EQ(V->add(v2), v2);
+    EXPECT_EQ(V->size(), (size_t) 1);
+}
 
+TEST(olap_test, VCube_attribute_functionality)
+{
+    auto V = std::make_unique<uu::net::VCube>("V");
     
-    /* ORDER 0 */
+    auto v = V->add("vertex"); // v has type const Vertex*
+    
+    auto attr = V->attr();
+    attr->add("A", uu::core::AttributeType::DOUBLE);
+    attr->set_double(v, "A", 3.14);
+    auto val = attr->get_double(v, "A"); // val has type Value<double>
+    EXPECT_EQ(val.null, false);
+    EXPECT_EQ(val.value, 3.14);
 
-    {
-        
-        // Set functionality
-        
-        auto V = std::make_unique<uu::net::VCube>("V");
-        auto v1 = V->add("v1"); // v1 has type const Vertex*
-        EXPECT_EQ(V->size(), (size_t) 1);
-        EXPECT_EQ(V->contains(v1), true);
-        EXPECT_EQ(V->contains("v1"), true);
-        EXPECT_EQ(V->at(0), v1);
-        EXPECT_EQ(V->get("v1"), v1);
-        EXPECT_EQ(V->get_at_random(), v1);
-        EXPECT_EQ(V->index_of(v1), 0);
-        EXPECT_EQ(V->erase(v1), true);
-        EXPECT_EQ(V->erase("v1"), false);
-        
-        auto v2_sharedptr = std::make_shared<const uu::net::Vertex>("v2");
-        auto v2 = v2_sharedptr.get();
-        EXPECT_EQ(V->add(v2), v2);
-        V->erase(v2); // @todo check what happens without erasing this
-        
-        // Attribute functionality
-        
-        auto attr = V->attr(); // true
-        attr->add("A", uu::core::AttributeType::DOUBLE);
-        attr->set_double(v2, "A", 3.14);
-        EXPECT_EQ(attr->get_double(v2, "A").value, 3.14);
-        
-        // Cube functionality
-        
-        EXPECT_EQ(V->order(), (size_t) 0);
-        EXPECT_EQ(V->dsize(), std::vector<size_t>({}));
-        EXPECT_EQ(V->dimensions(), std::vector<std::string>({}));
-        EXPECT_EQ(V->members(), std::vector<std::vector<std::string>>({}));
-        
-        V->add_dimension("d1", {"m11", "m12", "m13"});
-        V->add_dimension("d2", {"m21", "m22"});
-        
-        EXPECT_EQ(V->order(), (size_t) 2);
-        EXPECT_EQ(V->dsize(), std::vector<size_t> ({3, 2}));
-        EXPECT_EQ(V->dimensions(), std::vector<std::string>({"d1", "d2"}));
-        std::vector<std::vector<std::string>> m;
-        m.push_back(std::vector<std::string>({"m11", "m12", "m13"}));
-        m.push_back(std::vector<std::string>({"m21", "m22"}));
-        EXPECT_EQ(V->members(), m);
-        
-        auto index = std::vector<std::string>({"m12", "m21"});
-        V->cell(index)->add("v3");
-        V->cell(index)->add("v4");
-        EXPECT_EQ(V->size(), (size_t) 2);
-        
-        EXPECT_THROW(V->add("v5"), uu::core::OperationNotSupportedException); // throws OperationNotSupportedException
-    }
-    
-    // Basic cube info
+    V->erase(v);
+    val = attr->get_double(v, "A");
+    EXPECT_EQ(val.null, true) << "vertex removal not propagated to the attribute store";
+}
 
-    EXPECT_EQ(c.order(), (size_t)0);
 
-    EXPECT_EQ(c.dimensions().size(), (size_t)0);
+TEST(olap_test, VCube_cube_functionality)
+{
+    auto V = std::make_unique<uu::net::VCube>("V");
+    
+    V->add("v1");
+    
+    // Cube functionality
+    
+    EXPECT_EQ(V->order(), (size_t) 0);
+    EXPECT_EQ(V->dsize(), std::vector<size_t>({}));
+    EXPECT_EQ(V->dimensions(), std::vector<std::string>({}));
+    EXPECT_EQ(V->members(), std::vector<std::vector<std::string>>({}));
+    
+    // "vertex" should be added to all the new cells, as no discretization function is passed
+    V->add_dimension("d1", {"m11", "m12", "m13"});
+    V->add_dimension("d2", {"m21", "m22"});
+    
+    EXPECT_EQ(V->order(), (size_t) 2);
+    EXPECT_EQ(V->dsize(), std::vector<size_t> ({3, 2}));
+    EXPECT_EQ(V->dimensions(), std::vector<std::string>({"d1", "d2"}));
+    std::vector<std::vector<std::string>> m;
+    m.push_back(std::vector<std::string>({"m11", "m12", "m13"}));
+    m.push_back(std::vector<std::string>({"m21", "m22"}));
+    EXPECT_EQ(V->members(), m);
+    
+    auto index = std::vector<std::string>({"m12", "m21"});
+    V->cell(index)->add("v2");
+    V->cell(index)->add("v3");
+    EXPECT_EQ(V->size(), (size_t) 3);
+    
+    auto v4 = V->add("v4"); // (added to all cells)
+    EXPECT_EQ(V->cell(index)->size(), (size_t) 4); // (i.e., v1, v2, v3, v4)
+    EXPECT_EQ(V->erase(v4), true); // (erased from all cells)
+    EXPECT_EQ(V->cell(index)->size(), (size_t) 3); // (i.e., v1, v2, v3)
+}
 
+
+TEST(olap_test, VCube_discretization)
+{
+    // from 0 to 1 cell, no discretization
     
-    /* ORDER 1, 1 cell */
+    auto V = std::make_unique<uu::net::VCube>("V");
+    V->add("v1");
     
-    // Adding/retrieving/erasing some elements, created in different ways.
-    // The cube has one cell, so we can do this directly on it.
+    V->add_dimension("d0", {"m0"});
+    EXPECT_EQ(V->size(), (size_t) 1);
     
-    c.add_dimension("d0", {"m0"});
+    // from 0 to 1 cell, discretization, false
     
-    auto v1 = c.add("v1");
-    auto v2 = c.add(std::make_shared<uu::net::Vertex>("v2"));
-    auto tmp = std::make_shared<uu::net::Vertex>("v3");
-    auto v3 = c.add(tmp.get());
+    V = std::make_unique<uu::net::VCube>("V");
+    V->add("v1");
     
-    EXPECT_EQ(c.size(), (size_t)3);
-    EXPECT_EQ(c.get("v1"), v1);
+    auto d1 = [](const uu::net::Vertex* v) {
+        (void)v;
+        return std::vector<bool>({false});
+    };
     
-    c.erase(v2);
+    V->add_dimension("d0", {"m0"}, d1);
+    EXPECT_EQ(V->size(), (size_t) 0);
     
-    EXPECT_EQ(c.size(), (size_t)2);
-    EXPECT_EQ(c.get("v2"), nullptr);
+    // from 0 to 1 cell, discretization, true
     
-    EXPECT_NE(c.get_at_random(), nullptr);
+    V = std::make_unique<uu::net::VCube>("V");
+    V->add("v1");
     
+    auto d2 = [](const uu::net::Vertex* v) {
+        (void)v;
+        return std::vector<bool>({true});
+    };
+    
+    V->add_dimension("d0", {"m0"}, d2);
+    EXPECT_EQ(V->size(), (size_t) 1);
     
     /* ORDER 2 */
     
-    auto discretize = [](const uu::net::Vertex* v) {
+    V = std::make_unique<uu::net::VCube>("V");
+    V->add_dimension("d0", {"m0"});
+    V->add("v1");
+    V->add("v2");
+    V->add("v3");
+    EXPECT_EQ(V->size(), (size_t) 3);
+    
+    auto d3 = [](const uu::net::Vertex* v) {
         if (v->name == "v1") return std::vector<bool>({false, true});
-        else return std::vector<bool>({true, true});
+        else if (v->name == "v2") return std::vector<bool>({true, true});
+        else return std::vector<bool>({false, false});
     };
     
-    c.add_dimension("d1", {"m0", "m1"}, discretize);
+    V->add_dimension("d1", {"m0", "m1"}, d3);
     
-    EXPECT_EQ(c.order(), (size_t)2);
+    std::vector<std::string> m00 = {"m0","m0"};
+    std::vector<std::string> m01 = {"m0","m1"};
     
-    std::vector<std::string> m0 = {"m0","m0"};
-    std::vector<std::string> m1 = {"m0","m1"};
-    
-    EXPECT_EQ(c.size(), (size_t)2);
-    EXPECT_EQ(c.cell(m0)->size(), (size_t)1);
-    EXPECT_EQ(c.cell(m1)->size(), (size_t)2);
+    EXPECT_EQ(V->size(), (size_t) 2);
+    EXPECT_EQ(V->cell(m00)->size(), (size_t) 1);
+    EXPECT_EQ(V->cell(m01)->size(), (size_t) 2);
     
     /* ORDER 3 */
     
-    c.add_dimension("d2", {"m0", "m1"}, discretize);
-    
-    EXPECT_EQ(c.order(), (size_t)3);
-    
-    std::vector<std::string> m00 = {"m0","m0","m0"};
-    std::vector<std::string> m01 = {"m0","m0","m1"};
-    std::vector<std::string> m10 = {"m0","m1","m0"};
-    std::vector<std::string> m11 = {"m0","m1","m1"};
-    
-    EXPECT_EQ(c.size(), (size_t)2);
-    EXPECT_EQ(c.cell(m00)->size(), (size_t)1);
-    EXPECT_EQ(c.cell(m01)->size(), (size_t)1);
-    EXPECT_EQ(c.cell(m10)->size(), (size_t)1);
-    EXPECT_EQ(c.cell(m11)->size(), (size_t)2);
-    
-    c.cell(m11)->add("v4");
-    EXPECT_EQ(c.size(), (size_t)3);
-    
-    /* ORDER 2 */
-    
-    /*EXPECT_EQ(c.dim().at(0), "d1")
-            << "Wrong dimension name";
+    V->add_dimension("d2", {"m0", "m1"}, d3);
 
-    EXPECT_EQ(c.size().at(0), (size_t)2)
-            << "Wrong number of members for dimension d1";
-
-    EXPECT_EQ(c.members("d1").size(), (size_t)2)
-            << "Wrong number of members for dimension d1";
-
-    EXPECT_EQ(c.members("d1").at(0), "m1")
-            << "Wrong member name";
-
-    std::vector<std::string> m1 = {"m1"};
-    c[m1]->add(o1);
-    c.at(m1)->add(o2);
-    std::vector<std::string> m2 = {"m2"};
-    c[m2]->add(o2);
-    c.at(m2)->add(o3);
-
-    EXPECT_EQ(c[m1]->size(), (size_t)2);
-    EXPECT_EQ(c[m2]->size(), (size_t)2);
-
-    EXPECT_EQ(c.elements()->size(), (size_t)3);
-*/
+    std::vector<std::string> m000 = {"m0","m0","m0"};
+    std::vector<std::string> m001 = {"m0","m0","m1"};
+    std::vector<std::string> m010 = {"m0","m1","m0"};
+    std::vector<std::string> m011 = {"m0","m1","m1"};
+    
+    EXPECT_EQ(V->size(), (size_t) 2);
+    EXPECT_EQ(V->cell(m000)->size(), (size_t) 1);
+    EXPECT_EQ(V->cell(m001)->size(), (size_t) 1);
+    EXPECT_EQ(V->cell(m010)->size(), (size_t) 1);
+    EXPECT_EQ(V->cell(m011)->size(), (size_t) 2);
+    
+    V->cell(m011)->add("v4");
+    EXPECT_EQ(V->size(), (size_t) 3);
 }
 

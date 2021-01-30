@@ -221,12 +221,7 @@ add(
     std::shared_ptr<typename STORE::value_type> v
 )
 {
-    if (data_.size() > 1)
-    {
-        std::string err = "data must be added to the cube cells";
-        throw core::OperationNotSupportedException(err);
-    }
-    return elements_->add(v);
+    return add(v.get());
 }
 
 
@@ -239,8 +234,11 @@ add(
 {
     if (data_.size() > 1)
     {
-        std::string err = "data must be added to the cube cells";
-        throw core::OperationNotSupportedException(err);
+        for (size_t i = 0; i < data_.size(); i++)
+        {
+            data_[i]->add(v);
+        }
+        return v;
     }
     return elements_->add(v);
 }
@@ -255,8 +253,12 @@ add(
 {
     if (data_.size() > 1)
     {
-        std::string err = "data must be added to the cube cells";
-        throw core::OperationNotSupportedException(err);
+        auto v = data_[0]->add(key);
+        for (size_t i = 1; i < data_.size(); i++)
+        {
+            data_[i]->add(v);
+        }
+        return v;
     }
     return elements_->add(key);
 }
@@ -337,13 +339,13 @@ erase(
     {
         bool erased = false;
         for (size_t i = 0; i < data_.size(); i++)
-    {
-        if (data_[i]->erase(v))
         {
-            erased = true;
+            if (data_[i]->erase(v))
+            {
+                erased = true;
+            }
         }
-    }
-    return erased;
+        return erased;
     }
     return elements_->erase(v);
 }
@@ -748,7 +750,7 @@ data_ =
 }
 */
 
-
+// SF is a pointer to an object with a function get_store(), returning a new store
 template <class STORE>
 template <class SF>
 void
@@ -785,16 +787,27 @@ add_dimension(
     {
         data_ = std::vector<std::shared_ptr<STORE>>(1);
         data_[0] = elements_;
-        // With only one member, all the previous elements must be included.
-        // Therefore, we require not to pass any discretization function
-        if (discretize)
+        // If no discretization function is used, all the elements are preserved
+        if (discretize) // otherwise
         {
-            throw core::WrongParameterException("the new cube has only one cell: no discretization allowed");
+            std::set<const typename STORE::value_type*> to_erase;
+            for (auto el: *elements_)
+            {
+                std::vector<bool> to_add = discretize(el);
+                if (!to_add[0]) // warning - not checking size
+                {
+                    to_erase.insert(el);
+                }
+                for (auto v: to_erase)
+                {
+                    elements_->erase(v);
+                }
+            }
         }
     }
     else if (data_.size() == 0 && members.size() > 1)
     {
-        auto old_data_ = elements_;
+        auto old_elements_ = elements_;
         
         size_t new_num_cells = members.size();
         data_ = std::vector<std::shared_ptr<STORE>>(new_num_cells);
@@ -809,30 +822,40 @@ add_dimension(
         }
 
         // Copy elements from each cell in the previous cube to the new corresponding cells
-        for (auto el: *old_data_)
+        std::set<const typename STORE::value_type*> to_erase;
+        for (auto el: *old_elements_)
         {
-            std::vector<bool> new_cells = discretize(el);
-            bool total = false;
-            for (size_t i = 0; i < new_cells.size(); i++)
+            std::vector<bool> to_add;
+            if (discretize)
             {
-                if (new_cells[i])
+                to_add = discretize(el);
+            }
+            else
+            {
+                to_add = std::vector<bool>(members.size(), true);
+            }
+            for (size_t i = 0; i < to_add.size(); i++)
+            {
+                if (to_add[i])
                 {
-                    total = true;
-                    std::vector<size_t> index = {i};
-                    data_[pos(index)]->add(el);
+                    data_[i]->add(el);
                 }
             }
-            if (!total)
+        }
+        for (auto el: *old_elements_)
+        {
+            if (!elements_->contains(el))
             {
-                throw core::OperationNotSupportedException("element " + el->to_string() +
-                                                           " not assigned to any cell");
+                attr_->notify_erase(el);
             }
         }
+        
     }
     else
     {
         // Temporarily saving current data
         
+        auto old_elements_ = elements_;
         std::vector<std::shared_ptr<STORE>> old_data_ = data_;
         
         // Create new data
@@ -856,22 +879,30 @@ add_dimension(
         {
             for (auto el: *old_data_[old_pos++])
             {
-                std::vector<bool> new_cells = discretize(el);
-                bool total = false;
-                for (size_t i = 0; i < new_cells.size(); i++)
+                std::vector<bool> to_add;
+                if (discretize)
                 {
-                    if (new_cells[i])
+                    to_add = discretize(el);
+                }
+                else
+                {
+                    to_add = std::vector<bool>(members.size(), true);
+                }
+                for (size_t i = 0; i < to_add.size(); i++)
+                {
+                    if (to_add[i])
                     {
-                        total = true;
                         index.push_back(i);
                         data_[pos(index)]->add(el);
                         index.pop_back();
                     }
                 }
-                if (!total)
+                for (auto el: *old_elements_)
                 {
-                    throw core::OperationNotSupportedException("element " + el->to_string() +
-                                                               " not assigned to any cell");
+                    if (!elements_->contains(el))
+                    {
+                        attr_->notify_erase(el);
+                    }
                 }
             }
         }
