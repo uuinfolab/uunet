@@ -13,17 +13,6 @@ VCube(
     cube_ = std::make_unique<MLCube<VertexStore>>(std::make_unique<VertexStore>());
 }
 
-/*
-VCube::
-VCube(
-const std::string& cube_name,
-    const std::vector<std::string>& dimensions,
-    const std::vector<std::vector<std::string>>& members
-)
-: super(cube_name, std::make_unique<VertexStore>(), dimensions, members)
-{
-}*/
-
 
 size_t
 VCube::
@@ -131,7 +120,7 @@ add(
 const Vertex*
 VCube::
 add(
-    const typename VertexStore::key_type& key
+    const std::string& key
 )
 {
     return cube_->add(key);
@@ -216,6 +205,7 @@ erase(
 {
     return cube_->erase(key);
 }
+
 
 core::AttributeStore<const Vertex>*
 VCube::
@@ -316,105 +306,6 @@ attach(
     cube_->elements_->attach(obs);
 }
 
-/*
-std::unique_ptr<VCube>
-VCube::
-create(
-const std::string& name,
-const std::vector<std::string>& dim,
-const std::vector<std::vector<std::string>>& members
-)
-{
-size_t num_entries = 1;
-
-for (auto m: members)
-{
-    num_entries *= m.size();
-}
-
-std::vector<const std::shared_ptr<VertexStore>> stores;
-
-for (size_t i = 0; i < num_entries; i++)
-{
-    stores.push_back(std::make_shared<VertexStore>());
-}
-
-return std::make_unique<VCube>(name, dim, members, stores.begin(), stores.end());
-}
-*/
-
-/*
-void
-VCube::
-resize(
-    const std::string& dimension,
-    const std::string& member
-)
-{
-    std::vector<std::shared_ptr<VertexStore>> elements;
-    size_t num_new_elements = 1;
-
-    for (auto d: dim())
-    {
-        if (d == dimension)
-        {
-            continue;
-        }
-
-        num_new_elements *= members(d).size();
-    }
-
-    for (size_t i = 0; i < num_new_elements; i++)
-    {
-        elements.push_back(std::make_shared<VertexStore>());
-    }
-
-    cube_->resize(dimension, member, elements.begin(), elements.end());
-}
-
-
-std::unique_ptr<VCube>
-VCube::
-vslice(
-    const std::string& name,
-    const std::vector<std::vector<size_t>>& indexes
-)
-{
-
-    // get dimensions and members of the new cube
-
-    auto dim_names = dim();
-
-    std::vector<std::vector<std::string>> member_names(dim_names.size());
-
-    for (size_t i = 0; i < dim_names.size(); i++)
-    {
-        auto m = members(dim_names.at(i));
-
-        for (auto idx: indexes[i])
-        {
-            member_names[i].push_back(m.at(idx));
-
-        }
-    }
-
-
-    auto iter = core::sel::IndexIterator(indexes);
-
-    std::vector<std::shared_ptr<VertexStore>> elements;
-
-    for (auto idx: iter)
-    {
-        auto vs = at(idx);
-        elements.push_back(vs->shared_from_this());
-    }
-
-    auto res = std::make_unique<VCube>(name, dim_names, member_names, elements.begin(), elements.end());
-
-    return res;
-
-}
-*/
 
 std::unique_ptr<VCube>
 VCube::
@@ -435,7 +326,7 @@ VCube::
 init(
 )
 {
-    return cube_->init(std::make_shared<VertexStore>());
+    return cube_->init(get_store());
 }
 
  VertexStore*
@@ -485,7 +376,7 @@ init(
      return cube_->init(pos, get_store());
  }
  
-core::UnionObserver<VertexStore, const typename VertexStore::value_type>*
+core::UnionObserver<VertexStore, const Vertex>*
 VCube::
 register_obs(
 )
@@ -493,23 +384,23 @@ register_obs(
     return cube_->register_obs();
 }
 
-     void
-     VCube::
-     register_obs(
-     const std::vector<size_t>& index
-     )
-     {
-         cube_->register_obs(index);
-     }
+ void
+ VCube::
+ register_obs(
+ const std::vector<size_t>& index
+ )
+ {
+     cube_->register_obs(index);
+ }
  
  void
  VCube::
-     register_obs(
-         size_t pos
-     )
-     {
-         cube_->register_obs(pos);
-     }
+ register_obs(
+     size_t pos
+ )
+ {
+     cube_->register_obs(pos);
+ }
  
 
 std::shared_ptr<VertexStore>

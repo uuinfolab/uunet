@@ -26,7 +26,7 @@ class
 
     typedef const Vertex value_type;
     typedef std::string key_type;
-    typedef core::PtrSortedRandomSet<const Vertex,std::shared_ptr<const Vertex>,core::SharedPtrLT<const Vertex>,core::SharedPtrEQ<const Vertex>>::iterator iterator;
+    typedef core::ObjectStore<Vertex>::iterator iterator;
 
     VertexStore(
     );

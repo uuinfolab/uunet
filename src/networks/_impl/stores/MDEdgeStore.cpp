@@ -19,7 +19,7 @@ MDEdgeStore(
     core::assert_not_null(cube1, "MDEdgeStore", "cube1");
     core::assert_not_null(cube2, "MDEdgeStore", "cube2");
 
-    edges_ = std::make_unique<GenericObjectList<MLEdge2>>();
+    edges_ = std::make_unique<core::ObjectStore<MLEdge2>>();
 
     sidx_neighbors_out[cube1][cube2];
     sidx_neighbors_in[cube1][cube2];
@@ -51,6 +51,31 @@ MDEdgeStore(
     }
 }
 
+MDEdgeStore::iterator
+        MDEdgeStore::
+        begin(
+        ) const
+{
+    return edges_->begin();
+}
+
+MDEdgeStore::iterator
+MDEdgeStore::
+        end(
+        ) const
+{
+    return edges_->end();
+}
+
+
+size_t
+MDEdgeStore::
+size(
+) const
+{
+    return edges_->size();
+}
+
 
 const MLEdge2 *
 MDEdgeStore::
@@ -71,6 +96,25 @@ add(
 }
 
 
+const MLEdge2 *
+MDEdgeStore::
+add(
+    const typename MLEdge2::key_type& key
+)
+{
+    auto edge = std::make_shared<MLEdge2>(std::get<0>(key), std::get<1>(key), std::get<2>(key), std::get<3>(key), dir_);
+    return add(edge);
+}
+
+const MLEdge2*
+MDEdgeStore::
+add(
+    const MLEdge2* e
+)
+{
+    auto edge = e->shared_from_this();
+    return add(edge);
+}
 
 const MLEdge2*
 MDEdgeStore::
@@ -85,14 +129,15 @@ add(
         throw core::OperationNotSupportedException("wrong edge directionality");
     }
 
-    const MLEdge2* new_edge = super::add(e);
-
-    if (!new_edge) // edge already existing
+    const MLEdge2* new_edge;
+    if (edges_->add(e))
+    {
+        new_edge = e.get();
+    }
+    else
     {
         return nullptr;
     }
-
-    edges_->add(new_edge);
 
     if (sidx_neighbors_out[e->c1][e->c2].count(e->v1)==0)
     {
@@ -168,6 +213,45 @@ add(
 
     return new_edge;
 }
+
+
+bool
+MDEdgeStore::
+contains(
+    const MLEdge2* v
+) const
+{
+    return edges_->contains(v);
+}
+
+const MLEdge2*
+MDEdgeStore::
+at(
+    size_t pos
+) const
+{
+    return edges_->at(pos);
+}
+
+const MLEdge2*
+MDEdgeStore::
+get_at_random(
+) const
+{
+    return edges_->get_at_random();
+}
+
+
+int
+MDEdgeStore::
+index_of(
+    const MLEdge2* v
+) const
+{
+    return edges_->index_of(v);
+}
+
+
 
 /*
 GenericObjectList<MLEdge2>*

@@ -94,8 +94,11 @@ class
         const Vertex* vertex2
     ) const;
 
-
-
+    const MLEdge2*
+    get(
+        const typename MLEdge2::key_type& key
+    ) const;
+    
     virtual
     bool
     erase(

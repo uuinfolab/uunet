@@ -13,7 +13,7 @@ VertexStore(
     store_ = std::make_unique<core::ObjectStore<Vertex>>();
 }
 
-core::PtrSortedRandomSet<const Vertex,std::shared_ptr<const Vertex>,core::SharedPtrLT<const Vertex>,core::SharedPtrEQ<const Vertex>>::iterator
+VertexStore::iterator
         VertexStore::
         begin(
         ) const
@@ -21,8 +21,8 @@ core::PtrSortedRandomSet<const Vertex,std::shared_ptr<const Vertex>,core::Shared
     return store_->begin();
 }
 
-core::PtrSortedRandomSet<const Vertex,std::shared_ptr<const Vertex>,core::SharedPtrLT<const Vertex>,core::SharedPtrEQ<const Vertex>>::iterator
-        VertexStore::
+VertexStore::iterator
+VertexStore::
         end(
         ) const
 {

@@ -2,7 +2,7 @@
 
 #include "olap/VCube.hpp"
 
-TEST(olap_test, VCube_set_functionality)
+TEST(olap_VCube_test, set_functionality)
 {
     auto V = std::make_unique<uu::net::VCube>("V");
     auto v1 = V->add("v1"); // v1 has type const Vertex*
@@ -22,7 +22,7 @@ TEST(olap_test, VCube_set_functionality)
     EXPECT_EQ(V->size(), (size_t) 1);
 }
 
-TEST(olap_test, VCube_attribute_functionality)
+TEST(olap_VCube_test, attribute_functionality)
 {
     auto V = std::make_unique<uu::net::VCube>("V");
     
@@ -41,7 +41,7 @@ TEST(olap_test, VCube_attribute_functionality)
 }
 
 
-TEST(olap_test, VCube_cube_functionality)
+TEST(olap_VCube_test, cube_functionality)
 {
     auto V = std::make_unique<uu::net::VCube>("V");
     
@@ -78,7 +78,7 @@ TEST(olap_test, VCube_cube_functionality)
 }
 
 
-TEST(olap_test, VCube_discretization)
+TEST(olap_VCube_test, discretization)
 {
     // from 0 to 1 cell, no discretization
     

@@ -80,6 +80,15 @@ add(
 const MLEdge2*
 MDSimpleEdgeStore::
 get(
+    const typename MLEdge2::key_type& key
+) const
+{
+    return get(std::get<0>(key), std::get<1>(key), std::get<2>(key), std::get<3>(key));
+}
+
+const MLEdge2*
+MDSimpleEdgeStore::
+get(
     const Vertex* vertex1,
     const VCube* cube1,
     const Vertex* vertex2,
@@ -156,7 +165,7 @@ erase(
         obs->notify_erase(edge);
     }
 
-    edges_->erase(edge);
+    //edges_->erase(edge);
 
     cidx_edge_by_vertexes[edge->c1][edge->c2][edge->v1].erase(edge->v2);
 
@@ -196,7 +205,7 @@ erase(
     }
 
 
-    return core::SharedPtrSortedRandomSet<const MLEdge2>::erase(edge);
+    return edges_->erase(edge);
 }
 
 /*

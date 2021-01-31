@@ -4,6 +4,7 @@
 #include <memory>
 #include <unordered_map>
 #include "core/datastructures/containers/SharedPtrSortedRandomSet.hpp"
+#include "core/stores/ObjectStore.hpp"
 #include "core/datastructures/observers/ObserverStore.hpp"
 #include "core/datastructures/observers/Subject.hpp"
 #include "olap/VCube.hpp"
@@ -22,16 +23,16 @@ namespace net {
 class
 MDEdgeStore
   :
-    public core::SharedPtrSortedRandomSet<const MLEdge2>,
+    //public core::SharedPtrSortedRandomSet<const MLEdge2>,
     // This makes the store allowing observers which can trigger reactions when the store is updated
     public core::Subject<const MLEdge2>,
     // This allows the edge store to store its own observers
     public core::ObserverStore
 {
 
-  private:
+ // private:
 
-    typedef core::SharedPtrSortedRandomSet<const MLEdge2> super;
+   // core::SharedPtrSortedRandomSet<const MLEdge2> store_;
 
   protected:
 
@@ -48,7 +49,8 @@ MDEdgeStore
 
     typedef const MLEdge2 value_type;
     typedef std::tuple<const Vertex*, const VCube*, const Vertex*, const VCube*> key_type;
-
+    typedef core::ObjectStore<MLEdge2>::iterator iterator;
+    
     MDEdgeStore(
         VCube* cube1,
         VCube* cube2,
@@ -56,18 +58,34 @@ MDEdgeStore
         LoopMode loops = LoopMode::ALLOWED
     );
 
-  public:
 
-    using super::size;
-    using super::add;
-    using super::erase;
+    /** Returns an iterator to the first object in the collection */
+    iterator
+    begin(
+    ) const;
+
+    /** Returns an iterator after the last object in the collection */
+    iterator
+    end(
+    ) const;
+
+    /** Returns the number of objects in the collection */
+    size_t
+    size(
+    ) const;
 
     virtual
     const MLEdge2*
     add(
         std::shared_ptr<const MLEdge2> e
-    ) override;
+    );
 
+    virtual
+    const MLEdge2*
+    add(
+        const MLEdge2* e
+    );
+    
     /**
      * Adds a new edge.
      * Multiple edges between the same pair of vertices are not allowed.
@@ -87,26 +105,50 @@ MDEdgeStore
     );
 
     virtual
+    const MLEdge2*
+    add(
+        const typename MLEdge2::key_type& key
+    );
+
+    /** Returns true if an object with the input id is present in the collection */
+    bool
+    contains(
+        const MLEdge2* v
+    ) const;
+
+    /** Returns the object at the given position in the collection.
+     * @throw ElementNotFoundException if the index is outside the bounds on the set
+     */
+    const MLEdge2*
+    at(
+        size_t pos
+    ) const;
+
+    /** Returns a random object, uniform probability */
+    const MLEdge2*
+    get_at_random(
+    ) const;
+
+
+    /** Returns the position of the input value in the collection, or -1 */
+    int
+    index_of(
+        const MLEdge2* v
+    ) const;
+
+    
+    virtual
     bool
     erase(
         const MLEdge2* e
-    ) override = 0;
-
-    /*
-        virtual
-        GenericObjectList<MLEdge2>*
-                                            get(
-                                                const VCube* cube1_,
-                                                const VCube* cube2_
-                                            ) const;
-    */
+    ) = 0;
 
     /**
      * @brief Returns the nodes with an edge from/to the input vertex.
      * @param node pointer to the node.
      * @param mode IN, OUT or INOUT.
      * @return the list of neighbors.
-     **/
+     */
     const
     GenericObjectList<Vertex>*
     neighbors(
@@ -123,25 +165,16 @@ MDEdgeStore
      **/
     const
     GenericObjectList<MLEdge2>*
-                                          incident(
-                                                  const Vertex* vertex,
-                                                  const VCube* cube,
-                                                  EdgeMode mode
-                                          ) const;
+      incident(
+              const Vertex* vertex,
+              const VCube* cube,
+              EdgeMode mode
+      ) const;
 
 
     bool
     is_directed(
     ) const;
-
-    /*
-        void
-        set_directed(
-            const VCube* cube1_,
-            const VCube* cube2_,
-            bool directed
-        );
-    */
 
     virtual
     void
@@ -154,7 +187,7 @@ MDEdgeStore
 
 
     /** Edges */
-    std::unique_ptr<GenericObjectList<MLEdge2>> edges_;
+    std::unique_ptr<core::ObjectStore<MLEdge2>> edges_;
 
     // Indexes to sets of objects (Set IDX):
     std::unordered_map<const VCube*, std::unordered_map<const VCube*, std::unordered_map<const Vertex*, std::unique_ptr<GenericObjectList<Vertex>>>>> sidx_neighbors_out;

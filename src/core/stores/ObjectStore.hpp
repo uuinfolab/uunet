@@ -36,7 +36,7 @@ class
 
     typedef OBJECT_TYPE value_type;
     typedef typename OBJECT_TYPE::key_type key_type;
-
+    typedef typename super::iterator iterator;
 
     ObjectStore(
     );
