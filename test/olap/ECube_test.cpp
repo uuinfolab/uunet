@@ -83,12 +83,9 @@ TEST_F(olap_ECube_test, attribute_functionality)
     EXPECT_EQ(val.null, true) << "vertex removal not propagated to the attribute store";
 }
 
-/*
 TEST_F(olap_ECube_test, cube_functionality)
 {
-    auto V = std::make_unique<uu::net::VCube>("V");
-    
-    E->add("v1");
+    E->add(v1.get(), vc1.get(), v1.get(), vc2.get());
     
     // Cube functionality
     
@@ -97,7 +94,7 @@ TEST_F(olap_ECube_test, cube_functionality)
     EXPECT_EQ(E->dimensions(), std::vector<std::string>({}));
     EXPECT_EQ(E->members(), std::vector<std::vector<std::string>>({}));
     
-    // "vertex" should be added to all the new cells, as no discretization function is passed
+    // notice that the initial edge should be added to all the new cells, as no discretization function is passed
     E->add_dimension("d1", {"m11", "m12", "m13"});
     E->add_dimension("d2", {"m21", "m22"});
     
@@ -110,69 +107,75 @@ TEST_F(olap_ECube_test, cube_functionality)
     EXPECT_EQ(E->members(), m);
     
     auto index = std::vector<std::string>({"m12", "m21"});
-    E->cell(index)->add("v2");
-    E->cell(index)->add("v3");
+    E->cell(index)->add(v1.get(), vc1.get(), v2.get(), vc2.get());
+    E->cell(index)->add(v2.get(), vc2.get(), v1.get(), vc1.get());
     EXPECT_EQ(E->size(), (size_t) 3);
     
-    auto v4 = E->add("v4"); // (added to all cells)
-    EXPECT_EQ(E->cell(index)->size(), (size_t) 4); // (i.e., v1, v2, v3, v4)
-    EXPECT_EQ(E->erase(v4), true); // (erased from all cells)
-    EXPECT_EQ(E->cell(index)->size(), (size_t) 3); // (i.e., v1, v2, v3)
+    auto e4 = E->add(v2.get(), vc1.get(), v1.get(), vc2.get()); // (added to all cells)
+    EXPECT_EQ(E->cell(index)->size(), (size_t) 4);
+    EXPECT_EQ(E->erase(e4), true); // (erased from all cells)
+    EXPECT_EQ(E->cell(index)->size(), (size_t) 3);
 }
 
-
-TEST_F(olap_ECube_test, discretization)
+TEST_F(olap_ECube_test, discretization_01n)
 {
     // from 0 to 1 cell, no discretization
     
-    auto V = std::make_unique<uu::net::VCube>("V");
-    E->add("v1");
+    E->add(v1.get(), vc1.get(), v1.get(), vc2.get());
     
     E->add_dimension("d0", {"m0"});
     EXPECT_EQ(E->size(), (size_t) 1);
-    
+}
+
+TEST_F(olap_ECube_test, discretization_01f)
+{
     // from 0 to 1 cell, discretization, false
     
-    V = std::make_unique<uu::net::VCube>("V");
-    E->add("v1");
+    E->add(v1.get(), vc1.get(), v1.get(), vc2.get());
     
-    auto d1 = [](const uu::net::Vertex* v) {
-        (void)v;
+    auto d = [](const uu::net::MLEdge2* e) {
+        (void)e;
         return std::vector<bool>({false});
     };
     
-    E->add_dimension("d0", {"m0"}, d1);
+    E->add_dimension("d0", {"m0"}, d);
     EXPECT_EQ(E->size(), (size_t) 0);
-    
+}
+
+TEST_F(olap_ECube_test, discretization_01t)
+{
     // from 0 to 1 cell, discretization, true
     
-    V = std::make_unique<uu::net::VCube>("V");
-    E->add("v1");
+    E->add(v1.get(), vc1.get(), v1.get(), vc2.get());
     
-    auto d2 = [](const uu::net::Vertex* v) {
-        (void)v;
+    auto d = [](const uu::net::MLEdge2* e) {
+        (void)e;
         return std::vector<bool>({true});
     };
     
-    E->add_dimension("d0", {"m0"}, d2);
+    E->add_dimension("d0", {"m0"}, d);
     EXPECT_EQ(E->size(), (size_t) 1);
     
+}
+
+TEST_F(olap_ECube_test, discretization_higher_orders)
+{
     // ORDER 2
     
-    V = std::make_unique<uu::net::VCube>("V");
     E->add_dimension("d0", {"m0"});
-    E->add("v1");
-    E->add("v2");
-    E->add("v3");
+    E->add(v1.get(), vc1.get(), v1.get(), vc2.get());
+    E->add(v1.get(), vc1.get(), v2.get(), vc2.get());
+    E->add(v2.get(), vc2.get(), v1.get(), vc1.get());
+    
     EXPECT_EQ(E->size(), (size_t) 3);
     
-    auto d3 = [](const uu::net::Vertex* v) {
-        if (v->name == "v1") return std::vector<bool>({false, true});
-        else if (v->name == "v2") return std::vector<bool>({true, true});
+    auto d = [](const uu::net::MLEdge2* e) {
+        if (e->v1->name == "v1" && e->v2->name == "v1") return std::vector<bool>({false, true});
+        else if (e->v1->name == "v1" && e->v2->name == "v2") return std::vector<bool>({true, true});
         else return std::vector<bool>({false, false});
     };
     
-    E->add_dimension("d1", {"m0", "m1"}, d3);
+    E->add_dimension("d1", {"m0", "m1"}, d);
     
     std::vector<std::string> m00 = {"m0","m0"};
     std::vector<std::string> m01 = {"m0","m1"};
@@ -183,7 +186,7 @@ TEST_F(olap_ECube_test, discretization)
     
     // ORDER 3
     
-    E->add_dimension("d2", {"m0", "m1"}, d3);
+    E->add_dimension("d2", {"m0", "m1"}, d);
 
     std::vector<std::string> m000 = {"m0","m0","m0"};
     std::vector<std::string> m001 = {"m0","m0","m1"};
@@ -196,8 +199,7 @@ TEST_F(olap_ECube_test, discretization)
     EXPECT_EQ(E->cell(m010)->size(), (size_t) 1);
     EXPECT_EQ(E->cell(m011)->size(), (size_t) 2);
     
-    E->cell(m011)->add("v4");
+    E->cell(m011)->add(v2.get(), vc1.get(), v2.get(), vc2.get());
     EXPECT_EQ(E->size(), (size_t) 3);
 }
-*/
 

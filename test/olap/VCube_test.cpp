@@ -58,7 +58,7 @@ TEST(olap_VCube_test, cube_functionality)
     EXPECT_EQ(V->dimensions(), std::vector<std::string>({}));
     EXPECT_EQ(V->members(), std::vector<std::vector<std::string>>({}));
     
-    // "vertex" should be added to all the new cells, as no discretization function is passed
+    // notice that the initial vertex should be added to all the new cells, as no discretization function is passed
     V->add_dimension("d1", {"m11", "m12", "m13"});
     V->add_dimension("d2", {"m21", "m22"});
     
