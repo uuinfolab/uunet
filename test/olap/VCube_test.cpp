@@ -26,7 +26,11 @@ TEST(olap_VCube_test, attribute_functionality)
 {
     auto V = std::make_unique<uu::net::VCube>("V");
     
-    auto v = V->add("vertex"); // v has type const Vertex*
+    // we create an independent vertex, so that we can then erase it from the cube
+    // without it being garbage collected
+    auto v_sharedptr = std::make_shared<const uu::net::Vertex>("vertex");
+    auto v = v_sharedptr.get(); // v has type const Vertex*
+    V->add(v);
     
     auto attr = V->attr();
     attr->add("A", uu::core::AttributeType::DOUBLE);

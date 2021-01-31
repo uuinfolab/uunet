@@ -62,26 +62,28 @@ TEST_F(olap_ECube_test, set_functionality)
     EXPECT_EQ(E->size(), (size_t) 1);
 }
 
-/*
 TEST_F(olap_ECube_test, attribute_functionality)
 {
-    auto V = std::make_unique<uu::net::VCube>("V");
+    // we create an independent edge, so that we can then erase it from the cube
+    // without it being garbage collected
+    auto e_sharedptr = std::make_shared<const uu::net::MLEdge2>(v1.get(), vc1.get(), v1.get(), vc2.get(), uu::net::EdgeDir::DIRECTED);
+    auto e = e_sharedptr.get(); // e const MLEdge2*
+    E->add(e);
     
-    auto v = E->add("vertex"); // v has type const Vertex*
     
     auto attr = E->attr();
     attr->add("A", uu::core::AttributeType::DOUBLE);
-    attr->set_double(v, "A", 3.14);
-    auto val = attr->get_double(v, "A"); // val has type Value<double>
+    attr->set_double(e, "A", 3.14);
+    auto val = attr->get_double(e, "A"); // val has type Value<double>
     EXPECT_EQ(val.null, false);
     EXPECT_EQ(val.value, 3.14);
 
-    E->erase(v);
-    val = attr->get_double(v, "A");
+    E->erase(e);
+    val = attr->get_double(e, "A");
     EXPECT_EQ(val.null, true) << "vertex removal not propagated to the attribute store";
 }
 
-
+/*
 TEST_F(olap_ECube_test, cube_functionality)
 {
     auto V = std::make_unique<uu::net::VCube>("V");
