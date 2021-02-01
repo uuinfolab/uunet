@@ -9,7 +9,7 @@
 #include <memory>
 #include "core/attributes/MainMemoryAttributeValueMap.hpp"
 #include "core/datastructures/observers/Observer.hpp"
-#include "core/exceptions/NullPtrException.hpp"
+#include "core/exceptions/assert_not_null.hpp"
 
 namespace uu {
 namespace core {
@@ -66,13 +66,12 @@ class AttributeStore :
 
 };
 
-
-template <typename OT>
+/*template <typename OT>
 std::unique_ptr<AttributeStore<OT>>
                                  create_attribute_store()
 {
     return std::make_unique<AttributeStore<OT>>();
-}
+}*/
 
 template <typename OT>
 AttributeStore<OT>::
@@ -99,10 +98,7 @@ notify_erase(
     const OT* object
 )
 {
-    if (!object)
-    {
-        throw NullPtrException("AttributeStore::notify_erase()");
-    }
+    core::assert_not_null(object, "AttributeStore::notify_erase", "object");
 
     for (auto att: *this)
     {
@@ -117,10 +113,7 @@ notify_add(
     const OT* object
 )
 {
-    if (!object)
-    {
-        throw NullPtrException("AttributeStore::notify_add()");
-    }
+    core::assert_not_null(object, "AttributeStore::notify_add", "object");
 }
 
 

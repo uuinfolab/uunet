@@ -1,14 +1,10 @@
-/**
- * History:
- * - 2018.01.01 file adapted from version 1.0 of the multinet library
- */
-
 #ifndef UU_CORE_ATTRIBUTES_ATTRIBUTEVALUEMAP_H_
 #define UU_CORE_ATTRIBUTES_ATTRIBUTEVALUEMAP_H_
 
 #include <vector>
 #include "core/datastructures/containers/LabeledUniquePtrSortedRandomSet.hpp"
 #include "core/exceptions/WrongFormatException.hpp"
+#include "core/exceptions/OperationNotSupportedException.hpp"
 #include "core/attributes/AttributeType.hpp"
 #include "core/attributes/Attribute.hpp"
 #include "core/attributes/Time.hpp"
@@ -120,6 +116,22 @@ class AttributeValueMap :
 
 
     /**
+     * Adds a value to a set attribute.
+     * @param id id of the object to which to add the value
+     * @param attribute_name name of the attribute
+     * @param value value to be set
+     * @throws ElementNotFoundException if there is no STRINGSET attribute with this name
+     **/
+    virtual
+    void
+    add_string(
+        ID id,
+        const std::string& attribute_name,
+        const std::string& value
+    ) = 0;
+
+    
+    /**
      * Sets the value of an attribute.
      * @param id the id of the object whose associated value is set
      * @param attribute_name The name of the attribute
@@ -136,6 +148,22 @@ class AttributeValueMap :
 
 
     /**
+     * Adds a value to a set attribute.
+     * @param id id of the object to which to add the value
+     * @param attribute_name name of the attribute
+     * @param value value to be set
+     * @throws ElementNotFoundException if there is no DOUBLESET attribute with this name
+     **/
+    virtual
+    void
+    add_double(
+        ID id,
+        const std::string& attribute_name,
+        double value
+    ) = 0;
+    
+    
+    /**
      * Sets the value of an attribute.
      * @param id the id of the object whose associated value is set
      * @param attribute_name The name of the attribute
@@ -150,7 +178,23 @@ class AttributeValueMap :
         int value
     ) = 0;
 
-
+    
+    /**
+     * Adds a value to a set attribute.
+     * @param id the id of the object whose associated value is set
+     * @param attribute_name The name of the attribute
+     * @param value The value to be set
+     * @throws ElementNotFoundException if there is no INTSET attribute with this name
+     **/
+    virtual
+    void
+    add_int(
+        ID id,
+        const std::string& attribute_name,
+        int value
+    ) = 0;
+    
+    
     /**
      * Sets the value of a time attribute.
      * @param id the id of the object whose associated value is set
@@ -166,6 +210,24 @@ class AttributeValueMap :
         const Time& value
     ) = 0;
 
+    
+    /**
+     * Adds a value to a set attribute.
+     * @param id the id of the object whose associated value is set
+     * @param attribute_name The name of the attribute
+     * @param value The value to be set
+     * @throws ElementNotFoundException if there is no TIMESET attribute with this name
+     **/
+    virtual
+    void
+    add_time(
+        ID id,
+        const std::string& attribute_name,
+        const Time& value
+    ) = 0;
+
+    
+    
     /**
      * Sets the value of a text attribute.
      * @param id the id of the object whose associated value is set
@@ -196,7 +258,22 @@ class AttributeValueMap :
         const std::string& attribute_name
     ) const = 0;
 
+    
+    /**
+     * Gets the values of a set attribute.
+     * @param id id of the object whose associated value is retrieved
+     * @param attribute_name name of the attribute
+     * @return value associated to the object, or null if the object id has not been registered in this store
+     * @throws ElementNotFoundException if there is no STRINGSET attribute with this name
+     **/
+    virtual
+    const std::set<std::string>&
+    get_strings(
+        ID id,
+        const std::string& attribute_name
+    ) const = 0;
 
+    
     /**
      * Gets the value of an attribute.
      * @param id the id of the object whose associated value is retrieved
@@ -210,7 +287,21 @@ class AttributeValueMap :
         const std::string& attribute_name
     ) const = 0;
 
+    
+    /**
+     * Gets the values of a set attribute.
+     * @param id the id of the object whose associated value is retrieved
+     * @param attribute_name The name of the attribute
+     * @throws ElementNotFoundException if there is no DOUBLESET attribute with this name
+     **/
+    virtual
+    const std::set<double>&
+    get_doubles(
+        ID id,
+        const std::string& attribute_name
+    ) const = 0;
 
+    
     /**
      * Gets the value of an attribute.
      * @param id the id of the object whose associated value is retrieved
@@ -224,7 +315,21 @@ class AttributeValueMap :
         const std::string& attribute_name
     ) const = 0;
 
+    
+    /**
+     * Gets the values of a set attribute.
+     * @param id the id of the object whose associated value is retrieved
+     * @param attribute_name The name of the attribute
+     * @throws ElementNotFoundException if there is no INTSET attribute with this name
+     **/
+    virtual
+    const std::set<int>&
+    get_ints(
+        ID id,
+        const std::string& attribute_name
+    ) const = 0;
 
+    
     /**
      * Gets the value of a time attribute.
      * @param id the id of the object whose associated value is retrieved
@@ -238,7 +343,21 @@ class AttributeValueMap :
         const std::string& attribute_name
     ) const = 0;
 
+    
+    /**
+     * Gets the values of a set attribute.
+     * @param id the id of the object whose associated value is retrieved
+     * @param attribute_name The name of the attribute
+     * @throws ElementNotFoundException if there is no TIMESET attribute with this name
+     **/
+    virtual
+    const std::set<Time>&
+    get_times(
+        ID oid,
+        const std::string& attribute_name
+    ) const = 0;
 
+    
     /**
      * Gets the value of a text attribute.
      * @param id the id of the object whose associated value is retrieved
@@ -264,7 +383,7 @@ class AttributeValueMap :
      * @param min_value lower bound of the range, inclusive
      * @param max_value upper bound of the range, inclusive
      * @param attribute_name the name of the attribute
-     * @throws ElementNotFoundException if there is no string attribute with this name
+     * @throws ElementNotFoundException if there is no STRING attribute with this name
      **/
     virtual
     std::vector<ID>
@@ -282,7 +401,7 @@ class AttributeValueMap :
      * @param min_value lower bound of the range, inclusive
      * @param max_value upper bound of the range, inclusive
      * @param attribute_name the name of the attribute
-     * @throws ElementNotFoundException if there is no int attribute with this name
+     * @throws ElementNotFoundException if there is no INT attribute with this name
      **/
     virtual
     std::vector<ID>
@@ -300,7 +419,7 @@ class AttributeValueMap :
      * @param min_value lower bound of the range, inclusive
      * @param max_value upper bound of the range, inclusive
      * @param attribute_name the name of the attribute
-     * @throws ElementNotFoundException if there is no double attribute with this name
+     * @throws ElementNotFoundException if there is no DOUBLE attribute with this name
      **/
     virtual
     std::vector<ID>
@@ -318,7 +437,7 @@ class AttributeValueMap :
      * @param min_value lower bound of the range, inclusive
      * @param max_value upper bound of the range, inclusive
      * @param attribute_name the name of the attribute
-     * @throws ElementNotFoundException if there is no time attribute with this name
+     * @throws ElementNotFoundException if there is no TIME attribute with this name
      **/
     virtual
     std::vector<ID>
@@ -387,7 +506,7 @@ class AttributeValueMap :
     /**
      * Gets the maximum value for the input attribute.
      * @param attribute_name the name of the attribute
-     * @throws ElementNotFoundException if there is no int attribute with this name
+     * @throws ElementNotFoundException if there is no INT attribute with this name
      **/
     virtual
     Value<int>
@@ -399,7 +518,7 @@ class AttributeValueMap :
     /**
      * Gets the maximum value for the input attribute.
      * @param attribute_name the name of the attribute
-     * @throws ElementNotFoundException if there is no double attribute with this name
+     * @throws ElementNotFoundException if there is no DOUBLE attribute with this name
      **/
     virtual
     Value<double>
@@ -411,7 +530,7 @@ class AttributeValueMap :
     /**
      * Gets the maximum value for the input attribute.
      * @param attribute_name the name of the attribute
-     * @throws ElementNotFoundException if there is no string attribute with this name
+     * @throws ElementNotFoundException if there is no STRING attribute with this name
      **/
     virtual
     Value<std::string>
@@ -423,7 +542,7 @@ class AttributeValueMap :
     /**
      * Gets the maximum value for the input attribute.
      * @param attribute_name the name of the attribute
-     * @throws ElementNotFoundException if there is no time attribute with this name
+     * @throws ElementNotFoundException if there is no TIME attribute with this name
      **/
     virtual
     Value<Time>
@@ -476,6 +595,12 @@ set_as_string(
     case AttributeType::TEXT:
         set_text(oid, attribute_name, core::to_text(value));
         break;
+            
+    case AttributeType::INTEGERSET:
+    case AttributeType::DOUBLESET:
+    case AttributeType::STRINGSET:
+    case AttributeType::TIMESET:
+            throw OperationNotSupportedException("cannot set a value for a set attribute");
     }
 }
 
@@ -527,6 +652,12 @@ get_as_string(
 
     case AttributeType::TEXT:
         return core::to_string(get_text(oid, att->name));
+            
+    case AttributeType::INTEGERSET:
+    case AttributeType::DOUBLESET:
+    case AttributeType::STRINGSET:
+    case AttributeType::TIMESET:
+            throw OperationNotSupportedException("cannot set a value for a set attribute");
     }
 }
 

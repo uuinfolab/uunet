@@ -7,7 +7,7 @@ class core_attributes_test : public ::testing::Test
   protected:
 
     std::unique_ptr<uu::core::AttributeValueMap<int>> att_store;
-    const uu::core::Attribute *a0, *a1, *a2, *a3;
+    const uu::core::Attribute *a0, *a1, *a2, *a3, *a4, *a5, *a6, *a7, *a8;
     int id0=0, id1=1, id2=2, id3=3;
     virtual void
     SetUp()
@@ -19,6 +19,11 @@ class core_attributes_test : public ::testing::Test
         a1 = att_store->add(uu::core::Attribute::create("d_att", uu::core::AttributeType::DOUBLE));
         a2 = att_store->add(uu::core::Attribute::create("i_att", uu::core::AttributeType::INTEGER));
         a3 = att_store->add(uu::core::Attribute::create("t_att", uu::core::AttributeType::TIME));
+        a4 = att_store->add(uu::core::Attribute::create("txt_att", uu::core::AttributeType::TEXT));
+        a5 = att_store->add(uu::core::Attribute::create("s_satt", uu::core::AttributeType::STRINGSET));
+        a6 = att_store->add(uu::core::Attribute::create("d_satt", uu::core::AttributeType::DOUBLESET));
+        a7 = att_store->add(uu::core::Attribute::create("i_satt", uu::core::AttributeType::INTEGERSET));
+        a8 = att_store->add(uu::core::Attribute::create("t_satt", uu::core::AttributeType::TIMESET));
     }
 };
 
@@ -34,7 +39,7 @@ TEST_F(core_attributes_test, MainMemoryAttributeValueMap_add_attributes)
 
 TEST_F(core_attributes_test, MainMemoryAttributeValueMap_get_attributes)
 {
-    EXPECT_EQ((size_t)4,
+    EXPECT_EQ((size_t) 9,
               att_store->size());
 
     EXPECT_EQ(a1,
@@ -69,6 +74,45 @@ TEST_F(core_attributes_test, MainMemoryAttributeValueMap_set_get)
 
     EXPECT_THROW(att_store->get_string(id0, "w_att"),
                  uu::core::ElementNotFoundException);
+
+}
+
+
+TEST_F(core_attributes_test, MainMemoryAttributeValueMap_add_get)
+{
+    // No results
+    EXPECT_EQ(att_store->get_strings(id0, "s_satt").size(), (size_t) 0);
+    EXPECT_EQ(att_store->get_ints(id0, "i_satt").size(), (size_t) 0);
+    EXPECT_EQ(att_store->get_doubles(id0, "d_satt").size(), (size_t) 0);
+    EXPECT_EQ(att_store->get_times(id0, "t_satt").size(), (size_t) 0);
+    
+    // Add first value
+    att_store->add_string(id0, "s_satt", "a string");
+    att_store->add_int(id0, "i_satt", 0);
+    att_store->add_double(id0, "d_satt", 0.0);
+    uu::core::Time t = uu::core::epoch_to_time(10243);
+    att_store->add_time(id0, "t_satt", t);
+
+    // Get values
+    EXPECT_TRUE(att_store->get_strings(id0, "s_satt").count("a string"));
+    EXPECT_TRUE(att_store->get_ints(id0, "i_satt").count(0));
+    EXPECT_TRUE(att_store->get_doubles(id0, "d_satt").count(0.0));
+    EXPECT_TRUE(att_store->get_times(id0, "t_satt").count(t));
+    
+    // More values
+    att_store->add_string(id0, "s_satt", "a string"); // duplicate
+    EXPECT_EQ(att_store->get_strings(id0, "s_satt").size(), (size_t) 1);
+    att_store->add_string(id0, "s_satt", "another string");
+    EXPECT_EQ(att_store->get_strings(id0, "s_satt").size(), (size_t) 2);
+    
+    
+    // Exceptions
+
+    EXPECT_THROW(att_store->add_index("s_satt"),
+                 uu::core::OperationNotSupportedException);
+
+    EXPECT_THROW(att_store->set_as_string(id0, "s_satt", "a string"),
+                 uu::core::OperationNotSupportedException);
 
 }
 

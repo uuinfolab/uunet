@@ -33,17 +33,6 @@ class olap_ECube_test : public ::testing::Test
     }
 };
 
-TEST_F(olap_ECube_test, ECube)
-{
-    E->add_dimension("d", {"m"});
-
-    E->add(v1.get(), vc1.get(), v1.get(), vc2.get());
-    E->add(v1.get(), vc1.get(), v2.get(), vc2.get());
-    
-    EXPECT_EQ(E->size(), (size_t) 2);
-
-}
-
 TEST_F(olap_ECube_test, set_functionality)
 {
     auto e1 = E->add(v1.get(), vc1.get(), v1.get(), vc2.get());
@@ -203,3 +192,17 @@ TEST_F(olap_ECube_test, discretization_higher_orders)
     EXPECT_EQ(E->size(), (size_t) 3);
 }
 
+
+TEST_F(olap_ECube_test, VCube)
+{
+    auto v3 = std::make_shared<const uu::net::Vertex>("v3");
+    EXPECT_THROW(E->add(v1.get(), vc1.get(), v3.get(), vc2.get()),
+        uu::core::ElementNotFoundException);
+    
+    E->add(v1.get(), vc1.get(), v2.get(), vc2.get());
+    EXPECT_EQ(E->size(), (size_t) 1);
+    vc1->erase(v2.get());
+    EXPECT_EQ(E->size(), (size_t) 1);
+    vc2->erase(v2.get());
+    EXPECT_EQ(E->size(), (size_t) 0);
+}

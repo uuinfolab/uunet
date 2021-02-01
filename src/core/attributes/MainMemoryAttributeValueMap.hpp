@@ -1,10 +1,5 @@
-/**
- * History:
- * - 2018.01.01 file adapted from version 1.0 of the multinet library
- */
-
-#ifndef UU_CORE_ATTRIBUTES_MAINMEMORYATTRIBUTESTORE_H_
-#define UU_CORE_ATTRIBUTES_MAINMEMORYATTRIBUTESTORE_H_
+#ifndef UU_CORE_ATTRIBUTES_MAINMEMORYATTRIBUTEVALUEMAP_H_
+#define UU_CORE_ATTRIBUTES_MAINMEMORYATTRIBUTEVALUEMAP_H_
 
 #include <map>
 #include <unordered_map>
@@ -46,18 +41,37 @@ class MainMemoryAttributeValueMap :
                const std::string& value
               ) override;
 
+    
+    void
+    add_string(ID id,
+               const std::string& attribute_name,
+               const std::string& value
+              ) override;
 
+    
     void
     set_double(ID id,
                const std::string& attribute_name, double value
               ) override;
 
+    
+    void
+    add_double(ID id,
+               const std::string& attribute_name, double value
+              ) override;
 
+    
     void
     set_int(ID id,
             const std::string& attribute_name, int value
            ) override;
 
+    
+    void
+    add_int(ID id,
+            const std::string& attribute_name, int value
+           ) override;
+    
 
     void
     set_time(
@@ -66,7 +80,14 @@ class MainMemoryAttributeValueMap :
         const Time& value
     ) override;
 
+    void
+    add_time(
+        ID id,
+        const std::string& attribute_name,
+        const Time& value
+    ) override;
 
+    
     void
     set_text(
         ID id,
@@ -80,9 +101,20 @@ class MainMemoryAttributeValueMap :
                const std::string& attribute_name
               ) const override;
 
+    
+    const std::set<std::string>&
+    get_strings(ID id,
+               const std::string& attribute_name
+              ) const override;
 
     Value<double>
     get_double(ID id,
+               const std::string& attribute_name
+              ) const override;
+
+    
+    const std::set<double>&
+    get_doubles(ID id,
                const std::string& attribute_name
               ) const override;
 
@@ -92,6 +124,11 @@ class MainMemoryAttributeValueMap :
             const std::string& attribute_name
            ) const override;
 
+    
+    const std::set<int>&
+    get_ints(ID id,
+            const std::string& attribute_name
+           ) const override;
 
     Value<Time>
     get_time(
@@ -99,7 +136,14 @@ class MainMemoryAttributeValueMap :
         const std::string& attribute_name
     ) const override;
 
+    
+    const std::set<Time>&
+    get_times(
+        ID oid,
+        const std::string& attribute_name
+    ) const override;
 
+    
     Value<Text>
     get_text(
         ID oid,
@@ -203,10 +247,19 @@ class MainMemoryAttributeValueMap :
 
     /* These hash maps are structured as: map[AttributeName][ID][AttributeValue] */
     std::unordered_map<std::string, std::unordered_map<ID, std::string> > string_attribute;
+    std::unordered_map<std::string, std::unordered_map<ID, std::set<std::string> > > string_set_attribute;
     std::unordered_map<std::string, std::unordered_map<ID, double> > double_attribute;
+    std::unordered_map<std::string, std::unordered_map<ID, std::set<double> > > double_set_attribute;
     std::unordered_map<std::string, std::unordered_map<ID, int> > int_attribute;
+    std::unordered_map<std::string, std::unordered_map<ID, std::set<int> > > int_set_attribute;
     std::unordered_map<std::string, std::unordered_map<ID, Time> > time_attribute;
+    std::unordered_map<std::string, std::unordered_map<ID, std::set<Time> > > time_set_attribute;
     std::unordered_map<std::string, std::unordered_map<ID, Text> > text_attribute;
+    /* Empty sets to be returned when no value is present */
+    std::set<std::string> empty_stringset = std::set<std::string>();
+    std::set<double> empty_doubleset = std::set<double>();
+    std::set<int> empty_intset = std::set<int>();
+    std::set<Time> empty_timeset = std::set<Time>();
     /* These hash map are structured as: map[AttributeName][AttributeValue][IDs]*/
     std::unordered_map<std::string, std::multimap<std::string, ID> > string_attribute_idx;
     std::unordered_map<std::string, std::multimap<double, ID> > double_attribute_idx;
@@ -266,6 +319,23 @@ add(
         text_attribute[ptr->name] = std::unordered_map<ID, Text>();
         break;
 
+    case AttributeType::STRINGSET:
+        string_set_attribute[ptr->name] = std::unordered_map<ID, std::set<std::string>>();
+        break;
+
+    case AttributeType::INTEGERSET:
+        int_set_attribute[ptr->name] = std::unordered_map<ID, std::set<int>>();
+        break;
+
+    case AttributeType::DOUBLESET:
+        double_set_attribute[ptr->name] = std::unordered_map<ID, std::set<double>>();
+        break;
+
+    case AttributeType::TIMESET:
+        time_set_attribute[ptr->name] = std::unordered_map<ID, std::set<Time>>();
+        break;
+
+            
     }
 
     return ptr;
@@ -274,7 +344,8 @@ add(
 
 template <typename ID>
 bool
-MainMemoryAttributeValueMap<ID>::add_index (
+MainMemoryAttributeValueMap<ID>::
+add_index (
     const std::string& attribute_name
 )
 {
@@ -377,6 +448,12 @@ MainMemoryAttributeValueMap<ID>::add_index (
         break;
     }
 
+
+    case AttributeType::INTEGERSET:
+    case AttributeType::DOUBLESET:
+    case AttributeType::STRINGSET:
+    case AttributeType::TIMESET:
+            throw OperationNotSupportedException("cannot set an index for a set attribute");
     }
 
     return true;
@@ -384,7 +461,8 @@ MainMemoryAttributeValueMap<ID>::add_index (
 
 template <typename ID>
 void
-MainMemoryAttributeValueMap<ID>::set_double (
+MainMemoryAttributeValueMap<ID>::
+set_double(
     ID oid,
     const std::string& attribute_name,
     double val
@@ -430,9 +508,41 @@ MainMemoryAttributeValueMap<ID>::set_double (
     }
 }
 
+
+
 template <typename ID>
 void
-MainMemoryAttributeValueMap<ID>::set_int (
+MainMemoryAttributeValueMap<ID>::
+add_double(
+    ID oid,
+    const std::string& attribute_name,
+    double val
+)
+{
+    auto f1 = double_set_attribute.find(attribute_name);
+
+    if (f1 == double_set_attribute.end())
+    {
+        throw ElementNotFoundException("double set attribute " + attribute_name);
+    }
+    
+    auto f2 = f1->second.find(oid);
+
+    if (f2 == f1->second.end())
+    {
+        f1->second[oid] = std::set<double>({val});
+    }
+    else
+    {
+        f2->second.insert(val);
+    }
+}
+
+
+template <typename ID>
+void
+MainMemoryAttributeValueMap<ID>::
+set_int(
     ID oid,
     const std::string& attribute_name,
     int val
@@ -478,9 +588,41 @@ MainMemoryAttributeValueMap<ID>::set_int (
     }
 }
 
+
+
 template <typename ID>
 void
-MainMemoryAttributeValueMap<ID>::set_string (
+MainMemoryAttributeValueMap<ID>::
+add_int(
+    ID oid,
+    const std::string& attribute_name,
+    int val
+)
+{
+    auto f1 = int_set_attribute.find(attribute_name);
+
+    if (f1 == int_set_attribute.end())
+    {
+        throw ElementNotFoundException("int set attribute " + attribute_name);
+    }
+    
+    auto f2 = f1->second.find(oid);
+
+    if (f2 == f1->second.end())
+    {
+        f1->second[oid] = std::set<int>({val});
+    }
+    else
+    {
+        f2->second.insert(val);
+    }
+}
+
+
+template <typename ID>
+void
+MainMemoryAttributeValueMap<ID>::
+set_string (
     ID oid,
     const std::string& attribute_name,
     const std::string& val
@@ -526,9 +668,41 @@ MainMemoryAttributeValueMap<ID>::set_string (
     }
 }
 
+
+
 template <typename ID>
 void
-MainMemoryAttributeValueMap<ID>::set_time (
+MainMemoryAttributeValueMap<ID>::
+add_string(
+    ID oid,
+    const std::string& attribute_name,
+    const std::string& val
+)
+{
+    auto f1 = string_set_attribute.find(attribute_name);
+
+    if (f1 == string_set_attribute.end())
+    {
+        throw ElementNotFoundException("string set attribute " + attribute_name);
+    }
+    
+    auto f2 = f1->second.find(oid);
+
+    if (f2 == f1->second.end())
+    {
+        f1->second[oid] = std::set<std::string>({val});
+    }
+    else
+    {
+        f2->second.insert(val);
+    }
+}
+
+
+template <typename ID>
+void
+MainMemoryAttributeValueMap<ID>::
+set_time(
     ID oid,
     const std::string& attribute_name,
     const Time& val
@@ -574,9 +748,40 @@ MainMemoryAttributeValueMap<ID>::set_time (
     }
 }
 
+
 template <typename ID>
 void
-MainMemoryAttributeValueMap<ID>::set_text (
+MainMemoryAttributeValueMap<ID>::
+add_time(
+    ID oid,
+    const std::string& attribute_name,
+    const Time& val
+)
+{
+    auto f1 = time_set_attribute.find(attribute_name);
+
+    if (f1 == time_set_attribute.end())
+    {
+        throw ElementNotFoundException("string set attribute " + attribute_name);
+    }
+    
+    auto f2 = f1->second.find(oid);
+
+    if (f2 == f1->second.end())
+    {
+        f1->second[oid] = std::set<Time>({val});
+    }
+    else
+    {
+        f2->second.insert(val);
+    }
+}
+
+
+template <typename ID>
+void
+MainMemoryAttributeValueMap<ID>::
+set_text(
     ID oid,
     const std::string& attribute_name,
     const Text& val
@@ -624,7 +829,8 @@ MainMemoryAttributeValueMap<ID>::set_text (
 
 template <typename ID>
 Value<double>
-MainMemoryAttributeValueMap<ID>::get_double (
+MainMemoryAttributeValueMap<ID>::
+get_double(
     ID oid,
     const std::string& attribute_name
 ) const
@@ -646,9 +852,37 @@ MainMemoryAttributeValueMap<ID>::get_double (
     return Value<double>(val->second, false);
 }
 
+
+template <typename ID>
+const std::set<double>&
+MainMemoryAttributeValueMap<ID>::
+get_doubles(
+    ID oid,
+    const std::string& attribute_name
+) const
+{
+    auto attr = double_set_attribute.find(attribute_name);
+
+    if (attr == double_set_attribute.end())
+    {
+        throw ElementNotFoundException("double set attribute " + attribute_name);
+    }
+
+    auto values = attr->second.find(oid);
+
+    if (values == attr->second.end())
+    {
+        return empty_doubleset;
+    }
+
+    return values->second;
+}
+
+
 template <typename ID>
 Value<int>
-MainMemoryAttributeValueMap<ID>::get_int (
+MainMemoryAttributeValueMap<ID>::
+get_int (
     ID oid,
     const std::string& attribute_name
 ) const
@@ -670,9 +904,37 @@ MainMemoryAttributeValueMap<ID>::get_int (
     return Value<int>(val->second, false);
 }
 
+
+
+template <typename ID>
+const std::set<int>&
+MainMemoryAttributeValueMap<ID>::
+get_ints(
+    ID oid,
+    const std::string& attribute_name
+) const
+{
+    auto attr = int_set_attribute.find(attribute_name);
+
+    if (attr == int_set_attribute.end())
+    {
+        throw ElementNotFoundException("int set attribute " + attribute_name);
+    }
+
+    auto values = attr->second.find(oid);
+
+    if (values == attr->second.end())
+    {
+        return empty_intset;
+    }
+
+    return values->second;
+}
+
 template <typename ID>
 Value<std::string>
-MainMemoryAttributeValueMap<ID>::get_string (
+MainMemoryAttributeValueMap<ID>::
+get_string (
     ID oid,
     const std::string& attribute_name
 ) const
@@ -695,8 +957,34 @@ MainMemoryAttributeValueMap<ID>::get_string (
 }
 
 template <typename ID>
+const std::set<std::string>&
+MainMemoryAttributeValueMap<ID>::
+get_strings(
+    ID oid,
+    const std::string& attribute_name
+) const
+{
+    auto attr = string_set_attribute.find(attribute_name);
+
+    if (attr == string_set_attribute.end())
+    {
+        throw ElementNotFoundException("string set attribute " + attribute_name);
+    }
+
+    auto values = attr->second.find(oid);
+
+    if (values == attr->second.end())
+    {
+        return empty_stringset;
+    }
+    return values->second;
+}
+
+
+template <typename ID>
 Value<Time>
-MainMemoryAttributeValueMap<ID>::get_time (
+MainMemoryAttributeValueMap<ID>::
+get_time (
     ID oid,
     const std::string& attribute_name
 ) const
@@ -718,9 +1006,37 @@ MainMemoryAttributeValueMap<ID>::get_time (
     return Value<Time>(val->second, false);
 }
 
+
+template <typename ID>
+const std::set<Time>&
+MainMemoryAttributeValueMap<ID>::
+get_times(
+    ID oid,
+    const std::string& attribute_name
+) const
+{
+    auto attr = time_set_attribute.find(attribute_name);
+
+    if (attr == time_set_attribute.end())
+    {
+        throw ElementNotFoundException("time set attribute " + attribute_name);
+    }
+
+    auto values = attr->second.find(oid);
+
+    if (values == attr->second.end())
+    {
+        return empty_timeset;
+    }
+
+    return values->second;
+}
+
+
 template <typename ID>
 Value<Text>
-MainMemoryAttributeValueMap<ID>::get_text(
+MainMemoryAttributeValueMap<ID>::
+get_text(
     ID oid,
     const std::string& attribute_name
 ) const
@@ -1307,7 +1623,8 @@ MainMemoryAttributeValueMap<ID>::range_query_time (
 
 template <typename ID>
 bool
-MainMemoryAttributeValueMap<ID>::reset (
+MainMemoryAttributeValueMap<ID>::
+reset (
     ID id,
     const std::string& attribute_name
 )
@@ -1482,6 +1799,63 @@ MainMemoryAttributeValueMap<ID>::reset (
         return true;
     }
 
+    case AttributeType::STRINGSET:
+    {
+        auto values = string_set_attribute.find(attribute_name);
+
+        auto old_entry = values->second.find(id);
+
+        if (old_entry == values->second.end())
+        {
+            return false;
+        }
+        values->second.erase(old_entry);
+        return true;
+    }
+            
+    case AttributeType::INTEGERSET:
+    {
+        auto values = int_set_attribute.find(attribute_name);
+
+        auto old_entry = values->second.find(id);
+
+        if (old_entry == values->second.end())
+        {
+            return false;
+        }
+        values->second.erase(old_entry);
+        return true;
+    }
+
+    case AttributeType::DOUBLESET:
+    {
+        auto values = double_set_attribute.find(attribute_name);
+
+        auto old_entry = values->second.find(id);
+
+        if (old_entry == values->second.end())
+        {
+            return false;
+        }
+        values->second.erase(old_entry);
+        return true;
+    }
+
+    case AttributeType::TIMESET:
+    {
+        auto values = time_set_attribute.find(attribute_name);
+
+        auto old_entry = values->second.find(id);
+
+        if (old_entry == values->second.end())
+        {
+            return false;
+        }
+        values->second.erase(old_entry);
+        return true;
+    }
+            
+            
     }
 
     return false; // never gets here
