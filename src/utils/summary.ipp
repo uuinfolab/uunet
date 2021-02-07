@@ -1,5 +1,4 @@
 #include "networks/MultilayerNetwork2.hpp"
-#include "networks/MultilayerNetwork.hpp" // TO BE DELETED
 #include "core/exceptions/OperationNotSupportedException.hpp"
 #include "core/exceptions/assert_not_null.hpp"
 #include "measures/order.hpp"
@@ -65,7 +64,7 @@ summary_short(
 }
 
 
-// TO BE DELETED
+/*
 template<>
 std::string
 summary_short(
@@ -105,7 +104,7 @@ summary_short(
         " (" + std::to_string(num_intra_edges) + "," +  std::to_string(num_inter_edges) + ")]";
 
     return summary;
-}
+}*/
 
 }
 }

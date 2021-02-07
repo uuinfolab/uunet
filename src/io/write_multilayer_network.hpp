@@ -3,7 +3,7 @@
 
 #include <string>
 #include <memory>
-#include "networks/MultilayerNetwork.hpp"
+#include "networks/MultilayerNetwork2.hpp"
 #include "core/utils/string.hpp"
 #include "io/_impl/read_common.hpp"
 
@@ -12,7 +12,7 @@ namespace net {
 
 void
 write_multilayer_network(
-    const MultilayerNetwork* net,
+    const MultilayerNetwork2* net,
     const std::string& outfile,
     char separator = ','
 );
@@ -21,7 +21,7 @@ write_multilayer_network(
 template <typename LayerIterator>
 void
 write_multilayer_network(
-    const MultilayerNetwork* net,
+    const MultilayerNetwork2* net,
     LayerIterator begin,
     LayerIterator end,
     const std::string& outfile,
@@ -31,7 +31,7 @@ write_multilayer_network(
 template <typename LayerIterator>
 void
 write_graphml(
-    const MultilayerNetwork* mnet,
+    const MultilayerNetwork2* mnet,
     LayerIterator begin,
     LayerIterator end,
     const std::string& path,

@@ -5,7 +5,7 @@ namespace net {
 template <typename LayerIterator>
 void
 write_multilayer_network(
-    const MultilayerNetwork* mnet,
+    const MultilayerNetwork2* mnet,
     LayerIterator begin,
     LayerIterator end,
     const std::string& path,
@@ -100,34 +100,34 @@ write_multilayer_network(
 
     outfile << "#EDGE ATTRIBUTES" << std::endl;
 
-    std::set<std::string> global_attributes;
+    /*std::set<std::string> global_attributes;
 
     for (auto attr: *mnet->interlayer_edges()->attr())
     {
         global_attributes.insert(attr->name);
-    }
+    }*/
 
     for (auto layer=begin; layer!=end; ++layer)
     {
         for (auto attr: *(*layer)->edges()->attr())
         {
-            if (global_attributes.find(attr->name) == global_attributes.end())
+            /*if (global_attributes.find(attr->name) == global_attributes.end())
             {
                 continue;
-            }
+            }*/
 
             outfile << (*layer)->name << sep << attr->name << sep
                     << core::to_string(attr->type) << std::endl;
         }
     }
 
-    if (!is_multiplex)
+    /*if (!is_multiplex)
     {
         for (auto attr: *mnet->interlayer_edges()->attr())
         {
             outfile << attr->name << sep << core::to_string(attr->type) << std::endl;
         }
-    }
+    }*/
 
     outfile << std::endl;
 
@@ -224,10 +224,10 @@ write_multilayer_network(
             for (auto attr: *edge_attrs)
             {
 
-                if (global_attributes.find(attr->name) == global_attributes.end())
+                /*if (global_attributes.find(attr->name) == global_attributes.end())
                 {
                     continue;
-                }
+                }*/
 
                 switch (attr->type)
                 {
@@ -247,7 +247,7 @@ write_multilayer_network(
                 }
             }
 
-            for (auto attr: *mnet->interlayer_edges()->attr())
+            /*for (auto attr: *mnet->interlayer_edges()->attr())
             {
                 switch (attr->type)
                 {
@@ -265,7 +265,7 @@ write_multilayer_network(
                 case core::AttributeType::INTEGER:
                     break;
                 }
-            }
+            }*/
 
 
             outfile << std::endl;
@@ -290,7 +290,8 @@ write_multilayer_network(
                 for (auto edge: *mnet->interlayer_edges()->get((*layer1),(*layer2)))
                 {
                     outfile << edge->v1->name << sep << (*layer1)->name << sep << edge->v2->name << sep << (*layer2)->name;
-                    auto edge_attrs = mnet->interlayer_edges()->attr();
+                    
+                    /*auto edge_attrs = mnet->interlayer_edges()->attr();
 
                     for (auto attr: *edge_attrs)
                     {
@@ -311,7 +312,7 @@ write_multilayer_network(
                             break;
                         }
                     }
-
+                     */
                     outfile << std::endl;
                 }
             }
@@ -325,7 +326,7 @@ write_multilayer_network(
 template <typename LayerIterator>
 void
 write_graphml(
-    const MultilayerNetwork* mnet,
+    const MultilayerNetwork2* mnet,
     LayerIterator begin,
     LayerIterator end,
     const std::string& path,
@@ -446,6 +447,7 @@ end_loop:
 
             else
             {
+                /*
                 for (auto attr: *mnet->interlayer_edges()->attr())
                 {
                     if (attr->type==core::AttributeType::NUMERIC || attr->type==core::AttributeType::DOUBLE)
@@ -458,6 +460,7 @@ end_loop:
                         outfile << "    <key id=\"e" << layer_name1 << "-" << layer_name2 << ": " << attr->name << "\" for=\"edge\" attr.name=\"" << layer_name1 << "-" << layer_name2 << ": " << attr->name << "\" attr.type=\"string\"/>" << std::endl;
                     }
                 }
+                 */
             }
         }
     }
@@ -647,7 +650,9 @@ end_loop:
                     {
                         outfile << "    <edge id=\"e" << edge << "\" source=\"" << edge->v1 << "\" target=\"" << edge->v2 << "\">" << std::endl;
                         outfile << "        <data key=\"e_type\">" << layer_name1 << "-" << layer_name2 << "</data>" << std::endl;
-                        auto attrs = mnet->interlayer_edges()->attr();
+                        
+                        /*
+                         auto attrs = mnet->interlayer_edges()->attr();
 
                         for (auto attr: *attrs)
                         {
@@ -665,7 +670,7 @@ end_loop:
                                 outfile << "        <data key=\"e" << layer_name1 << "-" << layer_name2 << ": " << attr->name << "\">" << value << "</data>" << std::endl;
                             }
                         }
-
+                         */
                         outfile << "    </edge>" << std::endl;
                     }
                 }
@@ -723,7 +728,9 @@ end_loop:
                     {
                         outfile << "    <edge id=\"e" << edge << "\" source=\"" << edge->v1 << ":" << (*layer1) << "\" target=\"" << edge->v2 << ":" << (*layer2) << "\">" << std::endl;
                         outfile << "        <data key=\"e_type\">" << layer_name1 << "-" << layer_name2 << "</data>" << std::endl;
-                        auto attrs = mnet->interlayer_edges()->attr();
+                       
+                        /*
+                         auto attrs = mnet->interlayer_edges()->attr();
 
                         for (auto attr: *attrs)
                         {
@@ -741,7 +748,7 @@ end_loop:
 
                                 outfile << "        <data key=\"e" << layer_name1 << "-" << layer_name2 << ": " << attr->name << "\">" << value << "</data>" << std::endl;
                             }
-                        }
+                        }*/
 
                         outfile << "    </edge>" << std::endl;
                     }

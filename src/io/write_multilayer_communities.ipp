@@ -14,7 +14,7 @@ write_multilayer_communities(
     int community_id = 0;
     for (auto community: *communities) {
         for (auto n: *community) {
-            outfile << n.v->name << separator << n.l->name << separator << community_id << std::endl;
+            outfile << n.v->name << separator << n.c->name << separator << community_id << std::endl;
         }
         community_id++;
     }
