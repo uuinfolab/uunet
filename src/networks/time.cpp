@@ -11,6 +11,17 @@ make_temporal(
     net->edges()->attr()->add("t_", core::AttributeType::TIMESET);
 }
 
+bool
+is_temporal(
+    const Network2* net
+)
+{
+    auto attr = net->edges()->attr()->get("t_");
+    if (attr->type == core::AttributeType::DOUBLE)
+        return true;
+    return false;
+}
+
 void
 add_time(
     Network2* net,

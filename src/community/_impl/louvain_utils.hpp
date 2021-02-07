@@ -13,6 +13,7 @@
 #include "measures/size.hpp"
 #include "measures/strength.hpp"
 #include "networks/Network2.hpp"
+#include "networks/Network.hpp"
 
 namespace uu {
 namespace net {
@@ -32,7 +33,7 @@ convert(
 
 std::unique_ptr<MetaNetwork>
 aggregate(
-    const WeightedNetwork* g,
+    const Network2* g,
     std::unordered_map<const Vertex*, size_t> community
 );
 
@@ -52,7 +53,7 @@ communities(
 
 std::unique_ptr<MetaNetwork>
 pass(
-    const WeightedNetwork* g
+    const Network2* g
 );
 
 

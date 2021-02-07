@@ -3,7 +3,6 @@
 
 #include "networks/Network.hpp"
 #include "networks/Network2.hpp"
-#include "networks/ProbabilisticNetwork.hpp"
 
 namespace uu {
 namespace net {
@@ -49,21 +48,6 @@ empty_copy(
     LoopMode loops = g->allows_loops() ? LoopMode::ALLOWED : LoopMode::DISALLOWED;
 
     return std::make_unique<Network2>(name, dir, loops);
-}
-
-template<>
-inline std::unique_ptr<ProbabilisticNetwork>
-empty_copy(
-    const ProbabilisticNetwork* g,
-    const std::string& name
-)
-{
-    core::assert_not_null(g, "empty_copy", "g");
-
-    EdgeDir dir = g->is_directed() ? EdgeDir::DIRECTED : EdgeDir::UNDIRECTED;
-    bool loops = g->allows_loops();
-
-    return std::make_unique<ProbabilisticNetwork>(name, dir, loops);
 }
 
 }

@@ -267,7 +267,7 @@ class
         const VCube* cube1,
         const Vertex* vertex2,
         const VCube* cube2
-    );
+    ) const;
     
     /** Returns the edge if it is present in the cube, or nullptr if it isn't.
      * This function can only be used when both end VCubes are the same,
@@ -278,7 +278,7 @@ class
     get(
         const Vertex* vertex1,
         const Vertex* vertex2
-    );
+    ) const;
 
     /** Returns the edge at the given position in the cube.
      * @throw ElementNotFoundException if the index is <0 or >size()-1

@@ -6,6 +6,7 @@
 #include <vector>
 #include "community/CommunityStructure.hpp"
 #include "community/Community.hpp"
+#include "networks/weight.hpp"
 #include "objects/EdgeMode.hpp"
 #include "objects/Vertex.hpp"
 
@@ -56,7 +57,7 @@ convert(
 
 std::unique_ptr<MetaNetwork>
 aggregate(
-    const WeightedNetwork* g,
+    const Network2* g,
     std::unordered_map<const Vertex*, size_t> community
 )
 {
@@ -92,7 +93,7 @@ aggregate(
 
     for (auto e: *g->edges())
     {
-        double weight = g->get_weight(e).value;
+        double weight = get_weight(g, e);
         meta->edge(e->v1, e->v2, weight);
     }
 
@@ -149,7 +150,7 @@ communities(
 
 std::unique_ptr<MetaNetwork>
 pass(
-    const WeightedNetwork* g
+    const Network2* g
 )
 {
     //std::cout << "PASS" << std::endl;
@@ -163,7 +164,7 @@ pass(
 
     for (auto e: *g->edges())
     {
-        m += g->get_weight(e).value;
+        m += get_weight(g, e);
         ////std::cout << " m " << m << " " << g->get_weight(e).null << std::endl;
     }
 
@@ -219,7 +220,7 @@ pass(
                     auto e = g->edges()->get(v, n);
                     //if (!e) continue; study impact in terms of result and efficiency?
 
-                    double A_ij = e ? g->get_weight(e).value : 0;
+                    double A_ij = e ? get_weight(g, e) : 0;
 
                     double contribution = A_ij - w_degree.at(v)*w_degree.at(n)/m/2;
 
@@ -239,7 +240,7 @@ pass(
                 auto e = g->edges()->get(v, n);
                 //if (!e) continue; study impact in terms of result and efficiency?
 
-                double A_ij = e ? g->get_weight(e).value : 0;
+                double A_ij = e ? get_weight(g, e) : 0;
 
                 double contribution = A_ij - w_degree.at(v)*w_degree.at(n)/m/2;
 

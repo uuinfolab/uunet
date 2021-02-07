@@ -13,10 +13,21 @@ make_probabilistic(
     net->edges()->attr()->add("p_", core::AttributeType::DOUBLE);
 }
 
+bool
+is_probabilistic(
+    const Network2* net
+)
+{
+    auto attr = net->edges()->attr()->get("p_");
+    if (attr->type == core::AttributeType::DOUBLE)
+        return true;
+    return false;
+}
+
 void
 set_prob(
     Network2* net,
-    MLEdge2* edge,
+    const MLEdge2* edge,
     double p
 )
 {
@@ -31,7 +42,7 @@ set_prob(
 double
 get_prob(
     const Network2* net,
-    MLEdge2* edge
+    const MLEdge2* edge
 )
 {
     auto val = net->edges()->attr()->get_double(edge, "p_");

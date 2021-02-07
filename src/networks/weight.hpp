@@ -11,6 +11,11 @@ make_weighted(
     Network2* net
 );
 
+bool
+is_weighted(
+    const Network2* net
+);
+
 
 void
 set_weight(

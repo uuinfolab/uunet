@@ -291,7 +291,7 @@ get(
     const VCube* cube1,
     const Vertex* vertex2,
     const VCube* cube2
-)
+) const
 {
     auto key = std::make_tuple(vertex1, cube1, vertex2, cube2);
     return cube_->get(key);
@@ -303,7 +303,7 @@ ECube::
 get(
     const Vertex* vertex1,
     const Vertex* vertex2
-)
+) const
 {
     if (cube1_ != cube2_)
     {

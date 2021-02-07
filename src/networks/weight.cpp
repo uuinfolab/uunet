@@ -13,25 +13,31 @@ make_weighted(
     net->edges()->attr()->add("w_", core::AttributeType::DOUBLE);
 }
 
+bool
+is_weighted(
+    const Network2* net
+)
+{
+    auto attr = net->edges()->attr()->get("w_");
+    if (attr->type == core::AttributeType::DOUBLE)
+        return true;
+    return false;
+}
+
 void
 set_weight(
     Network2* net,
-    MLEdge2* edge,
+    const MLEdge2* edge,
     double p
 )
 {
-    if (p < 0 || p > 1)
-    {
-        std::string err = "probabilities must be between 0 and 1";
-        throw core::WrongParameterException(err);
-    }
     net->edges()->attr()->set_double(edge, "w_", p);
 }
 
 double
 get_weight(
     const Network2* net,
-    MLEdge2* edge
+    const MLEdge2* edge
 )
 {
     auto val = net->edges()->attr()->get_double(edge, "w_");

@@ -95,7 +95,7 @@ strength(
     core::assert_not_null(g, "degree", "g");
     core::assert_not_null(g, "degree", "v");
 
-    if (!g->is_weighted())
+    if (!is_weighted(g))
     {
         throw core::WrongParameterException("strength can only be computed on weighted graphs");
     }
@@ -104,17 +104,14 @@ strength(
 
     for (auto edge: *g->edges()->incident(v, mode))
     {
-        auto w = g->get_weight(edge);
+        auto w = get_weight(g, edge);
 
-        if (!w.null)
+        s += w;
+
+        if (edge->v1 == edge->v2)
         {
-            s += w.value;
-
-            if (edge->v1 == edge->v2)
-            {
-                // loops are counted twice
-                s += w.value;
-            }
+            // loops are counted twice
+            s += w;
         }
     }
 

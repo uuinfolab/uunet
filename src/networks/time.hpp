@@ -13,6 +13,10 @@ make_temporal(
     Network2* net
 );
 
+bool
+is_temporal(
+    const Network2* net
+);
 
 void
 add_time(

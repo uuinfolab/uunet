@@ -11,6 +11,10 @@ make_probabilistic(
     Network2* net
 );
 
+bool
+is_probabilistic(
+    const Network2* net
+);
 
 void
 set_prob(
