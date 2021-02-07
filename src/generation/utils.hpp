@@ -13,7 +13,7 @@ template <typename G>
 std::pair<const Vertex*, const Vertex*>
 get_vertex_pair(
     G* g,
-    bool allow_loops = false
+    LoopMode allow_loops = LoopMode::DISALLOWED
 );
 
 }

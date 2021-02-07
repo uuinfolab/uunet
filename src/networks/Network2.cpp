@@ -22,9 +22,9 @@ name(name)
     t.is_weighted = false;
 */
     vertices_ = std::make_unique<VCube>("V");
-    vertices_->add_dimension("V", {"V"});
+    //vertices_->add_dimension("V", {"V"});
     edges_ = std::make_unique<ECube>("E", vertices_.get(), vertices_.get(), dir, loops);
-    edges_->add_dimension("V", {"V"});
+    //edges_->add_dimension("E", {"E"});
 
     /*
     auto obs1 = std::make_unique<VCubeObserver<ECube>>(vertices_.get(), edges_.get());

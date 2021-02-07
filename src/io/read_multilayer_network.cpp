@@ -69,7 +69,7 @@ read_multilayer_network(
     }
 
 
-    for (auto attr: meta.vertex_attributes)
+    for (auto&& attr: meta.vertex_attributes)
     {
 
         net->actors()->attr()->add(attr.name, attr.type);
@@ -80,7 +80,7 @@ read_multilayer_network(
     {
         std::string layer_name = layer_attr.first;
 
-        for (auto attr: layer_attr.second)
+        for (auto&& attr: layer_attr.second)
         {
             net->layers()->get(layer_name)->vertices()->attr()->add(attr.name, attr.type);
         }
@@ -97,7 +97,7 @@ read_multilayer_network(
     {
         std::string layer_name = layer_attr.first;
 
-        for (auto attr: layer_attr.second)
+        for (auto&& attr: layer_attr.second)
         {
             bool res = net->layers()->get(layer_name)->edges()->attr()->add(attr.name, attr.type);
 
@@ -204,7 +204,7 @@ read_intralayer_edge(
     auto v1 = read_actor(l, fields, 0, line_number);
     auto v2 = read_actor(l, fields, 1, line_number);
 
-    /*if (!meta.layers.at(l->name).allows_loops)
+    /*if (!meta.layers.at(l.name).allows_loops)
     if (v1 == v2)
     {
         return;

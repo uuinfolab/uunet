@@ -10,29 +10,29 @@ namespace uu {
 namespace net {
 
 
-std::unique_ptr<Network>
+std::unique_ptr<Network2>
 null_graph(
     size_t n,
     EdgeDir dir,
-    bool allows_loops
+    LoopMode allows_loops
 )
 {
     std::string name = "N_" + std::to_string(n);
-    auto g = std::make_unique<Network>(name, dir, allows_loops);
+    auto g = std::make_unique<Network2>(name, dir, allows_loops);
     add_vertices(g.get(), n);
     return g;
 }
 
 
-std::unique_ptr<MultilayerNetwork>
+std::unique_ptr<MultilayerNetwork2>
 null_multiplex(
     size_t n,
     const std::vector<EdgeDir>& dir,
-    const std::vector<bool>& allows_loops
+    const std::vector<LoopMode>& allows_loops
 )
 {
     std::string name = "N_" + std::to_string(n) + "_" + std::to_string(dir.size());
-    auto g = std::make_unique<MultilayerNetwork>(name);
+    auto g = std::make_unique<MultilayerNetwork2>(name);
     if (dir.size() != allows_loops.size())
     {
         std::string err = "parameter lengths do not match";
@@ -43,7 +43,7 @@ null_multiplex(
     size_t l = 0;
     for (auto layer_name: layer_names)
     {
-        g->layers()->add(std::make_unique<Network>(layer_name, dir[l], allows_loops[l]));
+        g->layers()->add(layer_name, dir[l], allows_loops[l]);
         l++;
     }
     // Adding actors
@@ -63,35 +63,35 @@ null_multiplex(
     return g;
 }
 
-std::unique_ptr<MultilayerNetwork>
+std::unique_ptr<MultilayerNetwork2>
 null_multiplex(
     size_t n,
     size_t l
 )
 {
     std::vector<uu::net::EdgeDir> dir(l, uu::net::EdgeDir::UNDIRECTED);
-    std::vector<bool> loops(l, true);
+    std::vector<LoopMode> loops(l, LoopMode::ALLOWED);
     return null_multiplex(n, dir, loops);
 }
 
 
 
 
-std::unique_ptr<Network>
+std::unique_ptr<Network2>
 complete_graph(
     size_t n,
     EdgeDir dir
 )
 {
     std::string name = "K_" + std::to_string(n);
-    bool allows_loops = false;
-    auto g = std::make_unique<Network>(name, dir, allows_loops);
+    LoopMode allows_loops = LoopMode::DISALLOWED;
+    auto g = std::make_unique<Network2>(name, dir, allows_loops);
     add_complete_subgraph(g.get(), n);
     return g;
 }
 
 
-std::unique_ptr<Network>
+std::unique_ptr<Network2>
 complete_bipartite_graph(
     size_t n1,
     size_t n2,
@@ -99,49 +99,49 @@ complete_bipartite_graph(
 )
 {
     std::string name = "K_" + std::to_string(n1) + "_" + std::to_string(n2);
-    bool allows_loops = false;
-    auto g = std::make_unique<Network>(name, dir, allows_loops);
+    LoopMode allows_loops = LoopMode::DISALLOWED;
+    auto g = std::make_unique<Network2>(name, dir, allows_loops);
     add_complete_bipartite_subgraph(g.get(), n1, n2);
     return g;
 }
 
 
-std::unique_ptr<Network>
+std::unique_ptr<Network2>
 path_graph(
     size_t n,
     EdgeDir dir
 )
 {
     std::string name = "P_" + std::to_string(n);
-    bool allows_loops = false;
-    auto g = std::make_unique<Network>(name, dir, allows_loops);
+    LoopMode allows_loops = LoopMode::DISALLOWED;
+    auto g = std::make_unique<Network2>(name, dir, allows_loops);
     add_path(g.get(), n);
     return g;
 }
 
-std::unique_ptr<Network>
+std::unique_ptr<Network2>
 cycle_graph(
     size_t n,
     EdgeDir dir
 )
 {
     std::string name = "C_" + std::to_string(n);
-    bool allows_loops = false;
-    auto g = std::make_unique<Network>(name, dir, allows_loops);
+    LoopMode allows_loops = LoopMode::DISALLOWED;
+    auto g = std::make_unique<Network2>(name, dir, allows_loops);
     add_cycle(g.get(), n);
     return g;
 }
 
 
-std::unique_ptr<Network>
+std::unique_ptr<Network2>
 wheel_graph(
     size_t n
 )
 {
     std::string name = "W_" + std::to_string(n);
     EdgeDir dir = EdgeDir::UNDIRECTED;
-    bool allows_loops = false;
-    auto g = std::make_unique<Network>(name, dir, allows_loops);
+    LoopMode allows_loops = LoopMode::DISALLOWED;
+    auto g = std::make_unique<Network2>(name, dir, allows_loops);
     add_wheel(g.get(), n);
     return g;
 }

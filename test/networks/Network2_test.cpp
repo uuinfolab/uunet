@@ -99,3 +99,9 @@ TEST(networks_test, Network2)
 */
     
 }
+
+
+TEST(networks_test, Network2_from_cubes)
+{
+    
+}

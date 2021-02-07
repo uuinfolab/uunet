@@ -73,6 +73,14 @@ public:
     ) const;
     
     /**
+     * Returns a pointer to the network's actors.
+     */
+    VCube*
+    actors(
+    );
+    
+    
+    /**
      * Returns a pointer to the network's interlayer edges.
      */
     LayerStore*

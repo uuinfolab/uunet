@@ -12,7 +12,7 @@ ProbabilisticNetwork(
     bool allows_loops
 ) : super(name, dir, allows_loops)
 {
-    auto p_attr = core::Attribute::create(kPROB_ATTR_NAME, core::AttributeType::DOUBLE);
+    auto p_attr = std::make_unique<core::Attribute>(kPROB_ATTR_NAME, core::AttributeType::DOUBLE);
 
     edges()->attr()->add(std::move(p_attr));
 

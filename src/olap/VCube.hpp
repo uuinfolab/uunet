@@ -41,6 +41,7 @@ VCube
     
     const std::string name;
     
+    typedef const Vertex value_type;
     /**
      * Constructs an empty VCube with no dimensions (order 0).
      * @param name name of the cube
@@ -209,11 +210,18 @@ VCube
      * If provided, the descretize function specifies for each vertex in which of the
      * new cells it should be inserted, depending on the member of the new dimension.
      */
+    template <class D>
     void
     add_dimension(
         const std::string& name,
         const std::vector<std::string>& members,
-        std::vector<bool> (*discretize)(const Vertex*) = nullptr
+        const D& discretize
+    );
+    
+    void
+    add_dimension(
+        const std::string& name,
+        const std::vector<std::string>& members
     );
     
     /**
@@ -400,5 +408,7 @@ VCube
 
 }
 }
+
+#include "VCube.ipp"
 
 #endif

@@ -17,14 +17,14 @@ namespace core {
 class Attribute :
     public std::enable_shared_from_this<Attribute>
 {
-  public:
+    public:
+
 
     /** Name of the attribute. */
-    const std::string name;
+    std::string name;
 
     /** Type of the attribute. */
-    const AttributeType type;
-
+    AttributeType type;
 
     /** Constructor. */
     Attribute(
@@ -32,18 +32,17 @@ class Attribute :
         const AttributeType& type
     );
 
-
     /**
      * Creates a new Attribute.
      * @param name name of the attribute.
      * @param type type of the attribute.
-     */
     static
     std::unique_ptr<const Attribute>
     create(
         const std::string& name,
         const AttributeType& type
     );
+    */    
 
 
 };

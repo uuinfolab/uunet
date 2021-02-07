@@ -1,6 +1,8 @@
 #include "gtest/gtest.h"
+#include "discretization.hpp"
 
 #include "olap/VCube.hpp"
+
 
 TEST(olap_VCube_test, set_functionality)
 {
@@ -97,10 +99,7 @@ TEST(olap_VCube_test, discretization)
     V = std::make_unique<uu::net::VCube>("V");
     V->add("v1");
     
-    auto d1 = [](const uu::net::Vertex* v) {
-        (void)v;
-        return std::vector<bool>({false});
-    };
+    auto d1 = uu::net::UniformDiscretization<uu::net::Vertex>(1, false);
     
     V->add_dimension("d0", {"m0"}, d1);
     EXPECT_EQ(V->size(), (size_t) 0);
@@ -110,10 +109,8 @@ TEST(olap_VCube_test, discretization)
     V = std::make_unique<uu::net::VCube>("V");
     V->add("v1");
     
-    auto d2 = [](const uu::net::Vertex* v) {
-        (void)v;
-        return std::vector<bool>({true});
-    };
+    
+    auto d2 = uu::net::UniformDiscretization<uu::net::Vertex>(1, true);
     
     V->add_dimension("d0", {"m0"}, d2);
     EXPECT_EQ(V->size(), (size_t) 1);
@@ -127,11 +124,7 @@ TEST(olap_VCube_test, discretization)
     V->add("v3");
     EXPECT_EQ(V->size(), (size_t) 3);
     
-    auto d3 = [](const uu::net::Vertex* v) {
-        if (v->name == "v1") return std::vector<bool>({false, true});
-        else if (v->name == "v2") return std::vector<bool>({true, true});
-        else return std::vector<bool>({false, false});
-    };
+    auto d3 = CustomVertexDiscretization();
     
     V->add_dimension("d1", {"m0", "m1"}, d3);
     

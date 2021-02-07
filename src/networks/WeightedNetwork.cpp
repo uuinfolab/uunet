@@ -11,7 +11,7 @@ WeightedNetwork(
 ) : super(name, dir, allows_loops)
 {
 
-    auto w_attr = core::Attribute::create(kWEIGHT_ATTR_NAME, core::AttributeType::DOUBLE);
+    auto w_attr = std::make_unique<core::Attribute>(kWEIGHT_ATTR_NAME, core::AttributeType::DOUBLE);
 
     edges()->attr()->add(std::move(w_attr));
 

@@ -16,7 +16,7 @@
 #include "core/datastructures/objects/Object.hpp"
 #include "networks/_impl/Graph.hpp"
 #include "objects/Vertex.hpp"
-#include "objects/Edge.hpp"
+#include "objects/MLEdge2.hpp"
 #include "io/_impl/GraphMetadata.hpp"
 #include "io/_impl/GraphIOFileSection.hpp"
 
@@ -112,7 +112,7 @@ read_vertex(
 );
 
 template <typename G>
-const Edge*
+const MLEdge2*
 read_edge(
     G* g,
     const std::vector<std::string>& fields,
@@ -264,7 +264,7 @@ read_vertex(
 }
 
 template <typename G>
-const Edge*
+const MLEdge2*
 read_edge(
     G* g,
     const std::vector<std::string>& fields,
@@ -354,7 +354,23 @@ read_attr_values(
 
     for (size_t i=from_idx; i<from_idx+attributes.size(); i++)
     {
-        store->set_as_string(element, attributes.at(i-from_idx).name, line.at(i));
+    switch (attributes.at(i-from_idx).type)
+    {
+        case core::AttributeType::DOUBLESET:
+        case core::AttributeType::INTEGERSET:
+        case core::AttributeType::STRINGSET:
+        case core::AttributeType::TIMESET:
+            store->add_as_string(element, attributes.at(i-from_idx).name, line.at(i));
+            break;
+        case core::AttributeType::DOUBLE:
+        case core::AttributeType::INTEGER:
+        case core::AttributeType::STRING:
+        case core::AttributeType::TIME:
+        case core::AttributeType::TEXT:
+            store->set_as_string(element, attributes.at(i-from_idx).name, line.at(i));
+            break;
+            
+    }
     }
 }
 

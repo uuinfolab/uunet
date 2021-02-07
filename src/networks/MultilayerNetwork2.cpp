@@ -90,6 +90,13 @@ actors(
     return actors_.get();
 }
 
+VCube*
+MultilayerNetwork2::
+actors(
+)
+{
+    return actors_.get();
+}
 
 LayerStore*
 MultilayerNetwork2::

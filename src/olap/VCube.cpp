@@ -215,18 +215,16 @@ attr(
     return cube_->attr();
 }
 
-
 void
 VCube::
 add_dimension(
     const std::string& name,
-    const std::vector<std::string>& members,
-    std::vector<bool> (*discretize)(const Vertex*)
+    const std::vector<std::string>& members
 )
 {
-    return cube_->add_dimension(name, members, this, discretize);
+    auto tot = UniformDiscretization<Vertex>(members.size());
+    return cube_->add_dimension(name, members, this, tot);
 }
-
 
 void
 VCube::

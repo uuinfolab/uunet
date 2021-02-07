@@ -117,7 +117,11 @@ MLECubeStore
                                     EdgeMode mode
                                 ) const;
 
-
+    
+    size_t
+    size(
+    ) const;
+    
     ECube*
     init(
         Network2* layer1,

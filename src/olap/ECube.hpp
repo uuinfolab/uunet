@@ -26,6 +26,8 @@ class
 
       const std::string name;
     
+    typedef const MLEdge2 value_type;
+    
     /**
      * Constructs an empty ECube with no dimensions (order 0).
      * @param name name of the cube
@@ -343,11 +345,19 @@ class
      * If provided, the descretize function specifies for each edge in which of the
      * new cells it should be inserted, depending on the member of the new dimension.
      */
+    template <class D>
     void
     add_dimension(
         const std::string& name,
         const std::vector<std::string>& members,
-        std::vector<bool> (*discretize)(const MLEdge2*) = nullptr
+        const D& discretize
+    );
+    
+    
+    void
+    add_dimension(
+        const std::string& name,
+        const std::vector<std::string>& members
     );
     
     /**
@@ -568,5 +578,7 @@ class
 
 }
 }
+
+#include "ECube.ipp"
 
 #endif

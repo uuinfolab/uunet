@@ -1,8 +1,8 @@
 #ifndef UU_CREATION_STANDARDGRAPHS_H_
 #define UU_CREATION_STANDARDGRAPHS_H_
 
-#include "networks/Network.hpp"
-#include "networks/MultilayerNetwork.hpp"
+#include "networks/Network2.hpp"
+#include "networks/MultilayerNetwork2.hpp"
 
 #include <memory>
 
@@ -13,29 +13,29 @@ namespace net {
 /**
  * Returns a network with n vertices and no edges.
  */
-std::unique_ptr<Network>
+std::unique_ptr<Network2>
 null_graph(
     size_t n,
     EdgeDir dir = EdgeDir::UNDIRECTED,
-    bool allows_loops = false
+    LoopMode allows_loops = LoopMode::DISALLOWED
 );
 
 
 /**
  * Returns a multilayer network with vertices and layers but no edges.
  */
-std::unique_ptr<MultilayerNetwork>
+std::unique_ptr<MultilayerNetwork2>
 null_multiplex(
     size_t n,
     const std::vector<EdgeDir>& dir,
-    const std::vector<bool>& allows_loops
+    const std::vector<LoopMode>& allows_loops
 );
 
 /**
  * Returns a multilayer network with n vertices and l layers but no edges.
  * By default, layers are undirected and allow loops.
  */
-std::unique_ptr<MultilayerNetwork>
+std::unique_ptr<MultilayerNetwork2>
 null_multiplex(
     size_t n,
     size_t l
@@ -46,7 +46,7 @@ null_multiplex(
  * If the graph is directed, arcs in both directions are created for each pair of vertices.
  * No loops are created.
  */
-std::unique_ptr<Network>
+std::unique_ptr<Network2>
 complete_graph(
     size_t n,
     EdgeDir dir = EdgeDir::UNDIRECTED
@@ -58,7 +58,7 @@ complete_graph(
  * where all vertices in V are all adjacent to all vertices in U.
  * If the graph is directed, arcs in both directions are created for each pair of vertices.
  */
-std::unique_ptr<Network>
+std::unique_ptr<Network2>
 complete_bipartite_graph(
     size_t n1,
     size_t n2,
@@ -69,7 +69,7 @@ complete_bipartite_graph(
 /**
  * Returns a network P_n with n vertices with edges forming a path.
  */
-std::unique_ptr<Network>
+std::unique_ptr<Network2>
 path_graph(
     size_t n,
     EdgeDir dir = EdgeDir::UNDIRECTED
@@ -78,7 +78,7 @@ path_graph(
 /**
  * Returns a network C_n with n vertices with edges forming a circle.
  */
-std::unique_ptr<Network>
+std::unique_ptr<Network2>
 cycle_graph(
     size_t n,
     EdgeDir dir = EdgeDir::UNDIRECTED
@@ -90,7 +90,7 @@ cycle_graph(
  * cycle graph plus a vertex adjacent to all the other n-1 vertices.
  * The graph is undirected.
  */
-std::unique_ptr<Network>
+std::unique_ptr<Network2>
 wheel_graph(
     size_t n
 );

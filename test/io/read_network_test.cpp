@@ -61,7 +61,7 @@ class io_readnetwork_test : public ::testing::Test
 
 TEST_F(io_readnetwork_test, read)
 {
-    auto g = uu::net::read<uu::net::Network>(test_file_name, "g", ',');
+    auto g = uu::net::read_network(test_file_name, "g", ',');
 
     //std::cout << g->summary() << std::endl;
 

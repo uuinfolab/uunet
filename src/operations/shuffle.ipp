@@ -1,4 +1,5 @@
-#include "operations/shuffle.hpp"
+/*#include "operations/shuffle.hpp"
+
 
 #include "networks/Network.hpp"
 #include "objects/EdgeDir.hpp"
@@ -9,14 +10,15 @@
 #include <vector>
 #include <fstream>
 #include <algorithm>
+*/
 
 namespace uu {
 namespace net {
 
-
+template <class M>
 void
 shuffle(
-    uu::net::OrderedMultiplexNetwork* net,
+    M* net,
     size_t num
 )
 {

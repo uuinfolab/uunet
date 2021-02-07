@@ -5,7 +5,7 @@
 
 TEST_F(net_algorithms_test, DFS)
 {
-    uu::net::DFS<uu::net::Network> dfs(g, v7, uu::net::EdgeMode::INOUT);
+    uu::net::DFS<uu::net::Network2> dfs(g, v7, uu::net::EdgeMode::INOUT);
 
     auto it = dfs.begin();
     EXPECT_EQ((*it)->name, "v7");

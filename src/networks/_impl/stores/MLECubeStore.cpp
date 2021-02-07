@@ -14,6 +14,18 @@ MLECubeStore(
 ) : layers_(layers_)
 {}
 
+size_t
+MLECubeStore::
+size(
+) const
+{
+    size_t res = 0;
+    for (auto&& pair: interlayer_edges_)
+    {
+        res += pair.second->size();
+    }
+    return res;
+}
 
 const MLEdge2 *
 MLECubeStore::

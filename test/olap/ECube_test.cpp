@@ -1,7 +1,9 @@
 #include "gtest/gtest.h"
+#include "discretization.hpp"
 
 #include "olap/ECube.hpp"
 #include "olap/VCube.hpp"
+
 
 class olap_ECube_test : public ::testing::Test
 {
@@ -122,11 +124,7 @@ TEST_F(olap_ECube_test, discretization_01f)
     
     E->add(v1.get(), vc1.get(), v1.get(), vc2.get());
     
-    auto d = [](const uu::net::MLEdge2* e) {
-        (void)e;
-        return std::vector<bool>({false});
-    };
-    
+    auto d = uu::net::UniformDiscretization<uu::net::MLEdge2>(1, false);
     E->add_dimension("d0", {"m0"}, d);
     EXPECT_EQ(E->size(), (size_t) 0);
 }
@@ -137,11 +135,8 @@ TEST_F(olap_ECube_test, discretization_01t)
     
     E->add(v1.get(), vc1.get(), v1.get(), vc2.get());
     
-    auto d = [](const uu::net::MLEdge2* e) {
-        (void)e;
-        return std::vector<bool>({true});
-    };
     
+    auto d = uu::net::UniformDiscretization<uu::net::MLEdge2>(1, true);
     E->add_dimension("d0", {"m0"}, d);
     EXPECT_EQ(E->size(), (size_t) 1);
     
@@ -158,11 +153,8 @@ TEST_F(olap_ECube_test, discretization_higher_orders)
     
     EXPECT_EQ(E->size(), (size_t) 3);
     
-    auto d = [](const uu::net::MLEdge2* e) {
-        if (e->v1->name == "v1" && e->v2->name == "v1") return std::vector<bool>({false, true});
-        else if (e->v1->name == "v1" && e->v2->name == "v2") return std::vector<bool>({true, true});
-        else return std::vector<bool>({false, false});
-    };
+    
+    auto d = CustomEdgeDiscretization();
     
     E->add_dimension("d1", {"m0", "m1"}, d);
     

@@ -3,7 +3,7 @@
 namespace uu {
 namespace net {
 
-std::unique_ptr<Network>
+std::unique_ptr<Network2>
 read_network(
     const std::string& infile,
     const std::string& name,
@@ -17,7 +17,8 @@ read_network(
     // Check metadata consistency (@todo)
     // create network
     // and add attributes
-    auto g = std::make_unique<Network>(name, dir, meta.features.allows_loops);
+    LoopMode loops = meta.features.allows_loops ? LoopMode::ALLOWED : LoopMode::DISALLOWED;
+    auto g = std::make_unique<Network2>(name, dir, loops);
 
     for (auto attr: meta.vertex_attributes)
     {
@@ -40,7 +41,7 @@ read_network(
 template <>
 void
 read_vertex(
-    Network* g,
+    Network2* g,
     const std::vector<std::string>& fields,
     const std::vector<core::Attribute>& vertex_attributes,
     size_t line_number
@@ -67,7 +68,7 @@ read_vertex(
 template <>
 void
 read_edge(
-    Network* g,
+    Network2* g,
     const std::vector<std::string>& fields,
     const std::vector<core::Attribute>& edge_attributes,
     size_t line_number
@@ -78,8 +79,7 @@ read_edge(
     {
         throw core::WrongFormatException("Line " +
                                          std::to_string(line_number) +
-                                         ": From and To actor names and weight must " +
-                                         "be specified for each edge");
+                                         ": wrong number of fields");
     }
 
     auto edge = read_edge(g, fields, 0, line_number);

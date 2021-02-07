@@ -15,13 +15,16 @@ namespace net {
 * @param net a multilayer network
 * @param num number of shufflings
 **/
+template <class M>
 void
 shuffle(
-    uu::net::OrderedMultiplexNetwork* net,
+    M* net,
     size_t num
 );
 
 }
 }
+
+#include "shuffle.ipp"
 
 #endif

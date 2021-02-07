@@ -11,6 +11,7 @@
 #include "core/olap/selection/IndexIterator.hpp"
 #include "core/datastructures/observers/ObserverStore.hpp"
 #include "core/datastructures/observers/UnionObserver.hpp"
+#include "olap/UniformDiscretization.hpp"
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -207,13 +208,13 @@ public core::Subject<const typename STORE::value_type>
     /**
      * Adds a new dimension.
      */
-    template <class SF>
+    template <class SF, class D>
     void
     add_dimension(
         const std::string& name,
         const std::vector<std::string>& members,
-        SF store_factory,
-        std::vector<bool> (*discretize)(typename STORE::value_type*) = nullptr
+        const SF& store_factory,
+        const D& discretize
     );
     
     /**
@@ -224,7 +225,7 @@ public core::Subject<const typename STORE::value_type>
     add_member(
         const std::string& name,
         const std::string& member,
-        SF store_factory
+        const SF& store_factory
         //bool (*copy)(typename STORE::value_type*) = nullptr
     );
     

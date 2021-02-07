@@ -3,7 +3,7 @@
 namespace uu {
 namespace net {
 
-std::unique_ptr<TemporalNetwork>
+std::unique_ptr<Network2>
 read_temporal_network(
     const std::string& infile,
     const std::string& name,
@@ -13,12 +13,12 @@ read_temporal_network(
     // Read metadata
     GraphMetadata meta = read_metadata(infile, ',');
     EdgeDir dir = meta.features.is_directed?EdgeDir::DIRECTED:EdgeDir::UNDIRECTED;
-
+    LoopMode loops = meta.features.allows_loops ? LoopMode::ALLOWED : LoopMode::DISALLOWED;
     // Check metadata consistency (@todo)
     // create network
     // and add attributes
-    auto g = std::make_unique<TemporalNetwork>(name, dir, meta.features.allows_loops);
-
+    auto g = std::make_unique<Network2>(name, dir, loops);
+    make_temporal(g.get());
     for (auto attr: meta.vertex_attributes)
     {
         g->vertices()->attr()->add(attr.name, attr.type);
@@ -28,7 +28,7 @@ read_temporal_network(
     {
         g->edges()->attr()->add(attr.name, attr.type);
     }
-
+    meta.edge_attributes.insert(meta.edge_attributes.begin(), core::Attribute("t_", core::AttributeType::TIMESET));
     // Read data (vertices, edges, attribute values)
     read_data(g.get(),  meta, infile, separator);
 
@@ -36,7 +36,7 @@ read_temporal_network(
 
 }
 
-
+/*
 template <>
 void
 read_vertex(
@@ -91,6 +91,7 @@ read_edge(
     read_attr_values(g->edges()->attr(), edge, edge_attributes, fields, 3, line_number);
 
 }
+*/
 
 }
 }

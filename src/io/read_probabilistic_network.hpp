@@ -3,19 +3,20 @@
 
 #include <string>
 #include <memory>
-#include "networks/ProbabilisticNetwork.hpp"
+#include "networks/probability.hpp"
 #include "io/_impl/read_common.hpp"
 
 namespace uu {
 namespace net {
 
-std::unique_ptr<ProbabilisticNetwork>
+std::unique_ptr<Network2>
 read_probabilistic_network(
     const std::string& infile,
     const std::string& name,
     char separator
 );
 
+/*
 template <>
 void
 read_vertex(
@@ -35,6 +36,7 @@ read_edge(
     size_t line_number
 );
 
+*/
 
 }
 }

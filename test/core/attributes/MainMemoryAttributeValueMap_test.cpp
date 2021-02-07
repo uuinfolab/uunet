@@ -15,15 +15,15 @@ class core_attributes_test : public ::testing::Test
         att_store = std::make_unique<uu::core::MainMemoryAttributeValueMap<int>>();
 
         // add attributes
-        a0 = att_store->add(uu::core::Attribute::create("s_att", uu::core::AttributeType::STRING));
-        a1 = att_store->add(uu::core::Attribute::create("d_att", uu::core::AttributeType::DOUBLE));
-        a2 = att_store->add(uu::core::Attribute::create("i_att", uu::core::AttributeType::INTEGER));
-        a3 = att_store->add(uu::core::Attribute::create("t_att", uu::core::AttributeType::TIME));
-        a4 = att_store->add(uu::core::Attribute::create("txt_att", uu::core::AttributeType::TEXT));
-        a5 = att_store->add(uu::core::Attribute::create("s_satt", uu::core::AttributeType::STRINGSET));
-        a6 = att_store->add(uu::core::Attribute::create("d_satt", uu::core::AttributeType::DOUBLESET));
-        a7 = att_store->add(uu::core::Attribute::create("i_satt", uu::core::AttributeType::INTEGERSET));
-        a8 = att_store->add(uu::core::Attribute::create("t_satt", uu::core::AttributeType::TIMESET));
+        a0 = att_store->add(std::make_unique<uu::core::Attribute>("s_att", uu::core::AttributeType::STRING));
+        a1 = att_store->add(std::make_unique<uu::core::Attribute>("d_att", uu::core::AttributeType::DOUBLE));
+        a2 = att_store->add(std::make_unique<uu::core::Attribute>("i_att", uu::core::AttributeType::INTEGER));
+        a3 = att_store->add(std::make_unique<uu::core::Attribute>("t_att", uu::core::AttributeType::TIME));
+        a4 = att_store->add(std::make_unique<uu::core::Attribute>("txt_att", uu::core::AttributeType::TEXT));
+        a5 = att_store->add(std::make_unique<uu::core::Attribute>("s_satt", uu::core::AttributeType::STRINGSET));
+        a6 = att_store->add(std::make_unique<uu::core::Attribute>("d_satt", uu::core::AttributeType::DOUBLESET));
+        a7 = att_store->add(std::make_unique<uu::core::Attribute>("i_satt", uu::core::AttributeType::INTEGERSET));
+        a8 = att_store->add(std::make_unique<uu::core::Attribute>("t_satt", uu::core::AttributeType::TIMESET));
     }
 };
 
@@ -31,10 +31,10 @@ TEST_F(core_attributes_test, MainMemoryAttributeValueMap_add_attributes)
 {
     // Trying to add attributes that already exist.
     EXPECT_EQ(nullptr,
-              att_store->add(uu::core::Attribute::create("s_att", uu::core::AttributeType::STRING)));
+              att_store->add(std::make_unique<uu::core::Attribute>("s_att", uu::core::AttributeType::STRING)));
 
     EXPECT_EQ(nullptr,
-              att_store->add(uu::core::Attribute::create("s_att", uu::core::AttributeType::INTEGER)));
+              att_store->add(std::make_unique<uu::core::Attribute>("s_att", uu::core::AttributeType::INTEGER)));
 }
 
 TEST_F(core_attributes_test, MainMemoryAttributeValueMap_get_attributes)

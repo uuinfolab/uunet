@@ -23,7 +23,6 @@ create(
 {
     return std::make_shared<const Attribute>(name, type);
 }
-*/
 
 std::unique_ptr<const Attribute>
 Attribute::
@@ -34,7 +33,8 @@ create(
 {
     return std::make_unique<const Attribute>(name, type);
 }
+*/
 
-} // namespace "core"
-} // namespace "uu"
+}
+} 
 

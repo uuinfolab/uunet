@@ -398,13 +398,12 @@ void
 ECube::
 add_dimension(
     const std::string& name,
-    const std::vector<std::string>& members,
-    std::vector<bool> (*discretize)(const MLEdge2*)
+    const std::vector<std::string>& members
 )
 {
-    return cube_->add_dimension(name, members, this, discretize);
+    auto tot = UniformDiscretization<MLEdge2>(members.size());
+    return cube_->add_dimension(name, members, this, tot);
 }
-
 
 void
 ECube::

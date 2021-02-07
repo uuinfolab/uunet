@@ -10,7 +10,7 @@ TemporalNetwork(
     bool allows_loops
 ) : super(name, dir, allows_loops)
 {
-    auto t_attr = core::Attribute::create(kTIME_ATTR_NAME, core::AttributeType::TIME);
+    auto t_attr = std::make_unique<core::Attribute>(kTIME_ATTR_NAME, core::AttributeType::TIME);
 
     edges()->attr()->add(std::move(t_attr));
 

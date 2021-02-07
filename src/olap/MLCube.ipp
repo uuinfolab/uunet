@@ -752,14 +752,14 @@ data_ =
 
 // SF is a pointer to an object with a function get_store(), returning a new store
 template <class STORE>
-template <class SF>
+template <class SF, class D>
 void
 MLCube<STORE>::
 add_dimension(
     const std::string& name,
     const std::vector<std::string>& members,
-    SF store_factory,
-    std::vector<bool> (*discretize)(typename STORE::value_type*)
+    const SF& store_factory,
+    const D& discretize
 )
 {
 
@@ -788,20 +788,17 @@ add_dimension(
         data_ = std::vector<std::shared_ptr<STORE>>(1);
         data_[0] = elements_;
         // If no discretization function is used, all the elements are preserved
-        if (discretize) // otherwise
+        std::set<const typename STORE::value_type*> to_erase;
+        for (auto el: *elements_)
         {
-            std::set<const typename STORE::value_type*> to_erase;
-            for (auto el: *elements_)
+            std::vector<bool> to_add = discretize(el);
+            if (!to_add[0]) // warning - not checking size
             {
-                std::vector<bool> to_add = discretize(el);
-                if (!to_add[0]) // warning - not checking size
-                {
-                    to_erase.insert(el);
-                }
-                for (auto v: to_erase)
-                {
-                    elements_->erase(v);
-                }
+                to_erase.insert(el);
+            }
+            for (auto v: to_erase)
+            {
+                elements_->erase(v);
             }
         }
     }
@@ -825,15 +822,7 @@ add_dimension(
         std::set<const typename STORE::value_type*> to_erase;
         for (auto el: *old_elements_)
         {
-            std::vector<bool> to_add;
-            if (discretize)
-            {
-                to_add = discretize(el);
-            }
-            else
-            {
-                to_add = std::vector<bool>(members.size(), true);
-            }
+            std::vector<bool> to_add = discretize(el);
             for (size_t i = 0; i < to_add.size(); i++)
             {
                 if (to_add[i])
@@ -879,15 +868,7 @@ add_dimension(
         {
             for (auto el: *old_data_[old_pos++])
             {
-                std::vector<bool> to_add;
-                if (discretize)
-                {
-                    to_add = discretize(el);
-                }
-                else
-                {
-                    to_add = std::vector<bool>(members.size(), true);
-                }
+                std::vector<bool> to_add = discretize(el);
                 for (size_t i = 0; i < to_add.size(); i++)
                 {
                     if (to_add[i])
@@ -918,7 +899,7 @@ MLCube<STORE>::
 add_member(
     const std::string& dim_name,
     const std::string& memb_name,
-    SF store_factory
+    const SF& store_factory
     //bool (*copy)(typename STORE::value_type*)
 )
 {
