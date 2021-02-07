@@ -16,7 +16,7 @@ namespace net {
 
 std::unique_ptr<OrderedMultiplexNetwork>
 slice_equal_time(
-    const TemporalNetwork* tnet,
+    const Network2* tnet,
     size_t num_partitions
 )
 {
@@ -24,8 +24,8 @@ slice_equal_time(
     core::assert_not_null(tnet, "slice_equal_time", "tnet");
 
     auto mpx = std::make_unique<OrderedMultiplexNetwork>(tnet->name);
-    std::vector<const Edge*> sorted_edge_vector;
-    std::vector<std::vector<const Edge*>> partitioned_edge_vector;
+    std::vector<const MLEdge2*> sorted_edge_vector;
+    std::vector<std::vector<const MLEdge2*>> partitioned_edge_vector;
 
     // create ordered layers for each time partition
     for (size_t i = 0; i<num_partitions; i++)
@@ -46,35 +46,35 @@ slice_equal_time(
         }
     }
 
-    auto max_time = tnet->get_max_time().value;
-    auto min_time = tnet->get_min_time().value;
+    auto bounds = get_time_bounds(tnet);
+    auto min_time = bounds[0];
+    auto max_time = bounds[1];
 
     auto split_time = (max_time - min_time) / (float)num_partitions;
+
 
     if (max_time == min_time)
     {
         throw core::OperationNotSupportedException("cannot slice a network with no temporal extension");
     }
-
+    
     for (auto e : *tnet->edges())
     {
-        auto t = tnet->get_time(e);
+        auto times = get_times(tnet, e);
 
-        if (t.null)
+        for (auto t: times)
         {
-            continue;
+            size_t idx = ((t - min_time) / split_time);
+
+            if (idx == num_partitions)
+            {
+                idx--;
+            }
+
+            auto layer = mpx->layers()->at(idx);
+
+            layer->edges()->add(e->v1, e->v2);
         }
-
-        size_t idx = ((t.value - min_time) / split_time);
-
-        if (idx == num_partitions)
-        {
-            idx--;
-        }
-
-        auto layer = mpx->layers()->at(idx);
-
-        layer->edges()->add(e->v1, e->v2);
     }
 
     return mpx;

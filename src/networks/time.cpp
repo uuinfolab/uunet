@@ -41,6 +41,41 @@ get_times(
     return net->edges()->attr()->get_times(edge, "t_");
 }
 
+std::array<core::Time, 2>
+get_time_bounds(
+    const Network2* net
+)
+{
+    bool init = false;
+    core::Time min;
+    core::Time max;
+    for (auto edge: *net->edges())
+    {
+        auto times = get_times(net, edge);
+        for (auto time: times)
+        {
+            if (!init)
+            {
+                init = true;
+                min = time;
+                max = time;
+            }
+            else
+            {
+                if (time < min) min = time;
+                else if (time > max) max = time;
+            }
+        }
+    }
+    if (!init)
+    {
+        std::string err = "cannot return time bounds of network with no associated times";
+        throw core::OperationNotSupportedException(err);
+    }
+    std::array<core::Time, 2> res({min, max});
+    return res;
+}
+
 }
 }
 

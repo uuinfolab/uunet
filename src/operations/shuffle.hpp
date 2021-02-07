@@ -3,7 +3,7 @@
 #define UU_OPERATIONS_SHUFFLE_H_
 
 #include <memory>
-#include "networks/TemporalNetwork.hpp"
+#include "networks/time.hpp"
 #include "networks/OrderedMultiplexNetwork.hpp"
 
 namespace uu {
