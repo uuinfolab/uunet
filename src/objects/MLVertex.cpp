@@ -31,7 +31,7 @@ MLVertex2(
 bool
 MLVertex2::
 operator==(
-const MLVertex2& mlv
+    const MLVertex2& mlv
 ) const
 {
     return v == mlv.v && c == mlv.c;
@@ -40,7 +40,7 @@ const MLVertex2& mlv
 bool
 MLVertex2::
 operator<(
-const MLVertex2& mlv
+    const MLVertex2& mlv
 ) const
 {
     return v < mlv.v || (v == mlv.v && c < mlv.c);
@@ -49,7 +49,7 @@ const MLVertex2& mlv
 bool
 MLVertex2::
 operator!=(
-const MLVertex2& mlv
+    const MLVertex2& mlv
 ) const
 {
     return v != mlv.v || c != mlv.c;
@@ -58,7 +58,7 @@ const MLVertex2& mlv
 bool
 MLVertex2::
 operator>(
-const MLVertex2& mlv
+    const MLVertex2& mlv
 ) const
 {
     return v > mlv.v || (v == mlv.v && c > mlv.c);

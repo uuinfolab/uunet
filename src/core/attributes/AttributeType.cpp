@@ -40,7 +40,7 @@ to_string(
     case AttributeType::TIMESET:
         return "time_set";
 
-            
+
     default:
         return ""; // cannot get here
     }

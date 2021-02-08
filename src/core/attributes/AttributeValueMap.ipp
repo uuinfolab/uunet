@@ -40,12 +40,12 @@ set_as_string(
     case AttributeType::TEXT:
         set_text(oid, attribute_name, core::to_text(value));
         break;
-            
+
     case AttributeType::INTEGERSET:
     case AttributeType::DOUBLESET:
     case AttributeType::STRINGSET:
     case AttributeType::TIMESET:
-            throw OperationNotSupportedException("cannot set a value for a set attribute");
+        throw OperationNotSupportedException("cannot set a value for a set attribute");
     }
 }
 
@@ -91,7 +91,7 @@ add_as_string(
     case AttributeType::STRING:
     case AttributeType::TIME:
     case AttributeType::TEXT:
-            throw OperationNotSupportedException("cannot add a value for a non-set attribute");
+        throw OperationNotSupportedException("cannot add a value for a non-set attribute");
     }
 }
 
@@ -143,12 +143,12 @@ get_as_string(
 
     case AttributeType::TEXT:
         return core::to_string(get_text(oid, att->name));
-            
+
     case AttributeType::INTEGERSET:
     case AttributeType::DOUBLESET:
     case AttributeType::STRINGSET:
     case AttributeType::TIMESET:
-            throw OperationNotSupportedException("cannot set a value for a set attribute");
+        throw OperationNotSupportedException("cannot set a value for a set attribute");
     }
 }
 

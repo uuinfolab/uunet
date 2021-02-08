@@ -89,7 +89,7 @@ class NCube
         const std::string& name,
         const std::vector<std::string>& members
     );
-    
+
     using super::operator[];
 
     /**
@@ -296,19 +296,20 @@ add_dim(
     const std::vector<std::string>& members
 )
 {
-    
+
     dim_.push_back(name);
     dim_idx_[name] = dim_.size() - 1;
-    
+
     members_.resize(members_.size() + 1);
     members_idx_.resize(members_idx_.size() + 1);
     size_t pos = 0;
+
     for (auto member: members)
     {
         members_.back().push_back(member);
         members_idx_.back()[member] = pos++;
     }
-    
+
     std::vector<size_t> size = super::size();
     size.push_back(members.size());
     super::resize(size);

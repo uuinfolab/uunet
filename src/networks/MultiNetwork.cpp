@@ -11,12 +11,12 @@ MultiNetwork(
     const std::string& name,
     EdgeDir dir,
     LoopMode loops
-             )
-: name(name)
+)
+    : name(name)
 {
     vertices_ = std::make_unique<VCube>("V");
     edges_ = std::make_unique<MECube>("E", vertices_.get(), vertices_.get(), dir, loops);
-    
+
 }
 
 

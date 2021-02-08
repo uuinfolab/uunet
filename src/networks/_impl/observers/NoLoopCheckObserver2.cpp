@@ -20,7 +20,7 @@ notify_add(
 )
 {
     core::assert_not_null(e, "NoLoopCheckObserver2::notify_add", "e");
-    
+
     // Same vertex in same context
     if (e->v1 == e->v2 && e->c1 == e->c2)
     {

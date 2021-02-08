@@ -23,11 +23,11 @@ class MultiNetwork
 {
 
   public:
-    
+
     typedef const Vertex* vertex_type;
     //typedef const Edge* edge_type;
     typedef const Vertex* community_element_type;
-    
+
     const std::string name;
 
     /**
@@ -39,8 +39,9 @@ class MultiNetwork
         LoopMode loops = LoopMode::ALLOWED
     );
 
-    virtual ~MultiNetwork() {}
-    
+    virtual
+    ~MultiNetwork() {}
+
     /**
      * Returns a pointer to the network's vertices.
      */
@@ -90,7 +91,7 @@ class MultiNetwork
     ) const;
 
   private:
-    
+
     std::unique_ptr<VCube> vertices_;
     std::unique_ptr<MECube> edges_;
 

@@ -13,7 +13,7 @@ class VCubeObserver :
 {
 
   public:
-    
+
     /**
      * Creates an observer with a pointer to the store to be notified when vertices are changed.
      *
@@ -41,9 +41,9 @@ class VCubeObserver :
     ) override;
 
   private:
-    
+
     const VCube* vcube_;
-    
+
     /** Store to be notified. */
     S* store_;
 
@@ -54,7 +54,7 @@ class VCubeObserver :
 template<typename S>
 VCubeObserver<S>::
 VCubeObserver(
-const VCube* vcube,
+    const VCube* vcube,
     S* store
 ) :
     vcube_(vcube), store_(store)

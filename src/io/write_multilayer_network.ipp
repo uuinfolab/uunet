@@ -290,7 +290,7 @@ write_multilayer_network(
                 for (auto edge: *mnet->interlayer_edges()->get((*layer1),(*layer2)))
                 {
                     outfile << edge->v1->name << sep << (*layer1)->name << sep << edge->v2->name << sep << (*layer2)->name;
-                    
+
                     /*auto edge_attrs = mnet->interlayer_edges()->attr();
 
                     for (auto attr: *edge_attrs)
@@ -650,7 +650,7 @@ end_loop:
                     {
                         outfile << "    <edge id=\"e" << edge << "\" source=\"" << edge->v1 << "\" target=\"" << edge->v2 << "\">" << std::endl;
                         outfile << "        <data key=\"e_type\">" << layer_name1 << "-" << layer_name2 << "</data>" << std::endl;
-                        
+
                         /*
                          auto attrs = mnet->interlayer_edges()->attr();
 
@@ -728,7 +728,7 @@ end_loop:
                     {
                         outfile << "    <edge id=\"e" << edge << "\" source=\"" << edge->v1 << ":" << (*layer1) << "\" target=\"" << edge->v2 << ":" << (*layer2) << "\">" << std::endl;
                         outfile << "        <data key=\"e_type\">" << layer_name1 << "-" << layer_name2 << "</data>" << std::endl;
-                       
+
                         /*
                          auto attrs = mnet->interlayer_edges()->attr();
 

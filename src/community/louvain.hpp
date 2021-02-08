@@ -14,9 +14,9 @@ namespace net {
 
 template <typename G>
 std::unique_ptr<CommunityStructure<Network2>>
-louvain(
-    const G* g
-);
+        louvain(
+            const G* g
+        );
 
 }
 }

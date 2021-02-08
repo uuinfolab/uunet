@@ -16,6 +16,7 @@ MDMultiEdgeStore(
 ) : super(cube1, cube2, dir, loops) // super will check if they are null
 {
     cidx_edges_by_vertices[cube1][cube2];
+
     if (cube1 != cube2)
     {
         cidx_edges_by_vertices[cube2][cube1];
@@ -38,10 +39,12 @@ add(
 
     // No need to check for edge existence
     std::cout << "here " << e.get() << std::endl;
+
     for (auto eg: *edges_)
     {
         std::cout << eg << std::endl;
     }
+
     auto new_edge = super::add(e);
     std::cout << "new " << new_edge << std::endl;
 
@@ -50,7 +53,7 @@ add(
         return nullptr;
     }
 
-    
+
     /// MULTI SPEC.
     cidx_edges_by_vertices[e->c1][e->c2][e->v1][e->v2].insert(new_edge);
 
@@ -76,7 +79,7 @@ add(
         std::string err = "ending vertex cubes cannot be inferred and must be specified";
         throw core::OperationNotSupportedException(err);
     }
-        
+
     return add(vertex1, cube1_, vertex2, cube2_);
 }
 
@@ -133,6 +136,7 @@ get(
     {
         return result;
     }
+
     else
     {
         for (auto edge: v2->second)
@@ -140,7 +144,7 @@ get(
             result.add(edge);
         }
     }
-    
+
     return result;
 }
 
@@ -152,8 +156,16 @@ contains(
 ) const
 {
     auto e = get(key);
-    if (e.size()>0) return true;
-    else return false;
+
+    if (e.size()>0)
+    {
+        return true;
+    }
+
+    else
+    {
+        return false;
+    }
 }
 
 
@@ -169,7 +181,7 @@ get(
         std::string err = "ending vertex cubes cannot be inferred and must be specified";
         throw core::OperationNotSupportedException(err);
     }
-        
+
     return get(vertex1, cube1_, vertex2, cube2_);
 }
 
@@ -193,10 +205,10 @@ erase(
 
     if (cidx_edges_by_vertices[edge->c1][edge->c2][edge->v1][edge->v2].size() ==0)
     {
-    sidx_neighbors_in[edge->c2][edge->c1][edge->v2]->erase(edge->v1);
-    sidx_neighbors_out[edge->c1][edge->c2][edge->v1]->erase(edge->v2);
-    sidx_incident_in[edge->c2][edge->c1][edge->v2]->erase(edge);
-    sidx_incident_out[edge->c1][edge->c2][edge->v1]->erase(edge);
+        sidx_neighbors_in[edge->c2][edge->c1][edge->v2]->erase(edge->v1);
+        sidx_neighbors_out[edge->c1][edge->c2][edge->v1]->erase(edge->v2);
+        sidx_incident_in[edge->c2][edge->c1][edge->v2]->erase(edge);
+        sidx_incident_out[edge->c1][edge->c2][edge->v1]->erase(edge);
     }
 
     // if the edge is directed, we erase neighbors only if there isn't
@@ -217,17 +229,17 @@ erase(
     {
 
         cidx_edges_by_vertices[edge->c2][edge->c1][edge->v2][edge->v1].erase(edge);
-        
+
         if (cidx_edges_by_vertices[edge->c1][edge->c2][edge->v1][edge->v2].size()==0)
         {
-        sidx_neighbors_in[edge->c1][edge->c2][edge->v1]->erase(edge->v2);
-        sidx_neighbors_out[edge->c2][edge->c1][edge->v2]->erase(edge->v1);
-        sidx_neighbors_all[edge->c1][edge->c2][edge->v1]->erase(edge->v2);
-        sidx_neighbors_all[edge->c2][edge->c1][edge->v2]->erase(edge->v1);
-        sidx_incident_in[edge->c1][edge->c2][edge->v1]->erase(edge);
-        sidx_incident_out[edge->c2][edge->c1][edge->v2]->erase(edge);
-        sidx_incident_all[edge->c1][edge->c2][edge->v1]->erase(edge);
-        sidx_incident_all[edge->c2][edge->c1][edge->v2]->erase(edge);
+            sidx_neighbors_in[edge->c1][edge->c2][edge->v1]->erase(edge->v2);
+            sidx_neighbors_out[edge->c2][edge->c1][edge->v2]->erase(edge->v1);
+            sidx_neighbors_all[edge->c1][edge->c2][edge->v1]->erase(edge->v2);
+            sidx_neighbors_all[edge->c2][edge->c1][edge->v2]->erase(edge->v1);
+            sidx_incident_in[edge->c1][edge->c2][edge->v1]->erase(edge);
+            sidx_incident_out[edge->c2][edge->c1][edge->v2]->erase(edge);
+            sidx_incident_all[edge->c1][edge->c2][edge->v1]->erase(edge);
+            sidx_incident_all[edge->c2][edge->c1][edge->v2]->erase(edge);
         }
     }
 
@@ -243,10 +255,12 @@ erase(
 {
     auto edges = get(key);
     bool res = (bool)edges.size();
+
     for (auto e: edges)
     {
         erase(e);
     }
+
     return res;
 }
 

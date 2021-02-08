@@ -20,16 +20,16 @@ namespace net {
 
 
 std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, MLVertex2>, std::vector<std::unique_ptr<const Vertex>>>
-        convert(
-            const MultilayerNetwork2* g,
-            double omega
-        );
+convert(
+    const MultilayerNetwork2* g,
+    double omega
+);
 
 std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, MLVertex2>, std::vector<std::unique_ptr<const Vertex>>>
-        convert(
-            const OrderedMultiplexNetwork2* g,
-            double omega
-        );
+convert(
+    const OrderedMultiplexNetwork2* g,
+    double omega
+);
 
 void
 expand(
@@ -40,9 +40,9 @@ expand(
 );
 
 std::unique_ptr<CommunityStructure<Network2>>
-communities(
-    const std::vector<std::unique_ptr<GMetaNetwork>>& levels
-);
+        communities(
+            const std::vector<std::unique_ptr<GMetaNetwork>>& levels
+        );
 
 std::unique_ptr<GMetaNetwork>
 aggregate(

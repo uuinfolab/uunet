@@ -18,16 +18,16 @@ ECube(
 {
     auto store = std::make_unique<MDSimpleEdgeStore>(cube1, cube2, dir, loops);
     cube_ = std::make_unique<MLCube<MDSimpleEdgeStore>>(std::move(store));
-    
+
     // register an observer to propagate the removal of vertices to the edge store
     auto obs1 = std::make_unique<VCubeObserver<ECube>>(cube1_, this);
     cube1_->attach(obs1.get());
     cube_->register_observer(std::move(obs1));
-    
+
     auto obs2 = std::make_unique<VCubeObserver<ECube>>(cube2_, this);
     cube2_->attach(obs2.get());
     cube_->register_observer(std::move(obs2));
-    
+
 }
 
 
@@ -57,7 +57,7 @@ neighbors(
         std::string err = "ending vertex cubes cannot be inferred and must be specified";
         throw core::OperationNotSupportedException(err);
     }
-    
+
     return cube_->elements_->neighbors(vertex, cube1_, mode);
 }
 
@@ -66,12 +66,12 @@ const
 GenericObjectList<MLEdge2>*
 ECube::
 incident(
-      const Vertex* vertex,
-      const VCube* cube,
-      EdgeMode mode
+    const Vertex* vertex,
+    const VCube* cube,
+    EdgeMode mode
 ) const
 {
-  return cube_->elements_->incident(vertex, cube, mode);
+    return cube_->elements_->incident(vertex, cube, mode);
 }
 
 
@@ -79,8 +79,8 @@ const
 GenericObjectList<MLEdge2>*
 ECube::
 incident(
-      const Vertex* vertex,
-      EdgeMode mode
+    const Vertex* vertex,
+    EdgeMode mode
 ) const
 {
     if (cube1_ != cube2_)
@@ -88,8 +88,8 @@ incident(
         std::string err = "ending vertex cubes cannot be inferred and must be specified";
         throw core::OperationNotSupportedException(err);
     }
-    
-  return cube_->elements_->incident(vertex, cube1_, mode);
+
+    return cube_->elements_->incident(vertex, cube1_, mode);
 }
 
 
@@ -148,9 +148,9 @@ dimensions(
 
 
 const std::vector<std::vector<std::string>>&
-ECube::
-members(
-) const
+        ECube::
+        members(
+        ) const
 {
     return cube_->members();
 }
@@ -240,6 +240,7 @@ add(
         std::string err = "ending vertex cubes cannot be inferred and must be specified";
         throw core::OperationNotSupportedException(err);
     }
+
     auto key = std::make_tuple(vertex1, cube1_, vertex2, cube2_);
     return cube_->add(key);
 }
@@ -279,6 +280,7 @@ contains(
         std::string err = "ending vertex cubes cannot be inferred and must be specified";
         throw core::OperationNotSupportedException(err);
     }
+
     auto key = std::make_tuple(vertex1, cube1_, vertex2, cube2_);
     return cube_->contains(key);
 }
@@ -310,6 +312,7 @@ get(
         std::string err = "ending vertex cubes cannot be inferred and must be specified";
         throw core::OperationNotSupportedException(err);
     }
+
     auto key = std::make_tuple(vertex1, cube1_, vertex2, cube2_);
     return cube_->get(key);
 }
@@ -380,6 +383,7 @@ erase(
         std::string err = "ending vertex cubes cannot be inferred and must be specified";
         throw core::OperationNotSupportedException(err);
     }
+
     auto key = std::make_tuple(vertex1, cube1_, vertex2, cube2_);
     return cube_->erase(key);
 }
@@ -525,53 +529,53 @@ init(
     return cube_->init(get_store());
 }
 
- MDSimpleEdgeStore*
- ECube::
- init(
-     const std::shared_ptr<MDSimpleEdgeStore>& store
- )
- {
-     return cube_->init(store);
- }
- 
- MDSimpleEdgeStore*
- ECube::
- init(
-     const std::vector<size_t>& index,
-     const std::shared_ptr<MDSimpleEdgeStore>& store
- )
- {
-     return cube_->init(index, store);
- }
+MDSimpleEdgeStore*
+ECube::
+init(
+    const std::shared_ptr<MDSimpleEdgeStore>& store
+)
+{
+    return cube_->init(store);
+}
 
- MDSimpleEdgeStore*
- ECube::
- init(
-     size_t pos,
-     const std::shared_ptr<MDSimpleEdgeStore>& store
- )
- {
-     return cube_->init(pos, store);
- }
- 
- MDSimpleEdgeStore*
- ECube::
- init(
-      const std::vector<size_t>& index
- )
- {
-     return cube_->init(index, get_store());
- }
- 
- MDSimpleEdgeStore*
- ECube::
- init(
-     size_t pos
- )
- {
-     return cube_->init(pos, get_store());
- }
- 
+MDSimpleEdgeStore*
+ECube::
+init(
+    const std::vector<size_t>& index,
+    const std::shared_ptr<MDSimpleEdgeStore>& store
+)
+{
+    return cube_->init(index, store);
+}
+
+MDSimpleEdgeStore*
+ECube::
+init(
+    size_t pos,
+    const std::shared_ptr<MDSimpleEdgeStore>& store
+)
+{
+    return cube_->init(pos, store);
+}
+
+MDSimpleEdgeStore*
+ECube::
+init(
+    const std::vector<size_t>& index
+)
+{
+    return cube_->init(index, get_store());
+}
+
+MDSimpleEdgeStore*
+ECube::
+init(
+    size_t pos
+)
+{
+    return cube_->init(pos, get_store());
+}
+
 
 core::UnionObserver<MDSimpleEdgeStore, const MLEdge2>*
 ECube::
@@ -582,30 +586,30 @@ register_obs(
 }
 
 
- void
- ECube::
- register_obs(
+void
+ECube::
+register_obs(
     const std::vector<size_t>& index
- )
- {
-     cube_->register_obs(index);
- }
- 
+)
+{
+    cube_->register_obs(index);
+}
 
- void
- ECube::
- register_obs(
-     size_t pos
- )
- {
-     cube_->register_obs(pos);
- }
- 
+
+void
+ECube::
+register_obs(
+    size_t pos
+)
+{
+    cube_->register_obs(pos);
+}
+
 
 std::shared_ptr<MDSimpleEdgeStore>
 ECube::
 get_store(
-          ) const
+) const
 {
     return std::make_shared<MDSimpleEdgeStore>(cube1_, cube2_, dir_, loops_);
 }
@@ -614,14 +618,15 @@ get_store(
 void
 ECube::
 erase(
-const VCube* vcube,
-const Vertex* vertex
+    const VCube* vcube,
+    const Vertex* vertex
 )
 {
     if (order() == 0)
     {
         cube_->elements_->erase(vcube, vertex);
     }
+
     else
     {
         for (size_t i = 0; i < cube_->data_.size(); i++)

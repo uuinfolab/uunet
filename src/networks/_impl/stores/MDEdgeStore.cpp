@@ -36,12 +36,12 @@ MDEdgeStore(
     sidx_incident_all[cube2][cube1];
 
     // Register observers to react to updates
-    
+
     // register an observer to check that the end vertices of a newly inserted edge exist
     auto obs1 = std::make_unique<CheckVerticesExistObserver>();
     attach(obs1.get());
     register_observer(std::move(obs1));
-    
+
     // register an observer preventing loops
     if (loops == LoopMode::DISALLOWED)
     {
@@ -52,17 +52,17 @@ MDEdgeStore(
 }
 
 MDEdgeStore::iterator
-        MDEdgeStore::
-        begin(
-        ) const
+MDEdgeStore::
+begin(
+) const
 {
     return edges_->begin();
 }
 
 MDEdgeStore::iterator
 MDEdgeStore::
-        end(
-        ) const
+end(
+) const
 {
     return edges_->end();
 }
@@ -130,10 +130,12 @@ add(
     }
 
     const MLEdge2* new_edge;
+
     if (edges_->add(e))
     {
         new_edge = e.get();
     }
+
     else
     {
         return nullptr;
@@ -320,12 +322,12 @@ neighbors(
 
 const
 GenericObjectList<MLEdge2>*
-                                      MDEdgeStore::
-                                      incident(
-                                              const Vertex* vertex,
-                                              const VCube* layer,
-                                              EdgeMode mode
-                                      ) const
+MDEdgeStore::
+incident(
+    const Vertex* vertex,
+    const VCube* layer,
+    EdgeMode mode
+) const
 {
 
     core::assert_not_null(layer, "incident", "layer");
@@ -406,11 +408,11 @@ dir_.at(cube2).at(cube1) = directed?EdgeDir::DIRECTED:EdgeDir::UNDIRECTED;
 void
 MDEdgeStore::
 erase(
-const VCube* vcube,
-const Vertex* vertex
+    const VCube* vcube,
+    const Vertex* vertex
 )
 {
-    
+
     core::assert_not_null(vertex, "MDEdgeStore::erase", "MDEdgeStore::vertex");
 
     std::unordered_set<const MLEdge2*> to_erase;

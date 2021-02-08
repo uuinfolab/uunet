@@ -30,15 +30,15 @@ class
 {
 
     friend LayerStore;
-    
-public:
-    
+
+  public:
+
     typedef Network2 layer_type;
     typedef Vertex vertex_type;
     typedef MLVertex2 community_element_type;
-    
+
   private:
-    
+
     /** The actors, organized into N members on one dimension */
     std::unique_ptr<VCube> actors_;
     /** Layer Store */
@@ -49,7 +49,7 @@ public:
     //std::map<std::vector<std::string>, std::unique_ptr<ECube>> intra_edges_;
     /** Interlayer edges */
     std::unique_ptr<MLECubeStore> interlayer_edges_;
-    
+
   public:
 
     const std::string name;
@@ -62,7 +62,7 @@ public:
      * Creates an empty Network.
      */
     MultilayerNetwork2(
-    const std::string& name
+        const std::string& name
     );
 
     /**
@@ -71,45 +71,45 @@ public:
     const VCube*
     actors(
     ) const;
-    
+
     /**
      * Returns a pointer to the network's actors.
      */
     VCube*
     actors(
     );
-    
-    
+
+
     /**
      * Returns a pointer to the network's interlayer edges.
      */
     LayerStore*
     layers(
     );
-    
+
     /**
      * Returns a pointer to the network's interlayer edges.
      */
     const LayerStore*
     layers(
     ) const;
-    
+
     /**
      * Returns a pointer to the network's interlayer edges.
      */
     MLECubeStore*
     interlayer_edges(
     );
-    
+
     /**
      * Returns a pointer to the network's interlayer edges.
      */
     const MLECubeStore*
     interlayer_edges(
     ) const;
-    
 
-    
+
+
 };
 
 

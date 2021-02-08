@@ -10,7 +10,7 @@ namespace net {
 
 MLECubeStore::
 MLECubeStore(
-             const LayerStore* layers_
+    const LayerStore* layers_
 ) : layers_(layers_)
 {}
 
@@ -20,10 +20,12 @@ size(
 ) const
 {
     size_t res = 0;
+
     for (auto&& pair: interlayer_edges_)
     {
         res += pair.second->size();
     }
+
     return res;
 }
 
@@ -150,16 +152,16 @@ add(
 
     return new_edge;
 }
- 
+
 */
 
 
 const ECube*
-                            MLECubeStore::
-                            get(
-                                const Network2* layer1,
-                                const Network2* layer2
-                            ) const
+MLECubeStore::
+get(
+    const Network2* layer1,
+    const Network2* layer2
+) const
 {
     core::assert_not_null(layer1, "MLECubeStore::get", "layer1");
     core::assert_not_null(layer2, "MLECubeStore::get", "layer2");
@@ -168,27 +170,29 @@ const ECube*
     {
         throw core::ElementNotFoundException("layer " + layer1->name);
     }
-    
+
     if (!layers_->contains(layer2))
     {
         throw core::ElementNotFoundException("layer " + layer2->name);
     }
-    
+
     auto key = std::make_pair(std::min(layer1, layer2), std::max(layer1, layer2));
     auto f = interlayer_edges_.find(key);
+
     if (f == interlayer_edges_.end())
     {
         throw core::OperationNotSupportedException("interlayer edges between " + layer1->name + " and " + layer2->name + " not initialized");
     }
+
     return f->second.get();
 }
 
 ECube*
-                            MLECubeStore::
-                            get(
-                                const Network2* layer1,
-                                const Network2* layer2
-                            )
+MLECubeStore::
+get(
+    const Network2* layer1,
+    const Network2* layer2
+)
 {
     core::assert_not_null(layer1, "MLECubeStore::get", "layer1");
     core::assert_not_null(layer2, "MLECubeStore::get", "layer2");
@@ -197,18 +201,20 @@ ECube*
     {
         throw core::ElementNotFoundException("layer " + layer1->name);
     }
-    
+
     if (!layers_->contains(layer2))
     {
         throw core::ElementNotFoundException("layer " + layer2->name);
     }
-    
+
     auto key = std::make_pair(std::min(layer1, layer2), std::max(layer1, layer2));
     auto f = interlayer_edges_.find(key);
+
     if (f == interlayer_edges_.end())
     {
         throw core::OperationNotSupportedException("interlayer edges between " + layer1->name + " and " + layer2->name + " not initialized");
     }
+
     return f->second.get();
 }
 
@@ -226,7 +232,7 @@ neighbors(
     core::assert_not_null(layer1, "MLECubeStore::neighbors", "layer1");
     core::assert_not_null(layer2, "MLECubeStore::neighbors", "layer2");
     core::assert_not_null(vertex, "MLECubeStore::neighbors", "vertex");
-    
+
     return get(layer1, layer2)->neighbors(vertex, layer1->vertices(), mode);
 }
 
@@ -234,13 +240,13 @@ neighbors(
 
 const
 GenericObjectList<MLEdge2>*
-                            MLECubeStore::
-                            incident(
-                                const Network2* layer1,
-                                const Network2* layer2,
-                                const Vertex* vertex,
-                                EdgeMode mode
-                            ) const
+MLECubeStore::
+incident(
+    const Network2* layer1,
+    const Network2* layer2,
+    const Vertex* vertex,
+    EdgeMode mode
+) const
 {
 
     core::assert_not_null(layer1, "MLECubeStore::incident", "layer1");
@@ -261,7 +267,7 @@ is_directed(
 {
     core::assert_not_null(layer1, "MLECubeStore::is_directed", "layer1");
     core::assert_not_null(layer2, "MLECubeStore::is_directed", "layer2");
-    
+
     return get(layer1, layer2)->is_directed();
 }
 
@@ -280,17 +286,17 @@ init(
     {
         throw core::ElementNotFoundException("layer " + layer1->name);
     }
-    
+
     if (!layers_->contains(layer2))
     {
         throw core::ElementNotFoundException("layer " + layer2->name);
     }
-    
+
     if (layer1 == layer2)
     {
         throw core::OperationNotSupportedException("cannot process interlayer edges on the same layer");
     }
-    
+
     auto key = std::make_pair(std::min(layer1, layer2), std::max(layer1, layer2));
     std::string name = layer1->vertices()->name + "-" + layer2->vertices()->name;
     interlayer_edges_[key] = std::make_unique<ECube>(name, layer1->vertices(), layer2->vertices(), dir);
@@ -306,7 +312,7 @@ set_directed(
 )
 {
     throw core::OperationNotSupportedException("directionality must be set at init time");
-    
+
 }
 
 
@@ -349,7 +355,7 @@ erase(
 {
     core::assert_not_null(layer, "MLECubeStore::erase", "layer");
     core::assert_not_null(vertex, "MLECubeStore::erase", "vertex");
-    
+
     // @todo
     std::vector<const Network2*> layers;
 

@@ -28,7 +28,7 @@ read_multilayer_network(
     {
         std::string layer_name = l.first;
         auto layer_type = l.second;
-        
+
         //std::cout << "creating layer " << l.first << " " << layer_type.is_directed << std::endl;
         auto dir = layer_type.is_directed ? EdgeDir::DIRECTED : EdgeDir::UNDIRECTED;
         auto loops = layer_type.allows_loops ? LoopMode::ALLOWED : LoopMode::DISALLOWED;
@@ -50,7 +50,7 @@ read_multilayer_network(
         std::string layer_name1 = inter.first.first;
         std::string layer_name2 = inter.first.second;
         auto layer1 = net->layers()->get(layer_name1);
-        
+
         if (!layer1)
         {
             throw core::WrongFormatException("unknown layer name (" + layer_name1 + ")");
@@ -65,7 +65,7 @@ read_multilayer_network(
 
         auto dir = inter.second ? EdgeDir::DIRECTED : EdgeDir::UNDIRECTED;
         net->interlayer_edges()->init(layer1, layer2, dir);
-        
+
     }
 
 
@@ -198,9 +198,9 @@ read_intralayer_edge(
 )
 {
     core::assert_not_null(ml, "read_intralayer_edge", "ml");
-    
+
     auto l = read_layer<MultilayerNetwork2, Network2>(ml, fields, 2, line_number);
-    
+
     auto v1 = read_actor(l, fields, 0, line_number);
     auto v2 = read_actor(l, fields, 1, line_number);
 

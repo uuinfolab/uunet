@@ -4,8 +4,9 @@
 #include "objects/Vertex.hpp"
 #include "objects/MLEdge2.hpp"
 
-class CustomEdgeDiscretization {
-public:
+class CustomEdgeDiscretization
+{
+  public:
     std::vector<bool>
     operator()(const uu::net::MLEdge2* e) const
     {
@@ -15,15 +16,16 @@ public:
     }
 };
 
-class CustomVertexDiscretization {
-    public:
-     std::vector<bool>
-     operator()(const uu::net::Vertex* v) const
-     {
-         if (v->name == "v1") return std::vector<bool>({false, true});
-         else if (v->name == "v2") return std::vector<bool>({true, true});
-         else return std::vector<bool>({false, false});
-     }
+class CustomVertexDiscretization
+{
+  public:
+    std::vector<bool>
+    operator()(const uu::net::Vertex* v) const
+    {
+        if (v->name == "v1") return std::vector<bool>({false, true});
+        else if (v->name == "v2") return std::vector<bool>({true, true});
+        else return std::vector<bool>({false, false});
+    }
 };
 
 

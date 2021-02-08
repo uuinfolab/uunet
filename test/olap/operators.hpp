@@ -32,12 +32,13 @@ class net_olap_operators_test : public ::testing::Test
 
 
         vcube = std::make_unique<uu::net::VCube>("V");
+
         for (size_t i = 0; i < 3; i++)
         {
             vcube->add_dimension(dimensions[i], members[i]);
         }
-        
-            //vcube->init();
+
+        //vcube->init();
 
         std::vector<std::string> index1 = {"m1","m1","m1"};
         vcube->cell(index1)->add(o1);
@@ -85,7 +86,7 @@ class net_olap_operators_test : public ::testing::Test
         ecube->cell(idx2)->add(o2.get(), vs1.get(), o5.get(), vs2.get());
         ecube->cell(idx2)->add(o2.get(), vs1.get(), o6.get(), vs2.get());
 
-*/
+        */
 
 
     }

@@ -14,7 +14,7 @@ namespace net {
 
 
 class
-MLECubeStore
+    MLECubeStore
 //:
 //    public core::SharedPtrSortedRandomSet<const MLEdge2>,
 //            public core::Subject<const MLEdge2>
@@ -23,17 +23,18 @@ MLECubeStore
   private:
 
     std::map<std::pair<const Network2*, const Network2*>, std::unique_ptr<ECube>> interlayer_edges_;
-    
+
     const LayerStore* layers_;
-    
+
   public:
 
     MLECubeStore(
-                 const LayerStore* layers_
+        const LayerStore* layers_
     );
 
-    virtual ~MLECubeStore() {}
-    
+    virtual
+    ~MLECubeStore() {}
+
   public:
 
     //using super::size;
@@ -46,8 +47,8 @@ MLECubeStore
     add(
         std::shared_ptr<const MLEdge2> e
     ) override;
-*/
-    
+    */
+
     /**
      * Adds a new edge.
      * Multiple edges between the same pair of vertices are not allowed.
@@ -73,7 +74,7 @@ MLECubeStore
         const Vertex* vertex2,
         const Network2* layer2
     );
-    
+
     bool
     erase(
         const MLEdge2* e
@@ -81,10 +82,10 @@ MLECubeStore
 
 
     const ECube*
-                                get(
-                                    const Network2* layer1,
-                                    const Network2* layer2
-                                ) const;
+    get(
+        const Network2* layer1,
+        const Network2* layer2
+    ) const;
 
 
     /**
@@ -110,25 +111,25 @@ MLECubeStore
      **/
     const
     GenericObjectList<MLEdge2>*
-                                incident(
-                                    const Network2* layer1,
-                                    const Network2* layer2,
-                                    const Vertex* vertex,
-                                    EdgeMode mode
-                                ) const;
+    incident(
+        const Network2* layer1,
+        const Network2* layer2,
+        const Vertex* vertex,
+        EdgeMode mode
+    ) const;
 
-    
+
     size_t
     size(
     ) const;
-    
+
     ECube*
     init(
         Network2* layer1,
         Network2* layer2,
         EdgeDir dir
-         );
-    
+    );
+
     bool
     is_directed(
         const Network2* layer1,
@@ -164,13 +165,13 @@ MLECubeStore
         const Vertex* vertex
     );
 
-private:
-    
+  private:
+
     ECube*
-                                get(
-                                    const Network2* layer1,
-                                    const Network2* layer2
-                                );
+    get(
+        const Network2* layer1,
+        const Network2* layer2
+    );
 };
 
 

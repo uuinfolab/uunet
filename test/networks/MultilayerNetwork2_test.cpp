@@ -15,14 +15,14 @@ TEST(networks_test, MultilayerNetwork2)
     auto v1 = v1_sharedptr.get();
     auto v2_sharedptr = std::make_shared<uu::net::Vertex>("bau");
     auto v2 = v2_sharedptr.get();
-    
+
     // Adding layers
     auto layer1 = net->layers()->add("layer1", uu::net::EdgeDir::DIRECTED);
     std::cout << layer1->vertices() << std::endl;
-    
+
     auto layer2 = net->layers()->add("layer2", uu::net::EdgeDir::UNDIRECTED);
     std::cout << layer2->vertices() << std::endl;
-    
+
     auto layer3 = net->layers()->add("layer3", uu::net::EdgeDir::UNDIRECTED);
     std::cout << layer3->vertices() << std::endl;
 
@@ -32,15 +32,15 @@ TEST(networks_test, MultilayerNetwork2)
 
     layer1->vertices()->add(v2);
     layer3->vertices()->add(v2);
-    
+
     EXPECT_EQ(net->actors()->size(), (size_t) 2);
-    
+
     // and edges
 
     layer1->edges()->add(v1, v2);
 
     // interlayer edges
-    
+
     net->interlayer_edges()->init(layer1, layer3, uu::net::EdgeDir::UNDIRECTED);
     net->interlayer_edges()->add(v1, layer1, v2, layer3);
 
@@ -108,7 +108,7 @@ TEST(networks_test, MultilayerNetwork2)
             << "wrong number of interlayer neighbors after vertex deletion";
     EXPECT_EQ((size_t)0, net->interlayer_edges()->incident(layer3, layer1, v2, uu::net::EdgeMode::INOUT)->size())
             << "wrong number of interlayer incident edges after vertex deletion";
-   */
+    */
     // @todo More removal tests
 }
 

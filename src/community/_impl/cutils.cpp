@@ -4,9 +4,9 @@ namespace uu {
 namespace net {
 
 std::unique_ptr<CommunityStructure<Network2>>
-to_community_structure(
-    std::unordered_map<const Vertex*, size_t> membership
-)
+        to_community_structure(
+            std::unordered_map<const Vertex*, size_t> membership
+        )
 {
     auto result = std::make_unique<CommunityStructure<Network2>>();
     std::unordered_map<int, std::vector<const Vertex*>> communities;

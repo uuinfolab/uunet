@@ -4,37 +4,40 @@ namespace uu {
 namespace core {
 
 
-    
-    std::vector<size_t>
-    seq(
-         size_t from,
-        size_t to
-         )
+
+std::vector<size_t>
+seq(
+    size_t from,
+    size_t to
+)
+{
+    if (from < to)
     {
-        if (from < to)
+        size_t size = to-from+1;
+        std::vector<size_t> vec(size);
+
+        for (size_t j=from; j<to+1; j++)
         {
-            size_t size = to-from+1;
-            std::vector<size_t> vec(size);
-            
-            for (size_t j=from; j<to+1; j++)
-            {
-                vec[j-from] = j;
-            }
-            return vec;
+            vec[j-from] = j;
         }
-        else
-        {
-            size_t size = -to+from+1;
-            std::vector<size_t> vec(size);
-            
-            for (size_t j=from; j>to-1; j--)
-            {
-                vec[-(j-from)] = j;
-            }
-            return vec;
-        }
+
+        return vec;
     }
-    
+
+    else
+    {
+        size_t size = -to+from+1;
+        std::vector<size_t> vec(size);
+
+        for (size_t j=from; j>to-1; j--)
+        {
+            vec[-(j-from)] = j;
+        }
+
+        return vec;
+    }
+}
+
 }
 }
 

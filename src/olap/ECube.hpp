@@ -22,12 +22,12 @@ class
     ECube
 {
 
-    public:
+  public:
 
-      const std::string name;
-    
+    const std::string name;
+
     typedef const MLEdge2 value_type;
-    
+
     /**
      * Constructs an empty ECube with no dimensions (order 0).
      * @param name name of the cube
@@ -64,7 +64,7 @@ class
         EdgeMode mode = EdgeMode::INOUT
     ) const;
 
-    
+
     /**
      * Returns the vertices with an edge from/to the input vertex.
      * This function can only be used when both end VCubes are the same,
@@ -80,8 +80,8 @@ class
         const Vertex* vertex,
         EdgeMode mode = EdgeMode::INOUT
     ) const;
-    
-    
+
+
     /**
      * Returns the edges incident to the input vertex.
      * @param vertex pointer to the vertex
@@ -91,13 +91,13 @@ class
      */
     const
     GenericObjectList<MLEdge2>*
-  incident(
-          const Vertex* vertex,
-          const VCube* cube,
-          EdgeMode mode = EdgeMode::INOUT
-  ) const;
+    incident(
+        const Vertex* vertex,
+        const VCube* cube,
+        EdgeMode mode = EdgeMode::INOUT
+    ) const;
 
-    
+
     /**
      * Returns the edges incident to the input vertex.
      * This function can only be used when both end VCubes are the same,
@@ -107,32 +107,32 @@ class
      * @throw OperationNotSupportedException if the two end VCubes are different
      * @return the list of incident edges
      */
-      const
-      GenericObjectList<MLEdge2>*
+    const
+    GenericObjectList<MLEdge2>*
     incident(
-            const Vertex* vertex,
-            EdgeMode mode = EdgeMode::INOUT
+        const Vertex* vertex,
+        EdgeMode mode = EdgeMode::INOUT
     ) const;
-    
+
     /** Return the first end VCube. */
     const VCube*
     vcube1(
     ) const;
 
-    
+
     /** Return the second end VCube. */
     const VCube*
     vcube2(
     ) const;
 
-    
+
     /**
      * Returns the number of elements in the cube.
      */
     size_t
     size(
     ) const;
-    
+
     /**
      * Returns the order (number of dimensions) of this cube.
      */
@@ -153,14 +153,14 @@ class
     const std::vector<std::string>&
     dimensions(
     ) const;
-    
+
     /**
      * Returns the members of all dimensions.
      */
     const std::vector<std::vector<std::string>>&
-    members(
-    ) const;
-    
+            members(
+            ) const;
+
     /**
      * Returns the members of a dimension.
      */
@@ -168,7 +168,7 @@ class
     members(
         const std::string& dim
     ) const;
-    
+
     /**
      * Returns the members of a dimension.
      */
@@ -176,7 +176,7 @@ class
     members(
         size_t dim_idx
     ) const;
-    
+
     /** Returns an iterator to the first edge in the cube */
     typename MDSimpleEdgeStore::iterator
     begin(
@@ -187,25 +187,25 @@ class
     end(
     ) const;
 
-       /**
-        * Inserts an existing edge in the cube.
-        * @return a pointer to the edge
-        */
-       const MLEdge2 *
-       add(
-           std::shared_ptr<const MLEdge2> edge
-       );
-       
-       /**
-        * Inserts an existing edge in the cube.
-        * @return a pointer to the edge
-        */
-       const MLEdge2 *
-       add(
-           const MLEdge2* edge
-       );
-       
-    
+    /**
+     * Inserts an existing edge in the cube.
+     * @return a pointer to the edge
+     */
+    const MLEdge2 *
+    add(
+        std::shared_ptr<const MLEdge2> edge
+    );
+
+    /**
+     * Inserts an existing edge in the cube.
+     * @return a pointer to the edge
+     */
+    const MLEdge2 *
+    add(
+        const MLEdge2* edge
+    );
+
+
     /**
      * Creates a new edge and inserts it in the cube.
      * @return a pointer to the edge
@@ -217,7 +217,7 @@ class
         const Vertex* vertex2,
         const VCube* cube2
     );
-    
+
 
     /**
      * Creates a new edge and adds it to the cube.
@@ -227,17 +227,17 @@ class
      * @return a pointer to the edge
      */
     const MLEdge2 *
-     add(
-         const Vertex* vertex1,
-         const Vertex* vertex2
-     );
-     
+    add(
+        const Vertex* vertex1,
+        const Vertex* vertex2
+    );
+
     /** Returns true if the input edge is present in the cube. */
     bool
     contains(
         const MLEdge2* e
     ) const;
-    
+
     /** Returns true if the edge is present in the cube. */
     bool
     contains(
@@ -246,7 +246,7 @@ class
         const Vertex* vertex2,
         const VCube* cube2
     ) const;
-    
+
     /**
      * Returns true if the edge is present in the cube.
      * This function can only be used when both end VCubes are the same,
@@ -258,8 +258,8 @@ class
         const Vertex* vertex1,
         const Vertex* vertex2
     ) const;
-    
-    
+
+
     /** Returns the edge if it is present in the cube, or nullptr if it isn't. */
     const MLEdge2 *
     get(
@@ -268,7 +268,7 @@ class
         const Vertex* vertex2,
         const VCube* cube2
     ) const;
-    
+
     /** Returns the edge if it is present in the cube, or nullptr if it isn't.
      * This function can only be used when both end VCubes are the same,
      * otherwise it would be ambiguous which VCubes to use if the vertices are present in both.
@@ -307,7 +307,7 @@ class
     erase(
         const MLEdge2 * e
     );
-    
+
     /**
      * Erases the edge from the cube, if present.
      * @return true if the object has been erased
@@ -332,7 +332,7 @@ class
         const Vertex* vertex1,
         const Vertex* vertex2
     );
-    
+
     /**
      * Returns the attribute store associated to this cube
      */
@@ -352,14 +352,14 @@ class
         const std::vector<std::string>& members,
         const D& discretize
     );
-    
-    
+
+
     void
     add_dimension(
         const std::string& name,
         const std::vector<std::string>& members
     );
-    
+
     /**
      * Adds a member to an existing dimension.
      */
@@ -369,7 +369,7 @@ class
         const std::string& member//,
         //bool (*copy)(const Vertex*) = nullptr
     );
-    
+
     /**
      * Returns the cell at the given position in the cube.
      * @throw OutOfBoundsException if the index is outside the bounds on the cube
@@ -405,19 +405,19 @@ class
     cell(
         const std::vector<std::string>& index
     ) const;
-    
+
     /** Returns the number of cells in the cube. */
     size_t
     num_cells(
-              ) const;
-    
+    ) const;
+
     /**
      * Returns a string representation of the cube.
      */
     std::string
     to_string(
     ) const;
-    
+
     /**
      * Attaches an observer to the cube.
      * Every time an edge is erased from or added to the cube,
@@ -428,14 +428,14 @@ class
     attach(
         core::Observer<const MLEdge2>* obs
     );
-    
+
     /**
      * Returns true if edges in this cube are directed.
      */
     bool
     is_directed(
     ) const;
-    
+
     /**
      * Returns true if edges in this cube can join the same vertex in the same cube.
      * This is only possible if the two end VCubes are the same.
@@ -451,17 +451,17 @@ class
     std::shared_ptr<MDSimpleEdgeStore>
     get_store(
     ) const;
-    
+
     /**
      * Notifies the cube that a vertex has been erased from one of its end cubes.
      * This triggers the deletion of all edges incident to it.
      */
     void
     erase(
-    const VCube* vcube,
-    const Vertex* vertex
+        const VCube* vcube,
+        const Vertex* vertex
     );
-    
+
   protected:
 
     /**
@@ -473,14 +473,14 @@ class
         const std::vector<std::string>& dimensions,
         const std::vector<std::vector<std::string>>& members
     )  const;
-    
+
     /**
      * Initializes the store where all the edges are kept.
      */
     MDSimpleEdgeStore*
     init(
     );
-    
+
     /**
      * Initializes the store where all the edges are kept with the given store.
      */
@@ -488,7 +488,7 @@ class
     init(
         const std::shared_ptr<MDSimpleEdgeStore>& store
     );
-    
+
     /**
      * Initializes the cell at the given index with the given store.
      */
@@ -506,15 +506,15 @@ class
         size_t pos,
         const std::shared_ptr<MDSimpleEdgeStore>& store
     );
-    
+
     /**
      * Initializes the cell at the given index with an empty store.
      */
     MDSimpleEdgeStore*
     init(
-         const std::vector<size_t>& index
+        const std::vector<size_t>& index
     );
-    
+
     /**
      * Initializes the cell at the given position with an empty store.
      */
@@ -522,7 +522,7 @@ class
     init(
         size_t pos
     );
-    
+
     /**
      * Creates an observer so that when edges are inserted to or erased from cell to
      * which this observer has been attached, the set of edges associated to the cube
@@ -531,7 +531,7 @@ class
     core::UnionObserver<MDSimpleEdgeStore, const MLEdge2>*
     register_obs(
     );
-    
+
     /**
      * Makes sure that when a vertex is inserted to or erased from the cell
      * at the given index, the set of vertices associated to the cube is also updated.
@@ -540,37 +540,37 @@ class
     register_obs(
         const std::vector<size_t>& index
     );
-    
+
     /**
      * Makes sure that when a vertex is inserted to or erased from the cell
      * at the given position, the set of vertices associated to the cube is also updated.
      */
     void
-        register_obs(
-            size_t pos
-        );
-    
-    private:
-      
-      // A VCube is implemented as a specialization of a Multilayer Cube (MLCube)
-      std::unique_ptr<MLCube<MDSimpleEdgeStore>> cube_;
-      
-      // End VCube's
-      VCube* cube1_;
-      VCube* cube2_;
+    register_obs(
+        size_t pos
+    );
 
-      //typedef MLCube<MDSimpleEdgeStore> super;
-      //typedef MDSimpleEdgeStore EStore;
-      //typedef MDSimpleEdgeStore* entry_type;
-      //typedef const MLEdge2* element_type;
+  private:
+
+    // A VCube is implemented as a specialization of a Multilayer Cube (MLCube)
+    std::unique_ptr<MLCube<MDSimpleEdgeStore>> cube_;
+
+    // End VCube's
+    VCube* cube1_;
+    VCube* cube2_;
+
+    //typedef MLCube<MDSimpleEdgeStore> super;
+    //typedef MDSimpleEdgeStore EStore;
+    //typedef MDSimpleEdgeStore* entry_type;
+    //typedef const MLEdge2* element_type;
 
 
     /** Edge directionality */
     EdgeDir dir_;
-    
+
     /** Loop mode (ALLOWED or DISALLOWED) */
     LoopMode loops_;
-    
+
 
 };
 

@@ -32,9 +32,10 @@ class
     VertexStore(
     );
 
-    
-    virtual ~VertexStore() {}
-    
+
+    virtual
+    ~VertexStore() {}
+
     /** Returns an iterator to the first object in the collection */
     iterator
     begin(
@@ -82,13 +83,13 @@ class
     contains(
         const Vertex* v
     ) const;
-    
+
     /** Returns true if an object with the input id is present in the collection */
     bool
     contains(
         const std::string& key
     ) const;
-    
+
     const Vertex*
     get(
         const std::string& key
@@ -114,12 +115,12 @@ class
         const Vertex* v
     ) const;
 
-    
+
     bool
     erase(
         const Vertex * v
     );
-    
+
     bool
     erase(
         const std::string& key

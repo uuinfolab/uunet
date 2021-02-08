@@ -20,8 +20,8 @@ TEST(net_operations_test, graph_intersection)
     auto e2 = std::make_shared<const uu::net::Edge>(v2.get(), v3.get(), dir);
     auto e3 = std::make_shared<const uu::net::Edge>(v3.get(), v2.get(), dir);
     auto e4 = std::make_shared<const uu::net::Edge>(v3.get(), v2.get(), dir);
-*/
-    
+    */
+
     auto g1 = std::make_unique<uu::net::Network2>("g1", dir);
     auto g2 = std::make_unique<uu::net::Network2>("g2", dir);
 

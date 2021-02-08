@@ -15,9 +15,9 @@ namespace net {
 
 template <typename G>
 std::unique_ptr<CommunityStructure<G>>
-label_propagation(
-    const G* net
-);
+                                    label_propagation(
+                                        const G* net
+                                    );
 
 }
 }

@@ -22,19 +22,20 @@ TEST(net_creation_test, sample)
 
     auto l1 = n->layers()->at(0);
     auto l2 = n->layers()->at(1);
-    
+
     for (size_t i=0; i<3; i++)
     {
         auto v = l1->vertices()->at(i);
         c1->add(uu::net::MLVertex2(v,l1));
         c1->add(uu::net::MLVertex2(v,l2));
     }
+
     for (size_t i=3; i<6; i++)
     {
         auto v = l1->vertices()->at(i);
         c2->add(uu::net::MLVertex2(v,l1));
     }
-    
+
     std::cout << summary_short(n.get()) << std::endl;
 }
 

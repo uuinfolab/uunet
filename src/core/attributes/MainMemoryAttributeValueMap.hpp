@@ -21,9 +21,10 @@ class MainMemoryAttributeValueMap :
   public:
 
     MainMemoryAttributeValueMap();
-    
-    virtual ~MainMemoryAttributeValueMap() {}
-    
+
+    virtual
+    ~MainMemoryAttributeValueMap() {}
+
     using super::add;
     using super::erase;
     using super::get;
@@ -41,37 +42,37 @@ class MainMemoryAttributeValueMap :
                const std::string& value
               ) override;
 
-    
+
     void
     add_string(ID id,
                const std::string& attribute_name,
                const std::string& value
               ) override;
 
-    
+
     void
     set_double(ID id,
                const std::string& attribute_name, double value
               ) override;
 
-    
+
     void
     add_double(ID id,
                const std::string& attribute_name, double value
               ) override;
 
-    
+
     void
     set_int(ID id,
             const std::string& attribute_name, int value
            ) override;
 
-    
+
     void
     add_int(ID id,
             const std::string& attribute_name, int value
            ) override;
-    
+
 
     void
     set_time(
@@ -87,7 +88,7 @@ class MainMemoryAttributeValueMap :
         const Time& value
     ) override;
 
-    
+
     void
     set_text(
         ID id,
@@ -101,22 +102,22 @@ class MainMemoryAttributeValueMap :
                const std::string& attribute_name
               ) const override;
 
-    
+
     const std::set<std::string>&
     get_strings(ID id,
-               const std::string& attribute_name
-              ) const override;
+                const std::string& attribute_name
+               ) const override;
 
     Value<double>
     get_double(ID id,
                const std::string& attribute_name
               ) const override;
 
-    
+
     const std::set<double>&
     get_doubles(ID id,
-               const std::string& attribute_name
-              ) const override;
+                const std::string& attribute_name
+               ) const override;
 
 
     Value<int>
@@ -124,11 +125,11 @@ class MainMemoryAttributeValueMap :
             const std::string& attribute_name
            ) const override;
 
-    
+
     const std::set<int>&
     get_ints(ID id,
-            const std::string& attribute_name
-           ) const override;
+             const std::string& attribute_name
+            ) const override;
 
     Value<Time>
     get_time(
@@ -136,14 +137,14 @@ class MainMemoryAttributeValueMap :
         const std::string& attribute_name
     ) const override;
 
-    
+
     const std::set<Time>&
     get_times(
         ID oid,
         const std::string& attribute_name
     ) const override;
 
-    
+
     Value<Text>
     get_text(
         ID oid,

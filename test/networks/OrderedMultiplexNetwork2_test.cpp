@@ -8,13 +8,13 @@ TEST(networks_test, OrderedMultiplexNetwork)
     // Creating an empty ordered multiplex network
 
     auto net = std::make_unique<uu::net::OrderedMultiplexNetwork2>("a ml net");
-    
+
     // Adding layers
 
     net->layers()->add("layer1", uu::net::EdgeDir::DIRECTED);
     net->layers()->add("layer2", uu::net::EdgeDir::UNDIRECTED);
     net->layers()->add("layer3", uu::net::EdgeDir::UNDIRECTED);
-    
+
     // Adding actors
 
     auto v1 = net->actors()->add("miao");

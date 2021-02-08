@@ -16,11 +16,13 @@ TEST(net_creation_test, null_multiplex)
     auto n = uu::net::null_multiplex(10, 3);
 
     ASSERT_EQ(size_t(10), n->actors()->size());
+
     for (auto layer: *n->layers())
     {
         ASSERT_EQ(size_t(10), layer->vertices()->size());
         ASSERT_EQ(size_t(0), layer->edges()->size());
     }
+
     ASSERT_EQ(size_t(3), n->layers()->size());
 }
 

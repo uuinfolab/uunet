@@ -14,21 +14,21 @@ namespace core {
 /**
  * Moves the element at position from to position to, shifting the other elements accordingly
  */
-    template <typename E>
-    void
-    move(
-         std::vector<E>& vec,
-         size_t from,
-         size_t to
-         );
+template <typename E>
+void
+move(
+    std::vector<E>& vec,
+    size_t from,
+    size_t to
+);
 
-    
-    std::vector<size_t>
-    seq(
-         size_t from,
-        size_t to
-        );
-    
+
+std::vector<size_t>
+seq(
+    size_t from,
+    size_t to
+);
+
 }
 }
 

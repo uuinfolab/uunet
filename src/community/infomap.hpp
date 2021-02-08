@@ -26,11 +26,11 @@ namespace net {
 /*  */
 template <typename M>
 std::unique_ptr<CommunityStructure<M>>
-infomap(const M* net,
-        bool overlapping=false,
-        bool directed=false,
-        bool include_self_links=true
-       );
+                                    infomap(const M* net,
+                                            bool overlapping=false,
+                                            bool directed=false,
+                                            bool include_self_links=true
+                                           );
 
 
 }

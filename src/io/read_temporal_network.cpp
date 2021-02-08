@@ -19,6 +19,7 @@ read_temporal_network(
     // and add attributes
     auto g = std::make_unique<Network2>(name, dir, loops);
     make_temporal(g.get());
+
     for (auto attr: meta.vertex_attributes)
     {
         g->vertices()->attr()->add(attr.name, attr.type);
@@ -28,6 +29,7 @@ read_temporal_network(
     {
         g->edges()->attr()->add(attr.name, attr.type);
     }
+
     meta.edge_attributes.insert(meta.edge_attributes.begin(), core::Attribute("t_", core::AttributeType::TIMESET));
     // Read data (vertices, edges, attribute values)
     read_data(g.get(),  meta, infile, separator);

@@ -25,7 +25,7 @@ class Network2
     typedef const Vertex* vertex_type;
     //typedef const Edge* edge_type;
     typedef const Vertex* community_element_type;
-    
+
     const std::string name;
 
     /**
@@ -42,9 +42,10 @@ class Network2
         std::unique_ptr<VCube> vertices,
         std::unique_ptr<ECube> edges
     );
-    
-    virtual ~Network2() {}
-    
+
+    virtual
+    ~Network2() {}
+
     /**
      * Returns a pointer to the network's vertices.
      */
@@ -85,7 +86,7 @@ class Network2
     is_directed(
     ) const;
 
-    
+
     /**
      * Checks if the network allows loops.
      */

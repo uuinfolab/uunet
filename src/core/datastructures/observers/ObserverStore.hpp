@@ -22,11 +22,12 @@ class ObserverStore
 {
   public:
 
-    virtual ~ObserverStore()
+    virtual
+    ~ObserverStore()
     {
-        
+
     }
-    
+
     void
     register_observer(
         std::unique_ptr<core::GenericObserver> obs

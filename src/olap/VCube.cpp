@@ -51,9 +51,9 @@ dimensions(
 
 
 const std::vector<std::vector<std::string>>&
-VCube::
-members(
-) const
+        VCube::
+        members(
+        ) const
 {
     return cube_->members();
 }
@@ -327,53 +327,53 @@ init(
     return cube_->init(get_store());
 }
 
- VertexStore*
- VCube::
- init(
-     const std::shared_ptr<VertexStore>& store
- )
- {
-     return cube_->init(store);
- }
- 
- VertexStore*
- VCube::
- init(
-     const std::vector<size_t>& index,
-     const std::shared_ptr<VertexStore>& store
- )
- {
-     return cube_->init(index, store);
- }
+VertexStore*
+VCube::
+init(
+    const std::shared_ptr<VertexStore>& store
+)
+{
+    return cube_->init(store);
+}
 
- VertexStore*
- VCube::
- init(
-     size_t pos,
-     const std::shared_ptr<VertexStore>& store
- )
- {
-     return cube_->init(pos, store);
- }
- 
- VertexStore*
- VCube::
- init(
-      const std::vector<size_t>& index
- )
- {
-     return cube_->init(index, get_store());
- }
- 
- VertexStore*
- VCube::
- init(
-     size_t pos
- )
- {
-     return cube_->init(pos, get_store());
- }
- 
+VertexStore*
+VCube::
+init(
+    const std::vector<size_t>& index,
+    const std::shared_ptr<VertexStore>& store
+)
+{
+    return cube_->init(index, store);
+}
+
+VertexStore*
+VCube::
+init(
+    size_t pos,
+    const std::shared_ptr<VertexStore>& store
+)
+{
+    return cube_->init(pos, store);
+}
+
+VertexStore*
+VCube::
+init(
+    const std::vector<size_t>& index
+)
+{
+    return cube_->init(index, get_store());
+}
+
+VertexStore*
+VCube::
+init(
+    size_t pos
+)
+{
+    return cube_->init(pos, get_store());
+}
+
 core::UnionObserver<VertexStore, const Vertex>*
 VCube::
 register_obs(
@@ -382,29 +382,29 @@ register_obs(
     return cube_->register_obs();
 }
 
- void
- VCube::
- register_obs(
- const std::vector<size_t>& index
- )
- {
-     cube_->register_obs(index);
- }
- 
- void
- VCube::
- register_obs(
-     size_t pos
- )
- {
-     cube_->register_obs(pos);
- }
- 
+void
+VCube::
+register_obs(
+    const std::vector<size_t>& index
+)
+{
+    cube_->register_obs(index);
+}
+
+void
+VCube::
+register_obs(
+    size_t pos
+)
+{
+    cube_->register_obs(pos);
+}
+
 
 std::shared_ptr<VertexStore>
 VCube::
 get_store(
-          ) const
+) const
 {
     return std::make_shared<VertexStore>();
 }

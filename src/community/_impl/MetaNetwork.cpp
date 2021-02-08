@@ -14,7 +14,7 @@ MetaNetwork()
 {
     w = std::make_unique<Network2>("w", EdgeDir::UNDIRECTED, LoopMode::ALLOWED);
     make_weighted(w.get());
-    
+
 }
 
 const Vertex*

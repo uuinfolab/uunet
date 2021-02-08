@@ -13,15 +13,15 @@ class
     public MDEdgeStore,
     public std::enable_shared_from_this<MDMultiEdgeStore>
 {
-    
-private:
-    
+
+  private:
+
     typedef MDEdgeStore super;
-    
+
   public:
-    
+
     typedef core::SortedRandomSet<const MLEdge2*> get_return_type;
-    
+
     MDMultiEdgeStore(
         VCube* cube1,
         VCube* cube2,
@@ -29,7 +29,7 @@ private:
         LoopMode loops
     );
 
-    
+
     /**
      * Adds a new edge.
      * Multiple edges between the same pair of vertices are allowed.
@@ -59,13 +59,13 @@ private:
     add(
         const Vertex* vertex1,
         const Vertex* vertex2
-        );
-    
+    );
+
     bool
     contains(
         const typename MLEdge2::key_type& key
     ) const;
-    
+
     /**
      * Returns an edge.
      * This function can also be used to check if an edge is present.
@@ -75,27 +75,27 @@ private:
      * of the edge if undirected.
      * @return a pointer to the requested edge, or nullptr if it does not exist.
      **/
-     core::SortedRandomSet<const MLEdge2*>
+    core::SortedRandomSet<const MLEdge2*>
     get(
         const Vertex* vertex1,
         const VCube* cube1,
         const Vertex* vertex2,
         const VCube* cube2
     ) const;
-    
-    
+
+
     core::SortedRandomSet<const MLEdge2*>
     get(
         const Vertex* vertex1,
         const Vertex* vertex2
     ) const;
 
-    
+
     core::SortedRandomSet<const MLEdge2*>
     get(
         const typename MLEdge2::key_type& key
     ) const;
-    
+
     /**
      * @brief Deletes an existing edge.
      * @param edge a pointer to the edge to be deleted
@@ -107,12 +107,12 @@ private:
         const MLEdge2* edge
     ) override;
 
-    
+
     bool
     erase(
         const typename MLEdge2::key_type& key
     );
-    
+
     using super::super;
 
     //using super::value_type;
@@ -170,7 +170,7 @@ private:
 
     // Indexes to objects (Component IDX):
     std::unordered_map<const VCube*, std::unordered_map<const VCube*, std::unordered_map<const Vertex*, std::unordered_map<const Vertex*, std::unordered_set<const MLEdge2*>>>>> cidx_edges_by_vertices;
-    
+
 };
 
 

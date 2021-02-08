@@ -85,7 +85,7 @@ TEST_F(core_attributes_test, MainMemoryAttributeValueMap_add_get)
     EXPECT_EQ(att_store->get_ints(id0, "i_satt").size(), (size_t) 0);
     EXPECT_EQ(att_store->get_doubles(id0, "d_satt").size(), (size_t) 0);
     EXPECT_EQ(att_store->get_times(id0, "t_satt").size(), (size_t) 0);
-    
+
     // Add first value
     att_store->add_string(id0, "s_satt", "a string");
     att_store->add_int(id0, "i_satt", 0);
@@ -98,14 +98,14 @@ TEST_F(core_attributes_test, MainMemoryAttributeValueMap_add_get)
     EXPECT_TRUE(att_store->get_ints(id0, "i_satt").count(0));
     EXPECT_TRUE(att_store->get_doubles(id0, "d_satt").count(0.0));
     EXPECT_TRUE(att_store->get_times(id0, "t_satt").count(t));
-    
+
     // More values
     att_store->add_string(id0, "s_satt", "a string"); // duplicate
     EXPECT_EQ(att_store->get_strings(id0, "s_satt").size(), (size_t) 1);
     att_store->add_string(id0, "s_satt", "another string");
     EXPECT_EQ(att_store->get_strings(id0, "s_satt").size(), (size_t) 2);
-    
-    
+
+
     // Exceptions
 
     EXPECT_THROW(att_store->add_index("s_satt"),

@@ -16,6 +16,7 @@ MDSimpleEdgeStore(
 ) : super(cube1, cube2, dir, loops) // super will check if they are null
 {
     cidx_edge_by_vertexes[cube1][cube2];
+
     if (cube1 != cube2)
     {
         cidx_edge_by_vertexes[cube2][cube1];
@@ -73,7 +74,7 @@ add(
         std::string err = "ending vertex cubes cannot be inferred and must be specified";
         throw core::OperationNotSupportedException(err);
     }
-        
+
     return add(vertex1, cube1_, vertex2, cube2_);
 }
 
@@ -84,8 +85,16 @@ contains(
 ) const
 {
     auto e = get(key);
-    if (e) return true;
-    else return false;
+
+    if (e)
+    {
+        return true;
+    }
+
+    else
+    {
+        return false;
+    }
 }
 
 const MLEdge2*
@@ -158,7 +167,7 @@ get(
         std::string err = "ending vertex cubes cannot be inferred and must be specified";
         throw core::OperationNotSupportedException(err);
     }
-        
+
     return get(vertex1, cube1_, vertex2, cube2_);
 }
 
@@ -226,11 +235,16 @@ erase(
 )
 {
     auto edge = get(key);
+
     if (edge)
     {
         return erase(edge);
     }
-    else return false;
+
+    else
+    {
+        return false;
+    }
 }
 
 /*

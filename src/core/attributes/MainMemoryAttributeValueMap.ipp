@@ -65,7 +65,7 @@ add(
         time_set_attribute[ptr->name] = std::unordered_map<ID, std::set<Time>>();
         break;
 
-            
+
     }
 
     return ptr;
@@ -183,7 +183,7 @@ add_index (
     case AttributeType::DOUBLESET:
     case AttributeType::STRINGSET:
     case AttributeType::TIMESET:
-            throw OperationNotSupportedException("cannot set an index for a set attribute");
+        throw OperationNotSupportedException("cannot set an index for a set attribute");
     }
 
     return true;
@@ -255,13 +255,14 @@ add_double(
     {
         throw ElementNotFoundException("double set attribute " + attribute_name);
     }
-    
+
     auto f2 = f1->second.find(oid);
 
     if (f2 == f1->second.end())
     {
         f1->second[oid] = std::set<double>({val});
     }
+
     else
     {
         f2->second.insert(val);
@@ -335,13 +336,14 @@ add_int(
     {
         throw ElementNotFoundException("int set attribute " + attribute_name);
     }
-    
+
     auto f2 = f1->second.find(oid);
 
     if (f2 == f1->second.end())
     {
         f1->second[oid] = std::set<int>({val});
     }
+
     else
     {
         f2->second.insert(val);
@@ -415,13 +417,14 @@ add_string(
     {
         throw ElementNotFoundException("string set attribute " + attribute_name);
     }
-    
+
     auto f2 = f1->second.find(oid);
 
     if (f2 == f1->second.end())
     {
         f1->second[oid] = std::set<std::string>({val});
     }
+
     else
     {
         f2->second.insert(val);
@@ -494,13 +497,14 @@ add_time(
     {
         throw ElementNotFoundException("string set attribute " + attribute_name);
     }
-    
+
     auto f2 = f1->second.find(oid);
 
     if (f2 == f1->second.end())
     {
         f1->second[oid] = std::set<Time>({val});
     }
+
     else
     {
         f2->second.insert(val);
@@ -707,6 +711,7 @@ get_strings(
     {
         return empty_stringset;
     }
+
     return values->second;
 }
 
@@ -1539,10 +1544,11 @@ reset (
         {
             return false;
         }
+
         values->second.erase(old_entry);
         return true;
     }
-            
+
     case AttributeType::INTEGERSET:
     {
         auto values = int_set_attribute.find(attribute_name);
@@ -1553,6 +1559,7 @@ reset (
         {
             return false;
         }
+
         values->second.erase(old_entry);
         return true;
     }
@@ -1567,6 +1574,7 @@ reset (
         {
             return false;
         }
+
         values->second.erase(old_entry);
         return true;
     }
@@ -1581,11 +1589,12 @@ reset (
         {
             return false;
         }
+
         values->second.erase(old_entry);
         return true;
     }
-            
-            
+
+
     }
 
     return false; // never gets here

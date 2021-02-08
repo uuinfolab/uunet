@@ -86,17 +86,17 @@ get_multilayer_section(
     {
         return MultilayerIOFileSection::EDGES;
     }
-    
+
     if (line_copy=="#INTERLAYER EDGES")
     {
         return MultilayerIOFileSection::INTERLAYER_EDGES;
     }
-    
+
     if (line_copy=="#INTRALAYER EDGES")
     {
         return MultilayerIOFileSection::INTRALAYER_EDGES;
     }
-    
+
     if (line_copy=="#EDGE ATTRIBUTES")
     {
         return MultilayerIOFileSection::EDGE_ATTRIBUTES;

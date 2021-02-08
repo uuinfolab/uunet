@@ -14,7 +14,7 @@ TEST_F(net_olap_operators_test, vslice)
     EXPECT_EQ((size_t)3, slice1->cell(cell011)->size());
     EXPECT_EQ((size_t)4, slice1->size());
 
-    
+
     EXPECT_EQ((size_t)4, slice1->size());
     std::vector<size_t> cell111 = {1, 1, 1};
     vcube->cell(cell111)->add(o6);

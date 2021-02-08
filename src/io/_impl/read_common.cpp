@@ -24,7 +24,7 @@ read_graph_type(
 
     // new default value
     graph_type.allows_loops=true;
-    
+
     if (feat=="MULTI")
     {
         graph_type.allows_multi_edges=true;

@@ -29,9 +29,10 @@ read_probabilistic_network(
     {
         g->edges()->attr()->add(attr.name, attr.type);
     }
+
     //meta.edge_attributes.insert(meta.edge_attributes.begin(), attr);
     meta.edge_attributes.insert(meta.edge_attributes.begin(), core::Attribute("p_", core::AttributeType::DOUBLE));
-    
+
     // Read data (vertices, edges, attribute values)
     read_data(g.get(),  meta, infile, separator);
 

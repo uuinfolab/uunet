@@ -58,7 +58,7 @@ slice_equal_time(
     {
         throw core::OperationNotSupportedException("cannot slice a network with no temporal extension");
     }
-    
+
     for (auto e : *tnet->edges())
     {
         auto times = get_times(tnet, e);

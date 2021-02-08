@@ -19,8 +19,12 @@ is_probabilistic(
 )
 {
     auto attr = net->edges()->attr()->get("p_");
+
     if (attr->type == core::AttributeType::DOUBLE)
+    {
         return true;
+    }
+
     return false;
 }
 
@@ -36,6 +40,7 @@ set_prob(
         std::string err = "probabilities must be between 0 and 1";
         throw core::WrongParameterException(err);
     }
+
     net->edges()->attr()->set_double(edge, "p_", p);
 }
 
@@ -46,17 +51,20 @@ get_prob(
 )
 {
     auto val = net->edges()->attr()->get_double(edge, "p_");
+
     if (val.null)
     {
         if (net->edges()->contains(edge))
         {
             return 1.0;
         }
+
         else
         {
             throw core::ElementNotFoundException("edge in network " + net->name);
         }
     }
+
     return val.value;
 }
 

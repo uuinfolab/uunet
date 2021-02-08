@@ -46,7 +46,7 @@ TEST(net_operations_test, graph_union)
         uu::core::OperationNotSupportedException
     );
      */
-     
+
     // null parameters
 
     EXPECT_THROW(

@@ -13,14 +13,14 @@ class
     public MDEdgeStore,
     public std::enable_shared_from_this<MDSimpleEdgeStore>
 {
-    
+
     typedef MDEdgeStore super;
-    
+
 
   public:
-    
+
     typedef const MLEdge2* get_return_type;
-    
+
     MDSimpleEdgeStore(
         VCube* cube1,
         VCube* cube2,
@@ -72,8 +72,8 @@ class
     add(
         const Vertex* vertex1,
         const Vertex* vertex2
-        );
-    
+    );
+
     /**
      * Returns an edge.
      * This function can also be used to check if an edge is present.
@@ -90,7 +90,7 @@ class
         const Vertex* vertex2,
         const VCube* cube2
     ) const;
-    
+
     const MLEdge2*
     get(
         const Vertex* vertex1,
@@ -101,12 +101,12 @@ class
     get(
         const typename MLEdge2::key_type& key
     ) const;
-    
+
     bool
     contains(
         const typename MLEdge2::key_type& key
     ) const;
-    
+
     virtual
     bool
     erase(
@@ -117,7 +117,7 @@ class
     erase(
         const typename MLEdge2::key_type& key
     );
-    
+
     /*
     virtual
     void

@@ -21,18 +21,18 @@ namespace uu {
 namespace net {
 
 class
-MDEdgeStore
-  :
-    //public core::SharedPtrSortedRandomSet<const MLEdge2>,
-    // This makes the store allowing observers which can trigger reactions when the store is updated
+    MDEdgeStore
+    :
+//public core::SharedPtrSortedRandomSet<const MLEdge2>,
+// This makes the store allowing observers which can trigger reactions when the store is updated
     public core::Subject<const MLEdge2>,
-    // This allows the edge store to store its own observers
+// This allows the edge store to store its own observers
     public core::ObserverStore
 {
 
- // private:
+    // private:
 
-   // core::SharedPtrSortedRandomSet<const MLEdge2> store_;
+    // core::SharedPtrSortedRandomSet<const MLEdge2> store_;
 
   protected:
 
@@ -44,13 +44,13 @@ MDEdgeStore
     EdgeDir dir_;
     /** Loop mode (ALLOWED or DISALLOWED) */
     LoopMode loops_;
-    
+
   public:
 
     typedef const MLEdge2 value_type;
     typedef std::tuple<const Vertex*, const VCube*, const Vertex*, const VCube*> key_type;
     typedef core::ObjectStore<MLEdge2>::iterator iterator;
-    
+
     MDEdgeStore(
         VCube* cube1,
         VCube* cube2,
@@ -58,8 +58,9 @@ MDEdgeStore
         LoopMode loops = LoopMode::ALLOWED
     );
 
-    virtual ~MDEdgeStore() {}
-    
+    virtual
+    ~MDEdgeStore() {}
+
     /** Returns an iterator to the first object in the collection */
     iterator
     begin(
@@ -86,7 +87,7 @@ MDEdgeStore
     add(
         const MLEdge2* e
     );
-    
+
     /**
      * Adds a new edge.
      * Multiple edges between the same pair of vertices are not allowed.
@@ -122,7 +123,7 @@ MDEdgeStore
     contains(
         const typename MLEdge2::key_type& key
     ) const;
-    
+
     /** Returns the object at the given position in the collection.
      * @throw ElementNotFoundException if the index is outside the bounds on the set
      */
@@ -143,7 +144,7 @@ MDEdgeStore
         const MLEdge2* v
     ) const;
 
-    
+
     virtual
     bool
     erase(
@@ -172,11 +173,11 @@ MDEdgeStore
      **/
     const
     GenericObjectList<MLEdge2>*
-      incident(
-              const Vertex* vertex,
-              const VCube* cube,
-              EdgeMode mode
-      ) const;
+    incident(
+        const Vertex* vertex,
+        const VCube* cube,
+        EdgeMode mode
+    ) const;
 
 
     bool
@@ -186,8 +187,8 @@ MDEdgeStore
     virtual
     void
     erase(
-    const VCube* vcube,
-    const Vertex* vertex
+        const VCube* vcube,
+        const Vertex* vertex
     );
 
   protected:

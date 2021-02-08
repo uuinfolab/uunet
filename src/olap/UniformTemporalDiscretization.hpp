@@ -10,19 +10,19 @@ namespace net {
 
 template <class STORE>
 class
-UniformTemporalDiscretization
+    UniformTemporalDiscretization
 {
-    
+
   private:
-    
+
     const STORE* store_;
     core::Time min_;
     core::Time max_;
     std::chrono::system_clock::duration width_;
     size_t n_;
-    
+
   public:
-    
+
     UniformTemporalDiscretization(
         const STORE* store,
         const core::Time& min,
@@ -34,27 +34,37 @@ UniformTemporalDiscretization
         {
             throw core::WrongParameterException("max must be higher than min");
         }
+
         width_ = (max_ - min_)/n_;
     }
-    
-    std::vector<bool> operator()(
+
+    std::vector<bool>
+    operator()(
         const typename STORE::value_type* obj
     ) const
     {
         auto res = std::vector<bool>(n_, false);
         std::set<core::Time> times = get_times(store_, obj);
+
         for (auto time: times)
         {
-            if (time < min_ || time > max_) continue;
+            if (time < min_ || time > max_)
+            {
+                continue;
+            }
+
             if (time == max_)
             {
                 res.back() = true;
             }
-            else {
+
+            else
+            {
                 size_t idx = trunc((time-min_)/width_);
                 res[idx] = true;
             }
         }
+
         return res;
     }
 

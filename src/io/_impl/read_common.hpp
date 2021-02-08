@@ -354,14 +354,15 @@ read_attr_values(
 
     for (size_t i=from_idx; i<from_idx+attributes.size(); i++)
     {
-    switch (attributes.at(i-from_idx).type)
-    {
+        switch (attributes.at(i-from_idx).type)
+        {
         case core::AttributeType::DOUBLESET:
         case core::AttributeType::INTEGERSET:
         case core::AttributeType::STRINGSET:
         case core::AttributeType::TIMESET:
             store->add_as_string(element, attributes.at(i-from_idx).name, line.at(i));
             break;
+
         case core::AttributeType::DOUBLE:
         case core::AttributeType::INTEGER:
         case core::AttributeType::STRING:
@@ -369,8 +370,8 @@ read_attr_values(
         case core::AttributeType::TEXT:
             store->set_as_string(element, attributes.at(i-from_idx).name, line.at(i));
             break;
-            
-    }
+
+        }
     }
 }
 

@@ -28,8 +28,9 @@ class AttributeValueMap :
 
   public:
 
-    virtual ~AttributeValueMap() {}
-    
+    virtual
+    ~AttributeValueMap() {}
+
     using super::add;
     using super::erase;
     using super::get;
@@ -69,7 +70,7 @@ class AttributeValueMap :
         const std::string& attribute_name,
         const std::string& value
     );
-    
+
     /*
      *
      * Gets the value of an attribute as a string.
@@ -145,7 +146,7 @@ class AttributeValueMap :
         const std::string& value
     ) = 0;
 
-    
+
     /**
      * Sets the value of an attribute.
      * @param id the id of the object whose associated value is set
@@ -176,8 +177,8 @@ class AttributeValueMap :
         const std::string& attribute_name,
         double value
     ) = 0;
-    
-    
+
+
     /**
      * Sets the value of an attribute.
      * @param id the id of the object whose associated value is set
@@ -193,7 +194,7 @@ class AttributeValueMap :
         int value
     ) = 0;
 
-    
+
     /**
      * Adds a value to a set attribute.
      * @param id the id of the object whose associated value is set
@@ -208,8 +209,8 @@ class AttributeValueMap :
         const std::string& attribute_name,
         int value
     ) = 0;
-    
-    
+
+
     /**
      * Sets the value of a time attribute.
      * @param id the id of the object whose associated value is set
@@ -225,7 +226,7 @@ class AttributeValueMap :
         const Time& value
     ) = 0;
 
-    
+
     /**
      * Adds a value to a set attribute.
      * @param id the id of the object whose associated value is set
@@ -241,8 +242,8 @@ class AttributeValueMap :
         const Time& value
     ) = 0;
 
-    
-    
+
+
     /**
      * Sets the value of a text attribute.
      * @param id the id of the object whose associated value is set
@@ -273,7 +274,7 @@ class AttributeValueMap :
         const std::string& attribute_name
     ) const = 0;
 
-    
+
     /**
      * Gets the values of a set attribute.
      * @param id id of the object whose associated value is retrieved
@@ -288,7 +289,7 @@ class AttributeValueMap :
         const std::string& attribute_name
     ) const = 0;
 
-    
+
     /**
      * Gets the value of an attribute.
      * @param id the id of the object whose associated value is retrieved
@@ -302,7 +303,7 @@ class AttributeValueMap :
         const std::string& attribute_name
     ) const = 0;
 
-    
+
     /**
      * Gets the values of a set attribute.
      * @param id the id of the object whose associated value is retrieved
@@ -316,7 +317,7 @@ class AttributeValueMap :
         const std::string& attribute_name
     ) const = 0;
 
-    
+
     /**
      * Gets the value of an attribute.
      * @param id the id of the object whose associated value is retrieved
@@ -330,7 +331,7 @@ class AttributeValueMap :
         const std::string& attribute_name
     ) const = 0;
 
-    
+
     /**
      * Gets the values of a set attribute.
      * @param id the id of the object whose associated value is retrieved
@@ -344,7 +345,7 @@ class AttributeValueMap :
         const std::string& attribute_name
     ) const = 0;
 
-    
+
     /**
      * Gets the value of a time attribute.
      * @param id the id of the object whose associated value is retrieved
@@ -358,7 +359,7 @@ class AttributeValueMap :
         const std::string& attribute_name
     ) const = 0;
 
-    
+
     /**
      * Gets the values of a set attribute.
      * @param id the id of the object whose associated value is retrieved
@@ -372,7 +373,7 @@ class AttributeValueMap :
         const std::string& attribute_name
     ) const = 0;
 
-    
+
     /**
      * Gets the value of a text attribute.
      * @param id the id of the object whose associated value is retrieved

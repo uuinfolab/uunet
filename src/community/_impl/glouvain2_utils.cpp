@@ -16,10 +16,10 @@ namespace net {
 
 
 std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, MLVertex2>, std::vector<std::unique_ptr<const Vertex>>>
-        convert(
-            const MultilayerNetwork2* g,
-            double omega
-        )
+convert(
+    const MultilayerNetwork2* g,
+    double omega
+)
 {
     std::map<MLVertex2, const Vertex*> mapping;
     std::map<const Vertex*, MLVertex2> reverse_mapping;
@@ -38,9 +38,9 @@ std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, MLVertex2>, st
     for (size_t i = 0; i < g->layers()->size(); i++)
     {
         auto l = g->layers()->at(i);
-        
+
         //std::cout << "layer: " << l->name << std::endl;
-        
+
         for (auto v: *l->vertices())
         {
             //std::cout << (*v) << std::endl;
@@ -110,10 +110,10 @@ std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, MLVertex2>, st
 
 
 std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, MLVertex2>, std::vector<std::unique_ptr<const Vertex>>>
-        convert(
-            const OrderedMultiplexNetwork2* g,
-            double omega
-        )
+convert(
+    const OrderedMultiplexNetwork2* g,
+    double omega
+)
 {
     std::map<MLVertex2, const Vertex*> mapping;
     std::map<const Vertex*, MLVertex2> reverse_mapping;
@@ -211,9 +211,9 @@ expand(
 }
 
 std::unique_ptr<CommunityStructure<Network2>>
-communities(
-    const std::vector<std::unique_ptr<GMetaNetwork>>& levels
-)
+        communities(
+            const std::vector<std::unique_ptr<GMetaNetwork>>& levels
+        )
 {
     auto res = std::make_unique<CommunityStructure<Network2>>();
 

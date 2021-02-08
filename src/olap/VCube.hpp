@@ -14,7 +14,7 @@ namespace net {
 template <typename C>
 std::unique_ptr<C>
 vslice(
-const std::string& cube_name,
+    const std::string& cube_name,
     C* cube,
     const std::vector<std::vector<size_t>>& indexes
 );
@@ -34,34 +34,34 @@ const std::string& cube_name,
  * and to access the vertices in a specific dimension and member (cell).
  */
 class
-VCube
+    VCube
 {
-    
-    public:
-    
+
+  public:
+
     const std::string name;
-    
+
     typedef const Vertex value_type;
     /**
      * Constructs an empty VCube with no dimensions (order 0).
      * @param name name of the cube
      */
     VCube(
-    const std::string& name
+        const std::string& name
     );
-    
+
     virtual
     ~VCube()
     {
     }
-    
+
     /**
      * Returns the number of elements in the cube.
      */
     size_t
     size(
     ) const;
-    
+
     /**
      * Returns the order (number of dimensions) of this cube.
      */
@@ -82,14 +82,14 @@ VCube
     const std::vector<std::string>&
     dimensions(
     ) const;
-    
+
     /**
      * Returns the members of all dimensions.
      */
     const std::vector<std::vector<std::string>>&
-    members(
-    ) const;
-    
+            members(
+            ) const;
+
     /**
      * Returns the members of a dimension.
      */
@@ -97,7 +97,7 @@ VCube
     members(
         const std::string& dim
     ) const;
-    
+
     /**
      * Returns the members of a dimension.
      */
@@ -105,7 +105,7 @@ VCube
     members(
         size_t dim_idx
     ) const;
-    
+
     /** Returns an iterator to the first vertex in the cube */
     typename VertexStore::iterator
     begin(
@@ -148,13 +148,13 @@ VCube
     contains(
         const Vertex* v
     ) const;
-    
+
     /** Returns true if a vertex named key is present in the cube. */
     bool
     contains(
         const std::string& key
     ) const;
-    
+
     /** Returns the vertex named key if it is present in the cube, or nullptr if it isn't. */
     const Vertex*
     get(
@@ -188,7 +188,7 @@ VCube
     erase(
         const Vertex * v
     );
-    
+
     /**
      * Erases obj from the cube, if present.
      * @return true if the object has been erased
@@ -217,13 +217,13 @@ VCube
         const std::vector<std::string>& members,
         const D& discretize
     );
-    
+
     void
     add_dimension(
         const std::string& name,
         const std::vector<std::string>& members
     );
-    
+
     /**
      * Adds a member to an existing dimension.
      */
@@ -233,7 +233,7 @@ VCube
         const std::string& member//,
         //bool (*copy)(const Vertex*) = nullptr
     );
-    
+
     /**
      * Returns the cell at the given position in the cube.
      * @throw OutOfBoundsException if the index is outside the bounds on the cube
@@ -274,14 +274,14 @@ VCube
     size_t
     num_cells(
     ) const;
-    
+
     /**
      * Returns a string representation of the cube.
      */
     std::string
     to_string(
     ) const;
-    
+
     /**
      * Attaches an observer to the cube.
      * Every time an edge is erased from or added to the cube,
@@ -292,24 +292,25 @@ VCube
     attach(
         core::Observer<const Vertex>* obs
     );
-    
+
     /**
      * Returns a new store of the same type used in the cells of the cube.
      */
     std::shared_ptr<VertexStore>
     get_store(
     ) const;
-    
+
     friend
     std::unique_ptr<VCube>
-    vslice<VCube>(
-    const std::string& cube_name,
+    vslice<VCube>
+    (
+        const std::string& cube_name,
         VCube* cube,
         const std::vector<std::vector<size_t>>& indexes
     );
-    
+
   protected:
-    
+
     /**
      * Constructs a non-initialized cube with the specified dimensions and members.
      */
@@ -319,14 +320,14 @@ VCube
         const std::vector<std::string>& dimensions,
         const std::vector<std::vector<std::string>>& members
     )  const;
-    
+
     /**
      * Initializes the store where all the vertices are kept.
      */
     VertexStore*
     init(
     );
-    
+
     /**
      * Initializes the store where all the vertices are kept with the given store.
      */
@@ -334,7 +335,7 @@ VCube
     init(
         const std::shared_ptr<VertexStore>& store
     );
-    
+
     /**
      * Initializes the cell at the given index with the given store.
      */
@@ -352,15 +353,15 @@ VCube
         size_t pos,
         const std::shared_ptr<VertexStore>& store
     );
-    
+
     /**
      * Initializes the cell at the given index with an empty store.
      */
     VertexStore*
     init(
-         const std::vector<size_t>& index
+        const std::vector<size_t>& index
     );
-    
+
     /**
      * Initializes the cell at the given position with an empty store.
      */
@@ -368,7 +369,7 @@ VCube
     init(
         size_t pos
     );
-    
+
     /**
      * Creates an observer so that when vertices are inserted to or erased from cell to
      * which this observer has been attached, the set of vertices associated to the cube
@@ -377,7 +378,7 @@ VCube
     core::UnionObserver<VertexStore, const typename VertexStore::value_type>*
     register_obs(
     );
-    
+
     /**
      * Makes sure that when an edge is inserted to or erased from the cell
      * at the given index, the set of edges associated to the cube is also updated.
@@ -386,22 +387,22 @@ VCube
     register_obs(
         const std::vector<size_t>& index
     );
-    
+
     /**
      * Makes sure that when an edge is inserted to or erased from the cell
      * at the given position, the set of edges associated to the cube is also updated.
      */
     void
-        register_obs(
-            size_t pos
-        );
-    
-    private:
-    
+    register_obs(
+        size_t pos
+    );
+
+  private:
+
     // A VCube is implemented as a specialization of a Multilayer Cube (MLCube)
     std::unique_ptr<MLCube<VertexStore>> cube_;
 
-    
+
 };
 
 

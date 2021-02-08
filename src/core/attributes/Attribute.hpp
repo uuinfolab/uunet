@@ -17,7 +17,7 @@ namespace core {
 class Attribute :
     public std::enable_shared_from_this<Attribute>
 {
-    public:
+  public:
 
 
     /** Name of the attribute. */
@@ -42,7 +42,7 @@ class Attribute :
         const std::string& name,
         const AttributeType& type
     );
-    */    
+    */
 
 
 };

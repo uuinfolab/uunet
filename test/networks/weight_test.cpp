@@ -7,7 +7,7 @@ TEST(networks_test, weighted)
 
     auto g = std::make_unique<uu::net::Network2>("wnet", uu::net::EdgeDir::DIRECTED);
     uu::net::make_weighted(g.get());
-    
+
     // Adding vertices
 
     const uu::net::Vertex* v1 = g->vertices()->add("miao");

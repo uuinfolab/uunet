@@ -34,23 +34,23 @@ class
     operator==(
         const MLVertex2& v
     ) const;
-    
+
     bool
     operator<(
-    const MLVertex2& v
+        const MLVertex2& v
     ) const;
-    
+
     bool
     operator!=(
-    const MLVertex2& v
+        const MLVertex2& v
     ) const;
-    
+
     bool
     operator>(
-    const MLVertex2& v
+        const MLVertex2& v
     ) const;
-    
-    
+
+
     std::string
     to_string(
     ) const;

@@ -139,7 +139,7 @@ read_multilayer_data(
         {
             continue;
         }
-            
+
         // if new section starts here, set the current section and proceed
         if (new_multilayer_section_start(line))
         {
@@ -167,19 +167,19 @@ read_multilayer_data(
         case MultilayerIOFileSection::INTRALAYER_EDGES:
         {
             read_intralayer_edge(ml, fields, meta, csv.row_num());
-                
+
             break;
         }
-                
+
 
         case MultilayerIOFileSection::INTERLAYER_EDGES:
         {
 
             read_interlayer_edge(ml, fields, meta, csv.row_num());
-            
+
             break;
         }
-                
+
         case MultilayerIOFileSection::EDGES:
         {
 

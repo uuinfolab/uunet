@@ -19,8 +19,12 @@ is_weighted(
 )
 {
     auto attr = net->edges()->attr()->get("w_");
+
     if (attr->type == core::AttributeType::DOUBLE)
+    {
         return true;
+    }
+
     return false;
 }
 
@@ -41,17 +45,20 @@ get_weight(
 )
 {
     auto val = net->edges()->attr()->get_double(edge, "w_");
+
     if (val.null)
     {
         if (net->edges()->contains(edge))
         {
             return 1.0;
         }
+
         else
         {
             throw core::ElementNotFoundException("edge in network " + net->name);
         }
     }
+
     return val.value;
 }
 

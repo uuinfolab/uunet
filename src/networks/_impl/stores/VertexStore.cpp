@@ -14,17 +14,17 @@ VertexStore(
 }
 
 VertexStore::iterator
-        VertexStore::
-        begin(
-        ) const
+VertexStore::
+begin(
+) const
 {
     return store_->begin();
 }
 
 VertexStore::iterator
 VertexStore::
-        end(
-        ) const
+end(
+) const
 {
     return store_->end();
 }
@@ -97,8 +97,16 @@ contains(
 ) const
 {
     auto v = store_->get(key);
-    if (v) return true;
-    else return false;
+
+    if (v)
+    {
+        return true;
+    }
+
+    else
+    {
+        return false;
+    }
 }
 
 const Vertex*
@@ -154,11 +162,16 @@ erase(
 )
 {
     auto v = store_->get(key);
+
     if (v)
     {
         return store_->erase(v);
     }
-    else return false;
+
+    else
+    {
+        return false;
+    }
 }
 
 void

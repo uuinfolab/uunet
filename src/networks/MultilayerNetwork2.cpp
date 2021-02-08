@@ -13,20 +13,20 @@ namespace net {
 
 MultilayerNetwork2::
 MultilayerNetwork2(
-const std::string& name
+    const std::string& name
 )
-: name(name)
+    : name(name)
 {
-    
+
     //std::vector<std::string> dimensions = {};
     //std::vector<std::vector<std::string>> members = {};
-    
+
     actors_ = std::make_unique<VCube>("A");
     //
     layers_ = std::make_unique<LayerStore>(actors_.get());
 
     interlayer_edges_ = std::make_unique<MLECubeStore>(layers_.get());
-    
+
     //actors_->init();
     /*auto vs = std::make_unique<AttrVertexStore>();
 
@@ -72,11 +72,11 @@ add_dimension(
         std::vector<std::string> s_index = {m_name};
         std::vector<std::vector<size_t>> i_index = {{pos++}};
         std::unique_ptr<VCube> cell = core::vslice(actors_.get(), i_index);
-        
+
         std::vector<std::string> e_dim = {{name}};
         std::vector<std::vector<std::string>> e_index = {{m_name}};
         intra_edges_[s_index] = std::make_unique<ECube>(cell->vertices(), cell->vertices(),  EdgeDir::UNDIRECTED, e_dim, e_index);
-        
+
         vertices_[s_index] = std::move(cell);
     }
 }
@@ -231,7 +231,7 @@ MultilayerNetwork2::
 interlayer_edges(
 ) const
 {
-    
+
     return interlayer_edges_.get();
 }
 
@@ -254,22 +254,22 @@ init(
 {
     core::assert_not_null(layer1, "MultilayerNetwork2::get", "layer1");
     core::assert_not_null(layer2, "MultilayerNetwork2::get", "layer2");
-    
+
     if (!layers_->contains(layer1))
     {
         throw core::ElementNotFoundException("layer " + layer1->name);
     }
-    
+
     if (!layers_->contains(layer2))
     {
         throw core::ElementNotFoundException("layer " + layer2->name);
     }
-    
+
     if (layer1 == layer2)
     {
         throw core::OperationNotSupportedException("cannot create interlayer edges on the same layer");
     }
-    
+
     auto key = std::make_pair(std::min(layer1, layer2), std::max(layer1, layer2));
     std::string name = layer1->vertices()->name + "-" + layer2->vertices()->name;
     interlayer_edges_[key] = std::make_unique<ECube>(name, layer1->vertices(), layer2->vertices(), dir);

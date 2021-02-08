@@ -12,71 +12,71 @@ namespace net {
 
 class LayerStore
 {
-private:
-    
+  private:
+
     core::LabeledUniquePtrSortedRandomSet<Network2> store;
-    
+
     VCube* actors_;
-    
-public:
-    
+
+  public:
+
     LayerStore(
-               VCube* actors
-               );
-    
+        VCube* actors
+    );
+
     // @todo add const versions
-    
+
     core::LabeledUniquePtrSortedRandomSet<Network2>::iterator
     begin(
-          ) const;
-    
+    ) const;
+
     core::LabeledUniquePtrSortedRandomSet<Network2>::iterator
     end(
-        ) const;
-    
+    ) const;
+
     Network2 *
     add(
         const std::string layer_name,
         EdgeDir dir = EdgeDir::UNDIRECTED,
         LoopMode loops = LoopMode::ALLOWED
-        );
+    );
 
     bool
     contains(
-             const Network2* layer
-             ) const;
-    
-    
+        const Network2* layer
+    ) const;
+
+
     size_t
     index_of(
-             const Network2* layer
-             ) const;
-    
-    
+        const Network2* layer
+    ) const;
+
+
     const Network2*
     at(
-             size_t pos
-             ) const;
-    
+        size_t pos
+    ) const;
+
     Network2*
     at(
-             size_t pos
-             );
-    
+        size_t pos
+    );
+
     size_t
     size(
-         ) const;
-    
+    ) const;
+
     const Network2*
     get(
-             const std::string& layer_name
-        ) const;
-    
-    
+        const std::string& layer_name
+    ) const;
+
+
     Network2*
     get(
-             const std::string& layer_name
-        );
+        const std::string& layer_name
+    );
 };
 
 }
