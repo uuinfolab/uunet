@@ -14,7 +14,7 @@ namespace uu {
 namespace net {
 
 
-std::unique_ptr<MetaNetwork>
+/*std::unique_ptr<MetaNetwork>
 convert(
     const Network* g
 )
@@ -33,7 +33,7 @@ convert(
     }
 
     return meta;
-}
+}*/
 
 std::unique_ptr<MetaNetwork>
 convert(

@@ -1,7 +1,7 @@
 #include "core/exceptions/OperationNotSupportedException.hpp"
 #include "core/exceptions/assert_not_null.hpp"
 
-#include "networks/Network.hpp"
+//#include "networks/Network.hpp"
 #include "networks/Network2.hpp"
 
 namespace uu {
@@ -20,7 +20,7 @@ empty_copy(
 }
 
 
-template<>
+/*template<>
 inline std::unique_ptr<Network>
 empty_copy(
     const Network* g,
@@ -33,7 +33,7 @@ empty_copy(
     bool loops = g->allows_loops();
 
     return std::make_unique<Network>(name, dir, loops);
-}
+}*/
 
 template<>
 inline std::unique_ptr<Network2>

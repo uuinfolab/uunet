@@ -38,7 +38,7 @@ TEST(net_operations_test, edge_induced_subgraph)
 
     // creating a simple graph
 
-    auto g = std::make_unique<uu::net::Network>("g");
+    auto g = std::make_unique<uu::net::Network2>("g");
 
     auto v1 = g->vertices()->add("v1");
     auto v2 = g->vertices()->add("v2");
@@ -50,7 +50,7 @@ TEST(net_operations_test, edge_induced_subgraph)
 
     // test
 
-    std::vector<const uu::net::Edge*> edges = {e1};
+    std::vector<const uu::net::MLEdge2*> edges = {e1};
 
     auto e_sub = uu::net::edge_induced_subgraph(g.get(), edges.begin(), edges.end());
 

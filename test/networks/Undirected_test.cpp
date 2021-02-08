@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "networks/Network.hpp"
+#include "networks/Network2.hpp"
 #include "core/exceptions/DuplicateElementException.hpp"
 #include "core/exceptions/ElementNotFoundException.hpp"
 #include "core/exceptions/WrongParameterException.hpp"
@@ -8,7 +8,7 @@
 TEST(networks_test, Undirected)
 {
 
-    auto g = std::make_unique<uu::net::Network>("g");
+    auto g = std::make_unique<uu::net::Network2>("g");
 
     // Checking graph properties
 

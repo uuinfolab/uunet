@@ -128,7 +128,7 @@ ordered_modularity(const M* mnet, const CS* communities, double omega)
     }
 
     // quick fix
-    std::map<const uu::net::Network*,size_t> layer_index; // FIX ME!!
+    std::map<const uu::net::Network2*,size_t> layer_index; // FIX ME!!
 
     for (size_t l_idx=0; l_idx<mnet->layers()->size(); l_idx++)
     {
@@ -150,22 +150,22 @@ ordered_modularity(const M* mnet, const CS* communities, double omega)
                 //std::cout << j->to_string() << " " << groups.count(j) << std::endl;
 
                 // same layer
-                if (i.l==j.l)
+                if (i.c==j.c)
                 {
                     //std::cout << "Same group!" << std::endl;
                     //if (mnet.getNetwork(net)->containsEdge(*v_i,*v_j))
                     //    std::cout << "Edge" << std::endl;
-                    long k_i = i.l->edges()->neighbors(i.v,EdgeMode::OUT)->size();
-                    long k_j = j.l->edges()->neighbors(j.v,EdgeMode::IN)->size();
-                    int a_ij = i.l->edges()->get(i.v, j.v)? 1.0 : 0.0;
-                    res += a_ij - (double)k_i * k_j / (m_s.at(i.l->name));
+                    long k_i = i.c->edges()->neighbors(i.v,EdgeMode::OUT)->size();
+                    long k_j = j.c->edges()->neighbors(j.v,EdgeMode::IN)->size();
+                    int a_ij = i.c->edges()->get(i.v, j.v)? 1.0 : 0.0;
+                    res += a_ij - (double)k_i * k_j / (m_s.at(i.c->name));
                     //std::cout << i->actor->name << " " << j->actor->name << " " << i->layer->name << " "<< k_i << " " <<  k_j << " " <<  m_s.at(i->layer) << std::endl;
                     //std::cout << "->" << res << std::endl;
                 }
 
                 if (i.v==j.v)
                 {
-                    if (std::abs((int)(layer_index[i.l]-layer_index[j.l]))<2)
+                    if (std::abs((int)(layer_index[i.c]-layer_index[j.c]))<2)
                     {
                         res += omega;
                     }

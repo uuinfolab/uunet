@@ -1,6 +1,6 @@
 #include "community/optimize_slices.hpp"
 
-#include "networks/OrderedMultiplexNetwork.hpp"
+#include "networks/OrderedMultiplexNetwork2.hpp"
 #include "networks/time.hpp"
 #include "community/glouvain2.hpp"
 #include "community/modularity.hpp"

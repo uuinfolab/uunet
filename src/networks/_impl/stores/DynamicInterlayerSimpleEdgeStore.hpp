@@ -2,7 +2,7 @@
 #define UU_NET_DATASTRUCTURES_STORES_DYNAMICINTERLAYERSIMPLEEDGESTORE_H_
 
 #include "networks/_impl/stores/DynamicInterlayerEdgeStore.hpp"
-#include "networks/Network.hpp"
+//#include "networks/Network2.hpp"
 #include "networks/_impl/stores/SimpleEdgeStore.hpp"
 #include "core/exceptions/ElementNotFoundException.hpp"
 #include "core/exceptions/assert_not_null.hpp"

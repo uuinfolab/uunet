@@ -4,7 +4,6 @@
 
 #include <memory>
 #include "networks/time.hpp"
-#include "networks/OrderedMultiplexNetwork.hpp"
 
 namespace uu {
 namespace net {

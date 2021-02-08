@@ -2,7 +2,7 @@
 #define UU_OPERATIONS_CONTRACTION_H_
 
 #include <string>
-#include "objects/Edge.hpp"
+#include "objects/MLEdge2.hpp"
 #include "objects/Vertex.hpp"
 
 namespace uu {
@@ -20,7 +20,7 @@ template<typename G>
 const Vertex*
 edge_contraction(
     G* g,
-    const Edge* e,
+    const MLEdge2* e,
     const std::string& vertex_name
 );
 

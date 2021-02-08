@@ -58,6 +58,11 @@ public:
              size_t pos
              ) const;
     
+    Network2*
+    at(
+             size_t pos
+             );
+    
     size_t
     size(
          ) const;

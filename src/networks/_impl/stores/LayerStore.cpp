@@ -112,7 +112,15 @@ at(
          ) const
 {
     return store.at(pos);
-    
+}
+
+Network2*
+LayerStore::
+at(
+         size_t pos
+         )
+{
+    return store.at(pos);
 }
 
     Network2*

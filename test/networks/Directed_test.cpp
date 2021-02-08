@@ -1,11 +1,11 @@
 #include "gtest/gtest.h"
 
-#include "networks/Network.hpp"
+#include "networks/Network2.hpp"
 
 TEST(networks_test, Directed)
 {
 
-    auto g = std::make_unique<uu::net::Network>("g", uu::net::EdgeDir::DIRECTED);
+    auto g = std::make_unique<uu::net::Network2>("g", uu::net::EdgeDir::DIRECTED);
 
     // Checking graph properties
 

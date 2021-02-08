@@ -13,7 +13,7 @@
 #include "measures/size.hpp"
 #include "measures/strength.hpp"
 #include "networks/MultilayerNetwork2.hpp"
-#include "networks/OrderedMultiplexNetwork.hpp"
+#include "networks/OrderedMultiplexNetwork2.hpp"
 
 namespace uu {
 namespace net {
@@ -25,9 +25,9 @@ std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, MLVertex2>, st
             double omega
         );
 
-std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, MLVertex<OrderedMultiplexNetwork>>, std::vector<std::unique_ptr<const Vertex>>>
+std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, MLVertex2>, std::vector<std::unique_ptr<const Vertex>>>
         convert(
-            const OrderedMultiplexNetwork* g,
+            const OrderedMultiplexNetwork2* g,
             double omega
         );
 

@@ -8,7 +8,7 @@
 
 #include "networks/_impl/stores/DynamicInterlayerSimpleEdgeStore.hpp"
 #include "networks/_impl/stores/Attributed.hpp"
-#include "networks/Network.hpp"
+//#include "networks/Network.hpp"
 #include "networks/_impl/stores/SimpleEdgeStore.hpp"
 #include "core/datastructures/observers/Subject.hpp"
 

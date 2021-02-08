@@ -109,14 +109,14 @@ std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, MLVertex2>, st
 }
 
 
-std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, MLVertex<OrderedMultiplexNetwork>>, std::vector<std::unique_ptr<const Vertex>>>
+std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, MLVertex2>, std::vector<std::unique_ptr<const Vertex>>>
         convert(
-            const OrderedMultiplexNetwork* g,
+            const OrderedMultiplexNetwork2* g,
             double omega
         )
 {
-    std::map<MLVertex<OrderedMultiplexNetwork>, const Vertex*> mapping;
-    std::map<const Vertex*, MLVertex<OrderedMultiplexNetwork>> reverse_mapping;
+    std::map<MLVertex2, const Vertex*> mapping;
+    std::map<const Vertex*, MLVertex2> reverse_mapping;
 
     auto meta = std::make_unique<GMetaNetwork>();
 
@@ -132,7 +132,7 @@ std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, MLVertex<Order
         for (auto v: *l->vertices())
         {
             auto metavertex = std::make_unique<const Vertex>(std::to_string(v_id++));
-            auto intralayer_vertex = MLVertex<OrderedMultiplexNetwork>(v, l);
+            auto intralayer_vertex = MLVertex2(v, l);
             mapping[intralayer_vertex] = metavertex.get();
             reverse_mapping[metavertex.get()] = intralayer_vertex;
             meta->add(metavertex.get());
@@ -144,8 +144,8 @@ std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, MLVertex<Order
         for (auto e: *l->edges())
         {
 
-            auto iv1 = MLVertex<OrderedMultiplexNetwork>(e->v1, l);
-            auto iv2 = MLVertex<OrderedMultiplexNetwork>(e->v2, l);
+            auto iv1 = MLVertex2(e->v1, l);
+            auto iv2 = MLVertex2(e->v2, l);
             auto v1 = mapping.at(iv1);
             auto v2 = mapping.at(iv2);
 
@@ -171,8 +171,8 @@ std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, MLVertex<Order
                 continue;
             }
 
-            auto iv1 = MLVertex<OrderedMultiplexNetwork>(v, l1);
-            auto iv2 = MLVertex<OrderedMultiplexNetwork>(v, l2);
+            auto iv1 = MLVertex2(v, l1);
+            auto iv2 = MLVertex2(v, l2);
             auto v1 = mapping.at(iv1);
             auto v2 = mapping.at(iv2);
 

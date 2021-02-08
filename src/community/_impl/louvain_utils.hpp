@@ -13,16 +13,15 @@
 #include "measures/size.hpp"
 #include "measures/strength.hpp"
 #include "networks/Network2.hpp"
-#include "networks/Network.hpp"
 
 namespace uu {
 namespace net {
 
 
-std::unique_ptr<MetaNetwork>
+/*std::unique_ptr<MetaNetwork>
 convert(
     const Network* g
-);
+);*/
 
 
 std::unique_ptr<MetaNetwork>
@@ -43,7 +42,7 @@ expand(
     const std::vector<std::unique_ptr<MetaNetwork>>& levels,
     size_t i,
     const Vertex* v,
-    Community<Network>* com
+    Community<Network2>* com
 );
 
 std::unique_ptr<CommunityStructure<Network2>>

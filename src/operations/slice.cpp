@@ -1,5 +1,5 @@
 #include "operations/slice.hpp"
-#include "networks/Network.hpp"
+#include "networks/Network2.hpp"
 #include "objects/EdgeDir.hpp"
 #include "core/attributes/conversion.hpp"
 #include "core/attributes/Value.hpp"
@@ -14,7 +14,7 @@ namespace uu {
 namespace net {
 
 
-std::unique_ptr<OrderedMultiplexNetwork>
+std::unique_ptr<OrderedMultiplexNetwork2>
 slice_equal_time(
     const Network2* tnet,
     size_t num_partitions
@@ -23,7 +23,7 @@ slice_equal_time(
 
     core::assert_not_null(tnet, "slice_equal_time", "tnet");
 
-    auto mpx = std::make_unique<OrderedMultiplexNetwork>(tnet->name);
+    auto mpx = std::make_unique<OrderedMultiplexNetwork2>(tnet->name);
     std::vector<const MLEdge2*> sorted_edge_vector;
     std::vector<std::vector<const MLEdge2*>> partitioned_edge_vector;
 
@@ -31,8 +31,9 @@ slice_equal_time(
     for (size_t i = 0; i<num_partitions; i++)
     {
         EdgeDir dir = (tnet->is_directed()? EdgeDir::DIRECTED : EdgeDir::UNDIRECTED);
-        auto g = std::make_unique<uu::net::Network>("l" + std::to_string(i), dir);
-        mpx->layers()->push_back(std::move(g));
+        //auto g = std::make_unique<uu::net::Network>("l" + std::to_string(i), dir);
+        // @todo use core::name_generator
+        mpx->layers()->add("l" + std::to_string(i), dir);
     }
 
     // adding all vertices to all the layers

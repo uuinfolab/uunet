@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "networks/Network.hpp"
+#include "networks/Network2.hpp"
 #include "operations/subdivision.hpp"
 #include "core/exceptions/OperationNotSupportedException.hpp"
 #include "core/exceptions/NullPtrException.hpp"
@@ -12,7 +12,7 @@ TEST(net_operations_test, edge_subdivision_directed)
     // creating a simple graph
 
     auto dir = uu::net::EdgeDir::DIRECTED;
-    auto g = std::make_unique<uu::net::Network>("g", dir);
+    auto g = std::make_unique<uu::net::Network2>("g", dir);
 
     auto v1 = g->vertices()->add("v1");
     auto v2 = g->vertices()->add("v2");
@@ -42,7 +42,7 @@ TEST(net_operations_test, edge_subdivision_undirected)
     // creating a simple graph
 
     auto dir = uu::net::EdgeDir::UNDIRECTED;
-    auto g = std::make_unique<uu::net::Network>("g", dir);
+    auto g = std::make_unique<uu::net::Network2>("g", dir);
 
     auto v1 = g->vertices()->add("v1");
     auto v2 = g->vertices()->add("v2");
@@ -72,7 +72,7 @@ TEST(net_operations_test, edge_subdivision_exceptions)
     // creating a simple graph
 
     auto dir = uu::net::EdgeDir::UNDIRECTED;
-    auto g = std::make_unique<uu::net::Network>("g", dir);
+    auto g = std::make_unique<uu::net::Network2>("g", dir);
 
     auto v1 = g->vertices()->add("v1");
     auto v2 = g->vertices()->add("v2");
@@ -83,14 +83,14 @@ TEST(net_operations_test, edge_subdivision_exceptions)
 
     EXPECT_THROW(
         uu::net::edge_subdivision(g.get(),
-                                  (uu::net::Edge*)nullptr,
+                                  (uu::net::MLEdge2*)nullptr,
                                   "name"),
         uu::core::NullPtrException
     );
 
 
     EXPECT_THROW(
-        uu::net::edge_subdivision((uu::net::Network*)nullptr,
+        uu::net::edge_subdivision((uu::net::Network2*)nullptr,
                                   e1,
                                   "name"),
         uu::core::NullPtrException

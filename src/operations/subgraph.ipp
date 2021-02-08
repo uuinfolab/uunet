@@ -81,7 +81,7 @@ edge_induced_subgraph(
 
         g_sub->vertices()->add(e->v1);
         g_sub->vertices()->add(e->v2);
-        g_sub->edges()->add(e);
+        g_sub->edges()->add(e->v1, e->v2);
 
     }
 

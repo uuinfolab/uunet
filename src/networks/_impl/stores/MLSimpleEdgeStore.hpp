@@ -3,7 +3,7 @@
 
 #include "networks/_impl/stores/AttributedDynamicInterlayerSimpleEdgeStore.hpp"
 #include "objects/Vertex.hpp"
-#include "networks/Network.hpp"
+#include "networks/Network2.hpp"
 #include "networks/_impl/stores/Attributes.hpp"
 #include "networks/_impl/stores/UserDefinedAttrs.hpp"
 
@@ -11,7 +11,7 @@
 namespace uu {
 namespace net {
 
-typedef  AttributedDynamicInterlayerSimpleEdgeStore<Vertex,Network,Attributes<MLEdge<Vertex,Network>, UserDefinedAttrs<MLEdge<Vertex,Network>>>> MLSimpleEdgeStore;
+typedef  AttributedDynamicInterlayerSimpleEdgeStore<Vertex,Network2,Attributes<MLEdge<Vertex,Network2>, UserDefinedAttrs<MLEdge<Vertex,Network2>>>> MLSimpleEdgeStore;
 
 }
 }
