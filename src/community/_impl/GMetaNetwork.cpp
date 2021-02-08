@@ -12,7 +12,7 @@ namespace net {
 GMetaNetwork::
 GMetaNetwork()
 {
-    w = std::make_unique<MultiNetwork>("w", EdgeDir::UNDIRECTED, true);
+    w = std::make_unique<MultiNetwork>("w", EdgeDir::UNDIRECTED, LoopMode::ALLOWED);
 }
 
 const Vertex*
@@ -30,7 +30,7 @@ add(
 }
 
 
-const Edge*
+const MLEdge2*
 GMetaNetwork::
 edge(
     const Vertex* u,
@@ -63,7 +63,7 @@ edge(
 double
 GMetaNetwork::
 get_weight(
-    const Edge* e
+    const MLEdge2* e
 ) const
 {
     return edge_weight.at(e);
@@ -72,7 +72,7 @@ get_weight(
 size_t
 GMetaNetwork::
 get_type(
-    const Edge* e
+    const MLEdge2* e
 ) const
 {
     return edge_type.at(e);

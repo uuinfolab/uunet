@@ -21,6 +21,7 @@ namespace net {
 
 class VCube;
 class ECube;
+class MECube;
 
 template <class STORE>
 class MLCube
@@ -30,6 +31,7 @@ public core::Subject<const typename STORE::value_type>
 
     friend class VCube;
     friend class ECube;
+    friend class MECube;
     
   public:
 
@@ -159,7 +161,7 @@ public core::Subject<const typename STORE::value_type>
     ) const;
     
     /** Returns the object with the input key if present in the collection, or nullptr */
-    typename STORE::value_type*
+    typename STORE::get_return_type
     get(
         const typename STORE::key_type& key
     ) const;

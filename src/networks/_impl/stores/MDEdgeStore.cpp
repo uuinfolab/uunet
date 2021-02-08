@@ -19,7 +19,7 @@ MDEdgeStore(
     core::assert_not_null(cube1, "MDEdgeStore", "cube1");
     core::assert_not_null(cube2, "MDEdgeStore", "cube2");
 
-    edges_ = std::make_unique<core::ObjectStore<MLEdge2>>();
+    edges_ = std::make_unique<core::SharedPtrSortedRandomSet<const MLEdge2>>();
 
     sidx_neighbors_out[cube1][cube2];
     sidx_neighbors_in[cube1][cube2];

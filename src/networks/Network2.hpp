@@ -14,9 +14,8 @@ namespace net {
  *
  * Vertex and edge attributes are local to the network, that is, the same vertex inside another
  * network will have different attributes.
- * Depending on its parameters, a Network2 can allow or disallow loops (default: disallow) and
- * be directed or undirected (default: undirected). That is, a Network2 by default corresponds to
- * a mathematical simple graph.
+ * Depending on its parameters, a Network2 can allow or disallow loops (default: allowed) and
+ * be directed or undirected (default: undirected).
  */
 class Network2
 {
@@ -44,8 +43,7 @@ class Network2
         std::unique_ptr<ECube> edges
     );
     
-    virtual ~Network2()
-    {}
+    virtual ~Network2() {}
     
     /**
      * Returns a pointer to the network's vertices.

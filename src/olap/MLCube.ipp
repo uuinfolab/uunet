@@ -280,15 +280,17 @@ contains(
     const typename STORE::key_type& key
 ) const
 {
-    auto v = get(key);
-    if (v) return true;
-    else return false;
+    return elements_->contains(key);
+    
+    //auto v = get(key);
+    //if (v) return true;
+    //else return false;
 }
 
 
 
 template <class STORE>
-typename STORE::value_type*
+typename STORE::get_return_type
 MLCube<STORE>::
 get(
     const typename STORE::key_type& key
@@ -357,9 +359,19 @@ erase(
     const typename STORE::key_type& key
 )
 {
-    auto v = get(key);
-    if (v) return erase(v);
-    else return false;
+    if (data_.size() > 1)
+    {
+        bool erased = false;
+        for (size_t i = 0; i < data_.size(); i++)
+        {
+            if (data_[i]->erase(key))
+            {
+                erased = true;
+            }
+        }
+        return erased;
+    }
+    return elements_->erase(key);
 }
 /*
 template <class STORE>

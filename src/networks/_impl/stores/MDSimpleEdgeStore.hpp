@@ -19,6 +19,7 @@ class
 
   public:
     
+    typedef const MLEdge2* get_return_type;
     
     MDSimpleEdgeStore(
         VCube* cube1,
@@ -36,7 +37,9 @@ class
 
     using super::add;
     //using super::get;
+    using super::contains;
     using super::neighbors;
+    using super::incident;
     using super::is_directed;
     using super::attach;
     using super::erase;
@@ -99,13 +102,22 @@ class
         const typename MLEdge2::key_type& key
     ) const;
     
+    bool
+    contains(
+        const typename MLEdge2::key_type& key
+    ) const;
+    
     virtual
     bool
     erase(
         const MLEdge2* e
     ) override;
 
-
+    bool
+    erase(
+        const typename MLEdge2::key_type& key
+    );
+    
     /*
     virtual
     void

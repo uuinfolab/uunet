@@ -90,6 +90,17 @@ contains(
     return store_->contains(v);
 }
 
+bool
+VertexStore::
+contains(
+    const std::string& key
+) const
+{
+    auto v = store_->get(key);
+    if (v) return true;
+    else return false;
+}
+
 const Vertex*
 VertexStore::
 get(
@@ -134,6 +145,20 @@ erase(
 )
 {
     return store_->erase(v);
+}
+
+bool
+VertexStore::
+erase(
+    const std::string& key
+)
+{
+    auto v = store_->get(key);
+    if (v)
+    {
+        return store_->erase(v);
+    }
+    else return false;
 }
 
 void

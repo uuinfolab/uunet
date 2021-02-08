@@ -22,7 +22,7 @@ The folder `src/` contains eleven folders, each providing some homogeneous set o
  - Basic non-network functionality:
    * `core/` (basic functionality such as exceptions, mathematical functions, CSV reading...)
  - Network data structures:
-   * `networks/` (various types of networks such as Network, WeightedNetwork, MultilayerNetwork, ...)
+   * `networks/` (various types of networks such as Network, MultiNetwork, MultilayerNetwork, ...)
    * `objects/` (parts of networks such as Vertex, Edge, Trail, Clique, ...)
  - Obtaining networks:
    * `io/` (functions to read and write networks from/to file)
@@ -149,7 +149,17 @@ and initializers:
 
     std::vector<int> vec = {1, 2, 3};
   
-Always use braces after `if`, `for` etc., even if the body consists of only one statement (option -j in astyle).
+Always use braces after `if`, `for` etc., even if the body consists of only one statement (option -j in astyle),
+except if the statement is on the same line:
+
+    if (test)
+    {
+        // do something
+    }
+    
+but:
+    
+    if (test) continue;
 
 Line length should be max 120 chars.
 

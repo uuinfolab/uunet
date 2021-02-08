@@ -376,7 +376,7 @@ pass(
                     //std::cout << (*n) << " (";
 
                     auto edges = meta->get()->edges()->get(v, n);
-                    std::unordered_map<size_t, const Edge*> edge_map;
+                    std::unordered_map<size_t, const MLEdge2*> edge_map;
 
                     for (auto e: edges)
                     {
@@ -452,7 +452,7 @@ pass(
                 //std::cout << (*n) << " (";
 
                 auto edges = meta->get()->edges()->get(v, n);
-                std::unordered_map<size_t, const Edge*> edge_map;
+                std::unordered_map<size_t, const MLEdge2*> edge_map;
 
                 for (auto e: edges)
                 {

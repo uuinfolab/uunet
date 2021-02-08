@@ -58,7 +58,8 @@ MDEdgeStore
         LoopMode loops = LoopMode::ALLOWED
     );
 
-
+    virtual ~MDEdgeStore() {}
+    
     /** Returns an iterator to the first object in the collection */
     iterator
     begin(
@@ -116,6 +117,12 @@ MDEdgeStore
         const MLEdge2* v
     ) const;
 
+    /** Returns true if an object with the input id is present in the collection */
+    bool
+    contains(
+        const typename MLEdge2::key_type& key
+    ) const;
+    
     /** Returns the object at the given position in the collection.
      * @throw ElementNotFoundException if the index is outside the bounds on the set
      */
@@ -187,7 +194,8 @@ MDEdgeStore
 
 
     /** Edges */
-    std::unique_ptr<core::ObjectStore<MLEdge2>> edges_;
+    //std::unique_ptr<core::ObjectStore<MLEdge2>> edges_;
+    std::unique_ptr<core::SharedPtrSortedRandomSet<const MLEdge2>> edges_;
 
     // Indexes to sets of objects (Set IDX):
     std::unordered_map<const VCube*, std::unordered_map<const VCube*, std::unordered_map<const Vertex*, std::unique_ptr<GenericObjectList<Vertex>>>>> sidx_neighbors_out;

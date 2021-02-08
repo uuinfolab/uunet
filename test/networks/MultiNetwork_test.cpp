@@ -42,14 +42,6 @@ TEST(networks_test, MultiNetwork)
 
     EXPECT_TRUE(g->is_directed());
 
-    EXPECT_TRUE(g->allows_multi_edges());
-
     EXPECT_TRUE(g->allows_loops());
-
-    EXPECT_FALSE(g->is_weighted());
-
-    EXPECT_FALSE(g->is_probabilistic());
-
-    EXPECT_FALSE(g->is_temporal());
 
 }

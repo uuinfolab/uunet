@@ -10,9 +10,9 @@ Network2::
 Network2(
     const std::string& name,
     EdgeDir dir,
-    LoopMode loops)
-:
-name(name)
+    LoopMode loops
+         )
+: name(name)
 {
 
     /*

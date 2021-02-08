@@ -49,5 +49,3 @@ TEST(core_stores_test, ObjectStore)
     << "Second iteration";
     
 }
-
-
