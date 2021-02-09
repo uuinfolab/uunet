@@ -7,7 +7,7 @@ namespace net {
 
 void
 make_weighted(
-    Network2* net
+    Network* net
 )
 {
     net->edges()->attr()->add("w_", core::AttributeType::DOUBLE);
@@ -15,7 +15,7 @@ make_weighted(
 
 bool
 is_weighted(
-    const Network2* net
+    const Network* net
 )
 {
     auto attr = net->edges()->attr()->get("w_");
@@ -30,8 +30,8 @@ is_weighted(
 
 void
 set_weight(
-    Network2* net,
-    const MLEdge2* edge,
+    Network* net,
+    const Edge* edge,
     double p
 )
 {
@@ -40,8 +40,8 @@ set_weight(
 
 double
 get_weight(
-    const Network2* net,
-    const MLEdge2* edge
+    const Network* net,
+    const Edge* edge
 )
 {
     auto val = net->edges()->attr()->get_double(edge, "w_");

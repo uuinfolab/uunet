@@ -6,7 +6,7 @@
 TEST(networks_test, ProbabilisticNetwork)
 {
 
-    auto g = std::make_unique<uu::net::Network2>("pnet", uu::net::EdgeDir::DIRECTED);
+    auto g = std::make_unique<uu::net::Network>("pnet", uu::net::EdgeDir::DIRECTED);
     uu::net::make_probabilistic(g.get());
 
     // Adding vertices

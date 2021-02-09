@@ -1,5 +1,5 @@
 #include "operations/slice.hpp"
-#include "networks/Network2.hpp"
+#include "networks/Network.hpp"
 #include "objects/EdgeDir.hpp"
 #include "core/attributes/conversion.hpp"
 #include "core/attributes/Value.hpp"
@@ -14,18 +14,18 @@ namespace uu {
 namespace net {
 
 
-std::unique_ptr<OrderedMultiplexNetwork2>
+std::unique_ptr<OrderedMultiplexNetwork>
 slice_equal_time(
-    const Network2* tnet,
+    const Network* tnet,
     size_t num_partitions
 )
 {
 
     core::assert_not_null(tnet, "slice_equal_time", "tnet");
 
-    auto mpx = std::make_unique<OrderedMultiplexNetwork2>(tnet->name);
-    std::vector<const MLEdge2*> sorted_edge_vector;
-    std::vector<std::vector<const MLEdge2*>> partitioned_edge_vector;
+    auto mpx = std::make_unique<OrderedMultiplexNetwork>(tnet->name);
+    std::vector<const Edge*> sorted_edge_vector;
+    std::vector<std::vector<const Edge*>> partitioned_edge_vector;
 
     // create ordered layers for each time partition
     for (size_t i = 0; i<num_partitions; i++)

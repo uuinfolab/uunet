@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <vector>
 #include <memory>
-#include "networks/Network2.hpp"
+#include "networks/Network.hpp"
 
 namespace uu {
 namespace net {
@@ -13,7 +13,7 @@ class MetaNetwork
 {
   public:
 
-    std::unique_ptr<Network2> w;
+    std::unique_ptr<Network> w;
     size_t order = 0;
     std::unordered_map<const Vertex*, std::set<const Vertex*>> mapping;
     std::unordered_map<const Vertex*, const Vertex*> reverse_mapping;
@@ -34,7 +34,7 @@ class MetaNetwork
     );
 
 
-    const MLEdge2*
+    const Edge*
     edge(
         const Vertex* u,
         const Vertex* v,
@@ -42,7 +42,7 @@ class MetaNetwork
     );
 
 
-    const Network2*
+    const Network*
     get(
     ) const;
 

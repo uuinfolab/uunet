@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "networks/Network2.hpp"
+#include "networks/Network.hpp"
 #include "operations/intersection.hpp"
 #include "core/exceptions/OperationNotSupportedException.hpp"
 #include "core/exceptions/NullPtrException.hpp"
@@ -22,8 +22,8 @@ TEST(net_operations_test, graph_intersection)
     auto e4 = std::make_shared<const uu::net::Edge>(v3.get(), v2.get(), dir);
     */
 
-    auto g1 = std::make_unique<uu::net::Network2>("g1", dir);
-    auto g2 = std::make_unique<uu::net::Network2>("g2", dir);
+    auto g1 = std::make_unique<uu::net::Network>("g1", dir);
+    auto g2 = std::make_unique<uu::net::Network>("g2", dir);
 
     g1->vertices()->add(v1);
     g1->vertices()->add(v2);
@@ -52,12 +52,12 @@ TEST(net_operations_test, graph_intersection)
     // null parameters
 
     EXPECT_THROW(
-        uu::net::graph_intersection((uu::net::Network2*)nullptr, g2.get()),
+        uu::net::graph_intersection((uu::net::Network*)nullptr, g2.get()),
         uu::core::NullPtrException
     );
 
     EXPECT_THROW(
-        uu::net::graph_intersection(g1.get(), (uu::net::Network2*)nullptr),
+        uu::net::graph_intersection(g1.get(), (uu::net::Network*)nullptr),
         uu::core::NullPtrException
     );
 

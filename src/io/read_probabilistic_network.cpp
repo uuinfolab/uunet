@@ -3,7 +3,7 @@
 namespace uu {
 namespace net {
 
-std::unique_ptr<Network2>
+std::unique_ptr<Network>
 read_probabilistic_network(
     const std::string& infile,
     const std::string& name,
@@ -17,7 +17,7 @@ read_probabilistic_network(
     // Check metadata consistency (@todo)
     // create network
     // and add attributes
-    auto g = std::make_unique<Network2>(name, dir, loops);
+    auto g = std::make_unique<Network>(name, dir, loops);
     make_probabilistic(g.get());
 
     for (auto attr: meta.vertex_attributes)

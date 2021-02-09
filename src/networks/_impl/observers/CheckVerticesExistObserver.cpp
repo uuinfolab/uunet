@@ -14,7 +14,7 @@ CheckVerticesExistObserver(
 void
 CheckVerticesExistObserver::
 notify_add(
-    const MLEdge2* e
+    const Edge* e
 )
 {
 
@@ -35,7 +35,7 @@ notify_add(
 void
 CheckVerticesExistObserver::
 notify_erase(
-    const MLEdge2* e
+    const Edge* e
 )
 {
     core::assert_not_null(e, "CheckVerticesExistObserver::notify_erase", "e");

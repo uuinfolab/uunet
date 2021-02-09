@@ -2,7 +2,7 @@
 #define UU_NET_DATASTRUCTURE_OBSERVERS_NOLOOPCHECKOBSERVER2_H_
 
 #include "core/datastructures/observers/Observer.hpp"
-#include "objects/MLEdge2.hpp"
+#include "objects/Edge.hpp"
 
 namespace uu {
 namespace net {
@@ -11,7 +11,7 @@ namespace net {
  * This observer checks that the vertices at the end of new edges are not the same (that is, there are no loops).
  */
 class NoLoopCheckObserver2 :
-    public core::Observer<const MLEdge2>
+    public core::Observer<const Edge>
 {
 
   public:
@@ -27,7 +27,7 @@ class NoLoopCheckObserver2 :
      */
     void
     notify_add(
-        const MLEdge2* e
+        const Edge* e
     ) override;
 
 
@@ -36,7 +36,7 @@ class NoLoopCheckObserver2 :
      */
     void
     notify_erase(
-        const MLEdge2* e
+        const Edge* e
     ) override;
 
 };

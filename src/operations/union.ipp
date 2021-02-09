@@ -37,7 +37,7 @@ graph_union(
         v_union.insert(vertex);
     }
 
-    std::set<const MLEdge2*> e_union;
+    std::set<const Edge*> e_union;
 
     for (auto edge: *g1->edges())
     {

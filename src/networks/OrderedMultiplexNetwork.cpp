@@ -1,4 +1,4 @@
-#include "networks/OrderedMultiplexNetwork2.hpp"
+#include "networks/OrderedMultiplexNetwork.hpp"
 
 //#include "networks/_impl/observers/PropagateObserver.hpp"
 //#include "networks/_impl/observers/LayerObserver.hpp"
@@ -11,8 +11,8 @@
 namespace uu {
 namespace net {
 
-OrderedMultiplexNetwork2::
-OrderedMultiplexNetwork2(
+OrderedMultiplexNetwork::
+OrderedMultiplexNetwork(
     const std::string& name
 )
     : name(name)
@@ -57,7 +57,7 @@ OrderedMultiplexNetwork2(
 
 /*
 void
-OrderedMultiplexNetwork2::
+OrderedMultiplexNetwork::
 add_dimension(
     const std::string& name,
     const std::vector<std::string>& members
@@ -83,7 +83,7 @@ add_dimension(
 */
 
 const VCube*
-OrderedMultiplexNetwork2::
+OrderedMultiplexNetwork::
 actors(
 ) const
 {
@@ -91,7 +91,7 @@ actors(
 }
 
 VCube*
-OrderedMultiplexNetwork2::
+OrderedMultiplexNetwork::
 actors(
 )
 {
@@ -99,7 +99,7 @@ actors(
 }
 
 LayerStore*
-OrderedMultiplexNetwork2::
+OrderedMultiplexNetwork::
 layers(
 )
 {
@@ -108,7 +108,7 @@ layers(
 
 
 const LayerStore*
-OrderedMultiplexNetwork2::
+OrderedMultiplexNetwork::
 layers(
 ) const
 {
@@ -117,7 +117,7 @@ layers(
 
 /*
 AttrVertexStore*
-OrderedMultiplexNetwork2::
+OrderedMultiplexNetwork::
 actors(
 )
 {
@@ -126,7 +126,7 @@ actors(
 
 
 const AttrVertexStore*
-OrderedMultiplexNetwork2::
+OrderedMultiplexNetwork::
 actors(
 ) const
 {
@@ -135,7 +135,7 @@ actors(
 
 
 MLLayerStore*
-OrderedMultiplexNetwork2::
+OrderedMultiplexNetwork::
 layers(
 )
 {
@@ -144,7 +144,7 @@ layers(
 
 
 const MLLayerStore*
-OrderedMultiplexNetwork2::
+OrderedMultiplexNetwork::
 layers(
 ) const
 {
@@ -153,7 +153,7 @@ layers(
 
 
 MLSimpleEdgeStore*
-OrderedMultiplexNetwork2::
+OrderedMultiplexNetwork::
 interlayer_edges(
 )
 {
@@ -162,7 +162,7 @@ interlayer_edges(
 
 
 const MLSimpleEdgeStore*
-OrderedMultiplexNetwork2::
+OrderedMultiplexNetwork::
 interlayer_edges(
 ) const
 {
@@ -170,7 +170,7 @@ interlayer_edges(
 }
 
 std::string
-OrderedMultiplexNetwork2::
+OrderedMultiplexNetwork::
 summary(
 ) const
 {
@@ -209,7 +209,7 @@ summary(
 
 
 bool
-OrderedMultiplexNetwork2::
+OrderedMultiplexNetwork::
 is_ordered(
 ) const
 {
@@ -217,7 +217,7 @@ is_ordered(
 }
 
 bool
-OrderedMultiplexNetwork2::
+OrderedMultiplexNetwork::
 allows_interlayer_edges(
 ) const
 {
@@ -228,15 +228,15 @@ allows_interlayer_edges(
 
 /*
 ECube*
-OrderedMultiplexNetwork2::
+OrderedMultiplexNetwork::
 init(
-     Network2* layer1,
-    Network2* layer2,
+     Network* layer1,
+    Network* layer2,
      EdgeDir dir
 )
 {
-    core::assert_not_null(layer1, "OrderedMultiplexNetwork2::get", "layer1");
-    core::assert_not_null(layer2, "OrderedMultiplexNetwork2::get", "layer2");
+    core::assert_not_null(layer1, "OrderedMultiplexNetwork::get", "layer1");
+    core::assert_not_null(layer2, "OrderedMultiplexNetwork::get", "layer2");
 
     if (!layers_->contains(layer1))
     {

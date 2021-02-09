@@ -3,13 +3,13 @@
 
 #include <string>
 #include <memory>
-#include "networks/MultilayerNetwork2.hpp"
+#include "networks/MultilayerNetwork.hpp"
 #include "io/_impl/read_ml_common.hpp"
 
 namespace uu {
 namespace net {
 
-std::unique_ptr<MultilayerNetwork2>
+std::unique_ptr<MultilayerNetwork>
 read_multilayer_network(
     const std::string& infile,
     const std::string& name,
@@ -19,9 +19,9 @@ read_multilayer_network(
 
 
 template <>
-Network2*
+Network*
 read_layer(
-    MultilayerNetwork2* ml,
+    MultilayerNetwork* ml,
     const std::vector<std::string>& fields,
     size_t from_idx,
     size_t line_number
@@ -30,7 +30,7 @@ read_layer(
 template <>
 void
 read_vertex(
-    MultilayerNetwork2* ml,
+    MultilayerNetwork* ml,
     const std::vector<std::string>& fields,
     const MultilayerMetadata& meta,
     size_t line_number
@@ -39,7 +39,7 @@ read_vertex(
 template <>
 void
 read_intralayer_vertex(
-    MultilayerNetwork2* ml,
+    MultilayerNetwork* ml,
     const std::vector<std::string>& fields,
     const MultilayerMetadata& meta,
     size_t line_number
@@ -48,7 +48,7 @@ read_intralayer_vertex(
 template <>
 void
 read_intralayer_edge(
-    MultilayerNetwork2* ml,
+    MultilayerNetwork* ml,
     const std::vector<std::string>& fields,
     const MultilayerMetadata& meta,
     size_t line_number
@@ -58,7 +58,7 @@ read_intralayer_edge(
 template <>
 void
 read_interlayer_edge(
-    MultilayerNetwork2* ml,
+    MultilayerNetwork* ml,
     const std::vector<std::string>& fields,
     const MultilayerMetadata& meta,
     size_t line_number

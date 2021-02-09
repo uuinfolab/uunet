@@ -1,13 +1,13 @@
 #include "gtest/gtest.h"
 
-#include "networks/MultilayerNetwork2.hpp"
+#include "networks/MultilayerNetwork.hpp"
 
-TEST(networks_test, MultilayerNetwork2)
+TEST(networks_test, MultilayerNetwork)
 {
 
     // Creating an empty multilayer network
 
-    auto net = std::make_unique<uu::net::MultilayerNetwork2>("a ml net");
+    auto net = std::make_unique<uu::net::MultilayerNetwork>("a ml net");
 
     // Creating actors
 

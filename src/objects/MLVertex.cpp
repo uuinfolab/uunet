@@ -1,25 +1,25 @@
-#include "objects/MLVertex2.hpp"
+#include "objects/MLVertex.hpp"
 
 #include "core/exceptions/assert_not_null.hpp"
 
 namespace uu {
 namespace net {
 
-MLVertex2::
-MLVertex2(
+MLVertex::
+MLVertex(
     const Vertex* v,
-    const Network2* c
+    const Network* c
 ) :
     v(v),
     c(c),
     key(v, c)
 {
-    core::assert_not_null(v, "MLVertex2::constructor", "v");
-    core::assert_not_null(c, "MLVertex2::constructor", "c");
+    core::assert_not_null(v, "MLVertex::constructor", "v");
+    core::assert_not_null(c, "MLVertex::constructor", "c");
 }
 
-MLVertex2::
-MLVertex2(
+MLVertex::
+MLVertex(
 ) :
     v(nullptr),
     c(nullptr),
@@ -29,36 +29,36 @@ MLVertex2(
 
 
 bool
-MLVertex2::
+MLVertex::
 operator==(
-    const MLVertex2& mlv
+    const MLVertex& mlv
 ) const
 {
     return v == mlv.v && c == mlv.c;
 }
 
 bool
-MLVertex2::
+MLVertex::
 operator<(
-    const MLVertex2& mlv
+    const MLVertex& mlv
 ) const
 {
     return v < mlv.v || (v == mlv.v && c < mlv.c);
 }
 
 bool
-MLVertex2::
+MLVertex::
 operator!=(
-    const MLVertex2& mlv
+    const MLVertex& mlv
 ) const
 {
     return v != mlv.v || c != mlv.c;
 }
 
 bool
-MLVertex2::
+MLVertex::
 operator>(
-    const MLVertex2& mlv
+    const MLVertex& mlv
 ) const
 {
     return v > mlv.v || (v == mlv.v && c > mlv.c);
@@ -66,7 +66,7 @@ operator>(
 
 
 std::string
-MLVertex2::
+MLVertex::
 to_string(
 ) const
 {
@@ -75,7 +75,7 @@ to_string(
 
 
 std::ostream&
-operator<<(std::ostream& os, const MLVertex2& v)
+operator<<(std::ostream& os, const MLVertex& v)
 {
     os << v.to_string();
     return os;

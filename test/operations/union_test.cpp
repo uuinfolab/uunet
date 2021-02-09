@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "networks/Network2.hpp"
+#include "networks/Network.hpp"
 #include "operations/union.hpp"
 #include "core/exceptions/OperationNotSupportedException.hpp"
 #include "core/exceptions/NullPtrException.hpp"
@@ -10,8 +10,8 @@ TEST(net_operations_test, graph_union)
 
     // creating some simple graphs
 
-    auto g1 = std::make_unique<uu::net::Network2>("g1", uu::net::EdgeDir::DIRECTED);
-    auto g2 = std::make_unique<uu::net::Network2>("g2", uu::net::EdgeDir::DIRECTED);
+    auto g1 = std::make_unique<uu::net::Network>("g1", uu::net::EdgeDir::DIRECTED);
+    auto g2 = std::make_unique<uu::net::Network>("g2", uu::net::EdgeDir::DIRECTED);
 
     auto v1 = g1->vertices()->add("v1");
     auto v2 = g1->vertices()->add("v2");
@@ -50,12 +50,12 @@ TEST(net_operations_test, graph_union)
     // null parameters
 
     EXPECT_THROW(
-        uu::net::graph_union((uu::net::Network2*)nullptr, g2.get()),
+        uu::net::graph_union((uu::net::Network*)nullptr, g2.get()),
         uu::core::NullPtrException
     );
 
     EXPECT_THROW(
-        uu::net::graph_union(g1.get(), (uu::net::Network2*)nullptr),
+        uu::net::graph_union(g1.get(), (uu::net::Network*)nullptr),
         uu::core::NullPtrException
     );
 

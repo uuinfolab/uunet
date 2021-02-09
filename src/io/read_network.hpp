@@ -3,13 +3,13 @@
 
 #include <string>
 #include <memory>
-#include "networks/Network2.hpp"
+#include "networks/Network.hpp"
 #include "io/_impl/read_common.hpp"
 
 namespace uu {
 namespace net {
 
-std::unique_ptr<Network2>
+std::unique_ptr<Network>
 read_network(
     const std::string& infile,
     const std::string& name,
@@ -19,7 +19,7 @@ read_network(
 template <>
 void
 read_vertex(
-    Network2* g,
+    Network* g,
     const std::vector<std::string>& fields,
     const std::vector<core::Attribute>& vertex_attributes,
     size_t line_number
@@ -29,7 +29,7 @@ read_vertex(
 template <>
 void
 read_edge(
-    Network2* g,
+    Network* g,
     const std::vector<std::string>& fields,
     const std::vector<core::Attribute>& edge_attributes,
     size_t line_number

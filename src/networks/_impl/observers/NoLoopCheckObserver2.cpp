@@ -16,7 +16,7 @@ NoLoopCheckObserver2(
 void
 NoLoopCheckObserver2::
 notify_add(
-    const MLEdge2* e
+    const Edge* e
 )
 {
     core::assert_not_null(e, "NoLoopCheckObserver2::notify_add", "e");
@@ -32,7 +32,7 @@ notify_add(
 void
 NoLoopCheckObserver2::
 notify_erase(
-    const MLEdge2* e
+    const Edge* e
 )
 {
     // Erasing an edge cannot generate a loop: no action

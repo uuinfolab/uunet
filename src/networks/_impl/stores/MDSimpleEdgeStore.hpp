@@ -19,7 +19,7 @@ class
 
   public:
 
-    typedef const MLEdge2* get_return_type;
+    typedef const Edge* get_return_type;
 
     MDSimpleEdgeStore(
         VCube* cube1,
@@ -63,12 +63,12 @@ class
      * @return a pointer to the new edge, or nullptr if the edge already exists.
      **/
     virtual
-    const MLEdge2*
+    const Edge*
     add(
-        std::shared_ptr<const MLEdge2>  e
+        std::shared_ptr<const Edge>  e
     ) override;
 
-    const MLEdge2 *
+    const Edge *
     add(
         const Vertex* vertex1,
         const Vertex* vertex2
@@ -83,7 +83,7 @@ class
      * of the edge if undirected.
      * @return a pointer to the requested edge, or nullptr if it does not exist.
      **/
-    const MLEdge2*
+    const Edge*
     get(
         const Vertex* vertex1,
         const VCube* cube1,
@@ -91,31 +91,31 @@ class
         const VCube* cube2
     ) const;
 
-    const MLEdge2*
+    const Edge*
     get(
         const Vertex* vertex1,
         const Vertex* vertex2
     ) const;
 
-    const MLEdge2*
+    const Edge*
     get(
-        const typename MLEdge2::key_type& key
+        const typename Edge::key_type& key
     ) const;
 
     bool
     contains(
-        const typename MLEdge2::key_type& key
+        const typename Edge::key_type& key
     ) const;
 
     virtual
     bool
     erase(
-        const MLEdge2* e
+        const Edge* e
     ) override;
 
     bool
     erase(
-        const typename MLEdge2::key_type& key
+        const typename Edge::key_type& key
     );
 
     /*
@@ -144,7 +144,7 @@ class
   protected:
 
     // Indexes to objects (Component IDX):
-    std::unordered_map<const VCube*, std::unordered_map<const VCube*, std::unordered_map<const Vertex*, std::unordered_map<const Vertex*, const MLEdge2*>>>> cidx_edge_by_vertexes;
+    std::unordered_map<const VCube*, std::unordered_map<const VCube*, std::unordered_map<const Vertex*, std::unordered_map<const Vertex*, const Edge*>>>> cidx_edge_by_vertexes;
 };
 
 

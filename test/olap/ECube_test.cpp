@@ -13,7 +13,7 @@ class olap_ECube_test : public ::testing::Test
     std::unique_ptr<uu::net::ECube> E;
     std::shared_ptr<const uu::net::Vertex> v1, v2;
     //const uu::net::Vertex *v1, *v2, *v3, *v4, *v5, *v6;
-    //const uu::net::Network2 *l1, *l2;
+    //const uu::net::Network *l1, *l2;
 
     void
     SetUp() override
@@ -47,7 +47,7 @@ TEST_F(olap_ECube_test, set_functionality)
     EXPECT_EQ(E->index_of(e1), 0);
     EXPECT_EQ(E->erase(e1), true);
 
-    auto e2_sharedptr = std::make_shared<const uu::net::MLEdge2>(v1.get(), vc1.get(), v1.get(), vc2.get(), uu::net::EdgeDir::DIRECTED);
+    auto e2_sharedptr = std::make_shared<const uu::net::Edge>(v1.get(), vc1.get(), v1.get(), vc2.get(), uu::net::EdgeDir::DIRECTED);
     auto e2 = e2_sharedptr.get();
     EXPECT_EQ(E->add(e2), e2);
     EXPECT_EQ(E->size(), (size_t) 1);
@@ -57,8 +57,8 @@ TEST_F(olap_ECube_test, attribute_functionality)
 {
     // we create an independent edge, so that we can then erase it from the cube
     // without it being garbage collected
-    auto e_sharedptr = std::make_shared<const uu::net::MLEdge2>(v1.get(), vc1.get(), v1.get(), vc2.get(), uu::net::EdgeDir::DIRECTED);
-    auto e = e_sharedptr.get(); // e const MLEdge2*
+    auto e_sharedptr = std::make_shared<const uu::net::Edge>(v1.get(), vc1.get(), v1.get(), vc2.get(), uu::net::EdgeDir::DIRECTED);
+    auto e = e_sharedptr.get(); // e const Edge*
     E->add(e);
 
 
@@ -124,7 +124,7 @@ TEST_F(olap_ECube_test, discretization_01f)
 
     E->add(v1.get(), vc1.get(), v1.get(), vc2.get());
 
-    auto d = uu::net::UniformDiscretization<uu::net::MLEdge2>(1, false);
+    auto d = uu::net::UniformDiscretization<uu::net::Edge>(1, false);
     E->add_dimension("d0", {"m0"}, d);
     EXPECT_EQ(E->size(), (size_t) 0);
 }
@@ -136,7 +136,7 @@ TEST_F(olap_ECube_test, discretization_01t)
     E->add(v1.get(), vc1.get(), v1.get(), vc2.get());
 
 
-    auto d = uu::net::UniformDiscretization<uu::net::MLEdge2>(1, true);
+    auto d = uu::net::UniformDiscretization<uu::net::Edge>(1, true);
     E->add_dimension("d0", {"m0"}, d);
     EXPECT_EQ(E->size(), (size_t) 1);
 

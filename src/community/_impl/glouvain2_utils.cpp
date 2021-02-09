@@ -15,14 +15,14 @@ namespace uu {
 namespace net {
 
 
-std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, MLVertex2>, std::vector<std::unique_ptr<const Vertex>>>
+std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, MLVertex>, std::vector<std::unique_ptr<const Vertex>>>
 convert(
-    const MultilayerNetwork2* g,
+    const MultilayerNetwork* g,
     double omega
 )
 {
-    std::map<MLVertex2, const Vertex*> mapping;
-    std::map<const Vertex*, MLVertex2> reverse_mapping;
+    std::map<MLVertex, const Vertex*> mapping;
+    std::map<const Vertex*, MLVertex> reverse_mapping;
 
     //std::map<MLVertex<MultilayerNetwork>, size_t> deg;
     //std::map<MLVertex<MultilayerNetwork>, double> ome;
@@ -45,7 +45,7 @@ convert(
         {
             //std::cout << (*v) << std::endl;
             auto metavertex = std::make_unique<const Vertex>(std::to_string(v_id++));
-            auto intralayer_vertex = MLVertex2(v, l);
+            auto intralayer_vertex = MLVertex(v, l);
             mapping[intralayer_vertex] = metavertex.get();
             reverse_mapping[metavertex.get()] = intralayer_vertex;
             meta->add(metavertex.get());
@@ -57,8 +57,8 @@ convert(
         {
             //std::cout << "e " << (*e->v1) << std::endl;
 
-            auto iv1 = MLVertex2(e->v1, l);
-            auto iv2 = MLVertex2(e->v2, l);
+            auto iv1 = MLVertex(e->v1, l);
+            auto iv2 = MLVertex(e->v2, l);
             auto v1 = mapping.at(iv1);
             auto v2 = mapping.at(iv2);
 
@@ -89,8 +89,8 @@ convert(
                     continue;
                 }
 
-                auto iv1 = MLVertex2(v, l1);
-                auto iv2 = MLVertex2(v, l2);
+                auto iv1 = MLVertex(v, l1);
+                auto iv2 = MLVertex(v, l2);
                 auto v1 = mapping.at(iv1);
                 auto v2 = mapping.at(iv2);
 
@@ -109,14 +109,14 @@ convert(
 }
 
 
-std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, MLVertex2>, std::vector<std::unique_ptr<const Vertex>>>
+std::tuple<std::unique_ptr<GMetaNetwork>, std::map<const Vertex*, MLVertex>, std::vector<std::unique_ptr<const Vertex>>>
 convert(
-    const OrderedMultiplexNetwork2* g,
+    const OrderedMultiplexNetwork* g,
     double omega
 )
 {
-    std::map<MLVertex2, const Vertex*> mapping;
-    std::map<const Vertex*, MLVertex2> reverse_mapping;
+    std::map<MLVertex, const Vertex*> mapping;
+    std::map<const Vertex*, MLVertex> reverse_mapping;
 
     auto meta = std::make_unique<GMetaNetwork>();
 
@@ -132,7 +132,7 @@ convert(
         for (auto v: *l->vertices())
         {
             auto metavertex = std::make_unique<const Vertex>(std::to_string(v_id++));
-            auto intralayer_vertex = MLVertex2(v, l);
+            auto intralayer_vertex = MLVertex(v, l);
             mapping[intralayer_vertex] = metavertex.get();
             reverse_mapping[metavertex.get()] = intralayer_vertex;
             meta->add(metavertex.get());
@@ -144,8 +144,8 @@ convert(
         for (auto e: *l->edges())
         {
 
-            auto iv1 = MLVertex2(e->v1, l);
-            auto iv2 = MLVertex2(e->v2, l);
+            auto iv1 = MLVertex(e->v1, l);
+            auto iv2 = MLVertex(e->v2, l);
             auto v1 = mapping.at(iv1);
             auto v2 = mapping.at(iv2);
 
@@ -171,8 +171,8 @@ convert(
                 continue;
             }
 
-            auto iv1 = MLVertex2(v, l1);
-            auto iv2 = MLVertex2(v, l2);
+            auto iv1 = MLVertex(v, l1);
+            auto iv2 = MLVertex(v, l2);
             auto v1 = mapping.at(iv1);
             auto v2 = mapping.at(iv2);
 
@@ -189,7 +189,7 @@ expand(
     const std::vector<std::unique_ptr<GMetaNetwork>>& levels,
     size_t i,
     const Vertex* v,
-    Community<Network2>* com
+    Community<Network>* com
 )
 {
     if (i==0)
@@ -210,18 +210,18 @@ expand(
     }
 }
 
-std::unique_ptr<CommunityStructure<Network2>>
+std::unique_ptr<CommunityStructure<Network>>
         communities(
             const std::vector<std::unique_ptr<GMetaNetwork>>& levels
         )
 {
-    auto res = std::make_unique<CommunityStructure<Network2>>();
+    auto res = std::make_unique<CommunityStructure<Network>>();
 
     size_t i = levels.size()-1;
 
     for (auto v: *levels.at(i)->get()->vertices())
     {
-        auto community = std::make_unique<Community<Network2>>();
+        auto community = std::make_unique<Community<Network>>();
 
         expand(levels, i, v, community.get());
 
@@ -376,7 +376,7 @@ pass(
                     //std::cout << (*n) << " (";
 
                     auto edges = meta->get()->edges()->get(v, n);
-                    std::unordered_map<size_t, const MLEdge2*> edge_map;
+                    std::unordered_map<size_t, const Edge*> edge_map;
 
                     for (auto e: edges)
                     {
@@ -452,7 +452,7 @@ pass(
                 //std::cout << (*n) << " (";
 
                 auto edges = meta->get()->edges()->get(v, n);
-                std::unordered_map<size_t, const MLEdge2*> edge_map;
+                std::unordered_map<size_t, const Edge*> edge_map;
 
                 for (auto e: edges)
                 {

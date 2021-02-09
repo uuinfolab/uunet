@@ -2,13 +2,14 @@
 #define UU_NET_DATASTRUCTURES_STORES_MDEDGESTORE_H_
 
 #include <memory>
+#include <unordered_set>
 #include <unordered_map>
 #include "core/datastructures/containers/SharedPtrSortedRandomSet.hpp"
 #include "core/stores/ObjectStore.hpp"
 #include "core/datastructures/observers/ObserverStore.hpp"
 #include "core/datastructures/observers/Subject.hpp"
 #include "olap/VCube.hpp"
-#include "objects/MLEdge2.hpp"
+#include "objects/Edge.hpp"
 #include "objects/EdgeDir.hpp"
 #include "objects/EdgeMode.hpp"
 #include "objects/LoopMode.hpp"
@@ -23,16 +24,16 @@ namespace net {
 class
     MDEdgeStore
     :
-//public core::SharedPtrSortedRandomSet<const MLEdge2>,
+//public core::SharedPtrSortedRandomSet<const Edge>,
 // This makes the store allowing observers which can trigger reactions when the store is updated
-    public core::Subject<const MLEdge2>,
+    public core::Subject<const Edge>,
 // This allows the edge store to store its own observers
     public core::ObserverStore
 {
 
     // private:
 
-    // core::SharedPtrSortedRandomSet<const MLEdge2> store_;
+    // core::SharedPtrSortedRandomSet<const Edge> store_;
 
   protected:
 
@@ -47,9 +48,9 @@ class
 
   public:
 
-    typedef const MLEdge2 value_type;
+    typedef const Edge value_type;
     typedef std::tuple<const Vertex*, const VCube*, const Vertex*, const VCube*> key_type;
-    typedef core::ObjectStore<MLEdge2>::iterator iterator;
+    typedef core::ObjectStore<Edge>::iterator iterator;
 
     MDEdgeStore(
         VCube* cube1,
@@ -77,15 +78,15 @@ class
     ) const;
 
     virtual
-    const MLEdge2*
+    const Edge*
     add(
-        std::shared_ptr<const MLEdge2> e
+        std::shared_ptr<const Edge> e
     );
 
     virtual
-    const MLEdge2*
+    const Edge*
     add(
-        const MLEdge2* e
+        const Edge* e
     );
 
     /**
@@ -98,7 +99,7 @@ class
      * @return a pointer to the new edge, or nullptr if the edge already exists.
      **/
     virtual
-    const MLEdge2 *
+    const Edge *
     add(
         const Vertex* vertex1,
         const VCube* cube1,
@@ -107,33 +108,33 @@ class
     );
 
     virtual
-    const MLEdge2*
+    const Edge*
     add(
-        const typename MLEdge2::key_type& key
+        const typename Edge::key_type& key
     );
 
     /** Returns true if an object with the input id is present in the collection */
     bool
     contains(
-        const MLEdge2* v
+        const Edge* v
     ) const;
 
     /** Returns true if an object with the input id is present in the collection */
     bool
     contains(
-        const typename MLEdge2::key_type& key
+        const typename Edge::key_type& key
     ) const;
 
     /** Returns the object at the given position in the collection.
      * @throw ElementNotFoundException if the index is outside the bounds on the set
      */
-    const MLEdge2*
+    const Edge*
     at(
         size_t pos
     ) const;
 
     /** Returns a random object, uniform probability */
-    const MLEdge2*
+    const Edge*
     get_at_random(
     ) const;
 
@@ -141,14 +142,14 @@ class
     /** Returns the position of the input value in the collection, or -1 */
     int
     index_of(
-        const MLEdge2* v
+        const Edge* v
     ) const;
 
 
     virtual
     bool
     erase(
-        const MLEdge2* e
+        const Edge* e
     ) = 0;
 
     /**
@@ -172,7 +173,7 @@ class
      * @return the list of neighbors.
      **/
     const
-    GenericObjectList<MLEdge2>*
+    GenericObjectList<Edge>*
     incident(
         const Vertex* vertex,
         const VCube* cube,
@@ -195,17 +196,17 @@ class
 
 
     /** Edges */
-    //std::unique_ptr<core::ObjectStore<MLEdge2>> edges_;
-    std::unique_ptr<core::SharedPtrSortedRandomSet<const MLEdge2>> edges_;
+    //std::unique_ptr<core::ObjectStore<Edge>> edges_;
+    std::unique_ptr<core::SharedPtrSortedRandomSet<const Edge>> edges_;
 
     // Indexes to sets of objects (Set IDX):
     std::unordered_map<const VCube*, std::unordered_map<const VCube*, std::unordered_map<const Vertex*, std::unique_ptr<GenericObjectList<Vertex>>>>> sidx_neighbors_out;
     std::unordered_map<const VCube*, std::unordered_map<const VCube*, std::unordered_map<const Vertex*, std::unique_ptr<GenericObjectList<Vertex>>>>> sidx_neighbors_in;
     std::unordered_map<const VCube*, std::unordered_map<const VCube*, std::unordered_map<const Vertex*, std::unique_ptr<GenericObjectList<Vertex>>>>> sidx_neighbors_all;
 
-    std::unordered_map<const VCube*, std::unordered_map<const VCube*, std::unordered_map<const Vertex*, std::unique_ptr<GenericObjectList<MLEdge2>>>>> sidx_incident_out;
-    std::unordered_map<const VCube*, std::unordered_map<const VCube*, std::unordered_map<const Vertex*, std::unique_ptr<GenericObjectList<MLEdge2>>>>> sidx_incident_in;
-    std::unordered_map<const VCube*, std::unordered_map<const VCube*, std::unordered_map<const Vertex*, std::unique_ptr<GenericObjectList<MLEdge2>>>>> sidx_incident_all;
+    std::unordered_map<const VCube*, std::unordered_map<const VCube*, std::unordered_map<const Vertex*, std::unique_ptr<GenericObjectList<Edge>>>>> sidx_incident_out;
+    std::unordered_map<const VCube*, std::unordered_map<const VCube*, std::unordered_map<const Vertex*, std::unique_ptr<GenericObjectList<Edge>>>>> sidx_incident_in;
+    std::unordered_map<const VCube*, std::unordered_map<const VCube*, std::unordered_map<const Vertex*, std::unique_ptr<GenericObjectList<Edge>>>>> sidx_incident_all;
 };
 
 }

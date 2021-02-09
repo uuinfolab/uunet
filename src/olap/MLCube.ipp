@@ -4,7 +4,7 @@
 #include "core/exceptions/OutOfBoundsException.hpp"
 #include "core/exceptions/OperationNotSupportedException.hpp"
 #include "core/datastructures/containers/UnionSortedRandomSet.hpp"
-#include "core/olap/datastructures/NCube.hpp"
+//#include "core/olap/datastructures/NCube.hpp"
 #include "core/olap/selection/IndexIterator.hpp"
 #include <string>
 #include <unordered_map>

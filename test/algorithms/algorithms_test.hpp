@@ -3,23 +3,23 @@
 
 #include "gtest/gtest.h"
 
-#include "networks/Network2.hpp"
+#include "networks/Network.hpp"
 
 class net_algorithms_test : public ::testing::Test
 {
   protected:
 
-    std::unique_ptr<uu::net::Network2> g_uptr;
+    std::unique_ptr<uu::net::Network> g_uptr;
 
-    uu::net::Network2* g;
+    uu::net::Network* g;
     const uu::net::Vertex *v1, *v2, *v3, *v4, *v5, *v6, *v7, *v8, *v9;
-    const uu::net::MLEdge2 *e1, *e2, *e3, *e4, *e5, *e6, *e7, *e8;
+    const uu::net::Edge *e1, *e2, *e3, *e4, *e5, *e6, *e7, *e8;
 
     void
     SetUp() override
     {
 
-        g_uptr = std::make_unique<uu::net::Network2>("net");
+        g_uptr = std::make_unique<uu::net::Network>("net");
 
         g = g_uptr.get();
 

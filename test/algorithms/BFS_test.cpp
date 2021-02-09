@@ -8,7 +8,7 @@
 TEST_F(net_algorithms_test, BFS)
 {
 
-    uu::net::BFS<uu::net::Network2> bfs(g, v2, uu::net::EdgeMode::INOUT);
+    uu::net::BFS<uu::net::Network> bfs(g, v2, uu::net::EdgeMode::INOUT);
 
     auto it = bfs.begin();
     EXPECT_EQ((*it)->name, "v2");

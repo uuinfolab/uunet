@@ -1,13 +1,13 @@
 #include "gtest/gtest.h"
 
-#include "networks/OrderedMultiplexNetwork2.hpp"
+#include "networks/OrderedMultiplexNetwork.hpp"
 
 TEST(networks_test, OrderedMultiplexNetwork)
 {
 
     // Creating an empty ordered multiplex network
 
-    auto net = std::make_unique<uu::net::OrderedMultiplexNetwork2>("a ml net");
+    auto net = std::make_unique<uu::net::OrderedMultiplexNetwork>("a ml net");
 
     // Adding layers
 

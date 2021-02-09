@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
 #include "community/label_propagation.hpp"
-#include "networks/Network2.hpp"
+#include "networks/Network.hpp"
 
 class net_community_label_propagation_test : public ::testing::Test
 {
@@ -12,7 +12,7 @@ class net_community_label_propagation_test : public ::testing::Test
 TEST_F(net_community_label_propagation_test, algorithm)
 {
 
-    auto net = std::make_unique<uu::net::Network2>("g");
+    auto net = std::make_unique<uu::net::Network>("g");
 
     auto v1 = net->vertices()->add("v1");
     auto v2 = net->vertices()->add("v2");

@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
 #include "core/utils/pretty_printing.hpp"
-#include "core/olap/datastructures/Cube.hpp"
+//#include "net/olap/VCube.hpp"
 #include "core/olap/selection/EntryIterator.hpp"
 #include "core/olap/selection/IndexIterator.hpp"
 #include "core/olap/selection/Set.hpp"
@@ -9,8 +9,8 @@
 
 TEST(core_olap_selection_test, EntryIterator)
 {
-    // @todo make test
-    uu::core::Cube<int> c({3,3});
+    /* @todo make test
+    uu::net::VCube c({3,3});
 
     uu::core::IndexIterator index_it({{0,1,2}, {0,1,2}});
     int i = 0;
@@ -51,7 +51,7 @@ TEST(core_olap_selection_test, EntryIterator)
         }
 
         iteration++;
-    }
+    }*/
 
 }
 

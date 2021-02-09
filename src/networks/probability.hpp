@@ -1,25 +1,25 @@
 #ifndef UU_NETWORKS_PROBABILITY_H_
 #define UU_NETWORKS_PROBABILITY_H_
 
-#include "networks/Network2.hpp"
+#include "networks/Network.hpp"
 
 namespace uu {
 namespace net {
 
 void
 make_probabilistic(
-    Network2* net
+    Network* net
 );
 
 bool
 is_probabilistic(
-    const Network2* net
+    const Network* net
 );
 
 void
 set_prob(
-    Network2* net,
-    const MLEdge2* edge,
+    Network* net,
+    const Edge* edge,
     double p
 );
 
@@ -30,8 +30,8 @@ set_prob(
  */
 double
 get_prob(
-    const Network2* net,
-    const MLEdge2* edge
+    const Network* net,
+    const Edge* edge
 );
 
 }

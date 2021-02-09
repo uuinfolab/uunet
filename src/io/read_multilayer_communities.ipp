@@ -3,7 +3,7 @@
 #include "core/exceptions/ElementNotFoundException.hpp"
 #include "core/exceptions/WrongFormatException.hpp"
 #include "core/utils/CSVReader.hpp"
-#include "objects/MLVertex2.hpp"
+#include "objects/MLVertex.hpp"
 
 #include <vector>
 #include <set>
@@ -28,7 +28,7 @@ std::unique_ptr<CommunityStructure<M>>
     csv.set_field_separator(separator);
     csv.open(infile);
 
-    std::unordered_map<std::string, std::set<MLVertex2> > result;
+    std::unordered_map<std::string, std::set<MLVertex> > result;
 
     while (csv.has_next())
     {
@@ -53,7 +53,7 @@ std::unique_ptr<CommunityStructure<M>>
                 throw core::ElementNotFoundException("vertex " + actor_name + "@" + layer_name);
             }
 
-            auto v = MLVertex2(a,l);
+            auto v = MLVertex(a,l);
             result[community_id].insert(v);
         }
 
@@ -71,7 +71,7 @@ std::unique_ptr<CommunityStructure<M>>
                     continue;
                 }
 
-                auto v = MLVertex2(a,l);
+                auto v = MLVertex(a,l);
                 result[community_id].insert(v);
             }
         }

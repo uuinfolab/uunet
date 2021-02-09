@@ -30,7 +30,7 @@ add(
 }
 
 
-const MLEdge2*
+const Edge*
 GMetaNetwork::
 edge(
     const Vertex* u,
@@ -63,7 +63,7 @@ edge(
 double
 GMetaNetwork::
 get_weight(
-    const MLEdge2* e
+    const Edge* e
 ) const
 {
     return edge_weight.at(e);
@@ -72,7 +72,7 @@ get_weight(
 size_t
 GMetaNetwork::
 get_type(
-    const MLEdge2* e
+    const Edge* e
 ) const
 {
     return edge_type.at(e);

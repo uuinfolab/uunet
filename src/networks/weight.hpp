@@ -1,26 +1,26 @@
 #ifndef UU_NETWORKS_WEIGHT_H_
 #define UU_NETWORKS_WEIGHT_H_
 
-#include "networks/Network2.hpp"
+#include "networks/Network.hpp"
 
 namespace uu {
 namespace net {
 
 void
 make_weighted(
-    Network2* net
+    Network* net
 );
 
 bool
 is_weighted(
-    const Network2* net
+    const Network* net
 );
 
 
 void
 set_weight(
-    Network2* net,
-    const MLEdge2* edge,
+    Network* net,
+    const Edge* edge,
     double p
 );
 
@@ -31,8 +31,8 @@ set_weight(
  */
 double
 get_weight(
-    const Network2* net,
-    const MLEdge2* edge
+    const Network* net,
+    const Edge* edge
 );
 
 }

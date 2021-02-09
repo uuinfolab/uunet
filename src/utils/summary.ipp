@@ -1,4 +1,4 @@
-#include "networks/MultilayerNetwork2.hpp"
+#include "networks/MultilayerNetwork.hpp"
 #include "core/exceptions/OperationNotSupportedException.hpp"
 #include "core/exceptions/assert_not_null.hpp"
 #include "measures/order.hpp"
@@ -25,7 +25,7 @@ summary_short(
 template<>
 std::string
 summary_short(
-    const MultilayerNetwork2* net
+    const MultilayerNetwork* net
 )
 {
     core::assert_not_null(net, "summary_short", "g");

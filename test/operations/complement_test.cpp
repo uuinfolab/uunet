@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "networks/Network2.hpp"
+#include "networks/Network.hpp"
 #include "operations/complement.hpp"
 #include "core/exceptions/OperationNotSupportedException.hpp"
 #include "core/exceptions/NullPtrException.hpp"
@@ -12,7 +12,7 @@ TEST(net_operations_test, graph_complement_directed)
     // creating a simple graph
 
     auto dir = uu::net::EdgeDir::DIRECTED;
-    auto g = std::make_unique<uu::net::Network2>("g", dir);
+    auto g = std::make_unique<uu::net::Network>("g", dir);
 
     auto v1 = g->vertices()->add("v1");
     auto v2 = g->vertices()->add("v2");
@@ -45,7 +45,7 @@ TEST(net_operations_test, graph_complement_undirected)
     // creating a simple graph
 
     auto dir = uu::net::EdgeDir::UNDIRECTED;
-    auto g = std::make_unique<uu::net::Network2>("g", dir);
+    auto g = std::make_unique<uu::net::Network>("g", dir);
 
     auto v1 = g->vertices()->add("v1");
     auto v2 = g->vertices()->add("v2");
@@ -72,7 +72,7 @@ TEST(net_operations_test, graph_complement_undirected)
 TEST(net_operations_test, graph_complement_exceptions)
 {
     EXPECT_THROW(
-        uu::net::graph_complement((uu::net::Network2*)nullptr),
+        uu::net::graph_complement((uu::net::Network*)nullptr),
         uu::core::NullPtrException
     );
 }

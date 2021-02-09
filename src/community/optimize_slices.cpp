@@ -1,6 +1,6 @@
 #include "community/optimize_slices.hpp"
 
-#include "networks/OrderedMultiplexNetwork2.hpp"
+#include "networks/OrderedMultiplexNetwork.hpp"
 #include "networks/time.hpp"
 #include "community/glouvain2.hpp"
 #include "community/modularity.hpp"
@@ -12,7 +12,7 @@ namespace net {
 
 std::vector<double>
 optimize_slices(
-    const Network2* original_net,
+    const Network* original_net,
     size_t max_slices = 50)
 {
 

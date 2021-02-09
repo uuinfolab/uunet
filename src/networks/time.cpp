@@ -5,7 +5,7 @@ namespace net {
 
 void
 make_temporal(
-    Network2* net
+    Network* net
 )
 {
     net->edges()->attr()->add("t_", core::AttributeType::TIMESET);
@@ -13,7 +13,7 @@ make_temporal(
 
 bool
 is_temporal(
-    const Network2* net
+    const Network* net
 )
 {
     auto attr = net->edges()->attr()->get("t_");
@@ -28,8 +28,8 @@ is_temporal(
 
 void
 add_time(
-    Network2* net,
-    const MLEdge2* edge,
+    Network* net,
+    const Edge* edge,
     const core::Time& t
 )
 {
@@ -38,8 +38,8 @@ add_time(
 
 std::set<core::Time>
 get_times(
-    const Network2* net,
-    const MLEdge2* edge
+    const Network* net,
+    const Edge* edge
 )
 {
     return net->edges()->attr()->get_times(edge, "t_");
@@ -47,7 +47,7 @@ get_times(
 
 std::array<core::Time, 2>
 get_time_bounds(
-    const Network2* net
+    const Network* net
 )
 {
     bool init = false;

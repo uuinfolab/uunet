@@ -222,7 +222,7 @@ std::unique_ptr<Community<M>>
                 continue;
             }
 
-            auto iv = MLVertex2(actor, layer);
+            auto iv = MLVertex(actor, layer);
             result->add(iv);
         }
     }

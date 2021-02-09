@@ -10,14 +10,14 @@ namespace uu {
 namespace net {
 
 /**
- * A Network2 is an attributed graph with at most one edge between each pair of vertices.
+ * A Network is an attributed graph with at most one edge between each pair of vertices.
  *
  * Vertex and edge attributes are local to the network, that is, the same vertex inside another
  * network will have different attributes.
- * Depending on its parameters, a Network2 can allow or disallow loops (default: allowed) and
+ * Depending on its parameters, a Network can allow or disallow loops (default: allowed) and
  * be directed or undirected (default: undirected).
  */
-class Network2
+class Network
 {
 
   public:
@@ -29,22 +29,22 @@ class Network2
     const std::string name;
 
     /**
-     * Creates a Network2 with directed or undirected simple edges and allowing or not loops.
+     * Creates a Network with directed or undirected simple edges and allowing or not loops.
      */
-    Network2(
+    Network(
         const std::string& name,
         EdgeDir dir = EdgeDir::UNDIRECTED,
         LoopMode loops = LoopMode::ALLOWED
     );
 
-    Network2(
+    Network(
         const std::string& name,
         std::unique_ptr<VCube> vertices,
         std::unique_ptr<ECube> edges
     );
 
     virtual
-    ~Network2() {}
+    ~Network() {}
 
     /**
      * Returns a pointer to the network's vertices.

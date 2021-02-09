@@ -7,7 +7,7 @@ TEST(networks_test, temporal)
 
     auto dir = uu::net::EdgeDir::UNDIRECTED;
     auto loops = uu::net::LoopMode::ALLOWED;
-    auto g = std::make_unique<uu::net::Network2>("g", dir, loops);
+    auto g = std::make_unique<uu::net::Network>("g", dir, loops);
     uu::net::make_temporal(g.get());
 
     // Adding vertices

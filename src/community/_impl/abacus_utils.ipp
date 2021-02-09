@@ -7,7 +7,7 @@ template <typename M>
 std::set<std::unique_ptr<PillarCommunity<M>>>
 eclat_merge(
     const M* mnet,
-    const std::unordered_map<const typename M::layer_type*, CommunityStructure<Network2>*>& single_layer_communities,
+    const std::unordered_map<const typename M::layer_type*, CommunityStructure<Network>*>& single_layer_communities,
     int min_actors,
     int min_layers
 )

@@ -4,11 +4,11 @@ namespace net {
 
 template <typename M>
 std::unique_ptr<CommunityStructure<M>>
-                                    mlcpm(
-                                        const M* mnet,
-                                        size_t k,
-                                        size_t m
-                                    )
+mlcpm(
+    const M* mnet,
+    size_t k,
+    size_t m
+)
 {
     // Step 1: find max-cliques
     auto cliques = find_max_cliques(mnet,k,m);

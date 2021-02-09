@@ -9,7 +9,7 @@
 namespace uu {
 namespace net {
 
-std::unique_ptr<Network2>
+std::unique_ptr<Network>
 erdos_renyi_nm(
     size_t n,
     size_t m
@@ -17,7 +17,7 @@ erdos_renyi_nm(
 {
     std::string name = "ER";
 
-    auto g = std::make_unique<Network2>(name);
+    auto g = std::make_unique<Network>(name);
     add_vertices(g.get(), n);
 
     auto edge_ids = core::get_k_uniform(n*(n-1)/2, m);
@@ -45,7 +45,7 @@ erdos_renyi_nm(
 
 
 
-std::unique_ptr<Network2>
+std::unique_ptr<Network>
 erdos_renyi_np(
     size_t n,
     double p

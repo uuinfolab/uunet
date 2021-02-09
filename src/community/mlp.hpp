@@ -447,7 +447,7 @@ std::unique_ptr<CommunityStructure<M>>
             {
                 if (layer->vertices()->contains(actor))
                 {
-                    c->add(MLVertex2(actor, layer));
+                    c->add(MLVertex(actor, layer));
                 }
             }
         }

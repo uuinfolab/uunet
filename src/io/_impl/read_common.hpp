@@ -14,9 +14,9 @@
 //#include "core/attributes/AttributeStore.hpp"
 #include "core/utils/CSVReader.hpp"
 #include "core/datastructures/objects/Object.hpp"
-#include "networks/_impl/Graph.hpp"
+//#include "networks/_impl/Graph.hpp"
 #include "objects/Vertex.hpp"
-#include "objects/MLEdge2.hpp"
+#include "objects/Edge.hpp"
 #include "io/_impl/GraphMetadata.hpp"
 #include "io/_impl/GraphIOFileSection.hpp"
 
@@ -112,7 +112,7 @@ read_vertex(
 );
 
 template <typename G>
-const MLEdge2*
+const Edge*
 read_edge(
     G* g,
     const std::vector<std::string>& fields,
@@ -264,7 +264,7 @@ read_vertex(
 }
 
 template <typename G>
-const MLEdge2*
+const Edge*
 read_edge(
     G* g,
     const std::vector<std::string>& fields,

@@ -37,7 +37,7 @@ convert(
 
 std::unique_ptr<MetaNetwork>
 convert(
-    const Network2* g
+    const Network* g
 )
 {
     auto meta = std::make_unique<MetaNetwork>();
@@ -57,7 +57,7 @@ convert(
 
 std::unique_ptr<MetaNetwork>
 aggregate(
-    const Network2* g,
+    const Network* g,
     std::unordered_map<const Vertex*, size_t> community
 )
 {
@@ -106,7 +106,7 @@ expand(
     const std::vector<std::unique_ptr<MetaNetwork>>& levels,
     size_t i,
     const Vertex* v,
-    Community<Network2>* com
+    Community<Network>* com
 )
 {
     if (i==0)
@@ -127,18 +127,18 @@ expand(
     }
 }
 
-std::unique_ptr<CommunityStructure<Network2>>
+std::unique_ptr<CommunityStructure<Network>>
         communities(
             const std::vector<std::unique_ptr<MetaNetwork>>& levels
         )
 {
-    auto res = std::make_unique<CommunityStructure<Network2>>();
+    auto res = std::make_unique<CommunityStructure<Network>>();
 
     size_t i = levels.size()-1;
 
     for (auto v: *levels.at(i)->get()->vertices())
     {
-        auto community = std::make_unique<Community<Network2>>();
+        auto community = std::make_unique<Community<Network>>();
 
         expand(levels, i, v, community.get());
 
@@ -150,7 +150,7 @@ std::unique_ptr<CommunityStructure<Network2>>
 
 std::unique_ptr<MetaNetwork>
 pass(
-    const Network2* g
+    const Network* g
 )
 {
     //std::cout << "PASS" << std::endl;

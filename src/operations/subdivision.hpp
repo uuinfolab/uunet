@@ -18,7 +18,7 @@ template<typename G>
 const Vertex*
 edge_subdivision(
     G* g,
-    const MLEdge2* e,
+    const Edge* e,
     const std::string& vertex_name
 );
 

@@ -1,17 +1,17 @@
 #include "gtest/gtest.h"
 
-#include "networks/Network2.hpp"
+#include "networks/Network.hpp"
 #include "community/louvain.hpp"
 #include "core/exceptions/DuplicateElementException.hpp"
 #include "core/exceptions/ElementNotFoundException.hpp"
 #include "core/exceptions/WrongParameterException.hpp"
 
-TEST(networks_test, Network2)
+TEST(networks_test, Network)
 {
 
     auto dir = uu::net::EdgeDir::UNDIRECTED;
     auto loops = uu::net::LoopMode::DISALLOWED;
-    auto g = std::make_unique<uu::net::Network2>("g", dir, loops);
+    auto g = std::make_unique<uu::net::Network>("g", dir, loops);
 
     // Adding vertices
 
@@ -103,7 +103,7 @@ TEST(networks_test, Network2)
 }
 
 
-TEST(networks_test, Network2_from_cubes)
+TEST(networks_test, Network_from_cubes)
 {
 
 }

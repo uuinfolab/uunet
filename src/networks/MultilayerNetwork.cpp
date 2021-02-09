@@ -1,4 +1,4 @@
-#include "networks/MultilayerNetwork2.hpp"
+#include "networks/MultilayerNetwork.hpp"
 
 //#include "networks/_impl/observers/PropagateObserver.hpp"
 //#include "networks/_impl/observers/LayerObserver.hpp"
@@ -11,8 +11,8 @@
 namespace uu {
 namespace net {
 
-MultilayerNetwork2::
-MultilayerNetwork2(
+MultilayerNetwork::
+MultilayerNetwork(
     const std::string& name
 )
     : name(name)
@@ -57,7 +57,7 @@ MultilayerNetwork2(
 
 /*
 void
-MultilayerNetwork2::
+MultilayerNetwork::
 add_dimension(
     const std::string& name,
     const std::vector<std::string>& members
@@ -83,7 +83,7 @@ add_dimension(
 */
 
 const VCube*
-MultilayerNetwork2::
+MultilayerNetwork::
 actors(
 ) const
 {
@@ -91,7 +91,7 @@ actors(
 }
 
 VCube*
-MultilayerNetwork2::
+MultilayerNetwork::
 actors(
 )
 {
@@ -99,7 +99,7 @@ actors(
 }
 
 LayerStore*
-MultilayerNetwork2::
+MultilayerNetwork::
 layers(
 )
 {
@@ -108,7 +108,7 @@ layers(
 
 
 const LayerStore*
-MultilayerNetwork2::
+MultilayerNetwork::
 layers(
 ) const
 {
@@ -117,7 +117,7 @@ layers(
 
 /*
 AttrVertexStore*
-MultilayerNetwork2::
+MultilayerNetwork::
 actors(
 )
 {
@@ -126,7 +126,7 @@ actors(
 
 
 const AttrVertexStore*
-MultilayerNetwork2::
+MultilayerNetwork::
 actors(
 ) const
 {
@@ -135,7 +135,7 @@ actors(
 
 
 MLLayerStore*
-MultilayerNetwork2::
+MultilayerNetwork::
 layers(
 )
 {
@@ -144,7 +144,7 @@ layers(
 
 
 const MLLayerStore*
-MultilayerNetwork2::
+MultilayerNetwork::
 layers(
 ) const
 {
@@ -153,7 +153,7 @@ layers(
 
 
 MLSimpleEdgeStore*
-MultilayerNetwork2::
+MultilayerNetwork::
 interlayer_edges(
 )
 {
@@ -162,7 +162,7 @@ interlayer_edges(
 
 
 const MLSimpleEdgeStore*
-MultilayerNetwork2::
+MultilayerNetwork::
 interlayer_edges(
 ) const
 {
@@ -170,7 +170,7 @@ interlayer_edges(
 }
 
 std::string
-MultilayerNetwork2::
+MultilayerNetwork::
 summary(
 ) const
 {
@@ -209,7 +209,7 @@ summary(
 
 
 bool
-MultilayerNetwork2::
+MultilayerNetwork::
 is_ordered(
 ) const
 {
@@ -217,7 +217,7 @@ is_ordered(
 }
 
 bool
-MultilayerNetwork2::
+MultilayerNetwork::
 allows_interlayer_edges(
 ) const
 {
@@ -227,7 +227,7 @@ allows_interlayer_edges(
  */
 
 const MLECubeStore*
-MultilayerNetwork2::
+MultilayerNetwork::
 interlayer_edges(
 ) const
 {
@@ -236,7 +236,7 @@ interlayer_edges(
 }
 
 MLECubeStore*
-MultilayerNetwork2::
+MultilayerNetwork::
 interlayer_edges(
 )
 {
@@ -245,15 +245,15 @@ interlayer_edges(
 
 /*
 ECube*
-MultilayerNetwork2::
+MultilayerNetwork::
 init(
-     Network2* layer1,
-    Network2* layer2,
+     Network* layer1,
+    Network* layer2,
      EdgeDir dir
 )
 {
-    core::assert_not_null(layer1, "MultilayerNetwork2::get", "layer1");
-    core::assert_not_null(layer2, "MultilayerNetwork2::get", "layer2");
+    core::assert_not_null(layer1, "MultilayerNetwork::get", "layer1");
+    core::assert_not_null(layer2, "MultilayerNetwork::get", "layer2");
 
     if (!layers_->contains(layer1))
     {

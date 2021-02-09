@@ -7,7 +7,7 @@ namespace net {
 
 void
 make_probabilistic(
-    Network2* net
+    Network* net
 )
 {
     net->edges()->attr()->add("p_", core::AttributeType::DOUBLE);
@@ -15,7 +15,7 @@ make_probabilistic(
 
 bool
 is_probabilistic(
-    const Network2* net
+    const Network* net
 )
 {
     auto attr = net->edges()->attr()->get("p_");
@@ -30,8 +30,8 @@ is_probabilistic(
 
 void
 set_prob(
-    Network2* net,
-    const MLEdge2* edge,
+    Network* net,
+    const Edge* edge,
     double p
 )
 {
@@ -46,8 +46,8 @@ set_prob(
 
 double
 get_prob(
-    const Network2* net,
-    const MLEdge2* edge
+    const Network* net,
+    const Edge* edge
 )
 {
     auto val = net->edges()->attr()->get_double(edge, "p_");

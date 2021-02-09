@@ -20,7 +20,7 @@ class
 
   public:
 
-    typedef core::SortedRandomSet<const MLEdge2*> get_return_type;
+    typedef core::SortedRandomSet<const Edge*> get_return_type;
 
     MDMultiEdgeStore(
         VCube* cube1,
@@ -40,9 +40,9 @@ class
      * @return a pointer to the new edge, or nullptr if the edge already exists.
      **/
     virtual
-    const MLEdge2*
+    const Edge*
     add(
-        std::shared_ptr<const MLEdge2>  e
+        std::shared_ptr<const Edge>  e
     ) override;
 
     /**
@@ -55,7 +55,7 @@ class
      * @return a pointer to the new edge, or nullptr if the edge already exists.
      * @throw OperationNotSupportedException if this->cube1() != this->cube2()
      **/
-    const MLEdge2 *
+    const Edge *
     add(
         const Vertex* vertex1,
         const Vertex* vertex2
@@ -63,7 +63,7 @@ class
 
     bool
     contains(
-        const typename MLEdge2::key_type& key
+        const typename Edge::key_type& key
     ) const;
 
     /**
@@ -75,7 +75,7 @@ class
      * of the edge if undirected.
      * @return a pointer to the requested edge, or nullptr if it does not exist.
      **/
-    core::SortedRandomSet<const MLEdge2*>
+    core::SortedRandomSet<const Edge*>
     get(
         const Vertex* vertex1,
         const VCube* cube1,
@@ -84,16 +84,16 @@ class
     ) const;
 
 
-    core::SortedRandomSet<const MLEdge2*>
+    core::SortedRandomSet<const Edge*>
     get(
         const Vertex* vertex1,
         const Vertex* vertex2
     ) const;
 
 
-    core::SortedRandomSet<const MLEdge2*>
+    core::SortedRandomSet<const Edge*>
     get(
-        const typename MLEdge2::key_type& key
+        const typename Edge::key_type& key
     ) const;
 
     /**
@@ -104,13 +104,13 @@ class
     virtual
     bool
     erase(
-        const MLEdge2* edge
+        const Edge* edge
     ) override;
 
 
     bool
     erase(
-        const typename MLEdge2::key_type& key
+        const typename Edge::key_type& key
     );
 
     using super::super;
@@ -169,7 +169,7 @@ class
   protected:
 
     // Indexes to objects (Component IDX):
-    std::unordered_map<const VCube*, std::unordered_map<const VCube*, std::unordered_map<const Vertex*, std::unordered_map<const Vertex*, std::unordered_set<const MLEdge2*>>>>> cidx_edges_by_vertices;
+    std::unordered_map<const VCube*, std::unordered_map<const VCube*, std::unordered_map<const Vertex*, std::unordered_map<const Vertex*, std::unordered_set<const Edge*>>>>> cidx_edges_by_vertices;
 
 };
 

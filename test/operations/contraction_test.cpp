@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "networks/Network2.hpp"
+#include "networks/Network.hpp"
 #include "operations/contraction.hpp"
 #include "core/exceptions/NullPtrException.hpp"
 
@@ -11,7 +11,7 @@ TEST(net_operations_test, edge_contraction_directed)
     // creating a simple graph
 
     auto dir = uu::net::EdgeDir::DIRECTED;
-    auto g = std::make_unique<uu::net::Network2>("g", dir);
+    auto g = std::make_unique<uu::net::Network>("g", dir);
 
     auto v1 = g->vertices()->add("v1");
     auto v2 = g->vertices()->add("v2");
@@ -43,7 +43,7 @@ TEST(net_operations_test, edge_contraction_undirected)
     // creating a simple graph
 
     auto dir = uu::net::EdgeDir::UNDIRECTED;
-    auto g = std::make_unique<uu::net::Network2>("g", dir);
+    auto g = std::make_unique<uu::net::Network>("g", dir);
 
     auto v1 = g->vertices()->add("v1");
     auto v2 = g->vertices()->add("v2");
@@ -75,7 +75,7 @@ TEST(net_operations_test, edge_contraction_exceptions)
     // creating a simple graph
 
     auto dir = uu::net::EdgeDir::UNDIRECTED;
-    auto g = std::make_unique<uu::net::Network2>("g", dir);
+    auto g = std::make_unique<uu::net::Network>("g", dir);
 
     auto v1 = g->vertices()->add("v1");
     auto v2 = g->vertices()->add("v2");
@@ -86,14 +86,14 @@ TEST(net_operations_test, edge_contraction_exceptions)
 
     EXPECT_THROW(
         uu::net::edge_contraction(g.get(),
-                                  (uu::net::MLEdge2*)nullptr,
+                                  (uu::net::Edge*)nullptr,
                                   "name"),
         uu::core::NullPtrException
     );
 
 
     EXPECT_THROW(
-        uu::net::edge_contraction((uu::net::Network2*)nullptr,
+        uu::net::edge_contraction((uu::net::Network*)nullptr,
                                   e1,
                                   "name"),
         uu::core::NullPtrException

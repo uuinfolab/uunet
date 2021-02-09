@@ -5,7 +5,7 @@ namespace net {
 
 void
 write_multilayer_network(
-    const MultilayerNetwork2* net,
+    const MultilayerNetwork* net,
     const std::string& outfile,
     char separator
 )

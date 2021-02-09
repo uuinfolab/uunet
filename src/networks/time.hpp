@@ -4,38 +4,38 @@
 #include <array>
 #include "core/attributes/Time.hpp"
 #include "core/attributes/Time.hpp"
-#include "networks/Network2.hpp"
+#include "networks/Network.hpp"
 
 namespace uu {
 namespace net {
 
 void
 make_temporal(
-    Network2* net
+    Network* net
 );
 
 bool
 is_temporal(
-    const Network2* net
+    const Network* net
 );
 
 void
 add_time(
-    Network2* net,
-    const MLEdge2* edge,
+    Network* net,
+    const Edge* edge,
     const core::Time& t
 );
 
 
 std::set<core::Time>
 get_times(
-    const Network2* net,
-    const MLEdge2* edge
+    const Network* net,
+    const Edge* edge
 );
 
 std::array<core::Time, 2>
 get_time_bounds(
-    const Network2* net
+    const Network* net
 );
 
 }

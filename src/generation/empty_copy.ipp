@@ -2,7 +2,7 @@
 #include "core/exceptions/assert_not_null.hpp"
 
 //#include "networks/Network.hpp"
-#include "networks/Network2.hpp"
+#include "networks/Network.hpp"
 
 namespace uu {
 namespace net {
@@ -36,9 +36,9 @@ empty_copy(
 }*/
 
 template<>
-inline std::unique_ptr<Network2>
+inline std::unique_ptr<Network>
 empty_copy(
-    const Network2* g,
+    const Network* g,
     const std::string& name
 )
 {
@@ -47,7 +47,7 @@ empty_copy(
     EdgeDir dir = g->is_directed() ? EdgeDir::DIRECTED : EdgeDir::UNDIRECTED;
     LoopMode loops = g->allows_loops() ? LoopMode::ALLOWED : LoopMode::DISALLOWED;
 
-    return std::make_unique<Network2>(name, dir, loops);
+    return std::make_unique<Network>(name, dir, loops);
 }
 
 }

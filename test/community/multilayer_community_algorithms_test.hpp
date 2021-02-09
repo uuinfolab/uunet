@@ -5,22 +5,22 @@
 
 #include <memory>
 
-#include "networks/MultilayerNetwork2.hpp"
+#include "networks/MultilayerNetwork.hpp"
 #include "community/CommunityStructure.hpp"
 
 class multilayer_community_algorithms_test : public ::testing::Test
 {
   protected:
 
-    std::unique_ptr<uu::net::MultilayerNetwork2> net;
+    std::unique_ptr<uu::net::MultilayerNetwork> net;
     //const uu::net::Vertex *v1, *v2, *v3, *v4, *v5, *v6;
-    //const uu::net::Network2 *l1, *l2;
+    //const uu::net::Network *l1, *l2;
 
     void
     SetUp() override
     {
 
-        net = std::make_unique<uu::net::MultilayerNetwork2>("net");
+        net = std::make_unique<uu::net::MultilayerNetwork>("net");
         // Adding actors
 
         // Adding layers

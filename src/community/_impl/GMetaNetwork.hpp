@@ -14,8 +14,8 @@ class GMetaNetwork
   public:
 
     std::unique_ptr<MultiNetwork> w;
-    std::unordered_map<const MLEdge2*, size_t> edge_type;
-    std::unordered_map<const MLEdge2*, double> edge_weight;
+    std::unordered_map<const Edge*, size_t> edge_type;
+    std::unordered_map<const Edge*, double> edge_weight;
     size_t order = 0;
     std::unordered_map<const Vertex*, std::set<const Vertex*>> mapping;
     std::unordered_map<const Vertex*, const Vertex*> reverse_mapping;
@@ -37,7 +37,7 @@ class GMetaNetwork
 
 
     /* type: -1 (interlayer), n (layer n) */
-    const MLEdge2*
+    const Edge*
     edge(
         const Vertex* u,
         const Vertex* v,
@@ -47,12 +47,12 @@ class GMetaNetwork
 
     double
     get_weight(
-        const MLEdge2*
+        const Edge*
     ) const;
 
     size_t
     get_type(
-        const MLEdge2*
+        const Edge*
     ) const;
 
     const MultiNetwork*

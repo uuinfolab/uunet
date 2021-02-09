@@ -8,14 +8,15 @@
 
 #include <string>
 #include <vector>
+#include "core/exceptions/assert_not_null.hpp"
 #include "core/exceptions/OperationNotSupportedException.hpp"
 #include "core/attributes/Attribute.hpp"
 //#include "core/attributes/AttributeValueMap.hpp"
 #include "core/utils/CSVReader.hpp"
 #include "core/datastructures/objects/Object.hpp"
-#include "networks/_impl/Graph.hpp"
+//#include "networks/_impl/Graph.hpp"
 #include "objects/Vertex.hpp"
-#include "objects/Edge.hpp"
+//#include "objects/Edge.hpp"
 #include "io/_impl/MultilayerMetadata.hpp"
 #include "io/_impl/MultilayerIOFileSection.hpp"
 

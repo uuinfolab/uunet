@@ -12,7 +12,7 @@ LayerStore(
 ) : actors_(actors)
 {}
 
-core::LabeledUniquePtrSortedRandomSet<Network2>::iterator
+core::LabeledUniquePtrSortedRandomSet<Network>::iterator
 LayerStore::
 begin(
 ) const
@@ -20,7 +20,7 @@ begin(
     return store.begin();
 }
 
-core::LabeledUniquePtrSortedRandomSet<Network2>::iterator
+core::LabeledUniquePtrSortedRandomSet<Network>::iterator
 LayerStore::
 end(
 ) const
@@ -28,7 +28,7 @@ end(
     return store.end();
 }
 
-Network2 *
+Network *
 LayerStore::
 add(
     const std::string layer_name,
@@ -73,7 +73,7 @@ add(
 
     // Package them inside a network to create a layer
 
-    auto g = std::make_unique<Network2>(layer_name, std::move(vertices), std::move(edges));
+    auto g = std::make_unique<Network>(layer_name, std::move(vertices), std::move(edges));
 
 
     return store.add(std::move(g));
@@ -82,7 +82,7 @@ add(
 bool
 LayerStore::
 contains(
-    const Network2* layer
+    const Network* layer
 ) const
 {
     return store.contains(layer);
@@ -91,7 +91,7 @@ contains(
 size_t
 LayerStore::
 index_of(
-    const Network2* layer
+    const Network* layer
 ) const
 {
     //@todo assert_not_null
@@ -107,7 +107,7 @@ size(
     return store.size();
 }
 
-const Network2*
+const Network*
 LayerStore::
 at(
     size_t pos
@@ -116,7 +116,7 @@ at(
     return store.at(pos);
 }
 
-Network2*
+Network*
 LayerStore::
 at(
     size_t pos
@@ -125,7 +125,7 @@ at(
     return store.at(pos);
 }
 
-Network2*
+Network*
 LayerStore::
 get(
     const std::string& layer_name
@@ -134,7 +134,7 @@ get(
     return store.get(layer_name);
 }
 
-const Network2*
+const Network*
 LayerStore::
 get(
     const std::string& layer_name

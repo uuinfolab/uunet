@@ -19,7 +19,7 @@ MDEdgeStore(
     core::assert_not_null(cube1, "MDEdgeStore", "cube1");
     core::assert_not_null(cube2, "MDEdgeStore", "cube2");
 
-    edges_ = std::make_unique<core::SharedPtrSortedRandomSet<const MLEdge2>>();
+    edges_ = std::make_unique<core::SharedPtrSortedRandomSet<const Edge>>();
 
     sidx_neighbors_out[cube1][cube2];
     sidx_neighbors_in[cube1][cube2];
@@ -77,7 +77,7 @@ size(
 }
 
 
-const MLEdge2 *
+const Edge *
 MDEdgeStore::
 add(
     const Vertex* vertex1,
@@ -91,35 +91,35 @@ add(
     core::assert_not_null(vertex2, "add", "vertex2");
     core::assert_not_null(cube2, "add", "cube2");
 
-    auto edge = std::make_shared<MLEdge2>(vertex1, cube1, vertex2, cube2, dir_);
+    auto edge = std::make_shared<Edge>(vertex1, cube1, vertex2, cube2, dir_);
     return add(edge);
 }
 
 
-const MLEdge2 *
+const Edge *
 MDEdgeStore::
 add(
-    const typename MLEdge2::key_type& key
+    const typename Edge::key_type& key
 )
 {
-    auto edge = std::make_shared<MLEdge2>(std::get<0>(key), std::get<1>(key), std::get<2>(key), std::get<3>(key), dir_);
+    auto edge = std::make_shared<Edge>(std::get<0>(key), std::get<1>(key), std::get<2>(key), std::get<3>(key), dir_);
     return add(edge);
 }
 
-const MLEdge2*
+const Edge*
 MDEdgeStore::
 add(
-    const MLEdge2* e
+    const Edge* e
 )
 {
     auto edge = e->shared_from_this();
     return add(edge);
 }
 
-const MLEdge2*
+const Edge*
 MDEdgeStore::
 add(
-    std::shared_ptr<const MLEdge2> e
+    std::shared_ptr<const Edge> e
 )
 {
     core::assert_not_null(e.get(), "add", "e");
@@ -129,7 +129,7 @@ add(
         throw core::OperationNotSupportedException("wrong edge directionality");
     }
 
-    const MLEdge2* new_edge;
+    const Edge* new_edge;
 
     if (edges_->add(e))
     {
@@ -144,7 +144,7 @@ add(
     if (sidx_neighbors_out[e->c1][e->c2].count(e->v1)==0)
     {
         sidx_neighbors_out[e->c1][e->c2][e->v1] = std::make_unique<GenericObjectList<Vertex>>();
-        sidx_incident_out[e->c1][e->c2][e->v1] = std::make_unique<GenericObjectList<MLEdge2>>();
+        sidx_incident_out[e->c1][e->c2][e->v1] = std::make_unique<GenericObjectList<Edge>>();
     }
 
     sidx_neighbors_out[e->c1][e->c2][e->v1]->add(e->v2);
@@ -154,7 +154,7 @@ add(
     if (sidx_neighbors_in[e->c2][e->c1].count(e->v2)==0)
     {
         sidx_neighbors_in[e->c2][e->c1][e->v2] = std::make_unique<GenericObjectList<Vertex>>();
-        sidx_incident_in[e->c2][e->c1][e->v2] = std::make_unique<GenericObjectList<MLEdge2>>();
+        sidx_incident_in[e->c2][e->c1][e->v2] = std::make_unique<GenericObjectList<Edge>>();
     }
 
     sidx_neighbors_in[e->c2][e->c1][e->v2]->add(e->v1);
@@ -164,7 +164,7 @@ add(
     if (sidx_neighbors_all[e->c1][e->c2].count(e->v1)==0)
     {
         sidx_neighbors_all[e->c1][e->c2][e->v1] = std::make_unique<GenericObjectList<Vertex>>();
-        sidx_incident_all[e->c1][e->c2][e->v1] = std::make_unique<GenericObjectList<MLEdge2>>();
+        sidx_incident_all[e->c1][e->c2][e->v1] = std::make_unique<GenericObjectList<Edge>>();
     }
 
     sidx_neighbors_all[e->c1][e->c2][e->v1]->add(e->v2);
@@ -173,7 +173,7 @@ add(
     if (sidx_neighbors_all[e->c2][e->c1].count(e->v2)==0)
     {
         sidx_neighbors_all[e->c2][e->c1][e->v2] = std::make_unique<GenericObjectList<Vertex>>();
-        sidx_incident_all[e->c2][e->c1][e->v2] = std::make_unique<GenericObjectList<MLEdge2>>();
+        sidx_incident_all[e->c2][e->c1][e->v2] = std::make_unique<GenericObjectList<Edge>>();
     }
 
     sidx_neighbors_all[e->c2][e->c1][e->v2]->add(e->v1);
@@ -186,7 +186,7 @@ add(
         if (sidx_neighbors_out[e->c2][e->c1].count(e->v2)==0)
         {
             sidx_neighbors_out[e->c2][e->c1][e->v2] = std::make_unique<GenericObjectList<Vertex>>();
-            sidx_incident_out[e->c2][e->c1][e->v2] = std::make_unique<GenericObjectList<MLEdge2>>();
+            sidx_incident_out[e->c2][e->c1][e->v2] = std::make_unique<GenericObjectList<Edge>>();
         }
 
         sidx_neighbors_out[e->c2][e->c1][e->v2]->add(e->v1);
@@ -195,7 +195,7 @@ add(
         if (sidx_neighbors_in[e->c1][e->c2].count(e->v1)==0)
         {
             sidx_neighbors_in[e->c1][e->c2][e->v1] = std::make_unique<GenericObjectList<Vertex>>();
-            sidx_incident_in[e->c1][e->c2][e->v1] = std::make_unique<GenericObjectList<MLEdge2>>();
+            sidx_incident_in[e->c1][e->c2][e->v1] = std::make_unique<GenericObjectList<Edge>>();
         }
 
         sidx_neighbors_in[e->c1][e->c2][e->v1]->add(e->v2);
@@ -205,7 +205,7 @@ add(
         if (sidx_neighbors_all[e->c2][e->c1].count(e->v2)==0)
         {
             sidx_neighbors_all[e->c2][e->c1][e->v2] = std::make_unique<GenericObjectList<Vertex>>();
-            sidx_incident_all[e->c2][e->c1][e->v2] = std::make_unique<GenericObjectList<MLEdge2>>();
+            sidx_incident_all[e->c2][e->c1][e->v2] = std::make_unique<GenericObjectList<Edge>>();
         }
 
         sidx_neighbors_all[e->c2][e->c1][e->v2]->add(e->v1);
@@ -220,13 +220,13 @@ add(
 bool
 MDEdgeStore::
 contains(
-    const MLEdge2* v
+    const Edge* v
 ) const
 {
     return edges_->contains(v);
 }
 
-const MLEdge2*
+const Edge*
 MDEdgeStore::
 at(
     size_t pos
@@ -235,7 +235,7 @@ at(
     return edges_->at(pos);
 }
 
-const MLEdge2*
+const Edge*
 MDEdgeStore::
 get_at_random(
 ) const
@@ -247,7 +247,7 @@ get_at_random(
 int
 MDEdgeStore::
 index_of(
-    const MLEdge2* v
+    const Edge* v
 ) const
 {
     return edges_->index_of(v);
@@ -256,7 +256,7 @@ index_of(
 
 
 /*
-GenericObjectList<MLEdge2>*
+GenericObjectList<Edge>*
                                     MDEdgeStore::
                                     get(
                                         const VCube* cube1,
@@ -321,7 +321,7 @@ neighbors(
 
 
 const
-GenericObjectList<MLEdge2>*
+GenericObjectList<Edge>*
 MDEdgeStore::
 incident(
     const Vertex* vertex,
@@ -337,7 +337,7 @@ incident(
     {
         if (sidx_incident_in.at(layer).begin()->second.count(vertex)==0)
         {
-            return GenericObjectList<MLEdge2>::empty.get();
+            return GenericObjectList<Edge>::empty.get();
         }
 
         return sidx_incident_in.at(layer).begin()->second.at(vertex).get();
@@ -347,7 +347,7 @@ incident(
     {
         if (sidx_incident_out.at(layer).begin()->second.count(vertex)==0)
         {
-            return GenericObjectList<MLEdge2>::empty.get();
+            return GenericObjectList<Edge>::empty.get();
         }
 
         return sidx_incident_out.at(layer).begin()->second.at(vertex).get();
@@ -357,7 +357,7 @@ incident(
     {
         if (sidx_incident_all.at(layer).begin()->second.count(vertex)==0)
         {
-            return GenericObjectList<MLEdge2>::empty.get();
+            return GenericObjectList<Edge>::empty.get();
         }
 
         return sidx_incident_all.at(layer).begin()->second.at(vertex).get();
@@ -415,7 +415,7 @@ erase(
 
     core::assert_not_null(vertex, "MDEdgeStore::erase", "MDEdgeStore::vertex");
 
-    std::unordered_set<const MLEdge2*> to_erase;
+    std::unordered_set<const Edge*> to_erase;
 
     for (auto e: *incident(vertex, vcube, EdgeMode::INOUT))
     {

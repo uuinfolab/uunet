@@ -29,13 +29,13 @@ size(
     return res;
 }
 
-const MLEdge2 *
+const Edge *
 MLECubeStore::
 add(
     const Vertex* vertex1,
-    const Network2* layer1,
+    const Network* layer1,
     const Vertex* vertex2,
-    const Network2* layer2
+    const Network* layer2
 )
 {
     core::assert_not_null(vertex1, "MLECubeStore::add", "vertex1");
@@ -46,13 +46,13 @@ add(
     return get(layer1, layer2)->add(vertex1, layer1->vertices(), vertex2, layer2->vertices());
 }
 
-const MLEdge2 *
+const Edge *
 MLECubeStore::
 get(
     const Vertex* vertex1,
-    const Network2* layer1,
+    const Network* layer1,
     const Vertex* vertex2,
-    const Network2* layer2
+    const Network* layer2
 )
 {
     core::assert_not_null(vertex1, "MLECubeStore::add", "vertex1");
@@ -65,10 +65,10 @@ get(
 
 
 /*
-const MLEdge2*
+const Edge*
 MLECubeStore::
 add(
-    std::shared_ptr<const MLEdge2> e
+    std::shared_ptr<const Edge> e
 )
 {
     core::assert_not_null(e.get(), "add", "e");
@@ -78,7 +78,7 @@ add(
         throw core::OperationNotSupportedException("wrong edge directionality");
     }
 
-    const MLEdge2* new_edge = super::add(e);
+    const Edge* new_edge = super::add(e);
 
     if (!new_edge) // edge already existing
     {
@@ -91,7 +91,7 @@ add(
     if (sidx_neighbors_out[e->l1][e->l2].count(e->v1)==0)
     {
         sidx_neighbors_out[e->l1][e->l2][e->v1] = std::make_unique<GenericObjectList<V>>();
-        sidx_incident_out[e->l1][e->l2][e->v1] = std::make_unique<GenericObjectList<MLEdge2>>();
+        sidx_incident_out[e->l1][e->l2][e->v1] = std::make_unique<GenericObjectList<Edge>>();
     }
 
     sidx_neighbors_out[e->l1][e->l2][e->v1]->add(e->v2);
@@ -101,7 +101,7 @@ add(
     if (sidx_neighbors_in[e->l2][e->l1].count(e->v2)==0)
     {
         sidx_neighbors_in[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<V>>();
-        sidx_incident_in[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<MLEdge2>>();
+        sidx_incident_in[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<Edge>>();
     }
 
     sidx_neighbors_in[e->l2][e->l1][e->v2]->add(e->v1);
@@ -111,7 +111,7 @@ add(
     if (sidx_neighbors_all[e->l1][e->l2].count(e->v1)==0)
     {
         sidx_neighbors_all[e->l1][e->l2][e->v1] = std::make_unique<GenericObjectList<V>>();
-        sidx_incident_all[e->l1][e->l2][e->v1] = std::make_unique<GenericObjectList<MLEdge2>>();
+        sidx_incident_all[e->l1][e->l2][e->v1] = std::make_unique<GenericObjectList<Edge>>();
     }
 
     sidx_neighbors_all[e->l1][e->l2][e->v1]->add(e->v2);
@@ -120,7 +120,7 @@ add(
     if (sidx_neighbors_all[e->l2][e->l1].count(e->v2)==0)
     {
         sidx_neighbors_all[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<V>>();
-        sidx_incident_all[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<MLEdge2>>();
+        sidx_incident_all[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<Edge>>();
     }
 
     sidx_neighbors_all[e->l2][e->l1][e->v2]->add(e->v1);
@@ -133,7 +133,7 @@ add(
         if (sidx_neighbors_out[e->l2][e->l1].count(e->v2)==0)
         {
             sidx_neighbors_out[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<V>>();
-            sidx_incident_out[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<MLEdge2>>();
+            sidx_incident_out[e->l2][e->l1][e->v2] = std::make_unique<GenericObjectList<Edge>>();
         }
 
         sidx_neighbors_out[e->l2][e->l1][e->v2]->add(e->v1);
@@ -142,7 +142,7 @@ add(
         if (sidx_neighbors_in[e->l1][e->l2].count(e->v1)==0)
         {
             sidx_neighbors_in[e->l1][e->l2][e->v1] = std::make_unique<GenericObjectList<V>>();
-            sidx_incident_in[e->l1][e->l2][e->v1] = std::make_unique<GenericObjectList<MLEdge2>>();
+            sidx_incident_in[e->l1][e->l2][e->v1] = std::make_unique<GenericObjectList<Edge>>();
         }
 
         sidx_neighbors_in[e->l1][e->l2][e->v1]->add(e->v2);
@@ -159,8 +159,8 @@ add(
 const ECube*
 MLECubeStore::
 get(
-    const Network2* layer1,
-    const Network2* layer2
+    const Network* layer1,
+    const Network* layer2
 ) const
 {
     core::assert_not_null(layer1, "MLECubeStore::get", "layer1");
@@ -190,8 +190,8 @@ get(
 ECube*
 MLECubeStore::
 get(
-    const Network2* layer1,
-    const Network2* layer2
+    const Network* layer1,
+    const Network* layer2
 )
 {
     core::assert_not_null(layer1, "MLECubeStore::get", "layer1");
@@ -222,8 +222,8 @@ const
 GenericObjectList<Vertex>*
 MLECubeStore::
 neighbors(
-    const Network2* layer1,
-    const Network2* layer2,
+    const Network* layer1,
+    const Network* layer2,
     const Vertex* vertex,
     EdgeMode mode
 ) const
@@ -239,11 +239,11 @@ neighbors(
 
 
 const
-GenericObjectList<MLEdge2>*
+GenericObjectList<Edge>*
 MLECubeStore::
 incident(
-    const Network2* layer1,
-    const Network2* layer2,
+    const Network* layer1,
+    const Network* layer2,
     const Vertex* vertex,
     EdgeMode mode
 ) const
@@ -261,8 +261,8 @@ incident(
 bool
 MLECubeStore::
 is_directed(
-    const Network2* layer1,
-    const Network2* layer2
+    const Network* layer1,
+    const Network* layer2
 ) const
 {
     core::assert_not_null(layer1, "MLECubeStore::is_directed", "layer1");
@@ -274,8 +274,8 @@ is_directed(
 ECube*
 MLECubeStore::
 init(
-    Network2* layer1,
-    Network2* layer2,
+    Network* layer1,
+    Network* layer2,
     EdgeDir dir
 )
 {
@@ -306,8 +306,8 @@ init(
 void
 MLECubeStore::
 set_directed(
-    const Network2* layer1,
-    const Network2* layer2,
+    const Network* layer1,
+    const Network* layer2,
     bool directed
 )
 {
@@ -321,7 +321,7 @@ set_directed(
 void
 MLECubeStore::
 add(
-    const Network2* layer
+    const Network* layer
 )
 {
     core::assert_not_null(layer, "MLECubeStore::add", "layer");
@@ -335,7 +335,7 @@ add(
 void
 MLECubeStore::
 erase(
-    const Network2* layer
+    const Network* layer
 )
 {
     core::assert_not_null(layer, "MLECubeStore::erase", "layer");
@@ -349,7 +349,7 @@ erase(
 void
 MLECubeStore::
 erase(
-    const Network2* layer,
+    const Network* layer,
     const Vertex* vertex
 )
 {
@@ -357,7 +357,7 @@ erase(
     core::assert_not_null(vertex, "MLECubeStore::erase", "vertex");
 
     // @todo
-    std::vector<const Network2*> layers;
+    std::vector<const Network*> layers;
 
 }
 }

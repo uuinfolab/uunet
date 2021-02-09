@@ -7,11 +7,11 @@
 
 #include "io/read_multilayer_communities.hpp"
 #include "io/write_multilayer_communities.hpp"
-#include "networks/MultilayerNetwork2.hpp"
+#include "networks/MultilayerNetwork.hpp"
 
 TEST(io_communities_test, multilayer)
 {
-    typedef uu::net::MultilayerNetwork2 M;
+    typedef uu::net::MultilayerNetwork M;
 
     std::string test_file_name = "net_io_read_graph_file.tmp";
 
@@ -21,20 +21,20 @@ TEST(io_communities_test, multilayer)
     auto l2_ptr = g->layers()->add("l2");
     auto a1 = g->actors()->add("a1");
     auto a2 = g->actors()->add("a2");
-    //auto l1 = std::make_unique<uu::net::Network2>("l1");
+    //auto l1 = std::make_unique<uu::net::Network>("l1");
     l1_ptr->vertices()->add(a1);
     l1_ptr->vertices()->add(a2);
-    //auto l2 = std::make_unique<uu::net::Network2>("l2");
+    //auto l2 = std::make_unique<uu::net::Network>("l2");
     l2_ptr->vertices()->add(a1);
     l2_ptr->vertices()->add(a2);
 
     auto communities = std::make_unique<uu::net::CommunityStructure<M>>();
     auto c1 = std::make_unique<uu::net::Community<M>>();
-    c1->add(uu::net::MLVertex2(a1,l1_ptr));
-    c1->add(uu::net::MLVertex2(a1,l2_ptr));
-    c1->add(uu::net::MLVertex2(a2,l2_ptr));
+    c1->add(uu::net::MLVertex(a1,l1_ptr));
+    c1->add(uu::net::MLVertex(a1,l2_ptr));
+    c1->add(uu::net::MLVertex(a2,l2_ptr));
     auto c2 = std::make_unique<uu::net::Community<M>>();
-    c2->add(uu::net::MLVertex2(a1,l1_ptr));
+    c2->add(uu::net::MLVertex(a1,l1_ptr));
     communities->add(std::move(c1));
     communities->add(std::move(c2));
 

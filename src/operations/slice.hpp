@@ -3,7 +3,7 @@
 
 #include <memory>
 #include "networks/time.hpp"
-#include "networks/OrderedMultiplexNetwork2.hpp"
+#include "networks/OrderedMultiplexNetwork.hpp"
 
 namespace uu {
 namespace net {
@@ -15,9 +15,9 @@ namespace net {
 * @param num_partitions number of time slices
 * @return a pointer to an ordered multiplex network
 **/
-std::unique_ptr<OrderedMultiplexNetwork2>
+std::unique_ptr<OrderedMultiplexNetwork>
 slice_equal_time(
-    const Network2* tnet,
+    const Network* tnet,
     size_t num_partitions
 );
 

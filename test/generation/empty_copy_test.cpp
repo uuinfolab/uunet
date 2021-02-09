@@ -4,7 +4,7 @@
 
 TEST(net_creation_test, empty_copy)
 {
-    auto net = std::make_unique<uu::net::Network2>("net", uu::net::EdgeDir::DIRECTED, uu::net::LoopMode::DISALLOWED);
+    auto net = std::make_unique<uu::net::Network>("net", uu::net::EdgeDir::DIRECTED, uu::net::LoopMode::DISALLOWED);
 
     auto copy = uu::net::empty_copy(net.get(), "copy");
 

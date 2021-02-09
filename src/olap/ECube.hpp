@@ -7,7 +7,7 @@
 #include "networks/_impl/stores/MDSimpleEdgeStore.hpp"
 #include "olap/VCube.hpp"
 #include "olap/MLCube.hpp"
-#include "objects/MLEdge2.hpp"
+#include "objects/Edge.hpp"
 
 namespace uu {
 namespace net {
@@ -26,7 +26,7 @@ class
 
     const std::string name;
 
-    typedef const MLEdge2 value_type;
+    typedef const Edge value_type;
 
     /**
      * Constructs an empty ECube with no dimensions (order 0).
@@ -90,7 +90,7 @@ class
      * @return the list of incident edges
      */
     const
-    GenericObjectList<MLEdge2>*
+    GenericObjectList<Edge>*
     incident(
         const Vertex* vertex,
         const VCube* cube,
@@ -108,7 +108,7 @@ class
      * @return the list of incident edges
      */
     const
-    GenericObjectList<MLEdge2>*
+    GenericObjectList<Edge>*
     incident(
         const Vertex* vertex,
         EdgeMode mode = EdgeMode::INOUT
@@ -191,18 +191,18 @@ class
      * Inserts an existing edge in the cube.
      * @return a pointer to the edge
      */
-    const MLEdge2 *
+    const Edge *
     add(
-        std::shared_ptr<const MLEdge2> edge
+        std::shared_ptr<const Edge> edge
     );
 
     /**
      * Inserts an existing edge in the cube.
      * @return a pointer to the edge
      */
-    const MLEdge2 *
+    const Edge *
     add(
-        const MLEdge2* edge
+        const Edge* edge
     );
 
 
@@ -210,7 +210,7 @@ class
      * Creates a new edge and inserts it in the cube.
      * @return a pointer to the edge
      */
-    const MLEdge2 *
+    const Edge *
     add(
         const Vertex* vertex1,
         const VCube* cube1,
@@ -226,7 +226,7 @@ class
      * @throw OperationNotSupportedException if the two end VCubes are different
      * @return a pointer to the edge
      */
-    const MLEdge2 *
+    const Edge *
     add(
         const Vertex* vertex1,
         const Vertex* vertex2
@@ -235,7 +235,7 @@ class
     /** Returns true if the input edge is present in the cube. */
     bool
     contains(
-        const MLEdge2* e
+        const Edge* e
     ) const;
 
     /** Returns true if the edge is present in the cube. */
@@ -261,7 +261,7 @@ class
 
 
     /** Returns the edge if it is present in the cube, or nullptr if it isn't. */
-    const MLEdge2 *
+    const Edge *
     get(
         const Vertex* vertex1,
         const VCube* cube1,
@@ -274,7 +274,7 @@ class
      * otherwise it would be ambiguous which VCubes to use if the vertices are present in both.
      * @throw OperationNotSupportedException if the two end VCubes are different
      */
-    const MLEdge2 *
+    const Edge *
     get(
         const Vertex* vertex1,
         const Vertex* vertex2
@@ -283,20 +283,20 @@ class
     /** Returns the edge at the given position in the cube.
      * @throw ElementNotFoundException if the index is <0 or >size()-1
      */
-    const MLEdge2 *
+    const Edge *
     at(
         size_t pos
     ) const;
 
     /** Returns a random edge, with uniform probability. */
-    const MLEdge2 *
+    const Edge *
     get_at_random(
     ) const;
 
     /** Returns the position of edge e in the cube, or -1 if e is not present in the cube. */
     int
     index_of(
-        const MLEdge2 * e
+        const Edge * e
     ) const;
 
     /**
@@ -305,7 +305,7 @@ class
      */
     bool
     erase(
-        const MLEdge2 * e
+        const Edge * e
     );
 
     /**
@@ -336,7 +336,7 @@ class
     /**
      * Returns the attribute store associated to this cube
      */
-    core::AttributeStore<const MLEdge2>*
+    core::AttributeStore<const Edge>*
     attr(
     ) const;
 
@@ -426,7 +426,7 @@ class
      */
     void
     attach(
-        core::Observer<const MLEdge2>* obs
+        core::Observer<const Edge>* obs
     );
 
     /**
@@ -528,7 +528,7 @@ class
      * which this observer has been attached, the set of edges associated to the cube
      * is also updated.
      */
-    core::UnionObserver<MDSimpleEdgeStore, const MLEdge2>*
+    core::UnionObserver<MDSimpleEdgeStore, const Edge>*
     register_obs(
     );
 
@@ -562,7 +562,7 @@ class
     //typedef MLCube<MDSimpleEdgeStore> super;
     //typedef MDSimpleEdgeStore EStore;
     //typedef MDSimpleEdgeStore* entry_type;
-    //typedef const MLEdge2* element_type;
+    //typedef const Edge* element_type;
 
 
     /** Edge directionality */

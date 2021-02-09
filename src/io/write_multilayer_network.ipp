@@ -5,7 +5,7 @@ namespace net {
 template <typename LayerIterator>
 void
 write_multilayer_network(
-    const MultilayerNetwork2* mnet,
+    const MultilayerNetwork* mnet,
     LayerIterator begin,
     LayerIterator end,
     const std::string& path,
@@ -326,7 +326,7 @@ write_multilayer_network(
 template <typename LayerIterator>
 void
 write_graphml(
-    const MultilayerNetwork2* mnet,
+    const MultilayerNetwork* mnet,
     LayerIterator begin,
     LayerIterator end,
     const std::string& path,

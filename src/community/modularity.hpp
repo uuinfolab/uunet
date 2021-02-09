@@ -128,7 +128,7 @@ ordered_modularity(const M* mnet, const CS* communities, double omega)
     }
 
     // quick fix
-    std::map<const uu::net::Network2*,size_t> layer_index; // FIX ME!!
+    std::map<const uu::net::Network*,size_t> layer_index; // FIX ME!!
 
     for (size_t l_idx=0; l_idx<mnet->layers()->size(); l_idx++)
     {

@@ -7,7 +7,7 @@
 namespace uu {
 namespace net {
 
-std::unique_ptr<MultilayerNetwork2>
+std::unique_ptr<MultilayerNetwork>
 read_multilayer_network(
     const std::string& infile,
     const std::string& name,
@@ -22,7 +22,7 @@ read_multilayer_network(
 
     // Check metadata consistency (@todo) & create graph & add attributes
 
-    auto net = std::make_unique<MultilayerNetwork2>(name);
+    auto net = std::make_unique<MultilayerNetwork>(name);
 
     for (auto l: meta.layers)
     {
@@ -129,9 +129,9 @@ read_multilayer_network(
 
 
 template <>
-Network2*
+Network*
 read_layer(
-    MultilayerNetwork2* ml,
+    MultilayerNetwork* ml,
     const std::vector<std::string>& fields,
     size_t from_idx,
     size_t line_number
@@ -153,7 +153,7 @@ read_layer(
 template <>
 void
 read_vertex(
-    MultilayerNetwork2* ml,
+    MultilayerNetwork* ml,
     const std::vector<std::string>& fields,
     const MultilayerMetadata& meta,
     size_t line_number
@@ -170,14 +170,14 @@ read_vertex(
 template <>
 void
 read_intralayer_vertex(
-    MultilayerNetwork2* ml,
+    MultilayerNetwork* ml,
     const std::vector<std::string>& fields,
     const MultilayerMetadata& meta,
     size_t line_number
 )
 {
     core::assert_not_null(ml, "read_intralayer_vertex", "ml");
-    auto l = read_layer<MultilayerNetwork2, Network2>(ml, fields, 1, line_number);
+    auto l = read_layer<MultilayerNetwork, Network>(ml, fields, 1, line_number);
     auto v = read_actor(l, fields, 0, line_number);
 
     auto v_attr = meta.intralayer_vertex_attributes.find(l->name);
@@ -191,7 +191,7 @@ read_intralayer_vertex(
 template <>
 void
 read_intralayer_edge(
-    MultilayerNetwork2* ml,
+    MultilayerNetwork* ml,
     const std::vector<std::string>& fields,
     const MultilayerMetadata& meta,
     size_t line_number
@@ -199,7 +199,7 @@ read_intralayer_edge(
 {
     core::assert_not_null(ml, "read_intralayer_edge", "ml");
 
-    auto l = read_layer<MultilayerNetwork2, Network2>(ml, fields, 2, line_number);
+    auto l = read_layer<MultilayerNetwork, Network>(ml, fields, 2, line_number);
 
     auto v1 = read_actor(l, fields, 0, line_number);
     auto v2 = read_actor(l, fields, 1, line_number);
@@ -225,7 +225,7 @@ read_intralayer_edge(
 template <>
 void
 read_interlayer_edge(
-    MultilayerNetwork2* ml,
+    MultilayerNetwork* ml,
     const std::vector<std::string>& fields,
     const MultilayerMetadata& meta,
     size_t line_number
@@ -233,9 +233,9 @@ read_interlayer_edge(
 {
     (void)meta; // param not used
     core::assert_not_null(ml, "read_interlayer_edge", "ml");
-    auto l1 = read_layer<MultilayerNetwork2, Network2>(ml, fields, 1, line_number);
+    auto l1 = read_layer<MultilayerNetwork, Network>(ml, fields, 1, line_number);
     auto v1 = read_actor(l1, fields, 0, line_number);
-    auto l2 = read_layer<MultilayerNetwork2, Network2>(ml, fields, 3, line_number);
+    auto l2 = read_layer<MultilayerNetwork, Network>(ml, fields, 3, line_number);
     auto v2 = read_actor(l2, fields, 2, line_number);
 
     if (l1==l2)

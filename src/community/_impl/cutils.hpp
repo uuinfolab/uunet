@@ -11,7 +11,7 @@
 #include "Eigen/Dense"
 #include <vector>
 #include "community/Community.hpp"
-#include "networks/Network2.hpp"
+#include "networks/Network.hpp"
 #include "objects/EdgeMode.hpp"
 #include "objects/Vertex.hpp"
 
@@ -358,7 +358,7 @@ std::vector<Eigen::SparseMatrix<double>>
 }
 
 
-std::unique_ptr<CommunityStructure<Network2>>
+std::unique_ptr<CommunityStructure<Network>>
         to_community_structure(
             std::unordered_map<const Vertex*, size_t> membership
         );

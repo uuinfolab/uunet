@@ -24,10 +24,10 @@ MDMultiEdgeStore(
 
 }
 
-const MLEdge2 *
+const Edge *
 MDMultiEdgeStore::
 add(
-    std::shared_ptr<const MLEdge2> e
+    std::shared_ptr<const Edge> e
 )
 {
     core::assert_not_null(e.get(), "MDMultiEdgeStore::add", "e");
@@ -67,7 +67,7 @@ add(
     return new_edge;
 }
 
-const MLEdge2 *
+const Edge *
 MDMultiEdgeStore::
 add(
     const Vertex* vertex1,
@@ -83,16 +83,16 @@ add(
     return add(vertex1, cube1_, vertex2, cube2_);
 }
 
-core::SortedRandomSet<const MLEdge2*>
+core::SortedRandomSet<const Edge*>
 MDMultiEdgeStore::
 get(
-    const typename MLEdge2::key_type& key
+    const typename Edge::key_type& key
 ) const
 {
     return get(std::get<0>(key), std::get<1>(key), std::get<2>(key), std::get<3>(key));
 }
 
-core::SortedRandomSet<const MLEdge2*>
+core::SortedRandomSet<const Edge*>
 MDMultiEdgeStore::
 get(
     const Vertex* vertex1,
@@ -121,7 +121,7 @@ get(
         throw core::ElementNotFoundException("Wrong pair of vertex stores");
     }
 
-    core::SortedRandomSet<const MLEdge2*> result;
+    core::SortedRandomSet<const Edge*> result;
 
     auto v1 = l2->second.find(vertex1);
 
@@ -152,7 +152,7 @@ get(
 bool
 MDMultiEdgeStore::
 contains(
-    const typename MLEdge2::key_type& key
+    const typename Edge::key_type& key
 ) const
 {
     auto e = get(key);
@@ -169,7 +169,7 @@ contains(
 }
 
 
-core::SortedRandomSet<const MLEdge2*>
+core::SortedRandomSet<const Edge*>
 MDMultiEdgeStore::
 get(
     const Vertex* vertex1,
@@ -189,7 +189,7 @@ get(
 bool
 MDMultiEdgeStore::
 erase(
-    const MLEdge2* edge
+    const Edge* edge
 )
 {
     core::assert_not_null(edge, "erase", "edge");
@@ -250,7 +250,7 @@ erase(
 bool
 MDMultiEdgeStore::
 erase(
-    const typename MLEdge2::key_type& key
+    const typename Edge::key_type& key
 )
 {
     auto edges = get(key);
@@ -279,14 +279,14 @@ erase(
     void
 MDMultiEdgeStore::
 erase(
-const MLVertex2* vertex
+const MLVertex* vertex
 )
 {
 
     core::assert_not_null(layer, "erase", "layer");
     core::assert_not_null(vertex, "erase", "vertex");
 
-    std::unordered_set<const MLEdge2*> to_erase;
+    std::unordered_set<const Edge*> to_erase;
 
     std::vector<const VCube*> layers = {cube1, cube2};
 

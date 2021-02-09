@@ -3,10 +3,10 @@
 
 #include <memory>
 #include <unordered_map>
-#include "objects/MLEdge2.hpp"
+#include "objects/Edge.hpp"
 #include "objects/EdgeDir.hpp"
 #include "objects/EdgeMode.hpp"
-#include "networks/Network2.hpp"
+#include "networks/Network.hpp"
 #include "networks/_impl/stores/LayerStore.hpp"
 
 namespace uu {
@@ -16,13 +16,13 @@ namespace net {
 class
     MLECubeStore
 //:
-//    public core::SharedPtrSortedRandomSet<const MLEdge2>,
-//            public core::Subject<const MLEdge2>
+//    public core::SharedPtrSortedRandomSet<const Edge>,
+//            public core::Subject<const Edge>
 {
 
   private:
 
-    std::map<std::pair<const Network2*, const Network2*>, std::unique_ptr<ECube>> interlayer_edges_;
+    std::map<std::pair<const Network*, const Network*>, std::unique_ptr<ECube>> interlayer_edges_;
 
     const LayerStore* layers_;
 
@@ -43,9 +43,9 @@ class
 
     /*
     virtual
-    const MLEdge2*
+    const Edge*
     add(
-        std::shared_ptr<const MLEdge2> e
+        std::shared_ptr<const Edge> e
     ) override;
     */
 
@@ -59,32 +59,32 @@ class
      * @return a pointer to the new edge, or nullptr if the edge already exists.
      **/
     virtual
-    const MLEdge2 *
+    const Edge *
     add(
         const Vertex* vertex1,
-        const Network2* layer1,
+        const Network* layer1,
         const Vertex* vertex2,
-        const Network2* layer2
+        const Network* layer2
     );
 
-    const MLEdge2 *
+    const Edge *
     get(
         const Vertex* vertex1,
-        const Network2* layer1,
+        const Network* layer1,
         const Vertex* vertex2,
-        const Network2* layer2
+        const Network* layer2
     );
 
     bool
     erase(
-        const MLEdge2* e
+        const Edge* e
     );
 
 
     const ECube*
     get(
-        const Network2* layer1,
-        const Network2* layer2
+        const Network* layer1,
+        const Network* layer2
     ) const;
 
 
@@ -97,8 +97,8 @@ class
     const
     GenericObjectList<Vertex>*
     neighbors(
-        const Network2* layer1,
-        const Network2* layer2,
+        const Network* layer1,
+        const Network* layer2,
         const Vertex* vertex,
         EdgeMode mode
     ) const;
@@ -110,10 +110,10 @@ class
      * @return the list of neighbors.
      **/
     const
-    GenericObjectList<MLEdge2>*
+    GenericObjectList<Edge>*
     incident(
-        const Network2* layer1,
-        const Network2* layer2,
+        const Network* layer1,
+        const Network* layer2,
         const Vertex* vertex,
         EdgeMode mode
     ) const;
@@ -125,22 +125,22 @@ class
 
     ECube*
     init(
-        Network2* layer1,
-        Network2* layer2,
+        Network* layer1,
+        Network* layer2,
         EdgeDir dir
     );
 
     bool
     is_directed(
-        const Network2* layer1,
-        const Network2* layer2
+        const Network* layer1,
+        const Network* layer2
     ) const;
 
 
     void
     set_directed(
-        const Network2* layer1,
-        const Network2* layer2,
+        const Network* layer1,
+        const Network* layer2,
         bool directed
     );
 
@@ -148,20 +148,20 @@ class
     virtual
     void
     add(
-        const Network2* layer
+        const Network* layer
     );
 
     virtual
     void
     erase(
-        const Network2* layer
+        const Network* layer
     );
 
 
     virtual
     void
     erase(
-        const Network2* layer,
+        const Network* layer,
         const Vertex* vertex
     );
 
@@ -169,8 +169,8 @@ class
 
     ECube*
     get(
-        const Network2* layer1,
-        const Network2* layer2
+        const Network* layer1,
+        const Network* layer2
     );
 };
 

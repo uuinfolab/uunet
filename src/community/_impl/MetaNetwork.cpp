@@ -12,7 +12,7 @@ namespace net {
 MetaNetwork::
 MetaNetwork()
 {
-    w = std::make_unique<Network2>("w", EdgeDir::UNDIRECTED, LoopMode::ALLOWED);
+    w = std::make_unique<Network>("w", EdgeDir::UNDIRECTED, LoopMode::ALLOWED);
     make_weighted(w.get());
 
 }
@@ -32,7 +32,7 @@ add(
 }
 
 
-const MLEdge2*
+const Edge*
 MetaNetwork::
 edge(
     const Vertex* u,
@@ -57,7 +57,7 @@ edge(
     return e;
 }
 
-const Network2*
+const Network*
 MetaNetwork::
 get(
 ) const

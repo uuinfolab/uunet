@@ -3,7 +3,7 @@
 
 #include <map>
 #include <utility>
-#include "networks/Network2.hpp"
+#include "networks/Network.hpp"
 #include "olap/VCube.hpp"
 
 namespace uu {
@@ -14,7 +14,7 @@ class LayerStore
 {
   private:
 
-    core::LabeledUniquePtrSortedRandomSet<Network2> store;
+    core::LabeledUniquePtrSortedRandomSet<Network> store;
 
     VCube* actors_;
 
@@ -26,15 +26,15 @@ class LayerStore
 
     // @todo add const versions
 
-    core::LabeledUniquePtrSortedRandomSet<Network2>::iterator
+    core::LabeledUniquePtrSortedRandomSet<Network>::iterator
     begin(
     ) const;
 
-    core::LabeledUniquePtrSortedRandomSet<Network2>::iterator
+    core::LabeledUniquePtrSortedRandomSet<Network>::iterator
     end(
     ) const;
 
-    Network2 *
+    Network *
     add(
         const std::string layer_name,
         EdgeDir dir = EdgeDir::UNDIRECTED,
@@ -43,22 +43,22 @@ class LayerStore
 
     bool
     contains(
-        const Network2* layer
+        const Network* layer
     ) const;
 
 
     size_t
     index_of(
-        const Network2* layer
+        const Network* layer
     ) const;
 
 
-    const Network2*
+    const Network*
     at(
         size_t pos
     ) const;
 
-    Network2*
+    Network*
     at(
         size_t pos
     );
@@ -67,13 +67,13 @@ class LayerStore
     size(
     ) const;
 
-    const Network2*
+    const Network*
     get(
         const std::string& layer_name
     ) const;
 
 
-    Network2*
+    Network*
     get(
         const std::string& layer_name
     );

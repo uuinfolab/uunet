@@ -63,7 +63,7 @@ neighbors(
 
 
 const
-GenericObjectList<MLEdge2>*
+GenericObjectList<Edge>*
 ECube::
 incident(
     const Vertex* vertex,
@@ -76,7 +76,7 @@ incident(
 
 
 const
-GenericObjectList<MLEdge2>*
+GenericObjectList<Edge>*
 ECube::
 incident(
     const Vertex* vertex,
@@ -194,27 +194,27 @@ end(
 }
 
 
-const MLEdge2 *
+const Edge *
 ECube::
 add(
-    std::shared_ptr<const MLEdge2> edge
+    std::shared_ptr<const Edge> edge
 )
 {
     return cube_->add(edge);
 }
 
 
-const MLEdge2 *
+const Edge *
 ECube::
 add(
-    const MLEdge2* e
+    const Edge* e
 )
 {
     return cube_->add(e);
 }
 
 
-const MLEdge2 *
+const Edge *
 ECube::
 add(
     const Vertex* vertex1,
@@ -228,7 +228,7 @@ add(
 }
 
 
-const MLEdge2 *
+const Edge *
 ECube::
 add(
     const Vertex* vertex1,
@@ -249,7 +249,7 @@ add(
 bool
 ECube::
 contains(
-    const MLEdge2* e
+    const Edge* e
 ) const
 {
     return cube_->contains(e);
@@ -286,7 +286,7 @@ contains(
 }
 
 
-const MLEdge2 *
+const Edge *
 ECube::
 get(
     const Vertex* vertex1,
@@ -300,7 +300,7 @@ get(
 }
 
 
-const MLEdge2 *
+const Edge *
 ECube::
 get(
     const Vertex* vertex1,
@@ -318,7 +318,7 @@ get(
 }
 
 
-const MLEdge2*
+const Edge*
 ECube::
 at(
     size_t pos
@@ -328,7 +328,7 @@ at(
 }
 
 
-const MLEdge2*
+const Edge*
 ECube::
 get_at_random(
 ) const
@@ -340,7 +340,7 @@ get_at_random(
 int
 ECube::
 index_of(
-    const MLEdge2* e
+    const Edge* e
 ) const
 {
     return cube_->index_of(e);
@@ -350,7 +350,7 @@ index_of(
 bool
 ECube::
 erase(
-    const MLEdge2* e
+    const Edge* e
 )
 {
     return cube_->erase(e);
@@ -389,7 +389,7 @@ erase(
 }
 
 
-core::AttributeStore<const MLEdge2>*
+core::AttributeStore<const Edge>*
 ECube::
 attr(
 ) const
@@ -405,7 +405,7 @@ add_dimension(
     const std::vector<std::string>& members
 )
 {
-    auto tot = UniformDiscretization<MLEdge2>(members.size());
+    auto tot = UniformDiscretization<Edge>(members.size());
     return cube_->add_dimension(name, members, this, tot);
 }
 
@@ -482,7 +482,7 @@ to_string(
 void
 ECube::
 attach(
-    core::Observer<const MLEdge2>* obs
+    core::Observer<const Edge>* obs
 )
 {
     cube_->elements_->attach(obs);
@@ -577,7 +577,7 @@ init(
 }
 
 
-core::UnionObserver<MDSimpleEdgeStore, const MLEdge2>*
+core::UnionObserver<MDSimpleEdgeStore, const Edge>*
 ECube::
 register_obs(
 )

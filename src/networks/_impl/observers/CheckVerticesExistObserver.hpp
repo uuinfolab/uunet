@@ -2,7 +2,7 @@
 #define UU_NET_DATASTRUCTURE_OBSERVERS_CHECKVERTICESEXISTOBSERVER_H_
 
 #include "core/datastructures/observers/Observer.hpp"
-#include "objects/MLEdge2.hpp"
+#include "objects/Edge.hpp"
 #include "olap/VCube.hpp"
 
 namespace uu {
@@ -12,7 +12,7 @@ namespace net {
  * This observer checks if the vertices adjacent to new edges exist.
  */
 class CheckVerticesExistObserver :
-    public core::Observer<const MLEdge2>
+    public core::Observer<const Edge>
 {
 
   public:
@@ -29,7 +29,7 @@ class CheckVerticesExistObserver :
      */
     void
     notify_add(
-        const MLEdge2* e
+        const Edge* e
     ) override;
 
 
@@ -38,7 +38,7 @@ class CheckVerticesExistObserver :
      */
     void
     notify_erase(
-        const MLEdge2* e
+        const Edge* e
     ) override;
 
 };

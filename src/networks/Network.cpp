@@ -1,13 +1,13 @@
-#include "networks/Network2.hpp"
+#include "networks/Network.hpp"
 
-#include "networks/_impl/observers/NoLoopCheckObserver.hpp"
-#include "networks/_impl/observers/VCubeObserver.hpp"
+//#include "networks/_impl/observers/NoLoopCheckObserver.hpp"
+//#include "networks/_impl/observers/VCubeObserver.hpp"
 
 namespace uu {
 namespace net {
 
-Network2::
-Network2(
+Network::
+Network(
     const std::string& name,
     EdgeDir dir,
     LoopMode loops
@@ -39,16 +39,16 @@ Network2(
     }*/
 }
 
-Network2::
-Network2(
+Network::
+Network(
     const std::string& name,
     std::unique_ptr<VCube> vertices,
     std::unique_ptr<ECube> edges
 ):
     name(name)
 {
-    core::assert_not_null(vertices.get(), "Network2::Network2", "vertices");
-    core::assert_not_null(edges.get(), "Network2::Network2", "edges");
+    core::assert_not_null(vertices.get(), "Network::Network2", "vertices");
+    core::assert_not_null(edges.get(), "Network::Network2", "edges");
 
     if (edges->vcube1() != vertices.get() || edges->vcube2() != vertices.get())
     {
@@ -62,7 +62,7 @@ Network2(
 }
 
 VCube*
-Network2::
+Network::
 vertices(
 )
 {
@@ -72,7 +72,7 @@ vertices(
 
 
 const VCube*
-Network2::
+Network::
 vertices(
 ) const
 {
@@ -81,7 +81,7 @@ vertices(
 
 
 ECube*
-Network2::
+Network::
 edges(
 )
 {
@@ -90,7 +90,7 @@ edges(
 
 
 const ECube*
-Network2::
+Network::
 edges(
 ) const
 {
@@ -99,7 +99,7 @@ edges(
 
 
 bool
-Network2::
+Network::
 is_directed(
 ) const
 {
@@ -108,7 +108,7 @@ is_directed(
 
 /*
 bool
-Network2::
+Network::
 is_weighted(
 ) const
 {
@@ -117,7 +117,7 @@ is_weighted(
 
 
 bool
-Network2::
+Network::
 is_probabilistic(
 ) const
 {
@@ -126,7 +126,7 @@ is_probabilistic(
 
 
 bool
-Network2::
+Network::
 is_temporal(
 ) const
 {
@@ -135,7 +135,7 @@ is_temporal(
 
 
 bool
-Network2::
+Network::
 is_attributed(
 ) const
 {
@@ -144,7 +144,7 @@ is_attributed(
 
 
 bool
-Network2::
+Network::
 allows_multi_edges(
 ) const
 {
@@ -155,7 +155,7 @@ allows_multi_edges(
  */
 
 bool
-Network2::
+Network::
 allows_loops(
 ) const
 {
