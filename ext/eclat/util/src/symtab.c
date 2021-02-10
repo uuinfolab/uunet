@@ -71,7 +71,6 @@ st_strsize (const void *s)
 int
 st_strcmp (const void *a, const void *b, void *data)
 {
-    (void)data;
     /* --- string comparison function */
     const char *s = a, *t = b;    /* to traverse the strings */
 
@@ -118,7 +117,6 @@ st_strhash (const void *s, int type)
 size_t
 st_intsize (const void *k)
 {
-    (void)k;
     return sizeof(int);    /* --- integer size function */
 }
 
@@ -127,7 +125,6 @@ st_intsize (const void *k)
 int
 st_intcmp (const void *a, const void *b, void *data)
 {
-    (void)data;
     /* --- integer comparison function */
     return (*(const int*)a == *(const int*)b) ? 0 : -1;
 }  /* st_intcmp() */
@@ -148,7 +145,6 @@ st_inthash (const void *k, int type)
 size_t
 st_lngsize (const void *k)
 {
-    (void)k;
     return sizeof(long);    /* --- long integer size function */
 }
 
@@ -157,7 +153,6 @@ st_lngsize (const void *k)
 int
 st_lngcmp (const void *a, const void *b, void *data)
 {
-    (void)data;
     /* --- long comparison function */
     return (*(const long*)a == *(const long*)b) ? 0 : -1;
 }  /* st_lngcmp() */
@@ -178,7 +173,6 @@ st_lnghash (const void *k, int type)
 size_t
 st_sizsize (const void *k)
 {
-    (void)k;
     return sizeof(size_t);    /* --- size_t size function */
 }
 
@@ -187,7 +181,6 @@ st_sizsize (const void *k)
 int
 st_sizcmp (const void *a, const void *b, void *data)
 {
-    (void)data;
     /* --- size_t comparison function */
     return (*(const size_t*)a == *(const size_t*)b) ? 0 : -1;
 }  /* st_sizcmp() */
@@ -208,7 +201,6 @@ st_sizhash (const void *k, int type)
 size_t
 st_difsize (const void *k)
 {
-    (void)k;
     return sizeof(ptrdiff_t);    /* --- ptrdiff_t size function */
 }
 
@@ -217,7 +209,6 @@ st_difsize (const void *k)
 int
 st_difcmp (const void *a, const void *b, void *data)
 {
-    (void)data;
     /* --- size_t comparison function */
     return (*(const ptrdiff_t*)a == *(const ptrdiff_t*)b) ? 0 : -1;
 }  /* st_difcmp() */
@@ -238,7 +229,6 @@ st_difhash (const void *k, int type)
 size_t
 st_ptrsize (const void *p)
 {
-    (void)p;
     return sizeof(void*);    /* --- pointer size function */
 }
 
@@ -247,7 +237,6 @@ st_ptrsize (const void *p)
 int
 st_ptrcmp (const void *a, const void *b, void *data)
 {
-    (void)data;
     /* --- pointer comparison function */
     return (a == b) ? 0 : -1;     /* return whether pointers are equal */
 }  /* st_ptrcmp() */
