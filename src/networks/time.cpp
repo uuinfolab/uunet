@@ -11,6 +11,7 @@ make_temporal(
     net->edges()->attr()->add("t_", core::AttributeType::TIMESET);
 }
 
+
 bool
 is_temporal(
     const Network* net
@@ -26,6 +27,7 @@ is_temporal(
     return false;
 }
 
+
 void
 add_time(
     Network* net,
@@ -36,6 +38,7 @@ add_time(
     net->edges()->attr()->add_time(edge, "t_", t);
 }
 
+
 std::set<core::Time>
 get_times(
     const Network* net,
@@ -44,6 +47,7 @@ get_times(
 {
     return net->edges()->attr()->get_times(edge, "t_");
 }
+
 
 std::array<core::Time, 2>
 get_time_bounds(

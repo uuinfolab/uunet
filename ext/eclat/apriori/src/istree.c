@@ -124,11 +124,11 @@
 #define HDONLY      ITEM_MIN    /* flag for head only item in path */
 #define ITEMOF(n)   ((ITEM)((n)->item & ~HDONLY))
 #define ISHDONLY(n) ((n)->item < 0)
-#define int         1           /* to check definition of SUPP */
-#define long        2           /* for double precision type */
-#define double      3
+//#define int         1           /* to check definition of SUPP */
+//#define long        2           /* for double precision type */
+//#define double      3
 #if SUPP==double
-#define SKIP        (-0.0)      /* flag for subtree skipping */
+#define SKIP        (0)      /* flag for subtree skipping */
 #define SETSKIP(n)  ((n) = copysign((n),-1.0))
 #define CLRSKIP(n)  ((n) = copysign((n),+1.0))
 #define IS2SKIP(n)  signbit(n)
@@ -3752,7 +3752,7 @@ showtree (ISTNODE *node, ITEMBASE *base, ITEM level)
 
         k = ITEMAT(node, i);        /* print item identifier and counter */
         printf("%s", ib_name(base, k));
-        printf("/%"ITEM_FMT": %"SUPP_FMT, k, COUNT(node->cnts[i]));
+        printf("/%"ITEM_FMT": %"SUPP_FMT, k, (int)COUNT(node->cnts[i]));
 
         if (IS2SKIP(node->cnts[i]))
         {
@@ -3791,7 +3791,7 @@ ist_show (ISTREE *ist)
     /* --- show an item set tree */
     assert(ist);                  /* check the function argument */
     showtree(ist->lvls[0], ist->base, 0);
-    printf("total: %"SUPP_FMT"\n", COUNT(ist->wgt));
+    printf("total: %"SUPP_FMT"\n", (int)COUNT(ist->wgt));
 }  /* ist_show() */             /* show the nodes recursively */
 
 #endif

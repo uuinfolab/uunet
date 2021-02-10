@@ -2,7 +2,7 @@
 #define UU_NETWORKS_TIME_H_
 
 #include <array>
-#include "core/attributes/Time.hpp"
+
 #include "core/attributes/Time.hpp"
 #include "networks/Network.hpp"
 
@@ -33,6 +33,9 @@ get_times(
     const Edge* edge
 );
 
+/**
+ * @throw OperationNotSupportedException
+ */
 std::array<core::Time, 2>
 get_time_bounds(
     const Network* net

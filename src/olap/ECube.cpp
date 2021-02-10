@@ -16,8 +16,8 @@ ECube(
 
 ) : name(name), cube1_(cube1), cube2_(cube2), dir_(dir), loops_(loops)
 {
-    auto store = std::make_unique<MDSimpleEdgeStore>(cube1, cube2, dir, loops);
-    cube_ = std::make_unique<MLCube<MDSimpleEdgeStore>>(std::move(store));
+    auto store = std::make_unique<SimpleEdgeStore>(cube1, cube2, dir, loops);
+    cube_ = std::make_unique<MLCube<SimpleEdgeStore>>(std::move(store));
 
     // register an observer to propagate the removal of vertices to the edge store
     auto obs1 = std::make_unique<VCubeObserver<ECube>>(cube1_, this);
@@ -176,7 +176,7 @@ members(
 }
 
 
-typename MDSimpleEdgeStore::iterator
+typename SimpleEdgeStore::iterator
 ECube::
 begin(
 ) const
@@ -185,7 +185,7 @@ begin(
 }
 
 
-typename MDSimpleEdgeStore::iterator
+typename SimpleEdgeStore::iterator
 ECube::
 end(
 ) const
@@ -421,7 +421,7 @@ add_member(
 }
 
 
-MDSimpleEdgeStore*
+SimpleEdgeStore*
 ECube::
 cell(
     const std::vector<size_t>& index
@@ -431,7 +431,7 @@ cell(
 }
 
 
-const MDSimpleEdgeStore*
+const SimpleEdgeStore*
 ECube::
 cell(
     const std::vector<size_t>& index
@@ -441,7 +441,7 @@ cell(
 }
 
 
-MDSimpleEdgeStore*
+SimpleEdgeStore*
 ECube::
 cell(
     const std::vector<std::string>& index
@@ -451,7 +451,7 @@ cell(
 }
 
 
-const MDSimpleEdgeStore*
+const SimpleEdgeStore*
 ECube::
 cell(
     const std::vector<std::string>& index
@@ -516,12 +516,12 @@ skeleton(
 ) const
 {
     auto res = std::make_unique<ECube>(name, cube1_, cube2_, dir_, loops_);
-    res->cube_ = std::make_unique<MLCube<MDSimpleEdgeStore>>(dimensions, members);
+    res->cube_ = std::make_unique<MLCube<SimpleEdgeStore>>(dimensions, members);
     return res;
 }
 
 
-MDSimpleEdgeStore*
+SimpleEdgeStore*
 ECube::
 init(
 )
@@ -529,36 +529,36 @@ init(
     return cube_->init(get_store());
 }
 
-MDSimpleEdgeStore*
+SimpleEdgeStore*
 ECube::
 init(
-    const std::shared_ptr<MDSimpleEdgeStore>& store
+    const std::shared_ptr<SimpleEdgeStore>& store
 )
 {
     return cube_->init(store);
 }
 
-MDSimpleEdgeStore*
+SimpleEdgeStore*
 ECube::
 init(
     const std::vector<size_t>& index,
-    const std::shared_ptr<MDSimpleEdgeStore>& store
+    const std::shared_ptr<SimpleEdgeStore>& store
 )
 {
     return cube_->init(index, store);
 }
 
-MDSimpleEdgeStore*
+SimpleEdgeStore*
 ECube::
 init(
     size_t pos,
-    const std::shared_ptr<MDSimpleEdgeStore>& store
+    const std::shared_ptr<SimpleEdgeStore>& store
 )
 {
     return cube_->init(pos, store);
 }
 
-MDSimpleEdgeStore*
+SimpleEdgeStore*
 ECube::
 init(
     const std::vector<size_t>& index
@@ -567,7 +567,7 @@ init(
     return cube_->init(index, get_store());
 }
 
-MDSimpleEdgeStore*
+SimpleEdgeStore*
 ECube::
 init(
     size_t pos
@@ -577,7 +577,7 @@ init(
 }
 
 
-core::UnionObserver<MDSimpleEdgeStore, const Edge>*
+core::UnionObserver<SimpleEdgeStore, const Edge>*
 ECube::
 register_obs(
 )
@@ -606,12 +606,12 @@ register_obs(
 }
 
 
-std::shared_ptr<MDSimpleEdgeStore>
+std::shared_ptr<SimpleEdgeStore>
 ECube::
 get_store(
 ) const
 {
-    return std::make_shared<MDSimpleEdgeStore>(cube1_, cube2_, dir_, loops_);
+    return std::make_shared<SimpleEdgeStore>(cube1_, cube2_, dir_, loops_);
 }
 
 

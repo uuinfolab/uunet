@@ -160,6 +160,9 @@ read_vertex(
 )
 {
     core::assert_not_null(ml, "read_vertex", "ml");
+    (void)fields;
+    (void)meta;
+    (void)line_number;
     // @todo actors not read
     //auto v = read_actor(ml, fields, 0, line_number);
 

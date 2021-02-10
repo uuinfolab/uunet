@@ -1,11 +1,9 @@
-/**
- */
-
 #ifndef UU_OLAP_SEL_RANGE_H_
 #define UU_OLAP_SEL_RANGE_H_
 
+#include <cstddef>
+#include <stddef.h>
 #include "core/olap/selection/Indexes.hpp"
-#include <vector>
 
 namespace uu {
 namespace core {

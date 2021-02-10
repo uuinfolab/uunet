@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
-#include "networks/_impl/stores/MDSimpleEdgeStore.hpp"
+#include "networks/_impl/stores/SimpleEdgeStore.hpp"
 #include "olap/VCube.hpp"
 #include "olap/MLCube.hpp"
 #include "objects/Edge.hpp"
@@ -178,12 +178,12 @@ class
     ) const;
 
     /** Returns an iterator to the first edge in the cube */
-    typename MDSimpleEdgeStore::iterator
+    typename SimpleEdgeStore::iterator
     begin(
     ) const;
 
     /** Returns an iterator after the last edge in the cube */
-    typename MDSimpleEdgeStore::iterator
+    typename SimpleEdgeStore::iterator
     end(
     ) const;
 
@@ -374,7 +374,7 @@ class
      * Returns the cell at the given position in the cube.
      * @throw OutOfBoundsException if the index is outside the bounds on the cube
      */
-    MDSimpleEdgeStore*
+    SimpleEdgeStore*
     cell(
         const std::vector<size_t>& index
     );
@@ -383,7 +383,7 @@ class
      * Returns the cell at the given position in the cube.
      * @throw OutOfBoundsException if the index is outside the bounds on the cube
      */
-    const MDSimpleEdgeStore*
+    const SimpleEdgeStore*
     cell(
         const std::vector<size_t>& index
     ) const;
@@ -392,7 +392,7 @@ class
      * Returns the cell at the given position in the cube.
      * @throw OutOfBoundsException if the index is outside the bounds on the cube
      */
-    MDSimpleEdgeStore*
+    SimpleEdgeStore*
     cell(
         const std::vector<std::string>& index
     );
@@ -401,7 +401,7 @@ class
      * Returns the cell at the given position in the cube.
      * @throw OutOfBoundsException if the index is outside the bounds on the cube
      */
-    const MDSimpleEdgeStore*
+    const SimpleEdgeStore*
     cell(
         const std::vector<std::string>& index
     ) const;
@@ -448,7 +448,7 @@ class
      * Returns a new store of the same type used in the cells of the cube.
      * This has the same EdgeDir and LoopMode.
      */
-    std::shared_ptr<MDSimpleEdgeStore>
+    std::shared_ptr<SimpleEdgeStore>
     get_store(
     ) const;
 
@@ -477,40 +477,40 @@ class
     /**
      * Initializes the store where all the edges are kept.
      */
-    MDSimpleEdgeStore*
+    SimpleEdgeStore*
     init(
     );
 
     /**
      * Initializes the store where all the edges are kept with the given store.
      */
-    MDSimpleEdgeStore*
+    SimpleEdgeStore*
     init(
-        const std::shared_ptr<MDSimpleEdgeStore>& store
+        const std::shared_ptr<SimpleEdgeStore>& store
     );
 
     /**
      * Initializes the cell at the given index with the given store.
      */
-    MDSimpleEdgeStore*
+    SimpleEdgeStore*
     init(
         const std::vector<size_t>& index,
-        const std::shared_ptr<MDSimpleEdgeStore>& store
+        const std::shared_ptr<SimpleEdgeStore>& store
     );
 
     /**
      * Initializes the cell at the given position with the given store.
      */
-    MDSimpleEdgeStore*
+    SimpleEdgeStore*
     init(
         size_t pos,
-        const std::shared_ptr<MDSimpleEdgeStore>& store
+        const std::shared_ptr<SimpleEdgeStore>& store
     );
 
     /**
      * Initializes the cell at the given index with an empty store.
      */
-    MDSimpleEdgeStore*
+    SimpleEdgeStore*
     init(
         const std::vector<size_t>& index
     );
@@ -518,7 +518,7 @@ class
     /**
      * Initializes the cell at the given position with an empty store.
      */
-    MDSimpleEdgeStore*
+    SimpleEdgeStore*
     init(
         size_t pos
     );
@@ -528,7 +528,7 @@ class
      * which this observer has been attached, the set of edges associated to the cube
      * is also updated.
      */
-    core::UnionObserver<MDSimpleEdgeStore, const Edge>*
+    core::UnionObserver<SimpleEdgeStore, const Edge>*
     register_obs(
     );
 
@@ -553,15 +553,15 @@ class
   private:
 
     // A VCube is implemented as a specialization of a Multilayer Cube (MLCube)
-    std::unique_ptr<MLCube<MDSimpleEdgeStore>> cube_;
+    std::unique_ptr<MLCube<SimpleEdgeStore>> cube_;
 
     // End VCube's
     VCube* cube1_;
     VCube* cube2_;
 
-    //typedef MLCube<MDSimpleEdgeStore> super;
-    //typedef MDSimpleEdgeStore EStore;
-    //typedef MDSimpleEdgeStore* entry_type;
+    //typedef MLCube<SimpleEdgeStore> super;
+    //typedef SimpleEdgeStore EStore;
+    //typedef SimpleEdgeStore* entry_type;
     //typedef const Edge* element_type;
 
 

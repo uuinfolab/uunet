@@ -38,9 +38,9 @@
 #define IDENT       int         /* identifier type for map */
 #endif
 
-#define int         1           /* to check definition of IDENT */
-#define long        2           /* for certain types */
-#define ptrdiff_t   3
+//#define int         1           /* to check definition of IDENT */
+//#define long        2           /* for certain types */
+//#define ptrdiff_t   3
 
 #if   IDENT==int
 #ifndef IDENT_MIN

@@ -311,6 +311,9 @@ set_directed(
     bool directed
 )
 {
+    (void)layer1;
+    (void)layer2;
+    (void)directed;
     throw core::OperationNotSupportedException("directionality must be set at init time");
 
 }

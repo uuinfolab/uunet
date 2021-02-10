@@ -1,11 +1,9 @@
-/**
- */
-
 #ifndef UU_OLAP_SEL_RANGE_H_
 #define UU_OLAP_SEL_RANGE_H_
 
+#include <cstddef>
+#include <stddef.h>
 #include "core/olap/selection/Indexes.hpp"
-#include <vector>
 
 namespace uu {
 namespace core {
@@ -16,23 +14,29 @@ class Range
 
   public:
 
-    Range(size_t from, size_t to);
+    Range(
+        size_t from,
+        size_t to
+    );
 
-    /**  */
+    
+    /**
+     *
+     * @throw OutOfBoundsException
+     */
     virtual
     void
     eval(
         size_t size
     ) override;
 
-    /**  */
+    
     virtual
     bool
     has_next(
     ) const override;
 
 
-    /**  */
     virtual
     size_t
     next(

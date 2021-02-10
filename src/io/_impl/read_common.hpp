@@ -11,10 +11,8 @@
 #include "core/exceptions/OperationNotSupportedException.hpp"
 #include "core/exceptions/WrongFormatException.hpp"
 #include "core/attributes/Attribute.hpp"
-//#include "core/attributes/AttributeStore.hpp"
 #include "core/utils/CSVReader.hpp"
 #include "core/datastructures/objects/Object.hpp"
-//#include "networks/_impl/Graph.hpp"
 #include "objects/Vertex.hpp"
 #include "objects/Edge.hpp"
 #include "io/_impl/GraphMetadata.hpp"
@@ -363,6 +361,7 @@ read_attr_values(
             store->add_as_string(element, attributes.at(i-from_idx).name, line.at(i));
             break;
 
+        case core::AttributeType::NUMERIC:
         case core::AttributeType::DOUBLE:
         case core::AttributeType::INTEGER:
         case core::AttributeType::STRING:

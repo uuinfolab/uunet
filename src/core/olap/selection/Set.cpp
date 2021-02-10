@@ -12,7 +12,6 @@ Set(
     has_next_ = false;
 }
 
-/**  */
 
 void
 Set::
@@ -35,7 +34,7 @@ eval(
     }
 }
 
-/**  */
+
 bool
 Set::
 has_next(
@@ -45,7 +44,6 @@ has_next(
 }
 
 
-/**  */
 size_t
 Set::
 next(

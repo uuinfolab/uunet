@@ -1,4 +1,5 @@
 #include "core/olap/selection/Range.hpp"
+
 #include "core/exceptions/OutOfBoundsException.hpp"
 
 namespace uu {
@@ -32,7 +33,7 @@ eval(
     current_ = from_;
 }
 
-/**  */
+
 bool
 Range::
 has_next(
@@ -42,7 +43,6 @@ has_next(
 }
 
 
-/**  */
 size_t
 Range::
 next(

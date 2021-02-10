@@ -2,26 +2,26 @@
 #define UU_NET_DATASTRUCTURES_STORES_MDSIMPLEEDGESTORE_H_
 
 #include <unordered_set>
-#include "networks/_impl/stores/MDEdgeStore.hpp"
+#include "networks/_impl/stores/EdgeStore.hpp"
 
 namespace uu {
 namespace net {
 
 
 class
-    MDSimpleEdgeStore final :
-    public MDEdgeStore,
-    public std::enable_shared_from_this<MDSimpleEdgeStore>
+    SimpleEdgeStore final :
+    public EdgeStore,
+    public std::enable_shared_from_this<SimpleEdgeStore>
 {
 
-    typedef MDEdgeStore super;
+    typedef EdgeStore super;
 
 
   public:
 
     typedef const Edge* get_return_type;
 
-    MDSimpleEdgeStore(
+    SimpleEdgeStore(
         VCube* cube1,
         VCube* cube2,
         EdgeDir dir,

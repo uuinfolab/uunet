@@ -1,6 +1,3 @@
-/**
- */
-
 #ifndef UU_OLAP_SEL_SELECTION_H_
 #define UU_OLAP_SEL_SELECTION_H_
 

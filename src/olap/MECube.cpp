@@ -16,8 +16,8 @@ MECube(
 
 ) : name(name), cube1_(cube1), cube2_(cube2), dir_(dir), loops_(loops)
 {
-    auto store = std::make_unique<MDMultiEdgeStore>(cube1, cube2, dir, loops);
-    cube_ = std::make_unique<MLCube<MDMultiEdgeStore>>(std::move(store));
+    auto store = std::make_unique<MultiEdgeStore>(cube1, cube2, dir, loops);
+    cube_ = std::make_unique<MLCube<MultiEdgeStore>>(std::move(store));
 
     // register an observer to propagate the removal of vertices to the edge store
     auto obs1 = std::make_unique<VCubeObserver<MECube>>(cube1_, this);
@@ -176,7 +176,7 @@ members(
 }
 
 
-typename MDMultiEdgeStore::iterator
+typename MultiEdgeStore::iterator
 MECube::
 begin(
 ) const
@@ -185,7 +185,7 @@ begin(
 }
 
 
-typename MDMultiEdgeStore::iterator
+typename MultiEdgeStore::iterator
 MECube::
 end(
 ) const
@@ -421,7 +421,7 @@ add_member(
 }
 
 
-MDMultiEdgeStore*
+MultiEdgeStore*
 MECube::
 cell(
     const std::vector<size_t>& index
@@ -431,7 +431,7 @@ cell(
 }
 
 
-const MDMultiEdgeStore*
+const MultiEdgeStore*
 MECube::
 cell(
     const std::vector<size_t>& index
@@ -441,7 +441,7 @@ cell(
 }
 
 
-MDMultiEdgeStore*
+MultiEdgeStore*
 MECube::
 cell(
     const std::vector<std::string>& index
@@ -451,7 +451,7 @@ cell(
 }
 
 
-const MDMultiEdgeStore*
+const MultiEdgeStore*
 MECube::
 cell(
     const std::vector<std::string>& index
@@ -516,12 +516,12 @@ skeleton(
 ) const
 {
     auto res = std::make_unique<MECube>(name, cube1_, cube2_, dir_, loops_);
-    res->cube_ = std::make_unique<MLCube<MDMultiEdgeStore>>(dimensions, members);
+    res->cube_ = std::make_unique<MLCube<MultiEdgeStore>>(dimensions, members);
     return res;
 }
 
 
-MDMultiEdgeStore*
+MultiEdgeStore*
 MECube::
 init(
 )
@@ -529,36 +529,36 @@ init(
     return cube_->init(get_store());
 }
 
-MDMultiEdgeStore*
+MultiEdgeStore*
 MECube::
 init(
-    const std::shared_ptr<MDMultiEdgeStore>& store
+    const std::shared_ptr<MultiEdgeStore>& store
 )
 {
     return cube_->init(store);
 }
 
-MDMultiEdgeStore*
+MultiEdgeStore*
 MECube::
 init(
     const std::vector<size_t>& index,
-    const std::shared_ptr<MDMultiEdgeStore>& store
+    const std::shared_ptr<MultiEdgeStore>& store
 )
 {
     return cube_->init(index, store);
 }
 
-MDMultiEdgeStore*
+MultiEdgeStore*
 MECube::
 init(
     size_t pos,
-    const std::shared_ptr<MDMultiEdgeStore>& store
+    const std::shared_ptr<MultiEdgeStore>& store
 )
 {
     return cube_->init(pos, store);
 }
 
-MDMultiEdgeStore*
+MultiEdgeStore*
 MECube::
 init(
     const std::vector<size_t>& index
@@ -567,7 +567,7 @@ init(
     return cube_->init(index, get_store());
 }
 
-MDMultiEdgeStore*
+MultiEdgeStore*
 MECube::
 init(
     size_t pos
@@ -577,7 +577,7 @@ init(
 }
 
 
-core::UnionObserver<MDMultiEdgeStore, const Edge>*
+core::UnionObserver<MultiEdgeStore, const Edge>*
 MECube::
 register_obs(
 )
@@ -606,12 +606,12 @@ register_obs(
 }
 
 
-std::shared_ptr<MDMultiEdgeStore>
+std::shared_ptr<MultiEdgeStore>
 MECube::
 get_store(
 ) const
 {
-    return std::make_shared<MDMultiEdgeStore>(cube1_, cube2_, dir_, loops_);
+    return std::make_shared<MultiEdgeStore>(cube1_, cube2_, dir_, loops_);
 }
 
 

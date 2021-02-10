@@ -152,8 +152,12 @@ write_multilayer_network(
                 break;
 
             case core::AttributeType::TIME:
-            case core::AttributeType::TEXT:
             case core::AttributeType::INTEGER:
+            case core::AttributeType::TEXT:
+            case core::AttributeType::INTEGERSET:
+            case core::AttributeType::DOUBLESET:
+            case core::AttributeType::STRINGSET:
+            case core::AttributeType::TIMESET:
                 break;
             }
         }
@@ -186,8 +190,12 @@ write_multilayer_network(
                     break;
 
                 case core::AttributeType::TIME:
-                case core::AttributeType::TEXT:
                 case core::AttributeType::INTEGER:
+                case core::AttributeType::TEXT:
+                case core::AttributeType::INTEGERSET:
+                case core::AttributeType::DOUBLESET:
+                case core::AttributeType::STRINGSET:
+                case core::AttributeType::TIMESET:
                     break;
                 }
             }
@@ -243,6 +251,10 @@ write_multilayer_network(
                 case core::AttributeType::TIME:
                 case core::AttributeType::TEXT:
                 case core::AttributeType::INTEGER:
+                case core::AttributeType::INTEGERSET:
+                case core::AttributeType::DOUBLESET:
+                case core::AttributeType::STRINGSET:
+                case core::AttributeType::TIMESET:
                     break;
                 }
             }

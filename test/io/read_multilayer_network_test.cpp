@@ -97,7 +97,8 @@ TEST_F(net_io_read_multilayer_network_test, read)
             << "wrong attribute value: edge on layer";
 
     auto il_edges = net->interlayer_edges();
-    auto il_e = il_edges->get(v1,l1,v2,l2);
+    //auto il_e =
+    il_edges->get(v1,l1,v2,l2);
     //double val2 = il_edges->attr()->get_double(il_e, "attr.name2").value;
     //EXPECT_EQ(18.0, val2)
     //        << "wrong attribute value: interlayer edge";

@@ -115,10 +115,10 @@
 
 /*--------------------------------------------------------------------*/
 
-#define int         1           /* to check definitions */
-#define long        2           /* for certain types */
-#define ptrdiff_t   3
-#define double      4
+//#define int         1           /* to check definitions */
+//#define long        2           /* for certain types */
+//#define ptrdiff_t   3
+//#define double      4
 
 /*--------------------------------------------------------------------*/
 

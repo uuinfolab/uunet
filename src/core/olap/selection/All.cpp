@@ -1,5 +1,4 @@
 #include "core/olap/selection/All.hpp"
-#include "core/exceptions/OutOfBoundsException.hpp"
 
 namespace uu {
 namespace core {
@@ -11,7 +10,6 @@ All(
     has_next_ = false;
 }
 
-/**  */
 
 void
 All::
@@ -27,7 +25,7 @@ eval(
     }
 }
 
-/**  */
+
 bool
 All::
 has_next(
@@ -37,7 +35,6 @@ has_next(
 }
 
 
-/**  */
 size_t
 All::
 next(

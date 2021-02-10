@@ -1,14 +1,16 @@
-#ifndef UU_NETWORKS_ORDEREDMULTIPLEXNETWORK2_H_
-#define UU_NETWORKS_ORDEREDMULTIPLEXNETWORK2_H_
+#ifndef UU_NETWORKS_ORDEREDMULTIPLEXNETWORK_H_
+#define UU_NETWORKS_ORDEREDMULTIPLEXNETWORK_H_
 
 #include <map>
 #include <memory>
 #include <string>
 #include <vector>
+
 #include "objects/MLVertex.hpp"
 #include "olap/VCube.hpp"
 #include "olap/ECube.hpp"
 #include "networks/Network.hpp"
+
 #include "networks/_impl/stores/LayerStore.hpp"
 #include "networks/_impl/stores/MLECubeStore.hpp"
 

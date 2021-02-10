@@ -22,7 +22,7 @@ namespace uu {
 namespace net {
 
 class
-    MDEdgeStore
+    EdgeStore
     :
 //public core::SharedPtrSortedRandomSet<const Edge>,
 // This makes the store allowing observers which can trigger reactions when the store is updated
@@ -52,7 +52,7 @@ class
     typedef std::tuple<const Vertex*, const VCube*, const Vertex*, const VCube*> key_type;
     typedef core::ObjectStore<Edge>::iterator iterator;
 
-    MDEdgeStore(
+    EdgeStore(
         VCube* cube1,
         VCube* cube2,
         EdgeDir dir = EdgeDir::UNDIRECTED,
@@ -60,7 +60,7 @@ class
     );
 
     virtual
-    ~MDEdgeStore() {}
+    ~EdgeStore() {}
 
     /** Returns an iterator to the first object in the collection */
     iterator

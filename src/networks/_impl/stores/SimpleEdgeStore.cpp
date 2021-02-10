@@ -1,4 +1,4 @@
-#include "networks/_impl/stores/MDSimpleEdgeStore.hpp"
+#include "networks/_impl/stores/SimpleEdgeStore.hpp"
 
 #include "core/exceptions/assert_not_null.hpp"
 #include "core/exceptions/ElementNotFoundException.hpp"
@@ -7,8 +7,8 @@ namespace uu {
 namespace net {
 
 
-MDSimpleEdgeStore::
-MDSimpleEdgeStore(
+SimpleEdgeStore::
+SimpleEdgeStore(
     VCube* cube1,
     VCube* cube2,
     EdgeDir dir,
@@ -25,7 +25,7 @@ MDSimpleEdgeStore(
 }
 
 const Edge *
-MDSimpleEdgeStore::
+SimpleEdgeStore::
 add(
     std::shared_ptr<const Edge> e
 )
@@ -63,7 +63,7 @@ add(
 }
 
 const Edge *
-MDSimpleEdgeStore::
+SimpleEdgeStore::
 add(
     const Vertex* vertex1,
     const Vertex* vertex2
@@ -79,7 +79,7 @@ add(
 }
 
 bool
-MDSimpleEdgeStore::
+SimpleEdgeStore::
 contains(
     const typename Edge::key_type& key
 ) const
@@ -98,7 +98,7 @@ contains(
 }
 
 const Edge*
-MDSimpleEdgeStore::
+SimpleEdgeStore::
 get(
     const typename Edge::key_type& key
 ) const
@@ -107,7 +107,7 @@ get(
 }
 
 const Edge*
-MDSimpleEdgeStore::
+SimpleEdgeStore::
 get(
     const Vertex* vertex1,
     const VCube* cube1,
@@ -156,7 +156,7 @@ get(
 }
 
 const Edge*
-MDSimpleEdgeStore::
+SimpleEdgeStore::
 get(
     const Vertex* vertex1,
     const Vertex* vertex2
@@ -173,7 +173,7 @@ get(
 
 
 bool
-MDSimpleEdgeStore::
+SimpleEdgeStore::
 erase(
     const Edge* edge
 )
@@ -229,7 +229,7 @@ erase(
 }
 
 bool
-MDSimpleEdgeStore::
+SimpleEdgeStore::
 erase(
     const typename Edge::key_type& key
 )
@@ -249,7 +249,7 @@ erase(
 
 /*
         void
-    MDSimpleEdgeStore::
+    SimpleEdgeStore::
     erase(
           const Vertex* vertex,
           const VCube* layer
@@ -260,7 +260,7 @@ erase(
 
 
     void
-MDSimpleEdgeStore::
+SimpleEdgeStore::
 erase(
 const MLVertex* vertex
 )
@@ -303,7 +303,7 @@ const MLVertex* vertex
 
 /*
 void
-MDSimpleEdgeStore::
+SimpleEdgeStore::
 erase(
     const VCube* layer
 )

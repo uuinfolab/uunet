@@ -1,6 +1,3 @@
-/**
- */
-
 #ifndef UU_OLAP_SEL_INDEXITERATOR_H_
 #define UU_OLAP_SEL_INDEXITERATOR_H_
 

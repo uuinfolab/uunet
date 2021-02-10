@@ -9,7 +9,6 @@ Indexes(
 {
 }
 
-/**  */
 
 void
 Indexes::
@@ -20,7 +19,7 @@ eval(
     (void)size;
 }
 
-/**  */
+
 bool
 Indexes::
 has_next(
@@ -30,7 +29,6 @@ has_next(
 }
 
 
-/**  */
 size_t
 Indexes::
 next(

@@ -16,56 +16,17 @@ namespace net {
 template <class STORE>
 MLCube<STORE>::
 MLCube(
-    //const std::string& name,
     const std::shared_ptr<STORE>& el
-    //const std::vector<std::string>& dim,
-    //const std::vector<std::vector<std::string>>& members
-) //: name(name)
+)
 {
     elements_ = el;
 
     size_ = {};
-    //off_ = {};
-
-    //union_obs = std::make_unique<core::UnionObserver<STORE, const typename STORE::value_type>>(elements_.get());
-
+    
     // Element attributes
     attr_ = std::make_unique<core::AttributeStore<typename STORE::value_type>>();
     elements_->attach(attr_.get());
 }
-
-/*
-template <class STORE>
-MLCube<STORE>::
-MLCube(
-    const std::string& name,
-    const std::shared_ptr<STORE>& el,
-    const std::vector<std::string>& dim,
-    const std::vector<std::vector<std::string>>& members
-) : MLCube(name, std::move(el)) // @todo necessary to specify the move?
-{
-
-    // @todo add checks
-
-    size_t length = 1;
-    for (size_t d_idx = 0; d_idx < members.size(); d_idx++)
-    {
-        length *= members[d_idx].size();
-        dim_idx_[dim[d_idx]] = d_idx;
-        size_.push_back(members[d_idx].size());
-        members_idx_.push_back(std::unordered_map<std::string, size_t>());
-        for (size_t m_idx = 0; m_idx < members[d_idx].size(); m_idx++)
-        {
-            members_idx_[d_idx][members[d_idx][m_idx]] = m_idx;
-        }
-    }
-
-    union_obs = std::make_unique<core::UnionObserver<STORE, const typename STORE::value_type>>(elements_.get());
-
-    data_ = std::vector<std::shared_ptr<STORE>>(length);
-
-}
-*/
 
 template <class STORE>
 MLCube<STORE>::
@@ -186,15 +147,6 @@ MLCube<STORE>::
 begin(
 ) const
 {
-    //    if (data_.size() == 0)
-    //    {
-    //        std::string err = "the cube has no cells";
-    //        throw core::OperationNotSupportedException(err);
-    //    }
-    //    else if (data_.size() == 1)
-    //    {
-    //        return data_[0]->begin();
-    //    }
     return elements_->begin();
 }
 
@@ -204,15 +156,6 @@ MLCube<STORE>::
 end(
 ) const
 {
-    //    if (data_.size() == 0)
-    //    {
-    //        std::string err = "the cube has no cells";
-    //        throw core::OperationNotSupportedException(err);
-    //    }
-    //    else if (data_.size() == 1)
-    //    {
-    //        return data_[0]->end();
-    //    }
     return elements_->end();
 }
 
@@ -288,10 +231,6 @@ contains(
 ) const
 {
     return elements_->contains(key);
-
-    //auto v = get(key);
-    //if (v) return true;
-    //else return false;
 }
 
 
@@ -386,16 +325,6 @@ erase(
 
     return elements_->erase(key);
 }
-/*
-template <class STORE>
-void
-MLCube<STORE>::
-attach(
-    core::Observer<typename STORE::value_type>* obs
-)
-{
-    elements_->attach(obs);
-}*/
 
 
 template <class STORE>
@@ -407,49 +336,6 @@ attr(
     return attr_.get();
 }
 
-/*
-template <class STORE>
-STORE*
-MLCube<STORE>::
-operator[](
-    const std::vector<size_t>& index
-)
-{
-    return data_[index].get();
-}
-
-
-template <class STORE>
-STORE*
-MLCube<STORE>::
-operator[](
-    const std::vector<std::string>& index
-)
-{
-    return data_[index].get();
-}
-
-template <class STORE>
-const STORE*
-MLCube<STORE>::
-operator[](
-    const std::vector<size_t>& index
-) const
-{
-    return data_[index].get();
-}
-
-
-template <class STORE>
-const STORE*
-MLCube<STORE>::
-operator[](
-    const std::vector<std::string>& index
-) const
-{
-    return data_[index].get();
-}
-*/
 
 template <class STORE>
 STORE*
@@ -506,86 +392,6 @@ num_cells(
     return data_.size();
 }
 
-/*
-template <class STORE>
-void
-MLCube<STORE>::
-init(
-     )
-{
-    for (auto idx: sel::IndexIterator(size()))
-    {
-        init(idx);
-    }
-}
-
-
-template <class STORE>
-STORE*
-MLCube<STORE>::
-init(
-     const std::vector<size_t>& index
-     )
-{
-    if (at(index) != nullptr)
-    {
-        throw core::OperationNotSupportedException("cell already initialized");
-    }
-    auto cell = std::make_shared<STORE>();
-    insert(cell, index);
-    return cell.get();
-}
-*/
-
-/* index of a dimension
-template <class STORE>
-size_t
-MLCube<STORE>::
-index_of(
-    const std::string& dim
-) const
-{
-    return data_.index_of(dim);
-}
-
-index of a member given a dimension
-template <class STORE>
-size_t
-MLCube<STORE>::
-index_of(
-    const std::string& dim,
-    const std::string& member
-) const
-{
-    return data_.index_of(dim, member);
-}
-
-
-template <class STORE>
-void
-MLCube<STORE>::
-insert(
-       STORE* value,
-       const std::vector<size_t>& index
-       )
-{
-    value->attach(elements_.get());
-    super::insert(value, index);
-}
-
-template <class STORE>
-void
-MLCube<STORE>::
-insert(
-       STORE* value,
-       const std::vector<std::string>& index
-       )
-{
-    value->attach(elements_.get());
-    super::insert(value, index);
-}
-
- */
 
 template <class STORE>
 STORE*
@@ -633,17 +439,6 @@ init(
     return init(pos(index), store);
 }
 
-/*
-template <class STORE>
-STORE*
-MLCube<STORE>::
-init(
-    const std::vector<size_t>& index
-)
-{
-    return init(pos(index));
-}
-*/
 
 template <class STORE>
 core::UnionObserver<STORE, const typename STORE::value_type>*
@@ -675,105 +470,6 @@ register_obs(
     register_obs(pos(index));
 }
 
-/*
-template <class STORE>
-STORE*
-MLCube<STORE>::
-init(
-    const std::vector<std::string>& index,
-    const std::shared_ptr<STORE>& store
-)
-{
-    // @todo reuse the index-based version of this instead of replicating the code
-    if (at(index) != nullptr)
-    {
-        throw core::OperationNotSupportedException("cell already initialized");
-    }
-
-    //value->attach(elements_->get());
-    for (auto el: *store)
-    {
-        union_obs->notify_add(el);
-    }
-
-    store->attach(union_obs.get());
-    data_[index] = store;
-    return store.get();
-}
-
-
-template <typename STORE>
-template <typename Iterator>
-void
-MLCube<STORE>::
-resize(
-const std::string& dimension,
-const std::string& new_member,
-Iterator begin,
-Iterator end
-)
-{
-size_t dim_idx = index_of(dimension);
-
-std::vector<std::vector<std::string>> new_members;
-
-for (auto d: dim())
-{
-    new_members.push_back(std::vector<std::string>());
-
-    for (auto m: members(d))
-    {
-        new_members.back().push_back(m);
-    }
-}
-
-new_members.at(dim_idx).push_back(new_member);
-size_t member_idx = new_members.at(dim_idx).size()-1;
-
-auto new_size = size();
-new_size.at(dim_idx)++;
-
-uu::core::sel::IndexIterator idx(new_size);
-
-std::vector<std::shared_ptr<STORE>> cells;
-
-auto it = begin;
-
-for (auto index: idx)
-{
-    if (index.at(dim_idx) == member_idx)
-    {
-        if (it==end)
-        {
-            throw core::OutOfBoundsException("too few new containers");
-        }
-
-        cells.push_back(*it);
-        ++it;
-    }
-
-    else
-    {
-        auto container = at(index)->shared_from_this();
-        cells.push_back(container);
-    }
-}
-
-for (auto cont = begin; cont != end; ++cont)
-{
-    (*cont)->attach(union_obs.get());
-
-    // Add all existing objects in the containers to the elements
-    for (auto obj: *(*cont))
-    {
-        elements_->add(obj);
-    }
-}
-
-data_ =
-    NCube<std::shared_ptr<STORE>>(dim(), new_members, cells.begin(), cells.end());
-}
-*/
 
 // SF is a pointer to an object with a function get_store(), returning a new store
 template <class STORE>
@@ -1003,52 +699,12 @@ add_member(
                 register_obs(index_new_cell);
             }
 
-            //
-            //        if (!copy) continue;
-            //
-            //        for (auto el: *old_data[pos_old_data])
-            //        {
-            //            if (copy(el))
-            //            {
-            //                new_cell->add(el);
-            //            }
-            //        }
         }
     }
 
 
 
 }
-
-
-/*
-template <class STORE>
-void
-MLCube<STORE>::
-reset(
-)
-{
-    elements_ = std::make_unique<STORE>();
-    union_obs = std::make_unique<core::UnionObserver<STORE, typename STORE::value_type>>(elements_.get());
-
-    for (size_t i = 0; i < data_.size(); i++)
-    {
-        data_[i] = std::make_shared<STORE>();
-        data_[i]->attach(union_obs.get());
-    }
-}
-*/
-/*
-template <class STORE>
-void
-MLCube<STORE>::
-init(
-    size_t pos
-)
-{
-    data_[pos] = std::make_shared<STORE>();
-    data_[pos]->attach(union_obs.get());
-}*/
 
 
 template <class STORE>

@@ -1,4 +1,4 @@
-#include "networks/_impl/stores/MDEdgeStore.hpp"
+#include "networks/_impl/stores/EdgeStore.hpp"
 
 #include "networks/_impl/observers/NoLoopCheckObserver2.hpp"
 #include "networks/_impl/observers/CheckVerticesExistObserver.hpp"
@@ -7,8 +7,8 @@
 namespace uu {
 namespace net {
 
-MDEdgeStore::
-MDEdgeStore(
+EdgeStore::
+EdgeStore(
     VCube* cube1,
     VCube* cube2,
     EdgeDir dir,
@@ -16,8 +16,8 @@ MDEdgeStore(
 ) : cube1_(cube1), cube2_(cube2), dir_(dir), loops_(loops)
 {
 
-    core::assert_not_null(cube1, "MDEdgeStore", "cube1");
-    core::assert_not_null(cube2, "MDEdgeStore", "cube2");
+    core::assert_not_null(cube1, "EdgeStore", "cube1");
+    core::assert_not_null(cube2, "EdgeStore", "cube2");
 
     edges_ = std::make_unique<core::SharedPtrSortedRandomSet<const Edge>>();
 
@@ -51,16 +51,16 @@ MDEdgeStore(
     }
 }
 
-MDEdgeStore::iterator
-MDEdgeStore::
+EdgeStore::iterator
+EdgeStore::
 begin(
 ) const
 {
     return edges_->begin();
 }
 
-MDEdgeStore::iterator
-MDEdgeStore::
+EdgeStore::iterator
+EdgeStore::
 end(
 ) const
 {
@@ -69,7 +69,7 @@ end(
 
 
 size_t
-MDEdgeStore::
+EdgeStore::
 size(
 ) const
 {
@@ -78,7 +78,7 @@ size(
 
 
 const Edge *
-MDEdgeStore::
+EdgeStore::
 add(
     const Vertex* vertex1,
     const VCube* cube1,
@@ -97,7 +97,7 @@ add(
 
 
 const Edge *
-MDEdgeStore::
+EdgeStore::
 add(
     const typename Edge::key_type& key
 )
@@ -107,7 +107,7 @@ add(
 }
 
 const Edge*
-MDEdgeStore::
+EdgeStore::
 add(
     const Edge* e
 )
@@ -117,7 +117,7 @@ add(
 }
 
 const Edge*
-MDEdgeStore::
+EdgeStore::
 add(
     std::shared_ptr<const Edge> e
 )
@@ -218,7 +218,7 @@ add(
 
 
 bool
-MDEdgeStore::
+EdgeStore::
 contains(
     const Edge* v
 ) const
@@ -227,7 +227,7 @@ contains(
 }
 
 const Edge*
-MDEdgeStore::
+EdgeStore::
 at(
     size_t pos
 ) const
@@ -236,7 +236,7 @@ at(
 }
 
 const Edge*
-MDEdgeStore::
+EdgeStore::
 get_at_random(
 ) const
 {
@@ -245,7 +245,7 @@ get_at_random(
 
 
 int
-MDEdgeStore::
+EdgeStore::
 index_of(
     const Edge* v
 ) const
@@ -257,7 +257,7 @@ index_of(
 
 /*
 GenericObjectList<Edge>*
-                                    MDEdgeStore::
+                                    EdgeStore::
                                     get(
                                         const VCube* cube1,
                                         const VCube* cube2
@@ -271,7 +271,7 @@ GenericObjectList<Edge>*
 
 const
 GenericObjectList<Vertex>*
-MDEdgeStore::
+EdgeStore::
 neighbors(
     const Vertex* vertex,
     const VCube* layer,
@@ -322,7 +322,7 @@ neighbors(
 
 const
 GenericObjectList<Edge>*
-MDEdgeStore::
+EdgeStore::
 incident(
     const Vertex* vertex,
     const VCube* layer,
@@ -372,7 +372,7 @@ incident(
 
 
 bool
-MDEdgeStore::
+EdgeStore::
 is_directed(
 ) const
 {
@@ -383,7 +383,7 @@ is_directed(
 
 /*
 void
-MDEdgeStore::
+EdgeStore::
 set_directed(
 const VCube* cube1,
 const VCube* cube2,
@@ -406,14 +406,14 @@ dir_.at(cube2).at(cube1) = directed?EdgeDir::DIRECTED:EdgeDir::UNDIRECTED;
 // @todo What?...
 
 void
-MDEdgeStore::
+EdgeStore::
 erase(
     const VCube* vcube,
     const Vertex* vertex
 )
 {
 
-    core::assert_not_null(vertex, "MDEdgeStore::erase", "MDEdgeStore::vertex");
+    core::assert_not_null(vertex, "EdgeStore::erase", "MDEdgeStore::vertex");
 
     std::unordered_set<const Edge*> to_erase;
 

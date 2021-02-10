@@ -25,8 +25,8 @@ set_weight(
 );
 
 /**
- * Returns the edge probability, or 1.0 if the edge has not been
- * annotated with any probability.
+ * Returns the edge weight, or 1.0 if the edge has not been
+ * annotated with any weight.
  * throw ElementNotFoundException if the edge does not belong to the network
  */
 double

@@ -1,11 +1,11 @@
-/**
- */
-
 #ifndef UU_OLAP_SEL_SET_H_
 #define UU_OLAP_SEL_SET_H_
 
-#include "core/olap/selection/Indexes.hpp"
+#include <cstddef>
+#include <stddef.h>
 #include <vector>
+
+#include "core/olap/selection/Indexes.hpp"
 
 namespace uu {
 namespace core {

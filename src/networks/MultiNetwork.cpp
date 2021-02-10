@@ -1,8 +1,5 @@
 #include "networks/MultiNetwork.hpp"
 
-//#include "networks/_impl/observers/NoLoopCheckObserver.hpp"
-//#include "networks/_impl/observers/VCubeObserver.hpp"
-
 namespace uu {
 namespace net {
 

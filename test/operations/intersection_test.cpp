@@ -32,7 +32,8 @@ TEST(net_operations_test, graph_intersection)
     g2->vertices()->add(v2);
     g2->vertices()->add(v3);
 
-    auto e1 = g1->edges()->add(v1.get(), v2.get());
+    //auto e1 =
+    g1->edges()->add(v1.get(), v2.get());
     auto e2 = g1->edges()->add(v2.get(), v3.get());
 
     g2->edges()->add(e2->v1, e2->v2);

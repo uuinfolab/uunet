@@ -1,4 +1,4 @@
-#include "networks/_impl/stores/MDMultiEdgeStore.hpp"
+#include "networks/_impl/stores/MultiEdgeStore.hpp"
 
 #include "core/exceptions/assert_not_null.hpp"
 #include "core/exceptions/ElementNotFoundException.hpp"
@@ -7,8 +7,8 @@ namespace uu {
 namespace net {
 
 
-MDMultiEdgeStore::
-MDMultiEdgeStore(
+MultiEdgeStore::
+MultiEdgeStore(
     VCube* cube1,
     VCube* cube2,
     EdgeDir dir,
@@ -25,12 +25,12 @@ MDMultiEdgeStore(
 }
 
 const Edge *
-MDMultiEdgeStore::
+MultiEdgeStore::
 add(
     std::shared_ptr<const Edge> e
 )
 {
-    core::assert_not_null(e.get(), "MDMultiEdgeStore::add", "e");
+    core::assert_not_null(e.get(), "MultiEdgeStore::add", "e");
 
     for (auto obs: observers)
     {
@@ -38,7 +38,6 @@ add(
     }
 
     // No need to check for edge existence
-    std::cout << "here " << e.get() << std::endl;
 
     for (auto eg: *edges_)
     {
@@ -46,7 +45,6 @@ add(
     }
 
     auto new_edge = super::add(e);
-    std::cout << "new " << new_edge << std::endl;
 
     if (!new_edge)
     {
@@ -68,7 +66,7 @@ add(
 }
 
 const Edge *
-MDMultiEdgeStore::
+MultiEdgeStore::
 add(
     const Vertex* vertex1,
     const Vertex* vertex2
@@ -84,7 +82,7 @@ add(
 }
 
 core::SortedRandomSet<const Edge*>
-MDMultiEdgeStore::
+MultiEdgeStore::
 get(
     const typename Edge::key_type& key
 ) const
@@ -93,7 +91,7 @@ get(
 }
 
 core::SortedRandomSet<const Edge*>
-MDMultiEdgeStore::
+MultiEdgeStore::
 get(
     const Vertex* vertex1,
     const VCube* cube1,
@@ -150,7 +148,7 @@ get(
 
 
 bool
-MDMultiEdgeStore::
+MultiEdgeStore::
 contains(
     const typename Edge::key_type& key
 ) const
@@ -170,7 +168,7 @@ contains(
 
 
 core::SortedRandomSet<const Edge*>
-MDMultiEdgeStore::
+MultiEdgeStore::
 get(
     const Vertex* vertex1,
     const Vertex* vertex2
@@ -187,7 +185,7 @@ get(
 
 
 bool
-MDMultiEdgeStore::
+MultiEdgeStore::
 erase(
     const Edge* edge
 )
@@ -248,7 +246,7 @@ erase(
 }
 
 bool
-MDMultiEdgeStore::
+MultiEdgeStore::
 erase(
     const typename Edge::key_type& key
 )
@@ -266,7 +264,7 @@ erase(
 
 /*
         void
-    MDMultiEdgeStore::
+    MultiEdgeStore::
     erase(
           const Vertex* vertex,
           const VCube* layer
@@ -277,7 +275,7 @@ erase(
 
 
     void
-MDMultiEdgeStore::
+MultiEdgeStore::
 erase(
 const MLVertex* vertex
 )
@@ -320,7 +318,7 @@ const MLVertex* vertex
 
 /*
 void
-MDMultiEdgeStore::
+MultiEdgeStore::
 erase(
     const VCube* layer
 )

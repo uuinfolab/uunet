@@ -34,10 +34,10 @@
 #define RSUPP_FMT   SUPP_FMT    /* printf format code for RSUPP */
 
 #else
-#define int         1           /* to check definition of RSUPP */
-#define long        2           /* for certain types */
-#define ptrdiff_t   3
-#define double      4
+//#define int         1           /* to check definition of RSUPP */
+//#define long        2           /* for certain types */
+//#define ptrdiff_t   3
+//#define double      4
 
 #if   RSUPP==int
 #ifndef RSUPP_MIN
