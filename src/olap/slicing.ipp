@@ -72,21 +72,6 @@ vslice(
             ++out_idx_iter;
         }
     }
-
-    /*
-
-
-    std::cout << "input cube" << std::endl;
-    for (auto idx: core::IndexIterator(cube->dsize()))
-    {
-        std::cout << cube->cell(idx) << std::endl;
-    }
-    std::cout << "output cube" << std::endl;
-    for (auto idx: core::IndexIterator(out_cube->dsize()))
-    {
-        std::cout << out_cube->cell(idx) << std::endl;
-    }
-    */
     return out_cube;
 }
 

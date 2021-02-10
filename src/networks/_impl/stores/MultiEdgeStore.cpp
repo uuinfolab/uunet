@@ -39,11 +39,6 @@ add(
 
     // No need to check for edge existence
 
-    for (auto eg: *edges_)
-    {
-        std::cout << eg << std::endl;
-    }
-
     auto new_edge = super::add(e);
 
     if (!new_edge)

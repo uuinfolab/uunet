@@ -128,7 +128,7 @@
 //#define long        2           /* for double precision type */
 //#define double      3
 #if SUPP==double
-#define SKIP        (0)      /* flag for subtree skipping */
+#define SKIP        (0.0)      /* flag for subtree skipping */
 #define SETSKIP(n)  ((n) = copysign((n),-1.0))
 #define CLRSKIP(n)  ((n) = copysign((n),+1.0))
 #define IS2SKIP(n)  signbit(n)
