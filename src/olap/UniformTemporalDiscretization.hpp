@@ -2,7 +2,7 @@
 #define UU_OLAP_UNIFORMTEMPORALDISCRETIZATION_H_
 
 #include <cmath>
-#include "networks/_impl/time.hpp"
+#include "olap/time.hpp"
 #include "core/attributes/conversion.hpp"
 
 namespace uu {
@@ -48,7 +48,7 @@ class
 
         for (auto time: times)
         {
-            if (time < min_ || time > max_)
+            if (time < min_ || time > max_)
             {
                 continue;
             }
