@@ -10,16 +10,45 @@ VCube(
     const std::string& name
 ) : name(name)
 {
-    cube_ = std::make_unique<MLCube<VertexStore>>(std::make_unique<VertexStore>());
+    data_ = std::make_unique<MLCube<VertexStore>>(std::make_unique<VertexStore>());
 }
 
+VCube::
+VCube(
+    const VCube& cube
+) : name(cube.name)
+{
+    data_ = std::make_unique<MLCube<VertexStore>>(std::make_unique<VertexStore>());
+    if (cube.order() > 0)
+    {
+        for (size_t i = 0; i < cube.order(); i++)
+        {
+            add_dimension(cube.dimensions()[i], cube.members(i));
+        }
+        core::IndexIterator idx(cube.dsize());
+        for (auto i: idx)
+        {
+            for (auto v: *cube.cell(i))
+            {
+                cell(i)->add(v);
+            }
+        }
+    }
+    else
+    {
+        for (auto v: cube)
+        {
+            add(v);
+        }
+    }
+}
 
 size_t
 VCube::
 size(
 ) const
 {
-    return cube_->size();
+    return data_->size();
 }
 
 
@@ -28,7 +57,7 @@ VCube::
 order(
 ) const
 {
-    return cube_->order();
+    return data_->order();
 }
 
 
@@ -37,7 +66,7 @@ VCube::
 dsize(
 ) const
 {
-    return cube_->dsize();
+    return data_->dsize();
 }
 
 
@@ -46,7 +75,7 @@ VCube::
 dimensions(
 ) const
 {
-    return cube_->dimensions();
+    return data_->dimensions();
 }
 
 
@@ -55,7 +84,7 @@ const std::vector<std::vector<std::string>>&
         members(
         ) const
 {
-    return cube_->members();
+    return data_->members();
 }
 
 
@@ -65,7 +94,7 @@ members(
     const std::string& dim
 ) const
 {
-    return cube_->members(dim);
+    return data_->members(dim);
 }
 
 
@@ -75,7 +104,7 @@ members(
     size_t dim_idx
 ) const
 {
-    return cube_->members(dim_idx);
+    return data_->members(dim_idx);
 }
 
 
@@ -84,7 +113,7 @@ VCube::
 begin(
 ) const
 {
-    return cube_->begin();
+    return data_->begin();
 }
 
 
@@ -93,7 +122,7 @@ VCube::
 end(
 ) const
 {
-    return cube_->end();
+    return data_->end();
 }
 
 
@@ -103,7 +132,7 @@ add(
     const std::shared_ptr<const Vertex>& v
 )
 {
-    return cube_->add(v);
+    return data_->add(v);
 }
 
 
@@ -113,7 +142,7 @@ add(
     const Vertex* v
 )
 {
-    return cube_->add(v);
+    return data_->add(v);
 }
 
 
@@ -123,7 +152,7 @@ add(
     const std::string& key
 )
 {
-    return cube_->add(key);
+    return data_->add(key);
 }
 
 
@@ -133,7 +162,7 @@ contains(
     const Vertex* v
 ) const
 {
-    return cube_->contains(v);
+    return data_->contains(v);
 }
 
 
@@ -143,7 +172,7 @@ contains(
     const typename VertexStore::key_type& key
 ) const
 {
-    return cube_->contains(key);
+    return data_->contains(key);
 }
 
 
@@ -154,7 +183,7 @@ get(
     const typename VertexStore::key_type& key
 ) const
 {
-    return cube_->get(key);
+    return data_->get(key);
 }
 
 
@@ -164,7 +193,7 @@ at(
     size_t pos
 ) const
 {
-    return cube_->at(pos);
+    return data_->at(pos);
 }
 
 
@@ -173,7 +202,7 @@ VCube::
 get_at_random(
 ) const
 {
-    return cube_->get_at_random();
+    return data_->get_at_random();
 }
 
 
@@ -183,7 +212,7 @@ index_of(
     const Vertex* v
 ) const
 {
-    return cube_->index_of(v);
+    return data_->index_of(v);
 }
 
 
@@ -193,7 +222,7 @@ erase(
     const Vertex * obj
 )
 {
-    return cube_->erase(obj);
+    return data_->erase(obj);
 }
 
 
@@ -203,7 +232,7 @@ erase(
     const std::string& key
 )
 {
-    return cube_->erase(key);
+    return data_->erase(key);
 }
 
 
@@ -212,7 +241,7 @@ VCube::
 attr(
 ) const
 {
-    return cube_->attr();
+    return data_->attr();
 }
 
 void
@@ -223,7 +252,7 @@ add_dimension(
 )
 {
     auto tot = UniformDiscretization<Vertex>(members.size());
-    return cube_->add_dimension(name, members, this, tot);
+    return data_->add_dimension(name, members, this, tot);
 }
 
 void
@@ -234,7 +263,7 @@ add_member(
     //bool (*copy)(const Vertex*) = nullptr
 )
 {
-    return cube_->add_member(name, member, this);
+    return data_->add_member(name, member, this);
 }
 
 
@@ -244,7 +273,7 @@ cell(
     const std::vector<size_t>& index
 )
 {
-    return cube_->cell(index);
+    return data_->cell(index);
 }
 
 
@@ -254,7 +283,7 @@ cell(
     const std::vector<size_t>& index
 ) const
 {
-    return cube_->cell(index);
+    return data_->cell(index);
 }
 
 
@@ -264,7 +293,7 @@ cell(
     const std::vector<std::string>& index
 )
 {
-    return cube_->cell(index);
+    return data_->cell(index);
 }
 
 
@@ -274,7 +303,7 @@ cell(
     const std::vector<std::string>& index
 ) const
 {
-    return cube_->cell(index);
+    return data_->cell(index);
 }
 
 
@@ -283,7 +312,7 @@ VCube::
 num_cells(
 ) const
 {
-    return cube_->num_cells();
+    return data_->num_cells();
 }
 
 
@@ -301,7 +330,7 @@ attach(
     core::Observer<const Vertex>* obs
 )
 {
-    cube_->elements_->attach(obs);
+    data_->elements_->attach(obs);
 }
 
 
@@ -314,7 +343,7 @@ skeleton(
 ) const
 {
     auto res = std::make_unique<VCube>(name);
-    res->cube_ = std::make_unique<MLCube<VertexStore>>(dimensions, members);
+    res->data_ = std::make_unique<MLCube<VertexStore>>(dimensions, members);
     return res;
 }
 
@@ -324,7 +353,7 @@ VCube::
 init(
 )
 {
-    return cube_->init(get_store());
+    return data_->init(get_store());
 }
 
 VertexStore*
@@ -333,7 +362,7 @@ init(
     const std::shared_ptr<VertexStore>& store
 )
 {
-    return cube_->init(store);
+    return data_->init(store);
 }
 
 VertexStore*
@@ -343,7 +372,7 @@ init(
     const std::shared_ptr<VertexStore>& store
 )
 {
-    return cube_->init(index, store);
+    return data_->init(index, store);
 }
 
 VertexStore*
@@ -353,7 +382,7 @@ init(
     const std::shared_ptr<VertexStore>& store
 )
 {
-    return cube_->init(pos, store);
+    return data_->init(pos, store);
 }
 
 VertexStore*
@@ -362,7 +391,7 @@ init(
     const std::vector<size_t>& index
 )
 {
-    return cube_->init(index, get_store());
+    return data_->init(index, get_store());
 }
 
 VertexStore*
@@ -371,7 +400,7 @@ init(
     size_t pos
 )
 {
-    return cube_->init(pos, get_store());
+    return data_->init(pos, get_store());
 }
 
 core::UnionObserver<VertexStore, const Vertex>*
@@ -379,7 +408,7 @@ VCube::
 register_obs(
 )
 {
-    return cube_->register_obs();
+    return data_->register_obs();
 }
 
 void
@@ -388,7 +417,7 @@ register_obs(
     const std::vector<size_t>& index
 )
 {
-    cube_->register_obs(index);
+    data_->register_obs(index);
 }
 
 void
@@ -397,7 +426,7 @@ register_obs(
     size_t pos
 )
 {
-    cube_->register_obs(pos);
+    data_->register_obs(pos);
 }
 
 

@@ -27,6 +27,7 @@ class
     const std::string name;
 
     typedef const Edge value_type;
+    typedef MultiEdgeStore store_type;
 
     /**
      * Constructs an empty MECube with no dimensions (order 0).

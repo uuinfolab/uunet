@@ -11,7 +11,7 @@ add_dimension(
     const D& discretize
 )
 {
-    return cube_->add_dimension(name, members, this, discretize);
+    return data_->add_dimension(name, members, this, discretize);
 }
 
 

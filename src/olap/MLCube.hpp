@@ -56,6 +56,12 @@ class MLCube
         const std::vector<std::vector<std::string>>& members
     );
 
+    /*
+    MLCube(
+        const MLCube& cube
+    );
+    */
+    
     ~MLCube()
     {
     }
@@ -412,14 +418,15 @@ class MLCube
         const std::vector<std::string>& dim,
         const std::vector<std::vector<std::string>>& members
     ) const = 0;
-    */
+    
 
     size_t
     pos(
         const std::vector<size_t>& index,
         const std::vector<size_t>& dimensions
     ) const;
-
+*/
+    
     size_t
     pos(
         const std::vector<size_t>& index

@@ -19,6 +19,15 @@ vslice(
     const std::vector<std::vector<size_t>>& indexes
 );
 
+template <typename C, class D>
+void
+extend_dimension(
+    const C* const cube,
+    const std::string& dim_name,
+    const std::vector<std::string>& members,
+    const D& discretize
+);
+
 /**
  * A Vertex Cube (VCube) provides three types of functionality.
  * (1) First, a VCube works as a set of vertices.
@@ -42,6 +51,8 @@ class
     const std::string name;
 
     typedef const Vertex value_type;
+    typedef VertexStore store_type;
+    
     /**
      * Constructs an empty VCube with no dimensions (order 0).
      * @param name name of the cube
@@ -50,6 +61,10 @@ class
         const std::string& name
     );
 
+    VCube(
+        const VCube& cube
+    );
+    
     virtual
     ~VCube()
     {
@@ -400,7 +415,7 @@ class
   private:
 
     // A VCube is implemented as a specialization of a Multilayer Cube (MLCube)
-    std::unique_ptr<MLCube<VertexStore>> cube_;
+    std::unique_ptr<MLCube<VertexStore>> data_;
 
 
 };

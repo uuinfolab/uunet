@@ -17,16 +17,16 @@ ECube(
 ) : name(name), cube1_(cube1), cube2_(cube2), dir_(dir), loops_(loops)
 {
     auto store = std::make_unique<SimpleEdgeStore>(cube1, cube2, dir, loops);
-    cube_ = std::make_unique<MLCube<SimpleEdgeStore>>(std::move(store));
+    data_ = std::make_unique<MLCube<SimpleEdgeStore>>(std::move(store));
 
     // register an observer to propagate the removal of vertices to the edge store
     auto obs1 = std::make_unique<VCubeObserver<ECube>>(cube1_, this);
     cube1_->attach(obs1.get());
-    cube_->register_observer(std::move(obs1));
+    data_->register_observer(std::move(obs1));
 
     auto obs2 = std::make_unique<VCubeObserver<ECube>>(cube2_, this);
     cube2_->attach(obs2.get());
-    cube_->register_observer(std::move(obs2));
+    data_->register_observer(std::move(obs2));
 
 }
 
@@ -40,7 +40,7 @@ neighbors(
     EdgeMode mode
 ) const
 {
-    return cube_->elements_->neighbors(vertex, cube, mode);
+    return data_->elements_->neighbors(vertex, cube, mode);
 }
 
 
@@ -58,7 +58,7 @@ neighbors(
         throw core::OperationNotSupportedException(err);
     }
 
-    return cube_->elements_->neighbors(vertex, cube1_, mode);
+    return data_->elements_->neighbors(vertex, cube1_, mode);
 }
 
 
@@ -71,7 +71,7 @@ incident(
     EdgeMode mode
 ) const
 {
-    return cube_->elements_->incident(vertex, cube, mode);
+    return data_->elements_->incident(vertex, cube, mode);
 }
 
 
@@ -89,7 +89,7 @@ incident(
         throw core::OperationNotSupportedException(err);
     }
 
-    return cube_->elements_->incident(vertex, cube1_, mode);
+    return data_->elements_->incident(vertex, cube1_, mode);
 }
 
 
@@ -116,7 +116,7 @@ ECube::
 size(
 ) const
 {
-    return cube_->size();
+    return data_->size();
 }
 
 
@@ -125,7 +125,7 @@ ECube::
 order(
 ) const
 {
-    return cube_->order();
+    return data_->order();
 }
 
 
@@ -134,7 +134,7 @@ ECube::
 dsize(
 ) const
 {
-    return cube_->dsize();
+    return data_->dsize();
 }
 
 
@@ -143,7 +143,7 @@ ECube::
 dimensions(
 ) const
 {
-    return cube_->dimensions();
+    return data_->dimensions();
 }
 
 
@@ -152,7 +152,7 @@ const std::vector<std::vector<std::string>>&
         members(
         ) const
 {
-    return cube_->members();
+    return data_->members();
 }
 
 
@@ -162,7 +162,7 @@ members(
     const std::string& dim
 ) const
 {
-    return cube_->members(dim);
+    return data_->members(dim);
 }
 
 
@@ -172,7 +172,7 @@ members(
     size_t dim_idx
 ) const
 {
-    return cube_->members(dim_idx);
+    return data_->members(dim_idx);
 }
 
 
@@ -181,7 +181,7 @@ ECube::
 begin(
 ) const
 {
-    return cube_->begin();
+    return data_->begin();
 }
 
 
@@ -190,7 +190,7 @@ ECube::
 end(
 ) const
 {
-    return cube_->end();
+    return data_->end();
 }
 
 
@@ -200,7 +200,7 @@ add(
     std::shared_ptr<const Edge> edge
 )
 {
-    return cube_->add(edge);
+    return data_->add(edge);
 }
 
 
@@ -210,7 +210,7 @@ add(
     const Edge* e
 )
 {
-    return cube_->add(e);
+    return data_->add(e);
 }
 
 
@@ -224,7 +224,7 @@ add(
 )
 {
     auto key = std::make_tuple(vertex1, cube1, vertex2, cube2);
-    return cube_->add(key);
+    return data_->add(key);
 }
 
 
@@ -242,7 +242,7 @@ add(
     }
 
     auto key = std::make_tuple(vertex1, cube1_, vertex2, cube2_);
-    return cube_->add(key);
+    return data_->add(key);
 }
 
 
@@ -252,7 +252,7 @@ contains(
     const Edge* e
 ) const
 {
-    return cube_->contains(e);
+    return data_->contains(e);
 }
 
 bool
@@ -265,7 +265,7 @@ contains(
 ) const
 {
     auto key = std::make_tuple(vertex1, cube1, vertex2, cube2);
-    return cube_->contains(key);
+    return data_->contains(key);
 }
 
 bool
@@ -282,7 +282,7 @@ contains(
     }
 
     auto key = std::make_tuple(vertex1, cube1_, vertex2, cube2_);
-    return cube_->contains(key);
+    return data_->contains(key);
 }
 
 
@@ -296,7 +296,7 @@ get(
 ) const
 {
     auto key = std::make_tuple(vertex1, cube1, vertex2, cube2);
-    return cube_->get(key);
+    return data_->get(key);
 }
 
 
@@ -314,7 +314,7 @@ get(
     }
 
     auto key = std::make_tuple(vertex1, cube1_, vertex2, cube2_);
-    return cube_->get(key);
+    return data_->get(key);
 }
 
 
@@ -324,7 +324,7 @@ at(
     size_t pos
 ) const
 {
-    return cube_->at(pos);
+    return data_->at(pos);
 }
 
 
@@ -333,7 +333,7 @@ ECube::
 get_at_random(
 ) const
 {
-    return cube_->get_at_random();
+    return data_->get_at_random();
 }
 
 
@@ -343,7 +343,7 @@ index_of(
     const Edge* e
 ) const
 {
-    return cube_->index_of(e);
+    return data_->index_of(e);
 }
 
 
@@ -353,7 +353,7 @@ erase(
     const Edge* e
 )
 {
-    return cube_->erase(e);
+    return data_->erase(e);
 }
 
 
@@ -367,7 +367,7 @@ erase(
 )
 {
     auto key = std::make_tuple(vertex1, cube1, vertex2, cube2);
-    return cube_->erase(key);
+    return data_->erase(key);
 }
 
 
@@ -385,7 +385,7 @@ erase(
     }
 
     auto key = std::make_tuple(vertex1, cube1_, vertex2, cube2_);
-    return cube_->erase(key);
+    return data_->erase(key);
 }
 
 
@@ -394,7 +394,7 @@ ECube::
 attr(
 ) const
 {
-    return cube_->attr();
+    return data_->attr();
 }
 
 
@@ -406,7 +406,7 @@ add_dimension(
 )
 {
     auto tot = UniformDiscretization<Edge>(members.size());
-    return cube_->add_dimension(name, members, this, tot);
+    return data_->add_dimension(name, members, this, tot);
 }
 
 void
@@ -417,7 +417,7 @@ add_member(
     //bool (*copy)(const Vertex*) = nullptr
 )
 {
-    return cube_->add_member(name, member, this);
+    return data_->add_member(name, member, this);
 }
 
 
@@ -427,7 +427,7 @@ cell(
     const std::vector<size_t>& index
 )
 {
-    return cube_->cell(index);
+    return data_->cell(index);
 }
 
 
@@ -437,7 +437,7 @@ cell(
     const std::vector<size_t>& index
 ) const
 {
-    return cube_->cell(index);
+    return data_->cell(index);
 }
 
 
@@ -447,7 +447,7 @@ cell(
     const std::vector<std::string>& index
 )
 {
-    return cube_->cell(index);
+    return data_->cell(index);
 }
 
 
@@ -457,7 +457,7 @@ cell(
     const std::vector<std::string>& index
 ) const
 {
-    return cube_->cell(index);
+    return data_->cell(index);
 }
 
 
@@ -466,7 +466,7 @@ ECube::
 num_cells(
 ) const
 {
-    return cube_->num_cells();
+    return data_->num_cells();
 }
 
 
@@ -485,7 +485,7 @@ attach(
     core::Observer<const Edge>* obs
 )
 {
-    cube_->elements_->attach(obs);
+    data_->elements_->attach(obs);
 }
 
 
@@ -516,7 +516,7 @@ skeleton(
 ) const
 {
     auto res = std::make_unique<ECube>(name, cube1_, cube2_, dir_, loops_);
-    res->cube_ = std::make_unique<MLCube<SimpleEdgeStore>>(dimensions, members);
+    res->data_ = std::make_unique<MLCube<SimpleEdgeStore>>(dimensions, members);
     return res;
 }
 
@@ -526,7 +526,7 @@ ECube::
 init(
 )
 {
-    return cube_->init(get_store());
+    return data_->init(get_store());
 }
 
 SimpleEdgeStore*
@@ -535,7 +535,7 @@ init(
     const std::shared_ptr<SimpleEdgeStore>& store
 )
 {
-    return cube_->init(store);
+    return data_->init(store);
 }
 
 SimpleEdgeStore*
@@ -545,7 +545,7 @@ init(
     const std::shared_ptr<SimpleEdgeStore>& store
 )
 {
-    return cube_->init(index, store);
+    return data_->init(index, store);
 }
 
 SimpleEdgeStore*
@@ -555,7 +555,7 @@ init(
     const std::shared_ptr<SimpleEdgeStore>& store
 )
 {
-    return cube_->init(pos, store);
+    return data_->init(pos, store);
 }
 
 SimpleEdgeStore*
@@ -564,7 +564,7 @@ init(
     const std::vector<size_t>& index
 )
 {
-    return cube_->init(index, get_store());
+    return data_->init(index, get_store());
 }
 
 SimpleEdgeStore*
@@ -573,7 +573,7 @@ init(
     size_t pos
 )
 {
-    return cube_->init(pos, get_store());
+    return data_->init(pos, get_store());
 }
 
 
@@ -582,7 +582,7 @@ ECube::
 register_obs(
 )
 {
-    return cube_->register_obs();
+    return data_->register_obs();
 }
 
 
@@ -592,7 +592,7 @@ register_obs(
     const std::vector<size_t>& index
 )
 {
-    cube_->register_obs(index);
+    data_->register_obs(index);
 }
 
 
@@ -602,7 +602,7 @@ register_obs(
     size_t pos
 )
 {
-    cube_->register_obs(pos);
+    data_->register_obs(pos);
 }
 
 
@@ -624,14 +624,14 @@ erase(
 {
     if (order() == 0)
     {
-        cube_->elements_->erase(vcube, vertex);
+        data_->elements_->erase(vcube, vertex);
     }
 
     else
     {
-        for (size_t i = 0; i < cube_->data_.size(); i++)
+        for (size_t i = 0; i < data_->data_.size(); i++)
         {
-            cube_->data_[i]->erase(vcube, vertex);
+            data_->data_[i]->erase(vcube, vertex);
         }
     }
 }

@@ -27,6 +27,7 @@ class
     const std::string name;
 
     typedef const Edge value_type;
+    typedef SimpleEdgeStore store_type;
 
     /**
      * Constructs an empty ECube with no dimensions (order 0).
@@ -342,7 +343,7 @@ class
 
     /**
      * Adds a new dimension.
-     * If provided, the descretize function specifies for each edge in which of the
+     * If provided, the discretize function specifies for each edge in which of the
      * new cells it should be inserted, depending on the member of the new dimension.
      */
     template <class D>
@@ -553,17 +554,11 @@ class
   private:
 
     // A VCube is implemented as a specialization of a Multilayer Cube (MLCube)
-    std::unique_ptr<MLCube<SimpleEdgeStore>> cube_;
+    std::unique_ptr<MLCube<SimpleEdgeStore>> data_;
 
     // End VCube's
     VCube* cube1_;
     VCube* cube2_;
-
-    //typedef MLCube<SimpleEdgeStore> super;
-    //typedef SimpleEdgeStore EStore;
-    //typedef SimpleEdgeStore* entry_type;
-    //typedef const Edge* element_type;
-
 
     /** Edge directionality */
     EdgeDir dir_;

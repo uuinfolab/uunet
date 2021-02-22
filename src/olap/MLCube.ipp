@@ -5,6 +5,7 @@
 #include "core/exceptions/OperationNotSupportedException.hpp"
 #include "core/datastructures/containers/UnionSortedRandomSet.hpp"
 #include "core/olap/selection/IndexIterator.hpp"
+#include "olap/indexing.hpp"
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -26,6 +27,20 @@ MLCube(
     attr_ = std::make_unique<core::AttributeStore<typename STORE::value_type>>();
     elements_->attach(attr_.get());
 }
+
+/*
+template <class STORE>
+template <class SF>
+std::unique_ptr<MLCube<STORE>>
+MLCube<STORE>::
+copy(
+       const SF& store_factory
+)
+{
+    auto res = std::make_unique<MLCube<STORE>>(dimensions(), members());
+    
+}
+*/
 
 template <class STORE>
 MLCube<STORE>::
@@ -681,7 +696,7 @@ add_member(
 
         for (auto index: old_indexes)
         {
-            size_t pos_old_data = pos(index, old_size);
+            size_t pos_old_data = idx_to_pos(index, old_size);
             init(index, old_data[pos_old_data]);
             register_obs(index);
 
@@ -705,42 +720,6 @@ add_member(
 
 }
 
-
-template <class STORE>
-size_t
-MLCube<STORE>::
-pos(
-    const std::vector<size_t>& index,
-    const std::vector<size_t>& dimensions
-) const
-{
-    if (index.size() != dimensions.size())
-    {
-        std::string err = "cell index must have the same number of elements as the order";
-        throw core::OutOfBoundsException(err);
-    }
-
-    size_t idx = 0;
-    size_t offset = 1;
-
-    for (size_t i = 0; i < dimensions.size(); i++)
-    {
-        if (index[i] >= dimensions[i])
-        {
-            std::string err = "value in cell index (" +
-                              std::to_string(index[i]) + ") higher than number of members (" +
-                              std::to_string(dimensions[i]) + ")";
-            throw core::OutOfBoundsException(err);
-        }
-
-        idx += index[i] * offset;
-        offset *= dimensions[i];
-    }
-
-    return idx;
-}
-
-
 template <class STORE>
 size_t
 MLCube<STORE>::
@@ -748,7 +727,7 @@ pos(
     const std::vector<size_t>& index
 ) const
 {
-    return pos(index, size_);
+    return idx_to_pos(index, size_);
 }
 
 
