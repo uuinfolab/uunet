@@ -13,7 +13,7 @@ To install, use and modify the library you need:
 * A modern, C++14-ready compiler.
 * Doxygen (optional, only to generate the API reference documentation)
 
-## Installation
+## Quickstart
 
 To download the library:
 
@@ -37,8 +37,12 @@ make
 make install
 ```
 
-To compile the tests, run cmake with the option `-DCMAKE_BUILD_TYPE=Debug`. Make will then also generate
-an executable running all the unit tests:
+## Installation options
+
+By default, the *library* and the *examples* are compiled usign C++ optimization flags. To
+compile the tests, run cmake with the option `-DCMAKE_BUILD_TESTS=On` or in *Debug* mode with
+the option `-DCMAKE_BUILD_TYPE=Debug`. Make will then also generate an executable based on
+*gtests* running all the unit tests:
 
 ```
 cmake .. -DCMAKE_BUILD_TYPE=Debug
@@ -46,7 +50,7 @@ make
 ./run_tests
 ```
 
-To produce the API reference documentation, use the option `-DDOXY=On`:
+To produce the API reference documentation, use the option `-DCMAKE_BUILD_DOCS=On`:
 
 ```
 cmake .. -DDOXY=On
@@ -62,9 +66,12 @@ The documentation is generated inside the `build/doc` directory.
 * [Short examples](examples/) are provided to illustrate the functionality of the library.
 * [Unit Tests](test/) also provide small code snippets used to test most of the features of the library.
 
-## Contribute
 
-TBD
+## Contributions
+
+We have not decided yet how we will manage new contributions to the library. The development of the
+library is currently supported by the members of the Uppsala University Information Laboratory
+group. You can find the list of contributors in the `CONTRIBUTORS` file.
 
 ## Contact
 
