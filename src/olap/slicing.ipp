@@ -61,6 +61,7 @@ vslice(
             ++out_idx_iter;
         }
     }
+
     return out_cube;
 }
 

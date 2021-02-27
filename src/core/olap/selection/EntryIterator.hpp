@@ -35,7 +35,7 @@ class EntryIterator
 
     /**
      * Creates a selector.
-     * @throw OutOfBoundsException 
+     * @throw OutOfBoundsException
      */
     EntryIterator(
         CUBE* c,

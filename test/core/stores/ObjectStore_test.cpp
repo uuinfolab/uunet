@@ -12,17 +12,17 @@ TEST(core_stores_test, ObjectStore)
 
     auto v1_ = std::make_shared<uu::net::Vertex>("vertex 1");
     map[0].add(v1_.get());
-    
+
     auto v2_ = std::make_shared<uu::net::Vertex>("vertex 2");
     map[0].add(v2_.get());
-    
+
     size_t c = 0;
 
-    
+
     for (auto pair: map)
     {
         auto set = pair.second;
-        
+
         for (auto v: set)
         {
             (void)v;
@@ -37,7 +37,7 @@ TEST(core_stores_test, ObjectStore)
     for (auto pair: map)
     {
         auto set = pair.second;
-        
+
         for (auto v: set)
         {
             (void)v;

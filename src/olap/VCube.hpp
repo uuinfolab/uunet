@@ -52,7 +52,7 @@ class
 
     typedef const Vertex value_type;
     typedef VertexStore store_type;
-    
+
     /**
      * Constructs an empty VCube with no dimensions (order 0).
      * @param name name of the cube
@@ -64,7 +64,7 @@ class
     VCube(
         const VCube& cube
     );
-    
+
     virtual
     ~VCube()
     {
@@ -324,7 +324,7 @@ class
         const std::vector<std::vector<size_t>>& indexes
     );
 
-    
+
     template <class D>
     friend
     void
@@ -334,7 +334,7 @@ class
         const std::vector<std::string>& members,
         const D& discretize
     );
-    
+
   protected:
 
     template <class D>
@@ -344,7 +344,7 @@ class
         const std::vector<std::string>& members,
         const D& discretize
     );
-    
+
     /**
      * Constructs a non-initialized cube with the specified dimensions and members.
      */

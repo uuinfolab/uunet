@@ -11,7 +11,7 @@ MultilayerNetwork(
 {
 
     actors_ = std::make_unique<VCube>("A");
-    
+
     layers_ = std::make_unique<LayerStore>(actors_.get());
 
     interlayer_edges_ = std::make_unique<MLECubeStore>(layers_.get());

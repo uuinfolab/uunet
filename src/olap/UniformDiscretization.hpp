@@ -9,7 +9,7 @@ namespace net {
 template <class O>
 class
     UniformDiscretization
-: public Discretization<O>
+    : public Discretization<O>
 {
 
   private:

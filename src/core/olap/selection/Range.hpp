@@ -19,7 +19,7 @@ class Range
         size_t to
     );
 
-    
+
     /**
      *
      * @throw OutOfBoundsException
@@ -30,7 +30,7 @@ class Range
         size_t size
     ) override;
 
-    
+
     virtual
     bool
     has_next(

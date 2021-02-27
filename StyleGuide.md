@@ -7,7 +7,7 @@ We currently use the C++14 standard.
 
 Many of the following conventions can be automatically formatted using the astyle program:
 
-    astyle -r -s4 -xn -A1 -xB -xD -xG -j -F -H -Y -n --recursive src/
+    astyle -r -s4 -xn -A1 -xB -xD -xG -j -F -H -Y -n --recursive *pp
 
 ## Structure
 

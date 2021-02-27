@@ -19,13 +19,16 @@ VCube(
 ) : name(cube.name)
 {
     data_ = std::make_unique<MLCube<VertexStore>>(std::make_unique<VertexStore>());
+
     if (cube.order() > 0)
     {
         for (size_t i = 0; i < cube.order(); i++)
         {
             add_dimension(cube.dimensions()[i], cube.members(i));
         }
+
         core::IndexIterator idx(cube.dsize());
+
         for (auto i: idx)
         {
             for (auto v: *cube.cell(i))
@@ -34,6 +37,7 @@ VCube(
             }
         }
     }
+
     else
     {
         for (auto v: cube)

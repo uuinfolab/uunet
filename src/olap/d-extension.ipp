@@ -156,7 +156,7 @@ extend_dimension(
         }
 
     }
-*/
+    */
 }
 
 
@@ -176,7 +176,7 @@ std::unique_ptr<C>
     auto dim_names = cube->dim();
     auto members = cube->members();
     std::vector<std::string> new_members = {new_member_name};
-    
+
     dim_names.push_back(new_dimension_name);
     members.push_back(new_members);
 
@@ -196,7 +196,7 @@ std::unique_ptr<C>
         // init & fill the corresponding cell in the out cube
         in_index.push_back(0);
         out_cube->init(in_index);
-        
+
         auto cell = cube->at(in_index);
         for (auto el: *cell)
         {

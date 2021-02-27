@@ -15,7 +15,7 @@ namespace net {
  * G' does not have any attributes.
  *
  * @param g input graph
- * @param name name of the new graph 
+ * @param name name of the new graph
  */
 template<typename G>
 std::unique_ptr<G>

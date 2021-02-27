@@ -6,7 +6,7 @@ namespace net {
 
 template <class O>
 class
-Discretization
+    Discretization
 {
 
   public:

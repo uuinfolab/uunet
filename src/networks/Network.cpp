@@ -14,7 +14,7 @@ Network(
 
     vertices_ = std::make_unique<VCube>("V");
     edges_ = std::make_unique<ECube>("E", vertices_.get(), vertices_.get(), dir, loops);
-    
+
 }
 
 Network::

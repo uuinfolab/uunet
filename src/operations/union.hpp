@@ -18,7 +18,7 @@ namespace net {
  * orders and M is the sum of the two graphs' sizes
  *
  * @param g1 input graph
- * @param g2 input graph 
+ * @param g2 input graph
  * @param name name of the new graph
  */
 template<typename G>
@@ -80,7 +80,7 @@ weighted_graph_union(
  *
  * @param g1 input graph
  * @param g2 input graph
- * @param target the graph to which vertices and edges are added  
+ * @param target the graph to which vertices and edges are added
  */
 template<typename G, typename W>
 void

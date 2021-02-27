@@ -22,7 +22,7 @@ MLCube(
     elements_ = el;
 
     size_ = {};
-    
+
     // Element attributes
     attr_ = std::make_unique<core::AttributeStore<typename STORE::value_type>>();
     elements_->attach(attr_.get());
@@ -38,7 +38,7 @@ copy(
 )
 {
     auto res = std::make_unique<MLCube<STORE>>(dimensions(), members());
-    
+
 }
 */
 

@@ -7,7 +7,7 @@
 namespace uu {
 namespace net {
 
-    
+
 template <typename C, class D>
 void
 extend_dimension(
