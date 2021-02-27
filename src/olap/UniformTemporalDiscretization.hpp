@@ -11,6 +11,7 @@ namespace net {
 template <class STORE>
 class
     UniformTemporalDiscretization
+    : public Discretization<typename STORE::value_type>
 {
 
   private:

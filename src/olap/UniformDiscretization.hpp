@@ -1,6 +1,7 @@
-#ifndef UU_OLAP_DISCRETIZATION_H_
-#define UU_OLAP_DISCRETIZATION_H_
+#ifndef UU_OLAP_UNIFORMDISCRETIZATION_H_
+#define UU_OLAP_UNIFORMDISCRETIZATION_H_
 
+#include "olap/Discretization.hpp"
 
 namespace uu {
 namespace net {
@@ -8,6 +9,7 @@ namespace net {
 template <class O>
 class
     UniformDiscretization
+: public Discretization<O>
 {
 
   private:

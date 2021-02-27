@@ -324,8 +324,27 @@ class
         const std::vector<std::vector<size_t>>& indexes
     );
 
+    
+    template <class D>
+    friend
+    void
+    extend_dimension(
+        const VCube* const cube,
+        const std::string& dim_name,
+        const std::vector<std::string>& members,
+        const D& discretize
+    );
+    
   protected:
 
+    template <class D>
+    void
+    add_dimension2(
+        const std::string& name,
+        const std::vector<std::string>& members,
+        const D& discretize
+    );
+    
     /**
      * Constructs a non-initialized cube with the specified dimensions and members.
      */
