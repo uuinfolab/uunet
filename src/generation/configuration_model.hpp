@@ -22,19 +22,19 @@ is_digraphic(
     bool is_sorted = false
 );
 
-std::unique_ptr<uu::net::Network>
+void
 from_degree_sequence(
     const std::vector<size_t> &deg_seq,
     const uu::core::NameIterator &vertices_names,
-    std::string name
+    Network *g
 );
 
-std::unique_ptr<uu::net::Network>
+void
 from_degree_sequence(
     const std::vector<size_t> &in_deg_seq,
     const std::vector<size_t> &out_deg_seq,
     const uu::core::NameIterator &vertices_names,
-    std::string name
+    Network *g
 );
 
 }

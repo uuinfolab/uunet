@@ -267,14 +267,13 @@ decrease_degree(
     }
 }
 
-std::unique_ptr<Network>
+void
 from_degree_sequence(
     const std::vector<size_t> &deg_seq,
     const uu::core::NameIterator &vertices_names,
-    std::string name
+    Network *g
 )
 {
-    auto g = std::make_unique<Network>(name);
     std::vector<size_t> left_stubs(deg_seq);
     std::vector<std::shared_ptr<Vertex>> vertices;
 
@@ -316,19 +315,16 @@ from_degree_sequence(
         decrease_degree(peer_ind, msc_ind, forbidden_vertices[peer_ind], left_stubs,
                         left_nodes, left_nodes, df, df);
     }
-
-    return g;
 }
 
-std::unique_ptr<Network>
+void
 from_degree_sequence(
     const std::vector<size_t> &in_deg_seq,
     const std::vector<size_t> &out_deg_seq,
     const uu::core::NameIterator &vertices_names,
-    std::string name
+    Network *g
 )
 {
-    auto g = std::make_unique<Network>(name, EdgeDir::DIRECTED);
     std::unordered_map<EdgeMode, std::vector<size_t>> left_stubs =
     {
         {EdgeMode::IN, std::vector<size_t>(in_deg_seq) },
@@ -378,8 +374,7 @@ from_degree_sequence(
     {
         std::vector<size_t> msc_candidates = DegreesOfFreedom::getCandidatesDirectedGraph(idf, odf);
         size_t msc_ind = msc_candidates[uu::core::getRandomInt(msc_candidates.size())];
-        // mode of the stub to be matched
-        EdgeMode mode = (odf.get(msc_ind) == odf.getMin()) ? EdgeMode::IN : EdgeMode::OUT;
+        EdgeMode mode = (odf.get(msc_ind) == odf.getMin()) ? EdgeMode::IN : EdgeMode::OUT; // mode of the stub to be matched
 
         std::set<size_t> *fv_ptr = &forbidden_vertices[mode][msc_ind];
         std::set<size_t> *ln_ptr = &left_nodes[mode];
@@ -400,8 +395,6 @@ from_degree_sequence(
                         left_stubs[EdgeMode::IN], left_nodes[EdgeMode::IN],
                         left_nodes[EdgeMode::OUT], idf, odf);
     }
-
-    return g;
 }
 
 
