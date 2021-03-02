@@ -181,8 +181,9 @@ read_intralayer_vertex(
 {
     core::assert_not_null(ml, "read_intralayer_vertex", "ml");
     auto l = read_layer<MultilayerNetwork, Network>(ml, fields, 1, line_number);
-    auto v = read_actor(l, fields, 0, line_number);
-
+    auto v = read_actor(ml, l, fields, 0, line_number);
+    
+    
     auto v_attr = meta.intralayer_vertex_attributes.find(l->name);
 
     if (v_attr != meta.intralayer_vertex_attributes.end())
@@ -204,8 +205,8 @@ read_intralayer_edge(
 
     auto l = read_layer<MultilayerNetwork, Network>(ml, fields, 2, line_number);
 
-    auto v1 = read_actor(l, fields, 0, line_number);
-    auto v2 = read_actor(l, fields, 1, line_number);
+    auto v1 = read_actor(ml, l, fields, 0, line_number);
+    auto v2 = read_actor(ml, l, fields, 1, line_number);
 
     /*if (!meta.layers.at(l.name).allows_loops)
     if (v1 == v2)
@@ -237,9 +238,9 @@ read_interlayer_edge(
     (void)meta; // param not used
     core::assert_not_null(ml, "read_interlayer_edge", "ml");
     auto l1 = read_layer<MultilayerNetwork, Network>(ml, fields, 1, line_number);
-    auto v1 = read_actor(l1, fields, 0, line_number);
+    auto v1 = read_actor(ml, l1, fields, 0, line_number);
     auto l2 = read_layer<MultilayerNetwork, Network>(ml, fields, 3, line_number);
-    auto v2 = read_actor(l2, fields, 2, line_number);
+    auto v2 = read_actor(ml, l2, fields, 2, line_number);
 
     if (l1==l2)
     {

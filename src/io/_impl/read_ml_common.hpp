@@ -73,7 +73,8 @@ read_multilayer_type(
 template <typename ML>
 const Vertex*
 read_actor(
-    ML* g,
+    ML* ml,
+    typename ML::layer_type* g,
     const std::vector<std::string>& fields,
     size_t from_idx,
     size_t line_number
@@ -85,11 +86,15 @@ read_actor(
 
     std::string actor_name = fields.at(from_idx);
 
-    auto actor = g->vertices()->add(actor_name);
-
+    auto actor = ml->actors()->get(actor_name);
+    
     if (!actor)
     {
-        actor = g->vertices()->get(actor_name);
+        actor = g->vertices()->add(actor_name);
+    }
+    else
+    {
+        g->vertices()->add(actor);
     }
 
     return actor;
