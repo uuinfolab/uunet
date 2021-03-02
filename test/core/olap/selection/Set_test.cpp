@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "core/olap/selection/Set.hpp"
+#include "olap/selection/Set.hpp"
 #include "core/exceptions/OutOfBoundsException.hpp"
 
 TEST(core_olap_selection_test, Set)

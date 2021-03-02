@@ -2,9 +2,9 @@
 
 #include "core/utils/pretty_printing.hpp"
 //#include "net/olap/VCube.hpp"
-#include "core/olap/selection/EntryIterator.hpp"
-#include "core/olap/selection/IndexIterator.hpp"
-#include "core/olap/selection/Set.hpp"
+#include "olap/selection/EntryIterator.hpp"
+#include "olap/selection/IndexIterator.hpp"
+#include "olap/selection/Set.hpp"
 
 
 TEST(core_olap_selection_test, EntryIterator)

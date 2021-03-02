@@ -1,4 +1,4 @@
-#include "core/olap/selection/All.hpp"
+#include "olap/selection/All.hpp"
 
 namespace uu {
 namespace core {

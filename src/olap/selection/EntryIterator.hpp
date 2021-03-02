@@ -5,8 +5,8 @@
 #include <stddef.h>
 #include <vector>
 
-#include "core/olap/selection/Indexes.hpp"
-#include "core/olap/selection/IndexIterator.hpp"
+#include "olap/selection/Indexes.hpp"
+#include "olap/selection/IndexIterator.hpp"
 
 namespace uu {
 namespace core {

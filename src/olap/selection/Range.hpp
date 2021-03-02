@@ -3,7 +3,7 @@
 
 #include <cstddef>
 #include <stddef.h>
-#include "core/olap/selection/Indexes.hpp"
+#include "olap/selection/Indexes.hpp"
 
 namespace uu {
 namespace core {

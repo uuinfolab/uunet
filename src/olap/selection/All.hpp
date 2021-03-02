@@ -1,24 +1,20 @@
-#ifndef UU_OLAP_SEL_SET_H_
-#define UU_OLAP_SEL_SET_H_
+#ifndef UU_OLAP_SEL_RANGE_H_
+#define UU_OLAP_SEL_RANGE_H_
 
 #include <cstddef>
 #include <stddef.h>
-#include <vector>
-
-#include "core/olap/selection/Indexes.hpp"
+#include "olap/selection/Indexes.hpp"
 
 namespace uu {
 namespace core {
 
-class Set
+class All
     : public Indexes
 {
 
   public:
 
-    Set(
-        const std::vector<size_t>& indexes
-    );
+    All();
 
     /**  */
     virtual
@@ -42,7 +38,7 @@ class Set
 
   private:
 
-    std::vector<size_t> indexes_;
+    size_t max_;
     size_t current_;
     bool has_next_;
 

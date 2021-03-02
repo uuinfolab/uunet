@@ -1,5 +1,5 @@
 #include "core/exceptions/assert_not_null.hpp"
-#include "core/olap/selection/IndexIterator.hpp"
+#include "olap/selection/IndexIterator.hpp"
 #include "olap/indexing.hpp"
 
 namespace uu {

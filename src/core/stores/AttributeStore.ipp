@@ -2,15 +2,15 @@ namespace uu {
 namespace core {
 
 
-template <typename OT>
-AttributeStore<OT>::
+template <typename OBJECT_TYPE>
+AttributeStore<OBJECT_TYPE>::
 AttributeStore()
 {
 }
-
-template <typename OT>
+/*
+template <typename OBJECT_TYPE>
 std::string
-AttributeStore<OT>::
+AttributeStore<OBJECT_TYPE>::
 summary(
 ) const
 {
@@ -18,13 +18,13 @@ summary(
     std::string summary = std::to_string(s) + ((s==1)?" attribute":" attributes");
     return summary;
 }
+*/
 
-
-template <typename OT>
+template <typename OBJECT_TYPE>
 void
-AttributeStore<OT>::
+AttributeStore<OBJECT_TYPE>::
 notify_erase(
-    const OT* object
+    const OBJECT_TYPE* const object
 )
 {
     core::assert_not_null(object, "AttributeStore::notify_erase", "object");
@@ -35,22 +35,22 @@ notify_erase(
     }
 }
 
-template <typename OT>
+template <typename OBJECT_TYPE>
 void
-AttributeStore<OT>::
+AttributeStore<OBJECT_TYPE>::
 notify_add(
-    const OT* object
+    const OBJECT_TYPE* const object
 )
 {
     core::assert_not_null(object, "AttributeStore::notify_add", "object");
 }
 
 
-template <typename OT>
+template <typename OBJECT_TYPE>
 void
-AttributeStore<OT>::
+AttributeStore<OBJECT_TYPE>::
 read_attributes(
-    const OT* v,
+    const OBJECT_TYPE* const v,
     const std::vector<std::string>& fields,
     size_t offset,
     const std::vector<Attribute>& attributes,

@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "core/olap/selection/IndexIterator.hpp"
+#include "olap/selection/IndexIterator.hpp"
 
 TEST(core_olap_selection_test, IndexIterator)
 {

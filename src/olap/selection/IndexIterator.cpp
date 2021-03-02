@@ -1,4 +1,4 @@
-#include "core/olap/selection/IndexIterator.hpp"
+#include "olap/selection/IndexIterator.hpp"
 
 namespace uu {
 namespace core {

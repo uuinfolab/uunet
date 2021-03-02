@@ -1,4 +1,4 @@
-#include "core/olap/selection/Range.hpp"
+#include "olap/selection/Range.hpp"
 
 #include "core/exceptions/OutOfBoundsException.hpp"
 
