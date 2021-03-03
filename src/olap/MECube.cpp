@@ -577,7 +577,7 @@ init(
 }
 
 
-core::UnionObserver<MultiEdgeStore, const Edge>*
+core::UnionObserver<MultiEdgeStore>*
 MECube::
 register_obs(
 )

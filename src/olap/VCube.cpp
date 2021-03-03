@@ -407,7 +407,7 @@ init(
     return data_->init(pos, get_store());
 }
 
-core::UnionObserver<VertexStore, const Vertex>*
+core::UnionObserver<VertexStore>*
 VCube::
 register_obs(
 )

@@ -4,8 +4,8 @@ namespace uu {
 namespace core {
 
 
-template<typename S, typename O>
-UnionObserver<S, O>::
+template<typename S>
+UnionObserver<S>::
 UnionObserver(
     S* store
 ) :
@@ -14,11 +14,11 @@ UnionObserver(
     assert_not_null(store_, "UnionObserver::constructor", "store");
 }
 
-template<typename S, typename O>
+template<typename S>
 void
-UnionObserver<S, O>::
+UnionObserver<S>::
 notify_add(
-    O* obj
+    typename S::value_type* obj
 )
 {
     assert_not_null(obj, "UnionObserver::notify_add", "obj");
@@ -32,11 +32,11 @@ notify_add(
 }
 
 
-template<typename S, typename O>
+template<typename S>
 void
-UnionObserver<S, O>::
+UnionObserver<S>::
 notify_erase(
-    O* obj
+    typename S::value_type* obj
 )
 {
 

@@ -577,7 +577,7 @@ init(
 }
 
 
-core::UnionObserver<SimpleEdgeStore, const Edge>*
+core::UnionObserver<SimpleEdgeStore>*
 ECube::
 register_obs(
 )

@@ -529,7 +529,7 @@ class
      * which this observer has been attached, the set of edges associated to the cube
      * is also updated.
      */
-    core::UnionObserver<MultiEdgeStore, const Edge>*
+    core::UnionObserver<MultiEdgeStore>*
     register_obs(
     );
 

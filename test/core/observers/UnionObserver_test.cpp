@@ -4,7 +4,7 @@
 #include "core/stores/ObjectStore.hpp"
 #include "../Person.hpp"
 
-TEST(core_olap_impl_test, UnionObserver)
+TEST(core_observers_test, UnionObserver)
 {
 
     
@@ -15,7 +15,7 @@ TEST(core_olap_impl_test, UnionObserver)
     uu::core::ObjectStore<Person> store2;
     uu::core::ObjectStore<Person> union_store;
 
-    uu::core::UnionObserver<uu::core::ObjectStore<Person>, const Person> obs(&union_store);
+    uu::core::UnionObserver<uu::core::ObjectStore<Person>> obs(&union_store);
     store1.attach(&obs);
     store2.attach(&obs);
 

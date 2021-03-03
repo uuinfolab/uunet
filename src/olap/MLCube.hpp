@@ -7,7 +7,6 @@
 #include "core/exceptions/OutOfBoundsException.hpp"
 #include "core/exceptions/OperationNotSupportedException.hpp"
 #include "core/stores/_impl/UnionSortedRandomSet.hpp"
-//#include "olap/datastructures/NCube.hpp"
 #include "olap/selection/IndexIterator.hpp"
 #include "core/observers/ObserverStore.hpp"
 #include "core/observers/UnionObserver.hpp"
@@ -347,7 +346,7 @@ class MLCube
     ) = 0;
      */
 
-    core::UnionObserver<STORE, const typename STORE::value_type>*
+    core::UnionObserver<STORE>*
     register_obs(
     );
 
@@ -470,7 +469,7 @@ class MLCube
 
     // When the cube has order > 0, this observer makes sure that the STORE elements_
     // contains all the elements contained in the cube's cells.
-    std::unique_ptr<core::UnionObserver<STORE, const typename STORE::value_type>> union_obs;
+    std::unique_ptr<core::UnionObserver<STORE>> union_obs;
 
     // Dimensions (that is, number of members for each dimension)
     std::vector<size_t> size_;

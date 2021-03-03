@@ -4,6 +4,7 @@
 
 #include "core/stores/ObjectStore.hpp"
 #include "core/stores/AttributeStore.hpp"
+#include "core/observers/UnionObserver.hpp"
 #include "Person.hpp"
 
 int
@@ -50,8 +51,6 @@ main()
     attr.add_double(p2.get(), "A2", 3.14); // void
     attr.get_doubles(p2.get(), "A2"); // object of type std::set<double> with size 1
     attr.get_doubles(p3.get(), "A2"); // object of type std::set<double> with size 0
-    
-    
     
     return 0;
 }

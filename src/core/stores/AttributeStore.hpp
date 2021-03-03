@@ -19,7 +19,9 @@ class AttributeStore :
 {
 
   public:
-
+    
+    typedef const OBJECT_TYPE value_type;
+    
     /**
      * Constructor.
      */

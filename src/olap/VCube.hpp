@@ -409,7 +409,7 @@ class
      * which this observer has been attached, the set of vertices associated to the cube
      * is also updated.
      */
-    core::UnionObserver<VertexStore, const typename VertexStore::value_type>*
+    core::UnionObserver<VertexStore>*
     register_obs(
     );
 

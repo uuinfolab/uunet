@@ -13,27 +13,6 @@ Attribute(
 {
 }
 
-/*
-std::shared_ptr<const Attribute>
-Attribute::
-create(
-    const std::string& name,
-    const AttributeType& type
-)
-{
-    return std::make_shared<const Attribute>(name, type);
-}
-
-std::unique_ptr<const Attribute>
-Attribute::
-create(
-    const std::string& name,
-    const AttributeType& type
-)
-{
-    return std::make_unique<const Attribute>(name, type);
-}
-*/
 
 }
 }

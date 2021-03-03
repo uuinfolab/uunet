@@ -17,9 +17,9 @@ namespace core {
  * @todo this solution wastes some space: it adds one more pointer per element.
  * Maybe this can be improved.
  */
-template<typename S, typename O>
+template<typename S>
 class UnionObserver :
-    public core::Observer<O>
+public core::Observer<typename S::value_type>
 {
 
 
@@ -37,7 +37,7 @@ class UnionObserver :
      */
     void
     notify_add(
-        O* v
+        typename S::value_type* const obj
     ) override;
 
 
@@ -46,14 +46,14 @@ class UnionObserver :
      */
     void
     notify_erase(
-        O* v
+        typename S::value_type* const obj
     ) override;
 
   private:
     /** Internal object store. */
     S* store_;
     /** Count of elements */
-    std::unordered_map<O*, size_t> count;
+    std::unordered_map<typename S::value_type*, size_t> count;
 
 };
 

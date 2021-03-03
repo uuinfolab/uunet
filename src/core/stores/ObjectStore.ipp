@@ -186,17 +186,15 @@ erase(
 {
     core::assert_not_null(obj, "ObjectStore::erase", "obj");
 
-
-    // Notify the observers.
-    for (auto obs: observers)
-    {
-        obs->notify_erase(obj);
-    }
-
+    
     auto search = cidx_element_by_key.find(obj->key());
 
     if (search != cidx_element_by_key.end())
     {
+        for (auto obs: observers)
+        {
+            obs->notify_erase(obj);
+        }
         cidx_element_by_key.erase(search);
         data->erase(obj);
         return true;

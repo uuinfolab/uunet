@@ -455,12 +455,12 @@ init(
 
 
 template <class STORE>
-core::UnionObserver<STORE, const typename STORE::value_type>*
+core::UnionObserver<STORE>*
 MLCube<STORE>::
 register_obs(
 )
 {
-    union_obs = std::make_unique<core::UnionObserver<STORE, const typename STORE::value_type>>(elements_.get());
+    union_obs = std::make_unique<core::UnionObserver<STORE>>(elements_.get());
     return union_obs.get();
 }
 
@@ -550,7 +550,7 @@ add_dimension(
         data_ = std::vector<std::shared_ptr<STORE>>(new_num_cells);
 
         init(store_factory->get_store()); // initialize elements_
-        union_obs = std::make_unique<core::UnionObserver<STORE, const typename STORE::value_type>>(elements_.get());
+        union_obs = std::make_unique<core::UnionObserver<STORE>>(elements_.get());
 
         for (size_t p = 0; p < data_.size(); p++)
         {
@@ -597,7 +597,7 @@ add_dimension(
         data_ = std::vector<std::shared_ptr<STORE>>(new_num_cells);
 
         init(store_factory->get_store()); // initialize elements_
-        union_obs = std::make_unique<core::UnionObserver<STORE, const typename STORE::value_type>>(elements_.get());
+        union_obs = std::make_unique<core::UnionObserver<STORE>>(elements_.get());
 
         for (size_t p = 0; p < data_.size(); p++)
         {
@@ -675,7 +675,7 @@ add_member(
     {
         data_ = std::vector<std::shared_ptr<STORE>>(2);
         init(store_factory->get_store()); // initialize elements_
-        union_obs = std::make_unique<core::UnionObserver<STORE, const typename STORE::value_type>>(elements_.get());
+        union_obs = std::make_unique<core::UnionObserver<STORE>>(elements_.get());
 
         init(0, old_data[0]);
         register_obs(0);
