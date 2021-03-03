@@ -8,7 +8,6 @@
 #include "objects/EdgeDir.hpp"
 #include "objects/Vertex.hpp"
 #include "olap/VCube.hpp"
-//#include "objects/MLVertex.hpp"
 
 namespace uu {
 namespace net {
@@ -32,18 +31,9 @@ class
         EdgeDir dir
     );
 
-    /*
-    static
-    std::shared_ptr<Edge>
-                              create(
-                                  const Vertex* v1,
-                                  const VCube* c1,
-                                  const Vertex* v2,
-                                  const VCube* c2,
-                                  EdgeDir dir
-                              );
-     */
-
+    key_type
+    key() const;
+    
     std::string
     to_string(
     ) const;
@@ -59,8 +49,6 @@ class
 
     /** The c at the second end of this edge. */
     const VCube* c2;
-
-    const key_type key;
 
     /** Edge directionality. */
     const EdgeDir dir;

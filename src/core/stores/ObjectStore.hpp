@@ -16,27 +16,35 @@ namespace uu {
 namespace core {
 
 /**
- * A ObjectStore allows to create, store, retrieve and erase a set of elements.
+ * An ObjectStore allows to store, retrieve and erase objects.
  *
  * OBJECT_TYPE must have:
- * a typedef key_type, to specify the input to create the objects used as keys by the store
+ * - define a typedef key_type (the type of the key used to identify the object in the store,
+ * - provide a const member function key() returning the key value for the object, and
+ * - inherit from std::enable_shared_from_this.
+ *
+ * Notice that the key is guaranteed to be unique only inside the ObjectStore.
+ * Different ObjectStore's can contain different objects with the same key.
  */
 template <typename OBJECT_TYPE>
 class
     ObjectStore :
-    public core::SharedPtrSortedRandomSet<const OBJECT_TYPE>,
+    //public core::SharedPtrSortedRandomSet<const OBJECT_TYPE>,
     public core::Subject<const OBJECT_TYPE>
 {
 
   private:
 
-    typedef core::SharedPtrSortedRandomSet<const OBJECT_TYPE> super;
+    typedef core::SharedPtrSortedRandomSet<const OBJECT_TYPE> sorted_random_set;
+    
+    std::unique_ptr<sorted_random_set> data;
+
 
   public:
 
-    typedef OBJECT_TYPE value_type;
+    typedef const OBJECT_TYPE value_type;
     typedef typename OBJECT_TYPE::key_type key_type;
-    typedef typename super::iterator iterator;
+    typedef typename sorted_random_set::iterator iterator;
 
     ObjectStore(
     );
@@ -44,46 +52,101 @@ class
     virtual
     ~ObjectStore() {}
 
-    using super::add;
-    using super::size;
-    using core::Subject<const OBJECT_TYPE>::observers;
+    
+    /** Returns an iterator to the first object in the store. */
+    iterator
+    begin(
+    ) const;
 
-    const OBJECT_TYPE *
-    add(
-        std::shared_ptr<const OBJECT_TYPE> v
-    ) override;
+    /** Returns an iterator after the last object in the store. */
+    iterator
+    end(
+    ) const;
 
-    /** Creates a new object and adds it to the store.
-    const OBJECT_TYPE *
-    add(
-        const typename OBJECT_TYPE::key_type& key
-    );
+    /** Returns the number of objects in the store. */
+    size_t
+    size(
+    ) const;
+
+    /**
+     * Inserts a new object in the store.
+     * @return a pointer to the object
      */
-
+    const OBJECT_TYPE*
+    add(
+        const OBJECT_TYPE* obj
+    );
+    
     const OBJECT_TYPE *
+    add(
+        std::shared_ptr<const OBJECT_TYPE> obj
+    );
+
+    /** Returns true if the input object is present in the store. */
+    bool
+    contains(
+        const OBJECT_TYPE* obj
+    ) const;
+
+    /** Returns true if an object with the input key is present in the store. */
+    bool
+    contains(
+        const typename OBJECT_TYPE::key_type& key
+    ) const;
+    
+    /** Returns the object with the input key, or nullptr if the key is not present in the store. */
+    const OBJECT_TYPE*
     get(
         const typename OBJECT_TYPE::key_type& key
     ) const;
 
+    /** Returns the object at the given position in the store.
+     * @throw IndexOutOfBoundException if pos >= size()
+     */
+    const OBJECT_TYPE*
+    at(
+        size_t pos
+    ) const;
+
+    /** Returns a random object, selected with uniform probability. */
+    const OBJECT_TYPE*
+    get_at_random(
+    ) const;
+
+
+    /** Returns the position of the input object in the store, or -1. */
+    int
+    index_of(
+        const OBJECT_TYPE* obj
+    ) const;
+
+    
+    /**
+     * Removes the input object from the store.
+     * @return true if the object was present
+     */
     bool
     erase(
-        const OBJECT_TYPE * v
-    ) override;
-
+        const OBJECT_TYPE * obj
+    );
+    
     /**
-     * Returns a short string summary of this store, for example including
-     * the number of objects it contains.
-     
-    virtual
-    std::string
-    summary(
-    ) const;*/
+     * Removes the object with the input key from the store.
+     * @return true if the object was present
+     */
+    bool
+    erase(
+        const typename OBJECT_TYPE::key_type& key
+    );
 
+    
+    using core::Subject<const OBJECT_TYPE>::attach;
+    using core::Subject<const OBJECT_TYPE>::observers;
 
   protected:
 
     /** Index: find element by key. */
-    std::map<typename OBJECT_TYPE::key_type, const OBJECT_TYPE*> cidx_element_by_name;
+    std::map<typename OBJECT_TYPE::key_type, const OBJECT_TYPE*> cidx_element_by_key;
 
 };
 

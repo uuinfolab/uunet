@@ -119,7 +119,7 @@ add(
 
     // Indexing @todo this assumes that this is the same element as before, if it was already present
     // with the same key
-    cidx_element_by_name[e->key] = e;
+    cidx_element_by_name[e->key()] = e;
 
     return res;
 }
@@ -161,7 +161,7 @@ erase(
         obs->notify_erase(e);
     }
 
-    auto search = cidx_element_by_name.find(e->key);
+    auto search = cidx_element_by_name.find(e->key());
 
     if (search != cidx_element_by_name.end())
     {

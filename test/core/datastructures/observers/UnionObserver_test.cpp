@@ -10,10 +10,13 @@ TEST(core_olap_impl_test, UnionObserver)
         public std::enable_shared_from_this<Obj>
     {
       public:
-        typedef int key_type;
-        Obj(int val) : key(val), val(val) {}
-        const key_type key;
+        
         int val;
+        
+        typedef int key_type;
+        key_type key() const {return val;};
+        
+        Obj(int val) : val(val) {}
     };
     auto o1 = std::make_shared<Obj>(1);
     auto o2 = std::make_shared<Obj>(2);

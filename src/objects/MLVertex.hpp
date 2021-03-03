@@ -14,7 +14,7 @@ namespace net {
 
 class
     MLVertex :
-    public core::Object,
+    //public core::Object,
     public std::enable_shared_from_this<MLVertex>
 {
 

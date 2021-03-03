@@ -7,20 +7,10 @@ Vertex::
 Vertex(
     const std::string& name
 ) :
-    NamedObject(name), key(name)
+    name(name)
 {
 }
 
-/*
-std::shared_ptr<const Vertex>
-Vertex::
-create(
-    const key_type& name
-)
-{
-    return std::make_shared<const Vertex>(name);
-}
-*/
 
 std::string
 Vertex::
@@ -29,12 +19,15 @@ to_string() const
     return name;
 }
 
-/*
-key_type
+
+Vertex::key_type
 Vertex::
 key(
-    return key;
-    );*/
+) const
+{
+    return name;
+}
+
 
 std::ostream&
 operator<<(std::ostream& os, const Vertex& v)
@@ -42,6 +35,7 @@ operator<<(std::ostream& os, const Vertex& v)
     os << v.to_string();
     return os;
 }
+
 
 }
 }

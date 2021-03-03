@@ -18,29 +18,14 @@ Edge(
     c1(c1),
     v2(v2),
     c2(c2),
-    key(std::make_tuple(v1, c1, v2, c2)),
     dir(dir)
 {
-    core::assert_not_null(v1, "constructor", "v1");
-    core::assert_not_null(c1, "constructor", "c1");
-    core::assert_not_null(v2, "constructor", "v2");
-    core::assert_not_null(c2, "constructor", "c2");
+    core::assert_not_null(v1, "Edge::constructor", "v1");
+    core::assert_not_null(c1, "Edge::constructor", "c1");
+    core::assert_not_null(v2, "Edge::constructor", "v2");
+    core::assert_not_null(c2, "Edge::constructor", "c2");
 }
 
-/*
-std::shared_ptr<Edge>
-                          Edge::
-                          create(
-                              const Vertex* v1,
-                              const VCube* c1,
-                              const Vertex* v2,
-                              const VCube* c2,
-                              EdgeDir dir
-                          )
-{
-    return std::make_shared<Edge>(v1,c1,v2,c2,dir);
-}
-*/
 
 std::string
 Edge::
@@ -62,6 +47,15 @@ to_string(
                "@" + c2->to_string() + ")";
     }
 }
+
+
+Edge::key_type
+Edge::
+key(
+) const
+{
+    return std::make_tuple(v1, c1, v2, c2);
+};
 
 
 std::ostream&
