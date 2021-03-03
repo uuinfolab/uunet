@@ -7,8 +7,7 @@ namespace uu {
 namespace core {
 
 /**
- * A generic class for objects that are part of any container defined in this
- * project, e.g., a vertex or an edge in a network, etc.
+ * A generic class for objects providing comparison operators based on the object reference.
  */
 class Object
 {

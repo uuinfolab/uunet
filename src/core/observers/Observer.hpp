@@ -1,10 +1,5 @@
-/**
- * History:
- * - 2018.03.09 file created
- */
-
-#ifndef UU_CORE_DATASTRUCTURES_OBSERVERS_OBSERVER_H_
-#define UU_CORE_DATASTRUCTURES_OBSERVERS_OBSERVER_H_
+#ifndef UU_CORE_OBSERVERS_OBSERVER_H_
+#define UU_CORE_OBSERVERS_OBSERVER_H_
 
 #include "core/observers/GenericObserver.hpp"
 

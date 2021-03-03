@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
 #include "core/stores/ObjectStore.hpp"
-#include "Person.hpp"
+#include "../Person.hpp"
 
 TEST(core_stores_test, ObjectStore)
 {
@@ -19,11 +19,11 @@ TEST(core_stores_test, ObjectStore)
     EXPECT_EQ(store.contains("0001"), true);
     EXPECT_EQ(store.get("0002"), p2.get());
     auto p = store.get_at_random();
-    EXPECT_TRUE(p == p1.get() || p == p2.get());
+    EXPECT_TRUE(p == p1.get() || p == p2.get());
     p = store.at(0);
     EXPECT_TRUE(p == p1.get() || p == p2.get());
     auto idx = store.index_of(p1.get());
-    EXPECT_TRUE(idx == 0 || idx == 1);
+    EXPECT_TRUE(idx == 0 || idx == 1);
     EXPECT_EQ(store.erase(p1.get()), true);
     EXPECT_EQ(store.erase("0001"), false);
     
@@ -35,6 +35,8 @@ TEST(core_stores_test, ObjectStore)
     idx = store.index_of(p4.get());
     EXPECT_TRUE(idx == -1);
     
+    store.add(p1.get());
+    store.add(p4.get());
     size_t count = 0;
     for (auto obj: store)
     {

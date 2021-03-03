@@ -1,15 +1,21 @@
-#ifndef UU_CORE_OLAP_IMPL_OBSERVERS_UNIONOBSERVER_H_
-#define UU_CORE_OLAP_IMPL_OBSERVERS_UNIONOBSERVER_H_
+#ifndef UU_CORE_OBSERVERS_UNIONOBSERVER_H_
+#define UU_CORE_OBSERVERS_UNIONOBSERVER_H_
 
 #include "core/observers/Observer.hpp"
-#include "core/exceptions/assert_not_null.hpp"
 #include <unordered_map>
 
 namespace uu {
 namespace core {
 
 /**
- * @todo wastes some space: adds one more pointer per element
+ * A Union Observer has a target store that, thanks to the observer, can represent the union of
+ * the objects in other stores.
+ * Each of the other stores must attach this observer. When one of these stores is modified,
+ * this observer modifies the target store accordingly so that it represents the union of the N
+ * stores.
+ *
+ * @todo this solution wastes some space: it adds one more pointer per element.
+ * Maybe this can be improved.
  */
 template<typename S, typename O>
 class UnionObserver :
@@ -52,65 +58,9 @@ class UnionObserver :
 };
 
 
-
-template<typename S, typename O>
-UnionObserver<S, O>::
-UnionObserver(
-    S* store
-) :
-    store_(store)
-{
-    assert_not_null(store_, "UnionObserver::constructor", "store");
-}
-
-template<typename S, typename O>
-void
-UnionObserver<S, O>::
-notify_add(
-    O* obj
-)
-{
-    assert_not_null(obj, "UnionObserver::notify_add", "obj");
-
-    auto el = ++(count[obj]);
-
-    if (el == 1)
-    {
-        store_->add(obj); // @todo should we check if this worked?
-    }
-}
-
-
-template<typename S, typename O>
-void
-UnionObserver<S, O>::
-notify_erase(
-    O* obj
-)
-{
-
-    assert_not_null(obj, "UnionObserver::notify_erase", "obj");
-
-    auto el = count.find(obj);
-
-    if (el != count.end())
-    {
-        if (el->second == 1)
-        {
-            store_->erase(obj); // @todo should we check if this worked?
-            count.erase(el);
-        }
-
-        else
-        {
-            el->second--;
-        }
-    }
-
-}
-
-
 }
 }
+
+#include "UnionObserver.ipp"
 
 #endif

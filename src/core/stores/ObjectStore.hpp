@@ -1,8 +1,3 @@
-/**
- * History:
- * - 2018.03.09 file created, following a restructuring of the previous library.
- */
-
 #ifndef UU_CORE_STORES_OBJECTSTORE_H_
 #define UU_CORE_STORES_OBJECTSTORE_H_
 
@@ -29,16 +24,13 @@ namespace core {
 template <typename OBJECT_TYPE>
 class
     ObjectStore :
-    //public core::SharedPtrSortedRandomSet<const OBJECT_TYPE>,
     public core::Subject<const OBJECT_TYPE>
 {
 
   private:
 
     typedef core::SharedPtrSortedRandomSet<const OBJECT_TYPE> sorted_random_set;
-    
     std::unique_ptr<sorted_random_set> data;
-
 
   public:
 
@@ -52,7 +44,6 @@ class
     virtual
     ~ObjectStore() {}
 
-    
     /** Returns an iterator to the first object in the store. */
     iterator
     begin(
@@ -74,9 +65,13 @@ class
      */
     const OBJECT_TYPE*
     add(
-        const OBJECT_TYPE* obj
+        const OBJECT_TYPE* const obj
     );
     
+    /**
+     * Inserts a new object in the store.
+     * @return a pointer to the object
+     */
     const OBJECT_TYPE *
     add(
         std::shared_ptr<const OBJECT_TYPE> obj
@@ -85,7 +80,7 @@ class
     /** Returns true if the input object is present in the store. */
     bool
     contains(
-        const OBJECT_TYPE* obj
+        const OBJECT_TYPE* const obj
     ) const;
 
     /** Returns true if an object with the input key is present in the store. */
@@ -112,22 +107,20 @@ class
     const OBJECT_TYPE*
     get_at_random(
     ) const;
-
-
+    
     /** Returns the position of the input object in the store, or -1. */
     int
     index_of(
-        const OBJECT_TYPE* obj
+        const OBJECT_TYPE* const obj
     ) const;
 
-    
     /**
      * Removes the input object from the store.
      * @return true if the object was present
      */
     bool
     erase(
-        const OBJECT_TYPE * obj
+        const OBJECT_TYPE * const obj
     );
     
     /**

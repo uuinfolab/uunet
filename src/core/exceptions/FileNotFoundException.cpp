@@ -16,5 +16,5 @@ FileNotFoundException::what() const throw()
     return ("File not found: " + value).data();
 }
 
-} // namespace core
-} // namespace uu
+} 
+}

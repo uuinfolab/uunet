@@ -26,19 +26,11 @@ class AttributeStore :
     AttributeStore();
 
     /**
-     * Returns a short summary of the store, indicating the number of attributes.
-     
-    virtual
-    std::string
-    summary(
-    ) const;*/
-
-    /**
      * When an object no longer exists, this method must be called to erase its values from the store.
      */
     void
     notify_erase(
-        const OBJECT_TYPE* const o
+        const OBJECT_TYPE* const obj
     );
 
     /**
@@ -46,11 +38,11 @@ class AttributeStore :
      */
     void
     notify_add(
-        const OBJECT_TYPE* const o
+        const OBJECT_TYPE* const obj
     );
 
     /**
-     * Utility function adding attributes.length attribute values to object v.
+     * Utility function adding attributes.length attribute values to object obj.
      * @param obj object to which the values are associated
      * @param fields a vector with attribute values
      * @param offset position in vector fields from where values are read

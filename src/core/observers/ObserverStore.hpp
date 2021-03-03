@@ -1,10 +1,5 @@
-/**
- * History:
- * - 2018.03.09 file created, following a restructuring of the previous library.
- */
-
-#ifndef UU_CORE_DATASTRUCTURES_OBSERVERS_OBSERVERSTORE_H_
-#define UU_CORE_DATASTRUCTURES_OBSERVERS_OBSERVERSTORE_H_
+#ifndef UU_CORE_OBSERVERS_OBSERVERSTORE_H_
+#define UU_CORE_OBSERVERS_OBSERVERSTORE_H_
 
 
 #include <vector>
@@ -16,7 +11,7 @@ namespace core {
 
 /**
  * Observer/Subject pattern: a Subject can store several Observers, so that they can be
- * notified when something happens (typically an erase or add event).
+ * notified when something happens (erase or add events).
  */
 class ObserverStore
 {

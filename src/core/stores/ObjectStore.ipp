@@ -44,7 +44,7 @@ template <typename OBJECT_TYPE>
  const OBJECT_TYPE*
  ObjectStore<OBJECT_TYPE>::
  add(
-     const OBJECT_TYPE* obj
+     const OBJECT_TYPE* const obj
  )
  {
      core::assert_not_null(obj, "ObjectStore::add", "obj");
@@ -56,7 +56,7 @@ template <typename OBJECT_TYPE>
  bool
  ObjectStore<OBJECT_TYPE>::
  contains(
-     const OBJECT_TYPE* obj
+     const OBJECT_TYPE* const obj
  ) const
  {
      core::assert_not_null(obj, "ObjectStore::contains", "obj");
@@ -102,7 +102,7 @@ template <typename OBJECT_TYPE>
  int
  ObjectStore<OBJECT_TYPE>::
  index_of(
-     const OBJECT_TYPE* obj
+     const OBJECT_TYPE* const obj
  ) const
  {
      core::assert_not_null(obj, "ObjectStore::index_of", "obj");
@@ -181,7 +181,7 @@ template <typename OBJECT_TYPE>
 bool
 ObjectStore<OBJECT_TYPE>::
 erase(
-    const OBJECT_TYPE * obj
+    const OBJECT_TYPE * const obj
 )
 {
     core::assert_not_null(obj, "ObjectStore::erase", "obj");
