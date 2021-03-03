@@ -8,9 +8,9 @@
 
 #include <memory>
 #include <map>
-#include "core/datastructures/containers/SharedPtrSortedRandomSet.hpp"
-#include "core/datastructures/observers/Observer.hpp"
-#include "core/datastructures/observers/Subject.hpp"
+#include "core/stores/_impl/SharedPtrSortedRandomSet.hpp"
+#include "core/observers/Observer.hpp"
+#include "core/observers/Subject.hpp"
 
 namespace uu {
 namespace core {

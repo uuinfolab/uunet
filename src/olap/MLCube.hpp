@@ -6,11 +6,11 @@
 #include "core/exceptions/WrongParameterException.hpp"
 #include "core/exceptions/OutOfBoundsException.hpp"
 #include "core/exceptions/OperationNotSupportedException.hpp"
-#include "core/datastructures/containers/UnionSortedRandomSet.hpp"
+#include "core/stores/_impl/UnionSortedRandomSet.hpp"
 //#include "olap/datastructures/NCube.hpp"
 #include "olap/selection/IndexIterator.hpp"
-#include "core/datastructures/observers/ObserverStore.hpp"
-#include "core/datastructures/observers/UnionObserver.hpp"
+#include "core/observers/ObserverStore.hpp"
+#include "core/observers/UnionObserver.hpp"
 #include "olap/UniformDiscretization.hpp"
 #include <string>
 #include <unordered_map>

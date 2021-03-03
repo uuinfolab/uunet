@@ -9,7 +9,7 @@
 
 #include <memory>
 #include <iostream>
-#include "core/datastructures/containers/SortedRandomSet.hpp"
+#include "core/stores/_impl/SortedRandomSet.hpp"
 #include "core/exceptions/assert_not_null.hpp"
 
 namespace uu {

@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "core/datastructures/observers/UnionObserver.hpp"
+#include "core/observers/UnionObserver.hpp"
 #include "core/stores/ObjectStore.hpp"
 
 TEST(core_olap_impl_test, UnionObserver)

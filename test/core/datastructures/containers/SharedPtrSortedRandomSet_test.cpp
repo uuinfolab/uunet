@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "core/datastructures/containers/SharedPtrSortedRandomSet.hpp"
+#include "core/stores/_impl/SharedPtrSortedRandomSet.hpp"
 
 
 TEST(core_datastructures_containers_test, SharedPtrSortedRandomSet_ptr_to_elem)

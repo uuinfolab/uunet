@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "core/datastructures/containers/UniquePtrSortedRandomSet.hpp"
+#include "core/stores/_impl/UniquePtrSortedRandomSet.hpp"
 
 struct UniquePtrLT
 {

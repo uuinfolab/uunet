@@ -1,7 +1,7 @@
 #ifndef UU_CORE_OLAP_IMPL_OBSERVERS_UNIONOBSERVER_H_
 #define UU_CORE_OLAP_IMPL_OBSERVERS_UNIONOBSERVER_H_
 
-#include "core/datastructures/observers/Observer.hpp"
+#include "core/observers/Observer.hpp"
 #include "core/exceptions/assert_not_null.hpp"
 #include <unordered_map>
 

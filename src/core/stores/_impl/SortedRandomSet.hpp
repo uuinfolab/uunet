@@ -24,9 +24,9 @@
 #include <functional>
 #include <memory>
 #include <vector>
-#include "core/datastructures/containers/DefaultLT.hpp"
-#include "core/datastructures/containers/DefaultEQ.hpp"
-#include "core/datastructures/containers/SortedRandomSetEntry.hpp"
+#include "core/stores/_impl/DefaultLT.hpp"
+#include "core/stores/_impl/DefaultEQ.hpp"
+#include "core/stores/_impl/SortedRandomSetEntry.hpp"
 #include "core/utils/random.hpp"
 #include "core/exceptions/ElementNotFoundException.hpp"
 

@@ -9,7 +9,7 @@
 
 #include <vector>
 #include <memory>
-#include "core/datastructures/observers/GenericObserver.hpp"
+#include "core/observers/GenericObserver.hpp"
 
 namespace uu {
 namespace core {

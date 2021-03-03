@@ -7,9 +7,9 @@
 #define UU_CORE_DATASTRUCTURES_CONTAINERS_SHAREDPTRSORTEDRANDOMSET_H_
 
 #include <memory>
-#include "core/datastructures/containers/PtrSortedRandomSet.hpp"
-#include "core/datastructures/containers/SharedPtrEQ.hpp"
-#include "core/datastructures/containers/SharedPtrLT.hpp"
+#include "core/stores/_impl/PtrSortedRandomSet.hpp"
+#include "core/stores/_impl/SharedPtrEQ.hpp"
+#include "core/stores/_impl/SharedPtrLT.hpp"
 #include "core/exceptions/assert_not_null.hpp"
 
 namespace uu {

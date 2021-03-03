@@ -7,7 +7,7 @@
 #define UU_CORE_DATASTRUCTURES_OBSERVERS_SUBJECT_H_
 
 #include <vector>
-#include "core/datastructures/observers/Observer.hpp"
+#include "core/observers/Observer.hpp"
 #include "core/exceptions/assert_not_null.hpp"
 
 namespace uu {

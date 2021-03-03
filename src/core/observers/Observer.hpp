@@ -6,7 +6,7 @@
 #ifndef UU_CORE_DATASTRUCTURES_OBSERVERS_OBSERVER_H_
 #define UU_CORE_DATASTRUCTURES_OBSERVERS_OBSERVER_H_
 
-#include "core/datastructures/observers/GenericObserver.hpp"
+#include "core/observers/GenericObserver.hpp"
 
 namespace uu {
 namespace core {

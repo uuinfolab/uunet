@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "core/datastructures/containers/SortedRandomBag.hpp"
+#include "core/stores/_impl/SortedRandomBag.hpp"
 
 
 TEST(core_datastructures_containers_test, SortedRandomBag_integer_key)

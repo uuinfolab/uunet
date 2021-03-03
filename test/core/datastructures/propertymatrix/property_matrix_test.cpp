@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
-#include "core/datastructures/propertymatrix/PropertyMatrix.hpp"
-#include "core/datastructures/propertymatrix/summarization.hpp"
+#include "core/propertymatrix/PropertyMatrix.hpp"
+#include "core/propertymatrix/summarization.hpp"
 
 
 class core_datastructures_propertymatrix_test : public ::testing::Test

@@ -13,7 +13,7 @@
 #include "core/attributes/Attribute.hpp"
 //#include "core/attributes/AttributeValueMap.hpp"
 #include "core/utils/CSVReader.hpp"
-#include "core/datastructures/objects/Object.hpp"
+#include "core/objects/Object.hpp"
 //#include "networks/_impl/Graph.hpp"
 #include "objects/Vertex.hpp"
 //#include "objects/Edge.hpp"

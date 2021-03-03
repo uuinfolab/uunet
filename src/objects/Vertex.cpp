@@ -29,6 +29,12 @@ to_string() const
     return name;
 }
 
+/*
+key_type
+Vertex::
+key(
+    return key;
+    );*/
 
 std::ostream&
 operator<<(std::ostream& os, const Vertex& v)

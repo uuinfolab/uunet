@@ -1,4 +1,4 @@
-#include "core/datastructures/observers/ObserverStore.hpp"
+#include "core/observers/ObserverStore.hpp"
 
 #include "core/exceptions/assert_not_null.hpp"
 

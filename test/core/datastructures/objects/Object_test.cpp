@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "core/datastructures/objects/Object.hpp"
+#include "core/objects/Object.hpp"
 
 
 TEST(core_datastructures_objects_test, Object)

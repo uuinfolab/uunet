@@ -4,7 +4,7 @@
 #include <string>
 #include <memory>
 #include <iostream>
-#include "core/datastructures/objects/NamedObject.hpp"
+#include "core/objects/NamedObject.hpp"
 
 namespace uu {
 namespace net {
@@ -39,7 +39,10 @@ class
     ) const;
 
     const key_type key;
-
+    /*
+    key_type
+    key();
+*/
 };
 
 std::ostream&

@@ -1,7 +1,7 @@
 #ifndef UU_NET_DATASTRUCTURE_OBSERVERS_CHECKVERTICESEXISTOBSERVER_H_
 #define UU_NET_DATASTRUCTURE_OBSERVERS_CHECKVERTICESEXISTOBSERVER_H_
 
-#include "core/datastructures/observers/Observer.hpp"
+#include "core/observers/Observer.hpp"
 #include "objects/Edge.hpp"
 #include "olap/VCube.hpp"
 

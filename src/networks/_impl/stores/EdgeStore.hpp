@@ -4,10 +4,10 @@
 #include <memory>
 #include <unordered_set>
 #include <unordered_map>
-#include "core/datastructures/containers/SharedPtrSortedRandomSet.hpp"
+#include "core/stores/_impl/SharedPtrSortedRandomSet.hpp"
 #include "core/stores/ObjectStore.hpp"
-#include "core/datastructures/observers/ObserverStore.hpp"
-#include "core/datastructures/observers/Subject.hpp"
+#include "core/observers/ObserverStore.hpp"
+#include "core/observers/Subject.hpp"
 #include "olap/VCube.hpp"
 #include "objects/Edge.hpp"
 #include "objects/EdgeDir.hpp"

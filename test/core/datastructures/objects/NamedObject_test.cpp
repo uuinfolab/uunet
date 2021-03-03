@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "core/datastructures/objects/NamedObject.hpp"
+#include "core/objects/NamedObject.hpp"
 
 TEST(core_datastructures_objects_test, NamedObject)
 {

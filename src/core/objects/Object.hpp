@@ -1,10 +1,5 @@
-/**
- * History:
- * - 2018.01.01 file adapted from version 1.0 of the multinet library
- */
-
-#ifndef UU_CORE_DATASTRUCTURES_OBJECTS_OBJECT_H_
-#define UU_CORE_DATASTRUCTURES_OBJECTS_OBJECT_H_
+#ifndef UU_CORE_OBJECTS_OBJECT_H_
+#define UU_CORE_OBJECTS_OBJECT_H_
 
 #include <iostream>
 
@@ -13,7 +8,7 @@ namespace core {
 
 /**
  * A generic class for objects that are part of any container defined in this
- * project, e.g., a row in a table, a vertex or an edge in a network, etc.
+ * project, e.g., a vertex or an edge in a network, etc.
  */
 class Object
 {

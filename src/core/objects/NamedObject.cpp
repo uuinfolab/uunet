@@ -1,4 +1,4 @@
-#include "core/datastructures/objects/NamedObject.hpp"
+#include "core/objects/NamedObject.hpp"
 
 namespace uu {
 namespace core {

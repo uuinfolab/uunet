@@ -7,7 +7,7 @@
 #define UU_CORE_DATASTRUCTURES_PROPERTYMATRIX_STRUCTURECOMPARISONFUNCTION_H_
 
 
-#include "core/datastructures/propertymatrix/PropertyMatrix.hpp"
+#include "core/propertymatrix/PropertyMatrix.hpp"
 
 
 namespace uu {

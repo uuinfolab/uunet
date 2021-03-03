@@ -7,9 +7,9 @@
 #define UU_CORE_DATASTRUCTURES_CONTAINERS_UNIONSORTEDRANDOMSET_H_
 
 #include <map>
-#include "core/datastructures/containers/SortedRandomBag.hpp"
-#include "core/datastructures/observers/Observer.hpp"
-#include "core/datastructures/observers/Subject.hpp"
+#include "core/stores/_impl/SortedRandomBag.hpp"
+#include "core/observers/Observer.hpp"
+#include "core/observers/Subject.hpp"
 #include "core/exceptions/assert_not_null.hpp"
 
 namespace uu {

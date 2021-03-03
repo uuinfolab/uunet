@@ -2,7 +2,7 @@
 #define UU_CORE_ATTRIBUTES_ATTRIBUTEVALUEMAP_H_
 
 #include <vector>
-#include "core/datastructures/containers/LabeledUniquePtrSortedRandomSet.hpp"
+#include "core/stores/_impl/LabeledUniquePtrSortedRandomSet.hpp"
 #include "core/exceptions/WrongFormatException.hpp"
 #include "core/exceptions/OperationNotSupportedException.hpp"
 #include "core/attributes/AttributeType.hpp"

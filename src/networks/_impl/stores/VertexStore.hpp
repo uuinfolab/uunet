@@ -2,7 +2,7 @@
 #define UU_NET_STORES_VERTEXSTORE_H_
 
 #include <memory>
-#include "core/datastructures/observers/Observer.hpp"
+#include "core/observers/Observer.hpp"
 #include "objects/Vertex.hpp"
 #include "core/stores/ObjectStore.hpp"
 

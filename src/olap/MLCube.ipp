@@ -3,7 +3,7 @@
 #include "core/exceptions/WrongParameterException.hpp"
 #include "core/exceptions/OutOfBoundsException.hpp"
 #include "core/exceptions/OperationNotSupportedException.hpp"
-#include "core/datastructures/containers/UnionSortedRandomSet.hpp"
+#include "core/stores/_impl/UnionSortedRandomSet.hpp"
 #include "olap/selection/IndexIterator.hpp"
 #include "olap/indexing.hpp"
 #include <string>

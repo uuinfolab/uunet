@@ -5,8 +5,8 @@
 #include <algorithm>
 #include <unordered_set>
 #include "core/exceptions/assert_not_null.hpp"
-#include "core/datastructures/propertymatrix/PropertyMatrix.hpp"
-#include "core/datastructures/propertymatrix/summarization.hpp"
+#include "core/propertymatrix/PropertyMatrix.hpp"
+#include "core/propertymatrix/summarization.hpp"
 #include "objects/Vertex.hpp"
 #include "objects/Dyad.hpp"
 #include "objects/Triad.hpp"

@@ -1,20 +1,16 @@
-/**
- * History:
- * - 2018.01.01 file adapted from version 1.0 of the multinet library
- */
-
-#ifndef UU_CORE_DATASTRUCTURES_OBJECTS_NAMEDOBJECT_H_
-#define UU_CORE_DATASTRUCTURES_OBJECTS_NAMEDOBJECT_H_
+#ifndef UU_CORE_OBJECTS_NAMEDOBJECT_H_
+#define UU_CORE_OBJECTS_NAMEDOBJECT_H_
 
 #include <iostream>
-#include "core/datastructures/objects/Object.hpp"
+#include <memory>
+#include "core/objects/Object.hpp"
 
 namespace uu {
 namespace core {
 
 /** A generic class for objects with a name. */
-class NamedObject
-    : public Object
+class NamedObject :
+    public Object
 {
 
   public:

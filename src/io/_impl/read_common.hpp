@@ -12,7 +12,7 @@
 #include "core/exceptions/WrongFormatException.hpp"
 #include "core/attributes/Attribute.hpp"
 #include "core/utils/CSVReader.hpp"
-#include "core/datastructures/objects/Object.hpp"
+#include "core/objects/Object.hpp"
 #include "objects/Vertex.hpp"
 #include "objects/Edge.hpp"
 #include "io/_impl/GraphMetadata.hpp"

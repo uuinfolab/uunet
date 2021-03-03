@@ -7,9 +7,9 @@
 #define UU_CORE_DATASTRUCTURES_CONTAINERS_UNIQUEPTRSORTEDRANDOMSET_H_
 
 #include <memory>
-#include "core/datastructures/containers/PtrSortedRandomSet.hpp"
-#include "core/datastructures/containers/UniquePtrEQ.hpp"
-#include "core/datastructures/containers/UniquePtrLT.hpp"
+#include "core/stores/_impl/PtrSortedRandomSet.hpp"
+#include "core/stores/_impl/UniquePtrEQ.hpp"
+#include "core/stores/_impl/UniquePtrLT.hpp"
 #include "core/exceptions/assert_not_null.hpp"
 
 namespace uu {

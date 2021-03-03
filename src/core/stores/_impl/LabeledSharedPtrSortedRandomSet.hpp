@@ -9,7 +9,7 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
-#include "core/datastructures/containers/SharedPtrSortedRandomSet.hpp"
+#include "core/stores/_impl/SharedPtrSortedRandomSet.hpp"
 #include "core/exceptions/assert_not_null.hpp"
 
 namespace uu {

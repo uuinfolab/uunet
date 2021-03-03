@@ -17,8 +17,8 @@
 #include <limits>
 #include "core/utils/math.hpp"
 #include "core/utils/Counter.hpp"
-#include "core/datastructures/propertymatrix/PropertyMatrix.hpp"
-#include "core/datastructures/propertymatrix/StructureComparisonFunction.hpp"
+#include "core/propertymatrix/PropertyMatrix.hpp"
+#include "core/propertymatrix/StructureComparisonFunction.hpp"
 
 
 namespace uu {

@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "core/datastructures/containers/LabeledSharedPtrSortedRandomSet.hpp"
+#include "core/stores/_impl/LabeledSharedPtrSortedRandomSet.hpp"
 
 
 TEST(core_datastructures_containers_test, LabeledSharedPtrSortedRandomSet)

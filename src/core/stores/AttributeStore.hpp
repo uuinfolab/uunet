@@ -3,7 +3,7 @@
 
 #include <memory>
 #include "core/attributes/MainMemoryAttributeValueMap.hpp"
-#include "core/datastructures/observers/Observer.hpp"
+#include "core/observers/Observer.hpp"
 #include "core/exceptions/assert_not_null.hpp"
 
 namespace uu {

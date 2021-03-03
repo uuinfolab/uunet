@@ -1,4 +1,4 @@
-#include "core/datastructures/objects/Object.hpp"
+#include "core/objects/Object.hpp"
 
 #include <sstream>
 
