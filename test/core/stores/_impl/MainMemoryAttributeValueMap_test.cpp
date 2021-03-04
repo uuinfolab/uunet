@@ -2,7 +2,7 @@
 
 #include "gtest/gtest.h"
 
-class core_attributes_test : public ::testing::Test
+class core_stores_impl_attr_test : public ::testing::Test
 {
   protected:
 
@@ -27,7 +27,7 @@ class core_attributes_test : public ::testing::Test
     }
 };
 
-TEST_F(core_attributes_test, MainMemoryAttributeValueMap_add_attributes)
+TEST_F(core_stores_impl_attr_test, MainMemoryAttributeValueMap_add_attributes)
 {
     // Trying to add attributes that already exist.
     EXPECT_EQ(nullptr,
@@ -37,7 +37,7 @@ TEST_F(core_attributes_test, MainMemoryAttributeValueMap_add_attributes)
               att_store->add(std::make_unique<uu::core::Attribute>("s_att", uu::core::AttributeType::INTEGER)));
 }
 
-TEST_F(core_attributes_test, MainMemoryAttributeValueMap_get_attributes)
+TEST_F(core_stores_impl_attr_test, MainMemoryAttributeValueMap_get_attributes)
 {
     EXPECT_EQ((size_t) 9,
               att_store->size());
@@ -47,7 +47,7 @@ TEST_F(core_attributes_test, MainMemoryAttributeValueMap_get_attributes)
 
 }
 
-TEST_F(core_attributes_test, MainMemoryAttributeValueMap_set_get)
+TEST_F(core_stores_impl_attr_test, MainMemoryAttributeValueMap_set_get)
 {
     // Set values
 
@@ -78,7 +78,7 @@ TEST_F(core_attributes_test, MainMemoryAttributeValueMap_set_get)
 }
 
 
-TEST_F(core_attributes_test, MainMemoryAttributeValueMap_add_get)
+TEST_F(core_stores_impl_attr_test, MainMemoryAttributeValueMap_add_get)
 {
     // No results
     EXPECT_EQ(att_store->get_strings(id0, "s_satt").size(), (size_t) 0);
@@ -117,7 +117,7 @@ TEST_F(core_attributes_test, MainMemoryAttributeValueMap_add_get)
 }
 
 
-TEST_F(core_attributes_test, MainMemoryAttributeValueMap_set_get_as_string)
+TEST_F(core_stores_impl_attr_test, MainMemoryAttributeValueMap_set_get_as_string)
 {
     // Set as string
 
@@ -151,7 +151,7 @@ TEST_F(core_attributes_test, MainMemoryAttributeValueMap_set_get_as_string)
                  uu::core::ElementNotFoundException);
 }
 
-TEST_F(core_attributes_test, MainMemoryAttributeValueMap_min_max)
+TEST_F(core_stores_impl_attr_test, MainMemoryAttributeValueMap_min_max)
 {
     // Set values
 
@@ -178,7 +178,7 @@ TEST_F(core_attributes_test, MainMemoryAttributeValueMap_min_max)
 }
 
 
-TEST_F(core_attributes_test, MainMemoryAttributeValueMap_range_queries)
+TEST_F(core_stores_impl_attr_test, MainMemoryAttributeValueMap_range_queries)
 {
     // Set values
 
@@ -202,7 +202,7 @@ TEST_F(core_attributes_test, MainMemoryAttributeValueMap_range_queries)
 }
 
 
-TEST_F(core_attributes_test, MainMemoryAttributeValueMap_indexing)
+TEST_F(core_stores_impl_attr_test, MainMemoryAttributeValueMap_indexing)
 {
     att_store->set_int(id0, "i_att", 0);
     att_store->set_int(id1, "i_att", 1);
@@ -230,7 +230,7 @@ TEST_F(core_attributes_test, MainMemoryAttributeValueMap_indexing)
 }
 
 
-TEST_F(core_attributes_test, MainMemoryAttributeValueMap_reset)
+TEST_F(core_stores_impl_attr_test, MainMemoryAttributeValueMap_reset)
 {
     // Set values
 

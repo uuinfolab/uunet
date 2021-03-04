@@ -3,7 +3,7 @@
 #include "core/stores/_impl/LabeledSharedPtrSortedRandomSet.hpp"
 
 
-TEST(core_datastructures_containers_test, LabeledSharedPtrSortedRandomSet)
+TEST(core_stores_impl_test, LabeledSharedPtrSortedRandomSet)
 {
     class Elem :
         public std::enable_shared_from_this<Elem>

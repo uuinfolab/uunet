@@ -3,8 +3,9 @@
 #include "core/propertymatrix/PropertyMatrix.hpp"
 #include "core/propertymatrix/summarization.hpp"
 
+// @todo more tests can be added
 
-class core_datastructures_propertymatrix_test : public ::testing::Test
+class core_propertymatrix_test : public ::testing::Test
 {
   protected:
 
@@ -25,9 +26,9 @@ class core_datastructures_propertymatrix_test : public ::testing::Test
 };
 
 
-TEST_F(core_datastructures_propertymatrix_test, PropertyMatrix)
+TEST_F(core_propertymatrix_test, PropertyMatrix)
 {
-
+    
     // retrieving values
     EXPECT_EQ(P.get(0,0).value, false)
             << "Wrong value for field 0,0";
@@ -37,14 +38,14 @@ TEST_F(core_datastructures_propertymatrix_test, PropertyMatrix)
             << "Wrong default value for field 0,1";
 
     // metadata
-    EXPECT_EQ(P.structures().size(), (size_t)3)
+    EXPECT_EQ(P.objects().size(), (size_t)3)
             << "Wrong number of structures";
     EXPECT_EQ(P.contexts().size(), (size_t)2)
             << "Wrong number of contexts";
 
 }
 
-TEST_F(core_datastructures_propertymatrix_test, summarization)
+TEST_F(core_propertymatrix_test, summarization)
 {
 
     EXPECT_EQ(uu::core::russell_rao(P,0,1), 1.0/4)

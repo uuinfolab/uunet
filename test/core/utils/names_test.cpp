@@ -7,7 +7,7 @@
 
 #include "core/utils/names.hpp"
 
-TEST(io_utils_names_test, iteration)
+TEST(io_utils_test, names_iteration)
 {
 
     auto names = uu::core::NameIterator("pre", 5);
@@ -37,7 +37,7 @@ TEST(io_utils_names_test, iteration)
 }
 
 
-TEST(io_utils_names_test, number_of_digits)
+TEST(io_utils_test, names_digits)
 {
 
     auto names = uu::core::NameIterator("pre", 11);

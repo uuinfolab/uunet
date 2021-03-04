@@ -10,6 +10,7 @@ struct UniquePtrLT
         return x.get()<y;
     }
 };
+
 struct UniquePtrEQ
 {
     bool
@@ -21,7 +22,7 @@ struct UniquePtrEQ
 
 
 
-TEST(core_datastructures_containers_test, UniquePtrSortedRandomSet_ptr_to_int)
+TEST(core_stores_impl_test, UniquePtrSortedRandomSet_ptr_to_int)
 {
     uu::core::UniquePtrSortedRandomSet<const int> set;
 
@@ -92,7 +93,7 @@ TEST(core_datastructures_containers_test, UniquePtrSortedRandomSet_ptr_to_int)
 
 
 
-TEST(core_datastructures_containers_test, UniquePtrSortedRandomSet_ptr_to_element)
+TEST(core_stores_impl_test, UniquePtrSortedRandomSet_ptr_to_element)
 {
 
     class Elem

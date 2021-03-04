@@ -3,7 +3,7 @@
 #include "core/stores/_impl/LabeledUniquePtrSortedRandomSet.hpp"
 
 
-TEST(core_datastructures_containers_test, LabeledUniquePtrSortedRandomSet)
+TEST(core_stores_impl_test, LabeledUniquePtrSortedRandomSet)
 {
     class Elem
     {

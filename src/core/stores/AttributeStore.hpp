@@ -2,7 +2,7 @@
 #define UU_CORE_STORES_ATTRIBUTESTORE_H_
 
 #include <memory>
-#include "core/attributes/MainMemoryAttributeValueMap.hpp"
+#include "core/stores/_impl/MainMemoryAttributeValueMap.hpp"
 #include "core/observers/Observer.hpp"
 #include "core/exceptions/assert_not_null.hpp"
 

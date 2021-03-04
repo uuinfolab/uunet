@@ -503,7 +503,7 @@ SortedRandomSet<ELEMENT_TYPE>::
 get_at_random(
 ) const
 {
-    return at(getRandomInt(size()));
+    return at(irand(size()));
 }
 
 template <class ELEMENT_TYPE>

@@ -38,7 +38,7 @@ shuffle(
 
                 // decide how the links should be swapped
 
-                auto coin_flip = uu::core::getRandomInt(2);
+                auto coin_flip = uu::core::irand(2);
 
                 link_swap_succes = false;
 

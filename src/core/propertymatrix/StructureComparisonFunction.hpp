@@ -3,8 +3,8 @@
  * - 2018.01.01 file adapted from version 1.0 of the multinet library
  */
 
-#ifndef UU_CORE_DATASTRUCTURES_PROPERTYMATRIX_STRUCTURECOMPARISONFUNCTION_H_
-#define UU_CORE_DATASTRUCTURES_PROPERTYMATRIX_STRUCTURECOMPARISONFUNCTION_H_
+#ifndef UU_CORE_DATAOBJECTS_PROPERTYMATRIX_OBJECTCOMPARISONFUNCTION_H_
+#define UU_CORE_DATAOBJECTS_PROPERTYMATRIX_OBJECTCOMPARISONFUNCTION_H_
 
 
 #include "core/propertymatrix/PropertyMatrix.hpp"
@@ -16,7 +16,7 @@ namespace core {
 /**
  * A function used to compare two structures in a property matrix.
  */
-template <class STRUCTURE, class CONTEXT, class NUMBER>
+template <class OBJECT, class CONTEXT, class NUMBER>
 class
     StructureComparisonFunction
 {
@@ -24,7 +24,7 @@ class
   public:
 
     StructureComparisonFunction(
-        const PropertyMatrix<STRUCTURE,CONTEXT,NUMBER>* P,
+        const PropertyMatrix<OBJECT,CONTEXT,NUMBER>* P,
         const CONTEXT* c
     ) :
         P(P),
@@ -33,14 +33,14 @@ class
 
     }
 
-    const PropertyMatrix<STRUCTURE,CONTEXT,NUMBER>* P;
+    const PropertyMatrix<OBJECT,CONTEXT,NUMBER>* P;
 
     const CONTEXT* c;
 
     bool
     operator()(
-        const STRUCTURE& s1,
-        const STRUCTURE& s2
+        const OBJECT& s1,
+        const OBJECT& s2
     ) const
     {
         Value<NUMBER> v1 = (*P).get(s1,*c);

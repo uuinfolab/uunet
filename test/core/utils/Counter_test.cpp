@@ -3,7 +3,7 @@
 #include "core/utils/Counter.hpp"
 
 
-TEST(core_utils_Counter_test, all_functions)
+TEST(core_utils_test, Counter)
 {
 
     uu::core::Counter<char> c;

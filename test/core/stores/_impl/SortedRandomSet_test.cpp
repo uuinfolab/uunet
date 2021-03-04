@@ -3,7 +3,7 @@
 #include "core/stores/_impl/SortedRandomSet.hpp"
 
 
-TEST(core_datastructures_containers_test, SortedRandomSet_integer_key)
+TEST(core_stores_impl_test, SortedRandomSet_integer_key)
 {
     uu::core::SortedRandomSet<int> set;
 
@@ -58,7 +58,7 @@ TEST(core_datastructures_containers_test, SortedRandomSet_integer_key)
 
 
 
-TEST(core_datastructures_containers_test, SortedRandomSet_raw_pointer_key)
+TEST(core_stores_impl_test, SortedRandomSet_raw_pointer_key)
 {
     uu::core::SortedRandomSet<const int*> set;
 

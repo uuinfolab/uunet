@@ -1,11 +1,6 @@
 /**
  * Classes to count the number of occurrences of some objects/values.
- *
- * History:
- * - 2018.01.01 file imported from version 1.0 of the multinet library
  */
-
-
 #ifndef UU_CORE_UTILS_COUNTER_H_
 #define UU_CORE_UTILS_COUNTER_H_
 

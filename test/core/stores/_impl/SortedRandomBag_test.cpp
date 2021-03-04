@@ -3,7 +3,7 @@
 #include "core/stores/_impl/SortedRandomBag.hpp"
 
 
-TEST(core_datastructures_containers_test, SortedRandomBag_integer_key)
+TEST(core_stores_impl_test, SortedRandomBag_integer_key)
 {
     uu::core::SortedRandomBag<int> set;
 

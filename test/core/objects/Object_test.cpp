@@ -3,7 +3,7 @@
 #include "core/objects/Object.hpp"
 
 
-TEST(core_datastructures_objects_test, Object)
+TEST(core_objects_test, Object)
 {
 
     uu::core::Object o1;

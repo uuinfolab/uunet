@@ -3,7 +3,7 @@
 #include "core/stores/_impl/SharedPtrSortedRandomSet.hpp"
 
 
-TEST(core_datastructures_containers_test, SharedPtrSortedRandomSet_ptr_to_elem)
+TEST(core_stores_impl_test, SharedPtrSortedRandomSet_ptr_to_elem)
 {
 
     class Elem :

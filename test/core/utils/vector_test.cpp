@@ -2,7 +2,7 @@
 
 #include "core/utils/vector.hpp"
 
-TEST(core_utils_vector_test, seq)
+TEST(core_utils_test, vector_seq)
 {
     std::vector<size_t> vec1 = {2,3,4};
     auto res = uu::core::seq(2,4);
@@ -13,7 +13,7 @@ TEST(core_utils_vector_test, seq)
 
 }
 
-TEST(core_utils_vector_test, move)
+TEST(core_utils_test, vector_move)
 {
     std::vector<size_t> vec = {1,2,3,4,5};
     std::vector<size_t> vec1 = {1,3,4,5,2};

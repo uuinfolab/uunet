@@ -393,7 +393,7 @@ end_loop:
     for (auto layer=begin; layer!=end; ++layer)
     {
         std::string layer_name = (*layer)->name;
-        core::format(layer_name);
+        core::to_xml(layer_name);
 
         outfile << "    <key id=\"" << layer_name << "\" for=\"node\" attr.name=\"" << layer_name << "\" attr.type=\"string\"/>" << std::endl;
 
@@ -433,13 +433,13 @@ end_loop:
     {
 
         std::string layer_name1 = (*layer1)->name;
-        core::format(layer_name1);
+        core::to_xml(layer_name1);
 
         for (auto layer2=begin; layer2!=end; ++layer2)
         {
 
             std::string layer_name2 = (*layer2)->name;
-            core::format(layer_name2);
+            core::to_xml(layer_name2);
 
             if (layer1 == layer2)
             {
@@ -487,7 +487,7 @@ end_loop:
         {
 
             std::string actor_name = actor->name;
-            core::format(actor_name);
+            core::to_xml(actor_name);
 
             // except if only layer-specific actors must be used
             if (!include_all_actors)
@@ -515,7 +515,7 @@ end_loop:
             {
 
                 std::string layer_name = (*layer)->name;
-                core::format(layer_name);
+                core::to_xml(layer_name);
 
                 if (!(*layer)->vertices()->contains(actor))
                 {
@@ -537,7 +537,7 @@ end_loop:
                         {
                             auto att_val = attrs->get_string(actor,attr->name);
                             std::string value = att_val.null?"NA":att_val.value;
-                            core::format(value);
+                            core::to_xml(value);
                             outfile << "        <data key=\"" << layer_name << ":" << attr->name << "\">" << value << "</data>" << std::endl;
                         }
                     }
@@ -557,7 +557,7 @@ end_loop:
                 {
                     auto att_val = attrs->get_string(actor,attr->name);
                     std::string value = att_val.null?"NA":att_val.value;
-                    core::format(value);
+                    core::to_xml(value);
 
                     outfile << "        <data key=\"" << attr->name << "\">" << value << "</data>" << std::endl;
                 }
@@ -575,13 +575,13 @@ end_loop:
         {
 
             std::string layer_name = (*layer)->name;
-            core::format(layer_name);
+            core::to_xml(layer_name);
 
             for (auto actor: *(*layer)->vertices())
             {
 
                 std::string actor_name = actor->name;
-                core::format(actor_name);
+                core::to_xml(actor_name);
 
                 outfile << "    <node id=\"" << actor << ":" << (*layer) << "\">" << std::endl;
                 outfile << "        <data key=\"v_name\">" << actor_name << ":" << layer_name << "</data>" << std::endl;
@@ -598,7 +598,7 @@ end_loop:
                     {
                         auto att_val = attrs->get_string(actor,attr->name);
                         std::string value = att_val.null?"NA":att_val.value;
-                        core::format(value);
+                        core::to_xml(value);
 
                         outfile << "        <data key=\"" << layer_name << ":" << attr->name << "\">" << value << "</data>" << std::endl;
                     }
@@ -619,13 +619,13 @@ end_loop:
         {
 
             std::string layer_name1 = (*layer1)->name;
-            core::format(layer_name1);
+            core::to_xml(layer_name1);
 
             for (auto layer2=layer1; layer2!=end; ++layer2)
             {
 
                 std::string layer_name2 = (*layer2)->name;
-                core::format(layer_name2);
+                core::to_xml(layer_name2);
 
                 if (layer1==layer2)
                 {
@@ -646,7 +646,7 @@ end_loop:
                             {
                                 auto att_val = attrs->get_string(edge,attr->name);
                                 std::string value = att_val.null?"NA":att_val.value;
-                                core::format(value);
+                                core::to_xml(value);
 
                                 outfile << "        <data key=\"e" << layer_name1 << "-" << layer_name2 << ": " << attr->name << "\">" << value << "</data>" << std::endl;
                             }
@@ -677,7 +677,7 @@ end_loop:
                             {
                                 auto att_val = attrs->get_string(edge,attr->name);
                                 std::string value = att_val.null?"NA":att_val.value;
-                                core::format(value);
+                                core::to_xml(value);
 
                                 outfile << "        <data key=\"e" << layer_name1 << "-" << layer_name2 << ": " << attr->name << "\">" << value << "</data>" << std::endl;
                             }
@@ -697,13 +697,13 @@ end_loop:
         {
 
             std::string layer_name1 = (*layer1)->name;
-            core::format(layer_name1);
+            core::to_xml(layer_name1);
 
             for (auto layer2=layer1; layer2!=end; ++layer2)
             {
 
                 std::string layer_name2 = (*layer2)->name;
-                core::format(layer_name2);
+                core::to_xml(layer_name2);
 
                 if (layer1==layer2)
                 {
@@ -724,7 +724,7 @@ end_loop:
                             {
                                 auto att_val = attrs->get_string(edge,attr->name);
                                 std::string value = att_val.null?"NA":att_val.value;
-                                core::format(value);
+                                core::to_xml(value);
 
                                 outfile << "        <data key=\"e" << layer_name1 << "-" << layer_name1 << ": " << attr->name << "\">" << value << "</data>" << std::endl;
                             }
@@ -755,7 +755,7 @@ end_loop:
                             {
                                 auto att_val = attrs->get_string(edge,attr->name);
                                 std::string value = att_val.null?"NA":att_val.value;
-                                core::format(value);
+                                core::to_xml(value);
 
 
                                 outfile << "        <data key=\"e" << layer_name1 << "-" << layer_name2 << ": " << attr->name << "\">" << value << "</data>" << std::endl;

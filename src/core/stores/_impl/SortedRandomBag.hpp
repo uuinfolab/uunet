@@ -462,7 +462,7 @@ SortedRandomBag<ELEMENT_TYPE>::
 get_at_random(
 ) const
 {
-    return at(getRandomInt(dsize()));
+    return at(irand(dsize()));
 }
 
 template <class ELEMENT_TYPE>
