@@ -35,16 +35,6 @@ read_multilayer_network(
         net->layers()->add(layer_name, dir, loops);
     }
 
-    /*for (auto l: meta.layers)
-    {
-        std::string layer_name = l.first;
-        auto layer_type = l.second;
-            //std::cout << "creating layer " << l.first << " " << layer_type.is_directed << std::endl;
-        auto dir = layer_type.is_directed?EdgeDir::DIRECTED:EdgeDir::UNDIRECTED;
-        auto layer = std::make_unique<Network>(layer_name, dir, layer_type.allows_loops);
-        net->layers()->add(std::move(layer));
-    }*/
-
     for (auto inter: meta.interlayer_dir)
     {
         std::string layer_name1 = inter.first.first;
@@ -85,13 +75,6 @@ read_multilayer_network(
             net->layers()->get(layer_name)->vertices()->attr()->add(attr.name, attr.type);
         }
     }
-
-    /* @todo add to all edge layers?
-    for (auto attr: meta.interlayer_edge_attributes)
-    {
-        net->interlayer_edges()->attr()->add(attr.name, attr.type);
-    }
-    */
 
     for (auto layer_attr: meta.intralayer_edge_attributes)
     {

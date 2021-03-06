@@ -1,13 +1,12 @@
 #include "gtest/gtest.h"
 
 #include "core/utils/pretty_printing.hpp"
-//#include "net/olap/VCube.hpp"
-#include "olap/selection/EntryIterator.hpp"
-#include "olap/selection/IndexIterator.hpp"
-#include "olap/selection/Set.hpp"
+#include "olap/sel//EntryIterator.hpp"
+#include "olap/sel//IndexIterator.hpp"
+#include "olap/sel//Set.hpp"
 
 
-TEST(core_olap_selection_test, EntryIterator)
+TEST(olap_selection_test, EntryIterator)
 {
     /* @todo make test
     uu::net::VCube c({3,3});

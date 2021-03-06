@@ -7,10 +7,10 @@
 #include "core/exceptions/OutOfBoundsException.hpp"
 #include "core/exceptions/OperationNotSupportedException.hpp"
 #include "core/stores/_impl/UnionSortedRandomSet.hpp"
-#include "olap/selection/IndexIterator.hpp"
+#include "olap/sel//IndexIterator.hpp"
 #include "core/observers/ObserverStore.hpp"
 #include "core/observers/UnionObserver.hpp"
-#include "olap/UniformDiscretization.hpp"
+#include "olap/op/UniformDiscretization.hpp"
 #include <string>
 #include <unordered_map>
 #include <vector>

@@ -1,11 +1,11 @@
 #include "gtest/gtest.h"
 
-#include "olap/selection/IndexIterator.hpp"
+#include "olap/sel//IndexIterator.hpp"
 
-TEST(core_olap_selection_test, IndexIterator)
+TEST(olap_selection_test, IndexIterator)
 {
 
-    uu::core::IndexIterator idx({{1,2},{0,4},{2}});
+    uu::net::IndexIterator idx({{1,2},{0,4},{2}});
 
     std::vector<size_t> vidx2 = {1, 4, 2};
     std::vector<size_t> vidx3 = {2, 4, 2};

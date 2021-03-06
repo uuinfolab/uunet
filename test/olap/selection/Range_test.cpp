@@ -1,12 +1,12 @@
 #include "gtest/gtest.h"
 
-#include "olap/selection/Range.hpp"
+#include "olap/sel//Range.hpp"
 #include "core/exceptions/OutOfBoundsException.hpp"
 
-TEST(core_olap_selection_test, Range)
+TEST(olap_selection_test, Range)
 {
 
-    uu::core::Range r(1,3);
+    uu::net::Range r(1,3);
 
     EXPECT_THROW(r.eval(3), uu::core::OutOfBoundsException)
             << "Out of bound exception not caught";
@@ -27,10 +27,10 @@ TEST(core_olap_selection_test, Range)
 }
 
 
-TEST(core_olap_selection_test, Range_inverse)
+TEST(olap_selection_test, Range_inverse)
 {
 
-    uu::core::Range r(3,1);
+    uu::net::Range r(3,1);
 
     EXPECT_THROW(r.eval(3), uu::core::OutOfBoundsException)
             << "Out of bound exception not caught";

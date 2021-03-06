@@ -1,23 +1,20 @@
 #ifndef UU_COMMUNITY_LABELPROPAGATIONSINGLE_H_
 #define UU_COMMUNITY_LABELPROPAGATIONSINGLE_H_
 
-#include <chrono>
+#include <memory>
 #include "community/CommunityStructure.hpp"
-#include "community/Community.hpp"
-#include "community/_impl/common.hpp"
-#include "objects/EdgeMode.hpp"
-#include "objects/Vertex.hpp"
-#include "core/utils/Counter.hpp"
-#include "core/utils/random.hpp"
 
 namespace uu {
 namespace net {
 
+/**
+ * Label propagation algorithm for undirected unweighted networks.
+ */
 template <typename G>
 std::unique_ptr<CommunityStructure<G>>
-                                    label_propagation(
-                                        const G* net
-                                    );
+label_propagation(
+    const G* net
+);
 
 }
 }

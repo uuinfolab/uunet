@@ -19,7 +19,7 @@ is_temporal(
 {
     auto attr = c->attr()->get("t_");
 
-    if (attr->type == core::AttributeType::DOUBLE)
+    if (attr->type == core::AttributeType::TIMESET)
     {
         return true;
     }

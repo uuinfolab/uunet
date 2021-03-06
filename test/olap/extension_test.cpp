@@ -2,7 +2,7 @@
 
 #include "./operators.hpp"
 
-#include "olap/d-extension.hpp"
+#include "olap/op/d-extension.hpp"
 
 TEST_F(net_olap_operators_test, extend_dimension)
 {

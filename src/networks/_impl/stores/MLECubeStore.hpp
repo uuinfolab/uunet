@@ -15,9 +15,6 @@ namespace net {
 
 class
     MLECubeStore
-//:
-//    public core::SharedPtrSortedRandomSet<const Edge>,
-//            public core::Subject<const Edge>
 {
 
   private:
@@ -36,18 +33,6 @@ class
     ~MLECubeStore() {}
 
   public:
-
-    //using super::size;
-    //using super::add;
-    //using super::erase;
-
-    /*
-    virtual
-    const Edge*
-    add(
-        std::shared_ptr<const Edge> e
-    ) override;
-    */
 
     /**
      * Adds a new edge.
@@ -127,7 +112,7 @@ class
     init(
         Network* layer1,
         Network* layer2,
-        EdgeDir dir
+        EdgeDir dir = EdgeDir::UNDIRECTED
     );
 
     bool

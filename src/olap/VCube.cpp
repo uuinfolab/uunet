@@ -27,7 +27,7 @@ VCube(
             add_dimension(cube.dimensions()[i], cube.members(i));
         }
 
-        core::IndexIterator idx(cube.dsize());
+        IndexIterator idx(cube.dsize());
 
         for (auto i: idx)
         {

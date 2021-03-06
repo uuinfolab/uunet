@@ -21,7 +21,7 @@ void
 set_weight(
     Network* net,
     const Edge* edge,
-    double p
+    double w
 );
 
 /**

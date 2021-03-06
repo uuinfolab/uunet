@@ -13,29 +13,8 @@ std::unique_ptr<Network>
 read_temporal_network(
     const std::string& infile,
     const std::string& name,
-    char separator
+    char separator = ','
 );
-
-/*
-template <>
-void
-read_vertex(
-    TemporalNetwork* g,
-    const std::vector<std::string>& fields,
-    const std::vector<core::Attribute>& vertex_attributes,
-    size_t line_number
-);
-
-
-template <>
-void
-read_edge(
-    TemporalNetwork* g,
-    const std::vector<std::string>& fields,
-    const std::vector<core::Attribute>& edge_attributes,
-    size_t line_number
-);
-*/
 
 }
 }

@@ -36,19 +36,6 @@ TEST(networks_test, Network)
     auto edge_attr_value = g->edges()->attr()->get_double(e, "a1");
     EXPECT_EQ(3.4, edge_attr_value.value);
 
-
-    auto c = uu::net::louvain(g.get());
-
-    for (auto com: *c)
-    {
-        std::cout << "COM" << std::endl;
-
-        for (auto v: *com)
-        {
-            std::cout << (*v) << std::endl;
-        }
-    }
-
     // Exception handling: adding a vertex with the same name of a vertex already in the network
 
     auto v3_bis = std::make_shared<uu::net::Vertex>("v3");
@@ -84,26 +71,10 @@ TEST(networks_test, Network)
     EXPECT_EQ((size_t)0, g->edges()->size())
             << "Vertex removal was not propagated to the edges";
 
-    // Checking network properties
-
-    /*
-    EXPECT_FALSE(g->is_directed());
-
-    EXPECT_FALSE(g->allows_multi_edges());
-
-    EXPECT_FALSE(g->allows_loops());
-
-    EXPECT_FALSE(g->is_weighted());
-
-    EXPECT_FALSE(g->is_probabilistic());
-
-    EXPECT_FALSE(g->is_temporal());
-    */
-
 }
 
 
 TEST(networks_test, Network_from_cubes)
 {
-
+        // @todo 
 }

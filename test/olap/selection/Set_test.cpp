@@ -1,12 +1,12 @@
 #include "gtest/gtest.h"
 
-#include "olap/selection/Set.hpp"
+#include "olap/sel//Set.hpp"
 #include "core/exceptions/OutOfBoundsException.hpp"
 
-TEST(core_olap_selection_test, Set)
+TEST(olap_selection_test, Set)
 {
 
-    uu::core::Set s({1,3});
+    uu::net::Set s({1,3});
 
     EXPECT_THROW(s.eval(3), uu::core::OutOfBoundsException)
             << "Out of bound exception not caught";

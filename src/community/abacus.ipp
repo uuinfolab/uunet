@@ -1,16 +1,26 @@
 #include "community/louvain.hpp"
 
+#include <string>
+#include <unordered_map>
+#include <vector>
+#include <cstdio>
+#include <stdio.h>
+#include "core/exceptions/FileNotFoundException.hpp"
+#include "core/exceptions/ExternalLibException.hpp"
+#include "community/_impl/PillarCommunity.hpp"
+#include "community/_impl/abacus_utils.hpp"
+
 namespace uu {
 namespace net {
 
 
 template <typename M>
 std::unique_ptr<CommunityStructure<M>>
-                                    abacus(
-                                        const M* mnet,
-                                        int min_actors,
-                                        int min_layers
-                                    )
+abacus(
+    const M* mnet,
+    int min_actors,
+    int min_layers
+)
 {
     std::vector<std::unique_ptr<CommunityStructure<typename M::layer_type>>> coms;
     std::unordered_map<const typename M::layer_type*, CommunityStructure<typename M::layer_type>*> single_layer_communities;

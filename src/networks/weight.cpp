@@ -32,10 +32,10 @@ void
 set_weight(
     Network* net,
     const Edge* edge,
-    double p
+    double w
 )
 {
-    net->edges()->attr()->set_double(edge, "w_", p);
+    net->edges()->attr()->set_double(edge, "w_", w);
 }
 
 double

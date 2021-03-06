@@ -2,7 +2,7 @@
 
 #include "./operators.hpp"
 
-#include "olap/slicing.hpp"
+#include "olap/op/slicing.hpp"
 
 TEST_F(net_olap_operators_test, vslice)
 {

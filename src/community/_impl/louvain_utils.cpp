@@ -165,12 +165,12 @@ pass(
     for (auto e: *g->edges())
     {
         m += get_weight(g, e);
-        ////std::cout << " m " << m << " " << g->get_weight(e).null << std::endl;
+        //std::cout << " m " << m << " " << g->get_weight(e).null << std::endl;
     }
 
     for (auto v: *g->vertices())
     {
-        ////std::cout << (*v) << ": " << comm_id << std::endl;
+        //std::cout << (*v) << ": " << comm_id << std::endl;
         vertices_in_community[comm_id].insert(v);
         community[v] = comm_id;
         comm_id++;
@@ -215,7 +215,7 @@ pass(
 
                 for (auto n: vertices_in_community.at(c))
                 {
-                    ////// double loss = 0; // price of leaving current community
+                    // double loss = 0; // price of leaving current community
 
                     auto e = g->edges()->get(v, n);
                     //if (!e) continue; study impact in terms of result and efficiency?

@@ -4,7 +4,6 @@
 #include <string>
 #include <memory>
 #include "community/CommunityStructure.hpp"
-//#include "networks/MultilayerNetwork.hpp"
 #include "core/utils/string.hpp"
 #include "io/_impl/read_common.hpp"
 
@@ -14,11 +13,11 @@ namespace net {
 
 template <typename M>
 std::unique_ptr<CommunityStructure<M>>
-                                    read_multilayer_communities(
-                                        const std::string& infile,
-                                        const M* net,
-                                        char separator = ','
-                                    );
+read_multilayer_communities(
+    const std::string& infile,
+    const M* net,
+    char separator = ','
+);
 
 }
 }

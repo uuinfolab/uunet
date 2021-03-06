@@ -4,7 +4,7 @@
 #include "core/exceptions/OutOfBoundsException.hpp"
 #include "core/exceptions/OperationNotSupportedException.hpp"
 #include "core/stores/_impl/UnionSortedRandomSet.hpp"
-#include "olap/selection/IndexIterator.hpp"
+#include "olap/sel//IndexIterator.hpp"
 #include "olap/indexing.hpp"
 #include <string>
 #include <unordered_map>
@@ -505,7 +505,7 @@ add_dimension(
         throw core::OperationNotSupportedException("new dimension must have at least one member");
     }
 
-    core::IndexIterator old_indexes(size_);
+    IndexIterator old_indexes(size_);
 
     size_.push_back(members.size());
     dim_.push_back(name);
@@ -692,7 +692,7 @@ add_member(
 
         // Copy cells and elements
 
-        core::IndexIterator old_indexes(old_size);
+        IndexIterator old_indexes(old_size);
 
         for (auto index: old_indexes)
         {

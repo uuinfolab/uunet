@@ -73,6 +73,18 @@ main()
     auto er_np = uu::net::erdos_renyi_np(10, .2);
     std::cout << "ER(n, p): " << uu::net::summary_short(er_np.get()) << std::endl;
 
+    auto ml = std::make_unique<uu::net::MultilayerNetwork>("ml");
+    
+    std::vector<std::string> layer_names = {"l1", "l2"};
+    std::vector<double> pr_internal_event = {.8, .5};
+    std::vector<double> pr_external_event = {0, .5};
+    std::vector<std::vector<double>> dependency = {{0, 1}, {1, 0}};
+    std::vector<uu::net::EvolutionModel<uu::net::MultilayerNetwork>*> evolution_model;
+    long num_of_steps = 1000;
+    
+    evolve(ml.get(), layer_names, pr_internal_event, pr_external_event,
+           dependency, evolution_model,  num_of_steps);
+    
     return 0;
 }
 

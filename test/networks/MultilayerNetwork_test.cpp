@@ -18,14 +18,9 @@ TEST(networks_test, MultilayerNetwork)
 
     // Adding layers
     auto layer1 = net->layers()->add("layer1", uu::net::EdgeDir::DIRECTED);
-    std::cout << layer1->vertices() << std::endl;
-
     auto layer2 = net->layers()->add("layer2", uu::net::EdgeDir::UNDIRECTED);
-    std::cout << layer2->vertices() << std::endl;
-
     auto layer3 = net->layers()->add("layer3", uu::net::EdgeDir::UNDIRECTED);
-    std::cout << layer3->vertices() << std::endl;
-
+    
     // Adding "nodes", that is, vertices to layers
     layer1->vertices()->add(v1);
     layer2->vertices()->add(v1);

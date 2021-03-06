@@ -25,7 +25,7 @@ class MultiNetwork
   public:
 
     typedef const Vertex* vertex_type;
-    //typedef const Edge* edge_type;
+    typedef const Edge* edge_type;
     typedef const Vertex* community_element_type;
 
     const std::string name;

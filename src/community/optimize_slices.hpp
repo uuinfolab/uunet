@@ -7,6 +7,10 @@
 namespace uu {
 namespace net {
 
+/**
+ * Returns a normalized modularity for each choice of number of slices.
+ * Note: this requires more research, it is a function still under evaluation.
+ */
 std::vector<double>
 optimize_slices(
     const Network* original_net,

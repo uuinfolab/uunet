@@ -1,7 +1,7 @@
 #include "networks/_impl/stores/LayerStore.hpp"
 
 #include "olap/ECube.hpp"
-#include "olap/slicing.hpp"
+#include "olap/op/slicing.hpp"
 
 namespace uu {
 namespace net {

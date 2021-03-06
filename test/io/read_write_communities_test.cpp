@@ -42,9 +42,9 @@ TEST(io_communities_test, multilayer)
 
     auto communities2 = uu::net::read_multilayer_communities(test_file_name, g.get());
 
-    ASSERT_EQ((size_t)2, communities2->size());
-    ASSERT_TRUE(communities2->at(0)->size()==1 || communities2->at(1)->size()==1);
-    ASSERT_TRUE(communities2->at(0)->size()==3 || communities2->at(1)->size()==3);
+    EXPECT_EQ((size_t)2, communities2->size());
+    EXPECT_TRUE(communities2->at(0)->size()==1 || communities2->at(1)->size()==1);
+    EXPECT_TRUE(communities2->at(0)->size()==3 || communities2->at(1)->size()==3);
 
     std::remove(test_file_name.data());
 }

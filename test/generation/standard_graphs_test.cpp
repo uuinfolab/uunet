@@ -1,7 +1,6 @@
 #include "gtest/gtest.h"
 
 #include "generation/standard_graphs.hpp"
-//#include "networks/Network.hpp"
 
 TEST(net_creation_test, null_graph)
 {

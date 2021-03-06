@@ -8,16 +8,12 @@ list( APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake )
 
 file(COPY data DESTINATION ${CMAKE_BINARY_DIR})
 
-# Adding individual examples manually. This should be automated.
+# Adding individual examples
 
-ADD_EXECUTABLE( stores ${CMAKE_SOURCE_DIR}/examples/stores.cxx)
-set_target_properties( stores PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-target_link_libraries( stores ${META_LIBRARY_NAME} )
-
-ADD_EXECUTABLE( operations ${CMAKE_SOURCE_DIR}/examples/operations.cxx)
-set_target_properties( operations PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-target_link_libraries( operations ${META_LIBRARY_NAME} )
-
-ADD_EXECUTABLE( creation ${CMAKE_SOURCE_DIR}/examples/creation.cxx)
-set_target_properties( creation PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-target_link_libraries( creation ${META_LIBRARY_NAME} )
+file( GLOB EXAMPLES *.cxx )
+foreach( example_cxxfile ${EXAMPLES} )
+	get_filename_component(example_exec ${example_cxxfile} NAME_WE)
+	add_executable( ${example_exec} ${example_cxxfile} )
+	set_target_properties( ${example_exec} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
+	target_link_libraries( ${example_exec} ${META_LIBRARY_NAME} )
+endforeach( example_cxxfile ${EXAMPLES} )
