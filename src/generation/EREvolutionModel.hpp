@@ -8,7 +8,7 @@ namespace net {
 
 
 /**
- * @brief Grows a network by first creating all the nodes and then at every step choosing two nodes (uniform probability) to connect with an edge.
+ * @brief Grows a network by first creating m0 nodes and then at every step choosing two nodes (uniform probability) to connect with an edge.
  */
 template <typename M>
 class EREvolutionModel :

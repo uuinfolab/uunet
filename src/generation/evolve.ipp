@@ -31,7 +31,7 @@ evolve(
     {
         if (layer_idx.find(layer_name) == layer_idx.end())
         {
-            throw core::ElementNotFoundException("Layer " + layer_name + " not found");
+            throw core::ElementNotFoundException("Layer " + layer_name);
         }
     }
 

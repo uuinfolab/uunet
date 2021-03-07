@@ -32,6 +32,8 @@ internal_evolution_step(
     GenericObjectList<Vertex>& available_actors
 )
 {
+    (void)mnet;
+    (void)available_actors;
     // Randomly pick two nodes (uniform probability) and connect them
     auto v1 = layer->vertices()->get_at_random();
     auto v2 = layer->vertices()->get_at_random(); // this allows self-edges
@@ -49,6 +51,8 @@ external_evolution_step(
     const typename M::layer_type* ext_layer
 )
 {
+    (void)mnet;
+    (void)available_actors;
     // Randomly pick an edge (uniform probability) on the external layer and connect its ends on the target (if they are present)
     if (ext_layer->edges()->size()==0)
     {
@@ -79,6 +83,7 @@ init_step(
     GenericObjectList<Vertex>& available_actors
 )
 {
+    (void)mnet;
     if (available_actors.size()<m0)
     {
         throw core::WrongParameterException("not enough actors available to initialize the layer (less than m0)");

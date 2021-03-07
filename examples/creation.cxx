@@ -1,7 +1,13 @@
 #include "networks/Network.hpp" // Network
 #include "io/read_network.hpp" // read_network
-#include "creation/standard_graphs.hpp" // null_graph, path_graph, cycle_graph, etc.
+#include "io/read_multilayer_communities.hpp" // read_network
+#include "generation/standard_graphs.hpp" // null_graph, path_graph, cycle_graph, etc.
 #include "generation/erdos_renyi.hpp" // erdos_renyi_nm, erdos_renyi_np
+#include "generation/EREvolutionModel.hpp"
+#include "generation/PAEvolutionModel.hpp"
+#include "generation/evolve.hpp"
+#include "generation/sample.hpp"
+#include "core/utils/names.hpp" // NameIterator
 #include "utils/summary.hpp" // summary_short
 
 int
@@ -11,10 +17,11 @@ main()
     // Constructing a network from an empty one
     
     std::string name = "net";
-    auto dir = uu::net::EdgeDir::DIRECTED; // or: UNDIRECTED, default value
-    bool allows_loops = true; // or: false, default value
+    auto dir = uu::net::EdgeDir::DIRECTED;
+    auto und = uu::net::EdgeDir::UNDIRECTED;
+    auto loops = uu::net::LoopMode::ALLOWED; // or: DISALLOW
     
-    auto g_empty = std::make_unique<uu::net::Network>(name, dir, allows_loops);
+    auto g_empty = std::make_unique<uu::net::Network>(name, dir, loops);
     
     auto v1 = g_empty->vertices()->add("v1");
     auto v2 = g_empty->vertices()->add("v2");
@@ -60,7 +67,7 @@ main()
     // Reading a network from file
     
     const std::string network_file = "data/simple.txt";
-    auto g_io = uu::net::read_network(network_file, "G", ',');
+    auto g_io = uu::net::read_network(network_file, "G");
     
     std::cout << "From file: ";
     std::cout << uu::net::summary_short(g_io.get()) << std::endl;
@@ -74,16 +81,39 @@ main()
     std::cout << "ER(n, p): " << uu::net::summary_short(er_np.get()) << std::endl;
 
     auto ml = std::make_unique<uu::net::MultilayerNetwork>("ml");
+    ml->layers()->add("l1", dir, loops);
+    ml->layers()->add("l2", dir, loops);
+    for (auto actor: uu::core::NameIterator("A", 100))
+    {
+        ml->actors()->add(actor); // Provide pool of actors in advance?
+    }
+    
+    // Coevolution
     
     std::vector<std::string> layer_names = {"l1", "l2"};
     std::vector<double> pr_internal_event = {.8, .5};
     std::vector<double> pr_external_event = {0, .5};
     std::vector<std::vector<double>> dependency = {{0, 1}, {1, 0}};
     std::vector<uu::net::EvolutionModel<uu::net::MultilayerNetwork>*> evolution_model;
-    long num_of_steps = 1000;
+    auto pa = std::make_unique<uu::net::PAEvolutionModel<uu::net::MultilayerNetwork>>(3, 2);
+    auto er = std::make_unique<uu::net::EREvolutionModel<uu::net::MultilayerNetwork>>(50);
+    evolution_model.push_back(pa.get());
+    evolution_model.push_back(er.get());
+    long num_of_steps = 100;
     
     evolve(ml.get(), layer_names, pr_internal_event, pr_external_event,
            dependency, evolution_model,  num_of_steps);
+    
+    // Community based
+    
+    auto cml = std::make_unique<uu::net::MultilayerNetwork>("ml");
+    auto layer = cml->layers()->add("l", und, loops);
+    for (auto name: uu::core::NameIterator("v", 6))
+    {
+        layer->vertices()->add(name);
+    }
+    auto com = uu::net::read_multilayer_communities("data/com_ml.txt", cml.get());
+    uu::net::sample(cml.get(), com.get(), {.5}, {.01});
     
     return 0;
 }

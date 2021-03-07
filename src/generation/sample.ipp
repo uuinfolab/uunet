@@ -32,7 +32,7 @@ sample(
 
         for (auto n: *com)
         {
-            size_t layer_id = net->layers()->index_of(n.l);
+            size_t layer_id = net->layers()->index_of(n.c);
             auto&& it = layer_communities[layer_id].find(com);
 
             if (it == layer_communities[layer_id].end())

@@ -36,6 +36,7 @@ init_step(
     GenericObjectList<Vertex>& available_actors
 )
 {
+    (void)mnet;
     if (available_actors.size()<m0)
     {
         throw core::WrongParameterException("not enough actors available to initialize the layer (less than m0)");
@@ -80,6 +81,7 @@ internal_evolution_step(
     GenericObjectList<Vertex>& available_actors
 )
 {
+    (void)mnet;
     // Choose a new actor to join the layer
     if (available_actors.size()<1)
     {
@@ -121,7 +123,8 @@ external_evolution_step(
     const typename M::layer_type* ext_layer
 )
 {
-
+    
+    (void)mnet;
     // Choose a new actor to join the layer
     if (available_actors.size()<1)
     {
