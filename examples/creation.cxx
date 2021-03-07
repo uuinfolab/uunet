@@ -106,14 +106,11 @@ main()
     
     // Community based
     
-    auto cml = std::make_unique<uu::net::MultilayerNetwork>("ml");
-    auto layer = cml->layers()->add("l", und, loops);
-    for (auto name: uu::core::NameIterator("v", 6))
-    {
-        layer->vertices()->add(name);
-    }
+    std::vector<uu::net::EdgeDir> dir_v = {und, und};
+    std::vector<uu::net::LoopMode> loops_v = {loops, loops};
+    auto cml = uu::net::null_multiplex(6, dir_v, loops_v);
     auto com = uu::net::read_multilayer_communities("data/com_ml.txt", cml.get());
-    uu::net::sample(cml.get(), com.get(), {.5}, {.01});
+    uu::net::sample(cml.get(), com.get(), {.5, .5}, {.01, .01});
     
     return 0;
 }

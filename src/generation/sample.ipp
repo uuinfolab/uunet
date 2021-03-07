@@ -3,6 +3,7 @@
 #include "core/utils/random.hpp"
 #include "core/exceptions/assert_not_null.hpp"
 #include "core/exceptions/ElementNotFoundException.hpp"
+#include "core/exceptions/WrongParameterException.hpp"
 #include "objects/Vertex.hpp"
 
 namespace uu {
@@ -20,8 +21,17 @@ sample(
 {
 
     core::assert_not_null(net, "sample", "net");
+    size_t num_layers = net->layers()->size();
+    if (num_layers != pr_internal_connectivity.size())
+    {
+        throw core::WrongParameterException("pr_internal_connectivity size does not match number of layers");
+    }
+    if (num_layers != pr_external_connectivity.size())
+    {
+        throw core::WrongParameterException("pr_external_connectivity size does not match number of layers");
+    }
 
-    std::vector<std::map<Community<M>*, std::unique_ptr<core::ObjectStore<Vertex>>>> layer_communities(net->layers()->size());
+    std::vector<std::map<Community<M>*, std::unique_ptr<core::ObjectStore<Vertex>>>> layer_communities(num_layers);
 
     for (auto com: *communities)
     {
