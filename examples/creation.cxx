@@ -7,7 +7,7 @@
 #include "generation/PAEvolutionModel.hpp"
 #include "generation/evolve.hpp"
 #include "generation/sample.hpp"
-#include "core/utils/names.hpp" // NameIterator
+#include "core/utils/NameIterator.hpp"
 #include "utils/summary.hpp" // summary_short
 
 int

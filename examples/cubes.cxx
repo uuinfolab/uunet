@@ -4,8 +4,8 @@
 
 #include "olap/VCube.hpp"
 #include "olap/ECube.hpp"
-#include "olap/slicing.hpp"
-#include "olap/UniformTemporalDiscretization.hpp"
+#include "olap/op/slicing.hpp"
+#include "olap/op/UniformTemporalDiscretization.hpp"
 #include "olap/time.hpp"
 #include "networks/Network.hpp"
 #include "core/attributes/conversion.hpp"
