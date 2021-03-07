@@ -2,9 +2,6 @@
 
 #include "measures/degree.hpp"
 
-//#include <cstdio>
-//#include <iostream>
-//#include <fstream>
 #include <vector>
 
 
