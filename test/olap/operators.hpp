@@ -6,7 +6,7 @@
 #include "olap/VCube.hpp"
 #include "olap/ECube.hpp"
 
-class net_olap_operators_test : public ::testing::Test
+class olap_operators_test : public ::testing::Test
 {
   protected:
 

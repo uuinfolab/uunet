@@ -4,7 +4,7 @@
 
 #include <vector>
 
-TEST(net_operations_test, vertex_induced_subgraph)
+TEST(operations_test, vertex_induced_subgraph)
 {
 
     // creating a simple graph
@@ -33,7 +33,7 @@ TEST(net_operations_test, vertex_induced_subgraph)
 }
 
 
-TEST(net_operations_test, edge_induced_subgraph)
+TEST(operations_test, edge_induced_subgraph)
 {
 
     // creating a simple graph

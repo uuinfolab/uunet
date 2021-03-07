@@ -6,7 +6,7 @@
 #include "core/exceptions/NullPtrException.hpp"
 
 
-TEST(net_operations_test, graph_complement_directed)
+TEST(operations_test, graph_complement_directed)
 {
 
     // creating a simple graph
@@ -39,7 +39,7 @@ TEST(net_operations_test, graph_complement_directed)
 }
 
 
-TEST(net_operations_test, graph_complement_undirected)
+TEST(operations_test, graph_complement_undirected)
 {
 
     // creating a simple graph
@@ -69,7 +69,7 @@ TEST(net_operations_test, graph_complement_undirected)
 }
 
 
-TEST(net_operations_test, graph_complement_exceptions)
+TEST(operations_test, graph_complement_exceptions)
 {
     EXPECT_THROW(
         uu::net::graph_complement((uu::net::Network*)nullptr),

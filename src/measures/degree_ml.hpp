@@ -36,7 +36,7 @@ degree_mean(
     LayerIterator first,
     LayerIterator last,
     const Vertex* v,
-    EdgeMode mode
+    EdgeMode mode = EdgeMode::INOUT
 );
 
 /**
@@ -52,7 +52,7 @@ degree_deviation(
     LayerIterator first,
     LayerIterator last,
     const Vertex* v,
-    EdgeMode mode
+    EdgeMode mode = EdgeMode::INOUT
 );
 
 }

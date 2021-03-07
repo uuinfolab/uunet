@@ -4,7 +4,7 @@
 
 #include "olap/op/slicing.hpp"
 
-TEST_F(net_olap_operators_test, vslice)
+TEST_F(olap_operators_test, vslice)
 {
 
     std::vector<std::vector<size_t>> s1 = {{1}, {0,1}, {0,1}};
@@ -23,7 +23,7 @@ TEST_F(net_olap_operators_test, vslice)
 }
 
 /*
-TEST_F(net_olap_operators_test, mslice)
+TEST_F(olap_operators_test, mslice)
 {
 
     std::vector<std::vector<size_t>> s1 = {{1}, {0,1}, {0,1}};

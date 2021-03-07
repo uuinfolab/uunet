@@ -4,7 +4,7 @@
 
 #include "olap/op/d-extension.hpp"
 
-TEST_F(net_olap_operators_test, extend_dimension)
+TEST_F(olap_operators_test, extend_dimension)
 {
 
     auto V = std::make_unique<uu::net::VCube>("V");

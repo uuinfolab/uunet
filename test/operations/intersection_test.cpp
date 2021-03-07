@@ -5,7 +5,7 @@
 #include "core/exceptions/OperationNotSupportedException.hpp"
 #include "core/exceptions/NullPtrException.hpp"
 
-TEST(net_operations_test, graph_intersection)
+TEST(operations_test, graph_intersection)
 {
     // creating some simple graphs
 

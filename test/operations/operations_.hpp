@@ -5,7 +5,7 @@
 
 #include "io/read_network.hpp"
 
-class net_operations_test : public ::testing::Test
+class operations_test : public ::testing::Test
 {
   protected:
 
