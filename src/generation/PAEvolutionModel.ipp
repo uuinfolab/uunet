@@ -1,8 +1,8 @@
+#include "core/exceptions/WrongParameterException.hpp"
+#include "objects/EdgeMode.hpp"
+
 namespace uu {
 namespace net {
-
-
-#include "core/exceptions/WrongParameterException.hpp"
 
 template <typename M>
 PAEvolutionModel<M>::

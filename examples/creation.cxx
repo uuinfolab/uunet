@@ -80,6 +80,9 @@ main()
     auto er_np = uu::net::erdos_renyi_np(10, .2);
     std::cout << "ER(n, p): " << uu::net::summary_short(er_np.get()) << std::endl;
 
+    
+    // Coevolution
+    
     auto ml = std::make_unique<uu::net::MultilayerNetwork>("ml");
     ml->layers()->add("l1", dir, loops);
     ml->layers()->add("l2", dir, loops);
@@ -88,7 +91,6 @@ main()
         ml->actors()->add(actor); // Provide pool of actors in advance?
     }
     
-    // Coevolution
     
     std::vector<std::string> layer_names = {"l1", "l2"};
     std::vector<double> pr_internal_event = {.8, .5};

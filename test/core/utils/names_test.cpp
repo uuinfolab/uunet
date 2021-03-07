@@ -5,7 +5,7 @@
 #include <fstream>
 #include <vector>
 
-#include "core/utils/names.hpp"
+#include "core/utils/NameIterator.hpp"
 
 TEST(io_utils_test, names_iteration)
 {

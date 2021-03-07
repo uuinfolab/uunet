@@ -1,10 +1,9 @@
 
 #include "core/exceptions/WrongParameterException.hpp"
+#include "objects/EdgeMode.hpp"
 
 namespace uu {
 namespace net {
-
-
 
 template <typename M>
 EREvolutionModel<M>::

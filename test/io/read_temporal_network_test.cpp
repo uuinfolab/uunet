@@ -50,7 +50,6 @@ TEST(io_test, read_temporal_network)
     // tests
     
     auto g = uu::net::read_temporal_network(test_file_name, "g", ',');
-    std::cout << uu::net::is_temporal(g.get()) << std::endl;
     EXPECT_TRUE(uu::net::is_temporal(g.get()));
     
     // cleaning up

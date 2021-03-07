@@ -2,7 +2,7 @@
 
 #include "core/exceptions/assert_not_null.hpp"
 #include "core/exceptions/WrongParameterException.hpp"
-#include "core/utils/names.hpp"
+#include "core/utils/NameIterator.hpp"
 #include "operations/_impl/add_predefined_subgraphs.hpp"
 #include "objects/Vertex.hpp"
 

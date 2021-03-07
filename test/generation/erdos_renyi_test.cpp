@@ -22,7 +22,7 @@ TEST(net_creation_test, erdos_renyi_np)
 
     ASSERT_EQ(size_t(10), n->vertices()->size());
 
-    // unknown number of edges, cannot be tested
+    // unknown number of edges, cannot be tested :)
     // std::cout << n->edges()->size() << std::endl;
 }
 
