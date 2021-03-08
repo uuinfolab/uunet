@@ -149,6 +149,7 @@ TEST(core_stores_test, AttributeStore)
     std::vector<const Person*> test = {p2.get(), p3.get()};
     std::vector<const Person*> values = attr.range_query_int("i_att",1,2);
     std::sort(values.begin(), values.end());
+    std::sort(test.begin(), test.end());
     EXPECT_TRUE(test == values);
 
     // Exceptions
@@ -173,6 +174,7 @@ TEST(core_stores_test, AttributeStore)
     // Range queries - the operation should be performed faster than without an index (not tested here)
 
     values = attr.range_query_int("i_att",1,2);
+    std::sort(values.begin(), values.end());
     EXPECT_TRUE(test == values);
 
     // reset values
