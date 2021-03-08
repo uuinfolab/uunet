@@ -25,7 +25,7 @@ is_digraphic(
 void
 from_degree_sequence(
     const std::vector<size_t> &deg_seq,
-    const uu::core::NameIterator &vertices_names,
+    const std::vector<std::shared_ptr<Vertex>> &vertices,
     Network *g
 );
 

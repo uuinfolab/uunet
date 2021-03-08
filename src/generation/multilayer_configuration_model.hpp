@@ -21,7 +21,7 @@ order_degrees_pearson(
 void
 add_layers_with_given_degrees(
     const std::vector<std::vector<size_t>> &deg_seq,
-    const uu::core::NameIterator &vertices_names,
+    const std::vector<std::shared_ptr<Vertex>> &actors,
     const std::vector<std::string> &layers_names,
     MultilayerNetwork *ml
 );

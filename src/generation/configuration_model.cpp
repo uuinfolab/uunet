@@ -270,20 +270,16 @@ decrease_degree(
 void
 from_degree_sequence(
     const std::vector<size_t> &deg_seq,
-    const uu::core::NameIterator &vertices_names,
+    const std::vector<std::shared_ptr<Vertex>> &vertices,
     Network *g
 )
 {
-    std::vector<size_t> left_stubs(deg_seq);
-    std::vector<std::shared_ptr<Vertex>> vertices;
-
-    for (auto vertex_name : vertices_names)
+    for (auto v : vertices)
     {
-        auto v = std::make_shared<Vertex>(vertex_name);
-        vertices.push_back(v);
         g->vertices()->add(v);
     }
 
+    std::vector<size_t> left_stubs(deg_seq);
     std::set<size_t> left_nodes;
     std::unordered_map<size_t, std::set<size_t>> forbidden_vertices;
 

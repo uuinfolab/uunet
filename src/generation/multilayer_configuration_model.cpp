@@ -80,6 +80,7 @@ order_degrees_pearson(
         if (p >= uu::core::drand())
         {
             std::swap(v[l_ind][i1], v[l_ind][i2]);
+            std::swap(deg[l_ind][i1], deg[l_ind][i2]);
             error = new_error;
 
             if (std::abs((error / c)).max() <= tol)
@@ -93,7 +94,7 @@ order_degrees_pearson(
 void
 add_layers_with_given_degrees(
     const std::vector<std::vector<size_t>> &deg_seq,
-    const uu::core::NameIterator &vertices_names,
+    const std::vector<std::shared_ptr<Vertex>> &actors,
     const std::vector<std::string> &layers_names,
     MultilayerNetwork *ml
 )
@@ -103,7 +104,7 @@ add_layers_with_given_degrees(
     for (size_t i = 0; i < layers_count; i++)
     {
         auto l = ml->layers()->add(layers_names[i], EdgeDir::UNDIRECTED, LoopMode::DISALLOWED);
-        from_degree_sequence(deg_seq[i], vertices_names, l);
+        from_degree_sequence(deg_seq[i], actors, l);
     }
 }
 
