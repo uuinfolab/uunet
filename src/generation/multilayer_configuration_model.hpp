@@ -2,10 +2,9 @@
 #define UU_GENERATION_MULTILAYER_CONFIGURATION_MODEL_H
 
 #include "networks/MultilayerNetwork.hpp"
-#include "core/utils/names.hpp" // NameIterator
-#include "generation/configuration_model.hpp" // from_degree_sequence
-#include "core/utils/random.hpp" // drand
-#include <algorithm> // std::inner_product, std::transform
+#include "generation/configuration_model.hpp"
+#include "core/utils/random.hpp"
+#include <algorithm>
 #include <valarray>
 
 namespace uu {
@@ -30,7 +29,7 @@ void
 add_layers_with_given_degrees(
     const std::vector<std::vector<size_t>> &in_deg_seq,
     const std::vector<std::vector<size_t>> &out_deg_seq,
-    const uu::core::NameIterator &vertices_names,
+    const std::vector<std::shared_ptr<Vertex>> &actors,
     const std::vector<std::string> &layers_names,
     MultilayerNetwork *ml
 );

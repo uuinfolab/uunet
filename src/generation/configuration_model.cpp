@@ -298,13 +298,13 @@ from_degree_sequence(
     for (size_t i = 0; i < edges_count; i++)
     {
         std::vector<size_t> msc_candidates = df.getCandidates();
-        size_t msc_ind = msc_candidates[uu::core::getRandomInt(msc_candidates.size())];
+        size_t msc_ind = msc_candidates[uu::core::irand(msc_candidates.size())];
         std::vector<size_t> allowed_vertices;
         std::set_difference(left_nodes.begin(), left_nodes.end(),
                             forbidden_vertices[msc_ind].begin(), forbidden_vertices[msc_ind].end(),
                             std::back_inserter(allowed_vertices));
 
-        size_t peer_ind = allowed_vertices[uu::core::getRandomInt(allowed_vertices.size())];
+        size_t peer_ind = allowed_vertices[uu::core::irand(allowed_vertices.size())];
         g->edges()->add(vertices[msc_ind].get(), vertices[peer_ind].get());
         decrease_degree(msc_ind, peer_ind, forbidden_vertices[msc_ind], left_stubs,
                         left_nodes, left_nodes, df, df);
@@ -317,7 +317,7 @@ void
 from_degree_sequence(
     const std::vector<size_t> &in_deg_seq,
     const std::vector<size_t> &out_deg_seq,
-    const uu::core::NameIterator &vertices_names,
+    const std::vector<std::shared_ptr<Vertex>> &vertices,
     Network *g
 )
 {
@@ -326,12 +326,9 @@ from_degree_sequence(
         {EdgeMode::IN, std::vector<size_t>(in_deg_seq) },
         {EdgeMode::OUT, std::vector<size_t>(out_deg_seq) }
     };
-    std::vector<std::shared_ptr<Vertex>> vertices;
 
-    for (auto vertex_name : vertices_names)
+    for (auto v: vertices)
     {
-        auto v = std::make_shared<Vertex>(vertex_name);
-        vertices.push_back(v);
         g->vertices()->add(v);
     }
 
@@ -369,7 +366,7 @@ from_degree_sequence(
     for (size_t i = 0; i < edges_count; i++)
     {
         std::vector<size_t> msc_candidates = DegreesOfFreedom::getCandidatesDirectedGraph(idf, odf);
-        size_t msc_ind = msc_candidates[uu::core::getRandomInt(msc_candidates.size())];
+        size_t msc_ind = msc_candidates[uu::core::irand(msc_candidates.size())];
         EdgeMode mode = (odf.get(msc_ind) == odf.getMin()) ? EdgeMode::IN : EdgeMode::OUT; // mode of the stub to be matched
 
         std::set<size_t> *fv_ptr = &forbidden_vertices[mode][msc_ind];
@@ -379,7 +376,7 @@ from_degree_sequence(
                             fv_ptr->begin(), fv_ptr->end(),
                             std::back_inserter(allowed_vertices));
 
-        size_t peer_ind = allowed_vertices[uu::core::getRandomInt(allowed_vertices.size())];
+        size_t peer_ind = allowed_vertices[uu::core::irand(allowed_vertices.size())];
         size_t source = (mode == EdgeMode::IN) ? msc_ind : peer_ind;
         size_t target = (mode == EdgeMode::IN) ? peer_ind : msc_ind;
 

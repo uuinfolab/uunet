@@ -3,6 +3,8 @@
 namespace uu {
 namespace net {
 
+typedef std::pair<const Vertex*, const Vertex*> s_pair;
+
 void
 order_degrees_pearson(
     std::vector<std::vector<size_t>> &deg,
@@ -53,8 +55,8 @@ order_degrees_pearson(
     for (size_t k = 0; k < k_max; k++)
     {
         double T = T_0 / (1 + beta * k);
-        size_t l_ind = uu::core::getRandomInt(l); // index of the layer which might be updated
-        size_t i1 = uu::core::getRandomInt(n), i2 = uu::core::getRandomInt(n); // indices of elements to be swapped
+        size_t l_ind = uu::core::irand(l); // index of the layer which might be updated
+        size_t i1 = uu::core::irand(n), i2 = uu::core::irand(n); // indices of elements to be swapped
 
         if (v[l_ind][i1] == v[l_ind][i2])
         {
@@ -112,7 +114,7 @@ void
 add_layers_with_given_degrees(
     const std::vector<std::vector<size_t>> &in_deg_seq,
     const std::vector<std::vector<size_t>> &out_deg_seq,
-    const uu::core::NameIterator &vertices_names,
+    const std::vector<std::shared_ptr<Vertex>> &actors,
     const std::vector<std::string> &layers_names,
     MultilayerNetwork *ml
 )
@@ -122,7 +124,7 @@ add_layers_with_given_degrees(
     for (size_t i = 0; i < layers_count; i++)
     {
         auto l = ml->layers()->add(layers_names[i], EdgeDir::DIRECTED, LoopMode::DISALLOWED);
-        from_degree_sequence(in_deg_seq[i], out_deg_seq[i], vertices_names, l);
+        from_degree_sequence(in_deg_seq[i], out_deg_seq[i], actors, l);
     }
 }
 

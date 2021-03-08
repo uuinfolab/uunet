@@ -2,9 +2,8 @@
 #define UU_GENERATION_CONFIGURATION_MODEL_H
 
 #include "networks/Network.hpp"
-#include "core/utils/names.hpp" // NameIterator
-#include "core/utils/random.hpp" // getRandomInt
-#include <numeric> // accumulate
+#include "core/utils/random.hpp"
+#include <numeric>
 
 namespace uu {
 namespace net {
@@ -33,7 +32,7 @@ void
 from_degree_sequence(
     const std::vector<size_t> &in_deg_seq,
     const std::vector<size_t> &out_deg_seq,
-    const uu::core::NameIterator &vertices_names,
+    const std::vector<std::shared_ptr<Vertex>> &vertices,
     Network *g
 );
 
