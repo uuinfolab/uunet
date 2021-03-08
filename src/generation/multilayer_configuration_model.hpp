@@ -4,6 +4,8 @@
 #include "networks/MultilayerNetwork.hpp"
 #include "generation/configuration_model.hpp"
 #include "core/utils/random.hpp"
+#include "core/propertymatrix/PropertyMatrix.hpp"
+#include "measures/layer.hpp"
 #include <algorithm>
 #include <valarray>
 
@@ -14,6 +16,13 @@ void
 order_degrees_pearson(
     std::vector<std::vector<size_t>> &deg,
     std::vector<double> &r,
+    double tol=1e-3
+);
+
+void
+modify_according_to_jaccard_edge(
+    MultilayerNetwork *net,
+    const std::vector<double> &j_e,
     double tol=1e-3
 );
 
