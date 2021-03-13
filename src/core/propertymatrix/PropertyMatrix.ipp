@@ -2,8 +2,8 @@ namespace uu {
 namespace core {
 
 
-template <class OBJECT, class CONTEXT, class VALUE>
-PropertyMatrix<OBJECT,CONTEXT,VALUE>::
+template <class STRUCTURE, class CONTEXT, class VALUE>
+PropertyMatrix<STRUCTURE,CONTEXT,VALUE>::
 PropertyMatrix(
     long num_structures,
     long num_contexts,
@@ -16,11 +16,11 @@ PropertyMatrix(
 
 }
 
-template <class OBJECT, class CONTEXT, class VALUE>
+template <class STRUCTURE, class CONTEXT, class VALUE>
 Value<VALUE>
-PropertyMatrix<OBJECT,CONTEXT,VALUE>::
+PropertyMatrix<STRUCTURE,CONTEXT,VALUE>::
 get(
-    const OBJECT& s,
+    const STRUCTURE& s,
     const CONTEXT& c
 ) const
 {
@@ -37,11 +37,11 @@ get(
     return data.at(c).at(s);
 }
 
-template <class OBJECT, class CONTEXT, class VALUE>
+template <class STRUCTURE, class CONTEXT, class VALUE>
 void
-PropertyMatrix<OBJECT,CONTEXT,VALUE>::
+PropertyMatrix<STRUCTURE,CONTEXT,VALUE>::
 set(
-    const OBJECT& s,
+    const STRUCTURE& s,
     const CONTEXT& c,
     VALUE v
 )
@@ -51,11 +51,11 @@ set(
     _structures.insert(s);
 }
 
-template <class OBJECT, class CONTEXT, class VALUE>
+template <class STRUCTURE, class CONTEXT, class VALUE>
 void
-PropertyMatrix<OBJECT,CONTEXT,VALUE>::
+PropertyMatrix<STRUCTURE,CONTEXT,VALUE>::
 set_na(
-    const OBJECT& s,
+    const STRUCTURE& s,
     const CONTEXT& c
 )
 {
@@ -71,9 +71,9 @@ set_na(
     _structures.insert(s);
 }
 
-template <class OBJECT, class CONTEXT, class VALUE>
+template <class STRUCTURE, class CONTEXT, class VALUE>
 long
-PropertyMatrix<OBJECT,CONTEXT,VALUE>::
+PropertyMatrix<STRUCTURE,CONTEXT,VALUE>::
 num_na(
     const CONTEXT& c
 ) const
@@ -81,30 +81,30 @@ num_na(
     return na.count(c);
 }
 
-template <class OBJECT, class CONTEXT, class VALUE>
+template <class STRUCTURE, class CONTEXT, class VALUE>
 const
 std::unordered_set<CONTEXT>&
-PropertyMatrix<OBJECT,CONTEXT,VALUE>::
+PropertyMatrix<STRUCTURE,CONTEXT,VALUE>::
 contexts(
 ) const
 {
     return _contexts;
 }
 
-template <class OBJECT, class CONTEXT, class VALUE>
+template <class STRUCTURE, class CONTEXT, class VALUE>
 const
-std::unordered_set<OBJECT>&
-PropertyMatrix<OBJECT,CONTEXT,VALUE>::
-objects(
+std::unordered_set<STRUCTURE>&
+PropertyMatrix<STRUCTURE,CONTEXT,VALUE>::
+structures(
 ) const
 {
     return _structures;
 }
 
 
-template <class OBJECT, class CONTEXT, class VALUE>
+template <class STRUCTURE, class CONTEXT, class VALUE>
 VALUE
-PropertyMatrix<OBJECT,CONTEXT,VALUE>::
+PropertyMatrix<STRUCTURE,CONTEXT,VALUE>::
 get_default(
 ) const
 {

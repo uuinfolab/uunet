@@ -8,10 +8,10 @@ namespace uu {
 namespace core {
 
 
-template <class OBJECT, class CONTEXT, class VALUE>
+template <class STRUCTURE, class CONTEXT, class VALUE>
 double
 min(
-    const PropertyMatrix<OBJECT,CONTEXT,VALUE>& P,
+    const PropertyMatrix<STRUCTURE,CONTEXT,VALUE>& P,
     const CONTEXT& c
 )
 {
@@ -19,7 +19,7 @@ min(
 
     long checked_columns = 0;
 
-    for (OBJECT s: P.objects())
+    for (STRUCTURE s: P.structures())
     {
         Value<VALUE> v = P.get(s,c);
 
@@ -40,10 +40,10 @@ min(
 }
 
 
-template <class OBJECT, class CONTEXT, class VALUE>
+template <class STRUCTURE, class CONTEXT, class VALUE>
 double
 max(
-    const  PropertyMatrix<OBJECT,CONTEXT,VALUE>& P,
+    const  PropertyMatrix<STRUCTURE,CONTEXT,VALUE>& P,
     const CONTEXT& c
 )
 {
@@ -51,7 +51,7 @@ max(
 
     long checked_columns = 0;
 
-    for (OBJECT s: P.objects())
+    for (STRUCTURE s: P.structures())
     {
         Value<VALUE> v = P.get(s,c);
 
@@ -71,10 +71,10 @@ max(
     return max;
 }
 
-template <class OBJECT, class CONTEXT, class VALUE>
+template <class STRUCTURE, class CONTEXT, class VALUE>
 double
 sum(
-    const PropertyMatrix<OBJECT,CONTEXT,VALUE>& P,
+    const PropertyMatrix<STRUCTURE,CONTEXT,VALUE>& P,
     const CONTEXT& c
 )
 {
@@ -82,7 +82,7 @@ sum(
 
     long checked_columns = 0;
 
-    for (OBJECT s: P.objects())
+    for (STRUCTURE s: P.structures())
     {
         Value<VALUE> v = P.get(s,c);
 
@@ -98,10 +98,10 @@ sum(
     return sum;
 }
 
-template <class OBJECT, class CONTEXT, class VALUE>
+template <class STRUCTURE, class CONTEXT, class VALUE>
 double
 mean(
-    const PropertyMatrix<OBJECT,CONTEXT,VALUE>& P,
+    const PropertyMatrix<STRUCTURE,CONTEXT,VALUE>& P,
     const CONTEXT& c
 )
 {
@@ -109,7 +109,7 @@ mean(
 
     long checked_columns = 0;
 
-    for (OBJECT s: P.objects())
+    for (STRUCTURE s: P.structures())
     {
         Value<VALUE> v = P.get(s,c);
 
@@ -125,10 +125,10 @@ mean(
     return _mean/(P.num_structures-P.num_na(c));
 }
 
-template <class OBJECT, class CONTEXT, class VALUE>
+template <class STRUCTURE, class CONTEXT, class VALUE>
 double
 sd(
-    const  PropertyMatrix<OBJECT,CONTEXT,VALUE>& P,
+    const  PropertyMatrix<STRUCTURE,CONTEXT,VALUE>& P,
     const CONTEXT& c
 )
 {
@@ -138,7 +138,7 @@ sd(
 
     long checked_columns = 0;
 
-    for (OBJECT s: P.objects())
+    for (STRUCTURE s: P.structures())
     {
         Value<VALUE> v = P.get(s,c);
 
@@ -154,10 +154,10 @@ sd(
     return std::sqrt(sd/(P.num_structures-P.num_na(c)));
 }
 
-template <class OBJECT, class CONTEXT, class VALUE>
+template <class STRUCTURE, class CONTEXT, class VALUE>
 double
 skew(
-    const PropertyMatrix<OBJECT,CONTEXT,VALUE>& P,
+    const PropertyMatrix<STRUCTURE,CONTEXT,VALUE>& P,
     const CONTEXT& c
 )
 {
@@ -168,7 +168,7 @@ skew(
 
     long checked_columns = 0;
 
-    for (OBJECT s: P.objects())
+    for (STRUCTURE s: P.structures())
     {
         Value<VALUE> v = P.get(s,c);
 
@@ -189,10 +189,10 @@ skew(
 }
 
 
-template <class OBJECT, class CONTEXT, class VALUE>
+template <class STRUCTURE, class CONTEXT, class VALUE>
 double
 kurt(
-    const PropertyMatrix<OBJECT,CONTEXT,VALUE>& P,
+    const PropertyMatrix<STRUCTURE,CONTEXT,VALUE>& P,
     const CONTEXT& c
 )
 {
@@ -203,7 +203,7 @@ kurt(
 
     long checked_columns = 0;
 
-    for (OBJECT s: P.objects())
+    for (STRUCTURE s: P.structures())
     {
         Value<VALUE> v = P.get(s,c);
 
@@ -224,10 +224,10 @@ kurt(
     return kurt/std::pow(sd,4)/(P.num_structures-P.num_na(c));
 }
 
-template <class OBJECT, class CONTEXT, class VALUE>
+template <class STRUCTURE, class CONTEXT, class VALUE>
 double
 entropy(
-    const PropertyMatrix<OBJECT,CONTEXT,VALUE>& P,
+    const PropertyMatrix<STRUCTURE,CONTEXT,VALUE>& P,
     const CONTEXT& c
 )
 {
@@ -238,7 +238,7 @@ entropy(
     long checked_columns = 0;
 
 
-    for (OBJECT s: P.objects())
+    for (STRUCTURE s: P.structures())
     {
         Value<VALUE> v = P.get(s,c);
 
@@ -265,10 +265,10 @@ entropy(
     return entropy;
 }
 
-template <class OBJECT, class CONTEXT, class VALUE>
+template <class STRUCTURE, class CONTEXT, class VALUE>
 double
 CV(
-    const PropertyMatrix<OBJECT,CONTEXT,VALUE>& P,
+    const PropertyMatrix<STRUCTURE,CONTEXT,VALUE>& P,
     const CONTEXT& c
 )
 {
@@ -276,22 +276,22 @@ CV(
     return sd(P,c)/_mean;
 }
 
-template <class OBJECT, class CONTEXT, class VALUE>
+template <class STRUCTURE, class CONTEXT, class VALUE>
 double
 jarque_bera(
-    const PropertyMatrix<OBJECT,CONTEXT,VALUE>& P,
+    const PropertyMatrix<STRUCTURE,CONTEXT,VALUE>& P,
     const CONTEXT& c
 )
 {
     return (P.num_structures-P.num_na(c))/6.0*(std::pow(skew(P,c),2)+std::pow(kurt(P,c)-3,2)/4);
 }
 
-template <class OBJECT, class CONTEXT, class VALUE>
+template <class STRUCTURE, class CONTEXT, class VALUE>
 double
 relative_difference(
-    double (*f)(const PropertyMatrix<OBJECT,CONTEXT,VALUE>& P,
+    double (*f)(const PropertyMatrix<STRUCTURE,CONTEXT,VALUE>& P,
                 const CONTEXT& c),
-    const PropertyMatrix<OBJECT,CONTEXT,VALUE>& P,
+    const PropertyMatrix<STRUCTURE,CONTEXT,VALUE>& P,
     const CONTEXT& c1,
     const CONTEXT& c2
 )
@@ -309,10 +309,10 @@ relative_difference(
 
 
 
-template <class OBJECT, class CONTEXT, class VALUE>
+template <class STRUCTURE, class CONTEXT, class VALUE>
 std::pair<Counter<int>,Counter<int> >
 histograms(
-    const PropertyMatrix<OBJECT,CONTEXT,VALUE>& P,
+    const PropertyMatrix<STRUCTURE,CONTEXT,VALUE>& P,
     const CONTEXT& c1,
     const CONTEXT& c2,
     int K
@@ -326,7 +326,7 @@ histograms(
     double _max = std::max(max(P,c1),max(P,c2));
     long checked_columns = 0;
 
-    for (OBJECT s: P.objects())
+    for (STRUCTURE s: P.structures())
     {
         Value<VALUE> val1 = P.get(s,c1);
 
@@ -366,10 +366,10 @@ histograms(
 }
 
 
-template <class OBJECT, class CONTEXT, class VALUE>
+template <class STRUCTURE, class CONTEXT, class VALUE>
 double
 dissimilarity_index(
-    const PropertyMatrix<OBJECT,CONTEXT,VALUE>& P,
+    const PropertyMatrix<STRUCTURE,CONTEXT,VALUE>& P,
     const CONTEXT& c1,
     const CONTEXT& c2,
     int K
@@ -392,10 +392,10 @@ dissimilarity_index(
 }
 
 // epsilon correction to avoid division by 0
-template <class OBJECT, class CONTEXT, class VALUE>
+template <class STRUCTURE, class CONTEXT, class VALUE>
 double
 KL_divergence(
-    const PropertyMatrix<OBJECT,CONTEXT,VALUE>& P,
+    const PropertyMatrix<STRUCTURE,CONTEXT,VALUE>& P,
     const CONTEXT& c1,
     const CONTEXT& c2,
     int K
@@ -425,10 +425,10 @@ KL_divergence(
 
 
 // epsilon correction to avoid division by 0
-template <class OBJECT, class CONTEXT, class VALUE>
+template <class STRUCTURE, class CONTEXT, class VALUE>
 double
 JS_divergence(
-    const PropertyMatrix<OBJECT,CONTEXT,VALUE>& P,
+    const PropertyMatrix<STRUCTURE,CONTEXT,VALUE>& P,
     const CONTEXT& c1,
     const CONTEXT& c2,
     int K
@@ -459,10 +459,10 @@ JS_divergence(
     return diss;
 }
 
-template <class OBJECT, class CONTEXT, class VALUE>
+template <class STRUCTURE, class CONTEXT, class VALUE>
 double
 jeffrey_divergence(
-    const PropertyMatrix<OBJECT,CONTEXT,VALUE>& P,
+    const PropertyMatrix<STRUCTURE,CONTEXT,VALUE>& P,
     const CONTEXT& c1,
     const CONTEXT& c2,
     int K
@@ -490,10 +490,10 @@ jeffrey_divergence(
 
 
 
-template <class OBJECT, class CONTEXT>
+template <class STRUCTURE, class CONTEXT>
 binary_vector_comparison
 compare(
-    const PropertyMatrix<OBJECT,CONTEXT,bool>& P,
+    const PropertyMatrix<STRUCTURE,CONTEXT,bool>& P,
     const CONTEXT& c1,
     const CONTEXT& c2
 )
@@ -506,7 +506,7 @@ compare(
 
     long checked_columns = 0;
 
-    for (OBJECT s: P.objects())
+    for (STRUCTURE s: P.structures())
     {
         Value<bool> v1 = P.get(s,c1);
         bool p1 = v1.value && !v1.null;
@@ -549,10 +549,10 @@ compare(
     return res;
 }
 
-template <class OBJECT, class CONTEXT>
+template <class STRUCTURE, class CONTEXT>
 double
 russell_rao(
-    const PropertyMatrix<OBJECT,CONTEXT,bool>& P,
+    const PropertyMatrix<STRUCTURE,CONTEXT,bool>& P,
     const CONTEXT& c1,
     const CONTEXT& c2
 )
@@ -561,10 +561,10 @@ russell_rao(
     return (double)(comp.yy)/(comp.yy+comp.ny+comp.yn+comp.nn);
 }
 
-template <class OBJECT, class CONTEXT>
+template <class STRUCTURE, class CONTEXT>
 double
 jaccard(
-    const PropertyMatrix<OBJECT,CONTEXT,bool>& P,
+    const PropertyMatrix<STRUCTURE,CONTEXT,bool>& P,
     const CONTEXT& c1,
     const CONTEXT& c2
 )
@@ -573,10 +573,10 @@ jaccard(
     return (double)comp.yy/(comp.yy+comp.yn+comp.ny);
 }
 
-template <class OBJECT, class CONTEXT>
+template <class STRUCTURE, class CONTEXT>
 double
 coverage(
-    const PropertyMatrix<OBJECT,CONTEXT,bool>& P,
+    const PropertyMatrix<STRUCTURE,CONTEXT,bool>& P,
     const CONTEXT& c1,
     const CONTEXT& c2
 )
@@ -585,10 +585,10 @@ coverage(
     return (double)comp.yy/(comp.yy+comp.ny);
 }
 
-template <class OBJECT, class CONTEXT>
+template <class STRUCTURE, class CONTEXT>
 double
 kulczynski2(
-    const PropertyMatrix<OBJECT,CONTEXT,bool>& P,
+    const PropertyMatrix<STRUCTURE,CONTEXT,bool>& P,
     const CONTEXT& c1,
     const CONTEXT& c2
 )
@@ -597,10 +597,10 @@ kulczynski2(
     return ((double)comp.yy/(comp.yy+comp.yn)+(double)comp.yy/(comp.yy+comp.ny))/2;
 }
 
-template <class OBJECT, class CONTEXT>
+template <class STRUCTURE, class CONTEXT>
 double
 simple_matching(
-    const PropertyMatrix<OBJECT,CONTEXT,bool>& P,
+    const PropertyMatrix<STRUCTURE,CONTEXT,bool>& P,
     const CONTEXT& c1,
     const CONTEXT& c2
 )
@@ -609,10 +609,10 @@ simple_matching(
     return (double)(comp.yy+comp.nn)/(comp.yy+comp.ny+comp.yn+comp.nn);
 }
 
-template <class OBJECT, class CONTEXT>
+template <class STRUCTURE, class CONTEXT>
 double
 hamann(
-    const PropertyMatrix<OBJECT,CONTEXT,bool>& P,
+    const PropertyMatrix<STRUCTURE,CONTEXT,bool>& P,
     const CONTEXT& c1,
     const CONTEXT& c2
 )
@@ -622,17 +622,17 @@ hamann(
 }
 
 
-template <class OBJECT, class CONTEXT>
+template <class STRUCTURE, class CONTEXT>
 double
 L2(
-    const PropertyMatrix<OBJECT,CONTEXT,double>& P,
+    const PropertyMatrix<STRUCTURE,CONTEXT,double>& P,
     const CONTEXT& c1,
     const CONTEXT& c2
 )
 {
     double dist = 0;
 
-    for (OBJECT s: P.objects())
+    for (STRUCTURE s: P.structures())
     {
         Value<double> v1 = P.get(s,c1);
         Value<double> v2 = P.get(s,c2);
@@ -646,10 +646,10 @@ L2(
     return std::sqrt(dist);
 }
 
-template <class OBJECT, class CONTEXT>
+template <class STRUCTURE, class CONTEXT>
 double
 cosine(
-    const PropertyMatrix<OBJECT,CONTEXT,double>& P,
+    const PropertyMatrix<STRUCTURE,CONTEXT,double>& P,
     const CONTEXT& c1,
     const CONTEXT& c2
 )
@@ -661,7 +661,7 @@ cosine(
     long checked_columns = 0;
     double default_val = P.get_default();
 
-    for (OBJECT s: P.objects())
+    for (STRUCTURE s: P.structures())
     {
         Value<double> v1 = P.get(s,c1);
         Value<double> v2 = P.get(s,c2);
@@ -683,10 +683,10 @@ cosine(
     return product/std::sqrt(norm1)/std::sqrt(norm2);
 }
 
-template <class OBJECT, class CONTEXT>
+template <class STRUCTURE, class CONTEXT>
 double
 pearson(
-    const PropertyMatrix<OBJECT,CONTEXT,double>& P,
+    const PropertyMatrix<STRUCTURE,CONTEXT,double>& P,
     const CONTEXT& c1,
     const CONTEXT& c2
 )
@@ -701,7 +701,7 @@ pearson(
     long num_incomplete = 0;
     double default_val = P.get_default();
 
-    for (OBJECT s: P.objects())
+    for (STRUCTURE s: P.structures())
     {
         Value<double> v1 = P.get(s,c1);
         Value<double> v2 = P.get(s,c2);
@@ -727,7 +727,7 @@ pearson(
 
     checked_columns = 0;
 
-    for (OBJECT s: P.objects())
+    for (STRUCTURE s: P.structures())
     {
         Value<double> v1 = P.get(s,c1);
         Value<double> v2 = P.get(s,c2);
@@ -753,17 +753,17 @@ pearson(
     return cov/std::sqrt(std1)/std::sqrt(std2);
 }
 
-template <class OBJECT, class CONTEXT, class NUMBER>
+template <class STRUCTURE, class CONTEXT, class NUMBER>
 void
-PropertyMatrix<OBJECT,CONTEXT,NUMBER>::
+PropertyMatrix<STRUCTURE,CONTEXT,NUMBER>::
 rankify(
 )
 {
     for (CONTEXT c: contexts())
     {
-        std::vector<OBJECT> ranks(_structures.begin(),_structures.end());
+        std::vector<STRUCTURE> ranks(_structures.begin(),_structures.end());
 
-        StructureComparisonFunction<OBJECT,CONTEXT,NUMBER> f(this,&c);
+        StructureComparisonFunction<STRUCTURE,CONTEXT,NUMBER> f(this,&c);
         std::sort(ranks.begin(), ranks.end(), f);
 
         size_t i=0;

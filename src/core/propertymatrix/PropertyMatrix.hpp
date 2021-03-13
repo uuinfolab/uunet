@@ -24,14 +24,14 @@ namespace core {
  * A property matrix is a view that associates a value to each structure
  * (e.g., node, pair of nodes, ...) in each context (e.g., layer).
  */
-template <class OBJECT, class CONTEXT, class VALUE>
+template <class STRUCTURE, class CONTEXT, class VALUE>
 class
     PropertyMatrix
 {
 
   public:
 
-    typedef OBJECT struct_type;
+    typedef STRUCTURE struct_type;
     typedef CONTEXT context_type;
 
     /** number of structures in this matrix (e.g., actors, or edges) */
@@ -59,7 +59,7 @@ class
      */
     Value<VALUE>
     get(
-        const OBJECT& s,
+        const STRUCTURE& s,
         const CONTEXT& c
     ) const;
 
@@ -70,7 +70,7 @@ class
      */
     void
     set(
-        const OBJECT& s,
+        const STRUCTURE& s,
         const CONTEXT& c,
         VALUE v
     );
@@ -82,7 +82,7 @@ class
      */
     void
     set_na(
-        const OBJECT& s,
+        const STRUCTURE& s,
         const CONTEXT& c
     );
 
@@ -116,8 +116,8 @@ class
      * @return a set of all structures in the matrix
      */
     const
-    std::unordered_set<OBJECT>&
-    objects(
+    std::unordered_set<STRUCTURE>&
+    structures(
     ) const;
 
     /**
@@ -130,11 +130,11 @@ class
 
   private:
 
-    std::unordered_set<OBJECT> _structures;
+    std::unordered_set<STRUCTURE> _structures;
 
     std::unordered_set<CONTEXT> _contexts;
 
-    std::unordered_map<CONTEXT, std::unordered_map<OBJECT, Value<VALUE> > > data;
+    std::unordered_map<CONTEXT, std::unordered_map<STRUCTURE, Value<VALUE> > > data;
 
     VALUE default_value;
 

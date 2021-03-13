@@ -38,7 +38,7 @@ TEST_F(core_propertymatrix_test, PropertyMatrix)
             << "Wrong default value for field 0,1";
 
     // metadata
-    EXPECT_EQ(P.objects().size(), (size_t)3)
+    EXPECT_EQ(P.structures().size(), (size_t)3)
             << "Wrong number of structures";
     EXPECT_EQ(P.contexts().size(), (size_t)2)
             << "Wrong number of contexts";
