@@ -2,8 +2,6 @@
 
 #include "measures/strength.hpp"
 
-#include <vector>
-
 /* ONLY STRENGTH DEFINED SO FAR
 TEST_F(net_measures_w_test, minimum_strength)
 {

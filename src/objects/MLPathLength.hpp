@@ -1,14 +1,9 @@
 #ifndef MNET_OBJECTS_MLPATHLENGTH_H_
 #define MNET_OBJECTS_MLPATHLENGTH_H_
 
-//#include <string>
-//#include <unordered_map>
 #include "core/exceptions/assert_not_null.hpp"
 #include "core/exceptions/OperationNotSupportedException.hpp"
-//#include "objects/Vertex.hpp"
-//#include "objects/EdgeMode.hpp"
 #include "core/utils/Counter.hpp"
-//#include "networks/_impl/containers/GenericObjectList.hpp"
 #include "objects/ComparisonResult.hpp"
 #include "objects/ComparisonType.hpp"
 
@@ -58,7 +53,7 @@ class MLPathLength
     /**
      * @return The total number of steps (that is, traversed edges).
      */
-    long
+    size_t
     length(
     ) const;
 
@@ -66,7 +61,7 @@ class MLPathLength
      * @return The number of steps (that is, traversed edges) inside a given layer.
      * @param layer only edges between nodes in this layer are considered.
      */
-    long
+    size_t
     length(
         const typename M::layer_type* layer
     ) const;
@@ -76,7 +71,7 @@ class MLPathLength
      * @param from first layer.
      * @param to second layer.
      */
-    long
+    size_t
     length(
         const typename M::layer_type* from,
         const typename M::layer_type* to
