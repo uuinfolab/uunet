@@ -125,13 +125,13 @@ weighted_graph_add(
         if (!new_edge)
         {
             new_edge = target->edges()->add(edge->v1,edge->v2);
-            target->set_weight(new_edge,1.0);
+            set_weight(target, new_edge,1.0);
         }
 
         else
         {
-            double weight = target->get_weight(new_edge).value;
-            target->set_weight(new_edge, weight+1.0);
+            double weight = get_weight(target, new_edge);
+            set_weight(target, new_edge, weight+1.0);
         }
     }
 
@@ -144,13 +144,13 @@ weighted_graph_add(
             if (!new_edge)
             {
                 new_edge = target->edges()->add(edge->v2,edge->v1);
-                target->set_weight(new_edge,1.0);
+                set_weight(target, new_edge,1.0);
             }
 
             else
             {
-                double weight = target->get_weight(new_edge).value;
-                target->set_weight(new_edge, weight+1.0);
+                double weight = get_weight(target, new_edge);
+                set_weight(target, new_edge, weight+1.0);
             }
         }
     }
