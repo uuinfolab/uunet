@@ -6,8 +6,8 @@
 #include <vector>
 
 #include "generation/evolve.hpp"
-#include "generation/PAEvolutionModel.hpp"
-#include "generation/EREvolutionModel.hpp"
+#include "generation/PAModel.hpp"
+#include "generation/ERModel.hpp"
 #include "measures/size.hpp"
 #include "measures/order.hpp"
 #include "networks/MultilayerNetwork.hpp"
@@ -32,8 +32,8 @@ TEST(net_creation_test, evolution)
     std::vector<double> pr_external_event = {0, .5};
     std::vector<std::vector<double>> dependency = {{0, 1}, {1, 0}};
     std::vector<uu::net::EvolutionModel<uu::net::MultilayerNetwork>*> evolution_model;
-    auto pa = std::make_unique<uu::net::PAEvolutionModel<uu::net::MultilayerNetwork>>(3, 2);
-    auto er = std::make_unique<uu::net::EREvolutionModel<uu::net::MultilayerNetwork>>(25);
+    auto pa = std::make_unique<uu::net::PAModel<uu::net::MultilayerNetwork>>(3, 2);
+    auto er = std::make_unique<uu::net::ERModel<uu::net::MultilayerNetwork>>(25);
     evolution_model.push_back(pa.get());
     evolution_model.push_back(er.get());
     long num_of_steps = 50;

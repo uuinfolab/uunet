@@ -1,5 +1,5 @@
-#ifndef MNET_OBJECTS_MLPATHLENGTH_H_
-#define MNET_OBJECTS_MLPATHLENGTH_H_
+#ifndef MNET_OBJECTS_PATHLENGTH_H_
+#define MNET_OBJECTS_PATHLENGTH_H_
 
 #include "core/exceptions/assert_not_null.hpp"
 #include "core/exceptions/OperationNotSupportedException.hpp"
@@ -17,7 +17,7 @@ namespace net {
  * of edges traversed from layer i to layer j.
  */
 template <typename M>
-class MLPathLength
+class PathLength
 {
   private:
     typedef typename M::layer_type L;
@@ -35,7 +35,7 @@ class MLPathLength
     long ts;
 
     /** Constructs an empty distance. */
-    MLPathLength(
+    PathLength(
         const M* mnet
     );
 
@@ -86,7 +86,7 @@ class MLPathLength
      */
     ComparisonResult
     compare(
-        const MLPathLength& other,
+        const PathLength& other,
         ComparisonType comp
     ) const;
 
@@ -98,7 +98,7 @@ class MLPathLength
      */
     bool
     operator<(
-        const MLPathLength& other
+        const PathLength& other
     ) const;
 
     /**
@@ -109,7 +109,7 @@ class MLPathLength
      */
     bool
     operator>(
-        const MLPathLength& other
+        const PathLength& other
     ) const;
 
     /**
@@ -120,7 +120,7 @@ class MLPathLength
      */
     bool
     operator==(
-        const MLPathLength& other
+        const PathLength& other
     ) const;
 
     /**
@@ -131,7 +131,7 @@ class MLPathLength
      */
     bool
     operator!=(
-        const MLPathLength& other
+        const PathLength& other
     ) const;
 
     /** Returns a string representation of this object */
@@ -143,28 +143,28 @@ class MLPathLength
 
     ComparisonResult
     compare_full(
-        const MLPathLength& other
+        const PathLength& other
     ) const;
 
     ComparisonResult
     compare_switch(
-        const MLPathLength& other
+        const PathLength& other
     ) const;
 
     ComparisonResult
     compare_multiplex(
-        const MLPathLength& other
+        const PathLength& other
     ) const;
 
     ComparisonResult
     compare_simple(
-        const MLPathLength& other
+        const PathLength& other
     ) const;
 };
 
 }
 }
 
-#include "MLPathLength.ipp"
+#include "PathLength.ipp"
 
 #endif

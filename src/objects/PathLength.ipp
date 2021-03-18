@@ -2,15 +2,15 @@ namespace uu {
 namespace net {
 
 template <typename M>
-MLPathLength<M>::
-MLPathLength(
+PathLength<M>::
+PathLength(
     const M* mnet
 ) : mnet(mnet), total_length(0), ts(0) {}
 
 
 template <typename M>
 void
-MLPathLength<M>::
+PathLength<M>::
 step(
     const typename M::layer_type* layer1,
     const typename M::layer_type* layer2
@@ -22,7 +22,7 @@ step(
 
 template <typename M>
 size_t
-MLPathLength<M>::
+PathLength<M>::
 length(
 ) const
 {
@@ -31,7 +31,7 @@ length(
 
 template <typename M>
 size_t
-MLPathLength<M>::
+PathLength<M>::
 length(
     const typename M::layer_type* layer
 ) const
@@ -41,7 +41,7 @@ length(
 
 template <typename M>
 size_t
-MLPathLength<M>::
+PathLength<M>::
 length(
     const typename M::layer_type* from,
     const typename M::layer_type* to
@@ -52,9 +52,9 @@ length(
 
 template <typename M>
 ComparisonResult
-MLPathLength<M>::
+PathLength<M>::
 compare(
-    const MLPathLength& other,
+    const PathLength& other,
     ComparisonType comp
 ) const
 {
@@ -78,9 +78,9 @@ compare(
 
 template <typename M>
 ComparisonResult
-MLPathLength<M>::
+PathLength<M>::
 compare_full(
-    const MLPathLength& other
+    const PathLength& other
 ) const
 {
     bool canBeDominated = true;
@@ -131,9 +131,9 @@ compare_full(
 
 template <typename M>
 ComparisonResult
-MLPathLength<M>::
+PathLength<M>::
 compare_switch(
-    const MLPathLength& other
+    const PathLength& other
 ) const
 {
     bool canBeDominated = true;
@@ -204,9 +204,9 @@ compare_switch(
 
 template <typename M>
 ComparisonResult
-MLPathLength<M>::
+PathLength<M>::
 compare_multiplex(
-    const MLPathLength& other
+    const PathLength& other
 ) const
 {
     bool canBeDominated = true;
@@ -259,9 +259,9 @@ compare_multiplex(
 
 template <typename M>
 ComparisonResult
-MLPathLength<M>::
+PathLength<M>::
 compare_simple(
-    const MLPathLength& other
+    const PathLength& other
 ) const
 {
     bool canBeDominated = true;
@@ -306,9 +306,9 @@ compare_simple(
 
 template <typename M>
 bool
-MLPathLength<M>::
+PathLength<M>::
 operator<(
-    const MLPathLength& other
+    const PathLength& other
 ) const
 {
     //return total_length < other.total_length;
@@ -317,9 +317,9 @@ operator<(
 
 template <typename M>
 bool
-MLPathLength<M>::
+PathLength<M>::
 operator>(
-    const MLPathLength& other
+    const PathLength& other
 ) const
 {
     //return total_length > other.total_length;
@@ -328,9 +328,9 @@ operator>(
 
 template <typename M>
 bool
-MLPathLength<M>::
+PathLength<M>::
 operator==(
-    const MLPathLength& other
+    const PathLength& other
 ) const
 {
     //return total_length == other.total_length;
@@ -339,9 +339,9 @@ operator==(
 
 template <typename M>
 bool
-MLPathLength<M>::
+PathLength<M>::
 operator!=(
-    const MLPathLength& other
+    const PathLength& other
 ) const
 {
     //return total_length != other.total_length;
@@ -350,7 +350,7 @@ operator!=(
 
 template <typename M>
 std::string
-MLPathLength<M>::
+PathLength<M>::
 to_string(
 ) const
 {

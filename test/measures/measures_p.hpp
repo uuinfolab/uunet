@@ -39,13 +39,13 @@ class net_measures_p_test : public ::testing::Test
         e7 = g->edges()->add(v8, v9);
 
         uu::net::make_probabilistic(g.get());
-        uu::net::set_weight(g.get(), e1, .7);
-        uu::net::set_weight(g.get(), e2, .3);
-        uu::net::set_weight(g.get(), e3, .3);
-        uu::net::set_weight(g.get(), e4, .6);
-        uu::net::set_weight(g.get(), e5, .2);
-        uu::net::set_weight(g.get(), e6, .7);
-        uu::net::set_weight(g.get(), e7, .9);
+        uu::net::set_prob(g.get(), e1, .7);
+        uu::net::set_prob(g.get(), e2, .3);
+        uu::net::set_prob(g.get(), e3, .3);
+        uu::net::set_prob(g.get(), e4, .6);
+        uu::net::set_prob(g.get(), e5, .2);
+        uu::net::set_prob(g.get(), e6, .7);
+        uu::net::set_prob(g.get(), e7, .9);
         
     }
 

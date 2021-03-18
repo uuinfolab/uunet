@@ -32,7 +32,7 @@ strength(
 
         s += w;
 
-        if (edge->v1 == edge->v2)
+        if (!(g->is_directed() && mode != EdgeMode::INOUT) && edge->v1 == edge->v2)
         {
             // loops are counted twice
             s += w;

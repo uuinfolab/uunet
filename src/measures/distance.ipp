@@ -7,7 +7,7 @@ namespace uu {
 namespace net {
 
 template <typename M>
-std::unordered_map<const Vertex*, std::set<MLPathLength<M>> >
+std::unordered_map<const Vertex*, std::set<PathLength<M>> >
         pareto_distance(
             const M* mnet,
             const Vertex* from
@@ -19,15 +19,15 @@ std::unordered_map<const Vertex*, std::set<MLPathLength<M>> >
       public:
         int
         operator()(
-            const std::pair<MLPathLength<M>, size_t>& lhs,
-            const std::pair<MLPathLength<M>, size_t>& rhs
+            const std::pair<PathLength<M>, size_t>& lhs,
+            const std::pair<PathLength<M>, size_t>& rhs
         ) const
         {
             return lhs.second < rhs.second;
 
         }
     };
-    std::unordered_map<const Vertex*,std::set<std::pair<MLPathLength<M>,size_t>,TimestampComparator> > distances;
+    std::unordered_map<const Vertex*,std::set<std::pair<PathLength<M>,size_t>,TimestampComparator> > distances;
     // timestamps, used for efficiency reasons to avoid processing edges when no changes have occurred since the last iteration
     size_t ts = 0;
     std::unordered_map<const typename M::layer_type*, std::map<std::pair<const Vertex*, const Vertex*>, size_t>> last_updated;
@@ -35,11 +35,11 @@ std::unordered_map<const Vertex*, std::set<MLPathLength<M>> >
     // initialize distance array - for every target vertex there is still no found path leading to it...
     for (auto actor: *mnet->actors())
     {
-        distances[actor] = std::set<std::pair<MLPathLength<M>,size_t>,TimestampComparator>();
+        distances[actor] = std::set<std::pair<PathLength<M>,size_t>,TimestampComparator>();
     }
     // ...except for the source node, reachable from itself via an empty path
-    MLPathLength<M> empty(mnet);
-    distances[from].insert(std::pair<MLPathLength<M>,size_t>(empty,ts));
+    PathLength<M> empty(mnet);
+    distances[from].insert(std::pair<PathLength<M>,size_t>(empty,ts));
 
     bool changes; // keep updating the paths until when no changes occur during one full scan of the edges
 
@@ -81,14 +81,14 @@ std::unordered_map<const Vertex*, std::set<MLPathLength<M>> >
                         // otherwise, extend the distance to reach e.v2
                         // @todo check it's not a cycle, for efficiency reasons (?)
                         // Extend
-                        MLPathLength<M> extended_distance = dist.first;
+                        PathLength<M> extended_distance = dist.first;
                         extended_distance.ts = ts;
                         extended_distance.step(layer, layer);
                         //std::cout << "producing candidate: " << layer->name << std::endl;
 
                         // compare the new distance with the other temporary distances to e.v2
                         bool should_be_inserted = true;
-                        std::set<std::pair<MLPathLength<M>,size_t>,TimestampComparator> dominated; // here we store the distances that will be removed if dominated by the new one
+                        std::set<std::pair<PathLength<M>,size_t>,TimestampComparator> dominated; // here we store the distances that will be removed if dominated by the new one
 
                         for (auto previous: distances[node_to])
                         {
@@ -128,7 +128,7 @@ std::unordered_map<const Vertex*, std::set<MLPathLength<M>> >
                         if (should_be_inserted)
                         {
                             //cout << " INSERT NEW for " << actor2->name << " - " << extended_distance << endl;
-                            distances[node_to].insert(std::pair<MLPathLength<M>,size_t>(extended_distance,ts));
+                            distances[node_to].insert(std::pair<PathLength<M>,size_t>(extended_distance,ts));
                             //cout << "insert " << mnet.getGlobalName(actor2) << " - " << extended_distance << endl;
                             //cout << "add " << paths[toGlobalId].size() << "\n";
                             //cout << "New path " << fromGlobalId << " => "
@@ -138,7 +138,7 @@ std::unordered_map<const Vertex*, std::set<MLPathLength<M>> >
 
                         // remove dominated paths
                         // ?? why not just remove?
-                        std::set<std::pair<MLPathLength<M>,size_t>,TimestampComparator> diff;
+                        std::set<std::pair<PathLength<M>,size_t>,TimestampComparator> diff;
                         std::set_difference(distances[node_to].begin(),
                                             distances[node_to].end(), dominated.begin(),
                                             dominated.end(), std::inserter(diff, diff.end()));
@@ -150,7 +150,7 @@ std::unordered_map<const Vertex*, std::set<MLPathLength<M>> >
     }
     while (changes);
 
-    std::unordered_map<const Vertex*, std::set<MLPathLength<M>> > result;
+    std::unordered_map<const Vertex*, std::set<PathLength<M>> > result;
 
     for (auto p: distances)
     {

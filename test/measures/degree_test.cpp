@@ -52,3 +52,34 @@ TEST_F(net_measures_test, degree)
     EXPECT_EQ(deg4, (size_t) 4);
 }
 
+
+TEST_F(net_measures_test, loops)
+{
+    auto dir_net = std::make_unique<uu::net::Network>("g", uu::net::EdgeDir::DIRECTED);
+    auto und_net = std::make_unique<uu::net::Network>("g", uu::net::EdgeDir::UNDIRECTED);
+    
+    auto v = std::make_shared<const uu::net::Vertex>("v");
+    dir_net->vertices()->add(v);
+    und_net->vertices()->add(v);
+                          
+    dir_net->edges()->add(v.get(), v.get());
+    und_net->edges()->add(v.get(), v.get());
+    
+    size_t deg1 = uu::net::degree(dir_net.get(), v.get(), uu::net::EdgeMode::INOUT);
+    EXPECT_EQ(deg1, (size_t) 2);
+
+    size_t deg2 = uu::net::degree(dir_net.get(), v.get(), uu::net::EdgeMode::IN);
+    EXPECT_EQ(deg2, (size_t) 1);
+
+    size_t deg3 = uu::net::degree(dir_net.get(), v.get(), uu::net::EdgeMode::OUT);
+    EXPECT_EQ(deg3, (size_t) 1);
+    
+    size_t deg4 = uu::net::degree(und_net.get(), v.get(), uu::net::EdgeMode::INOUT);
+    EXPECT_EQ(deg4, (size_t) 2);
+
+    size_t deg5 = uu::net::degree(und_net.get(), v.get(), uu::net::EdgeMode::IN);
+    EXPECT_EQ(deg5, (size_t) 2);
+
+    size_t deg6 = uu::net::degree(und_net.get(), v.get(), uu::net::EdgeMode::OUT);
+    EXPECT_EQ(deg6, (size_t) 2);
+}
