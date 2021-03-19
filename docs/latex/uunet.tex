@@ -1,0 +1,91 @@
+% book example for classicthesis.sty
+\documentclass[11pt,a5paper,footinclude=true,headinclude=true]{scrbook} % KOMA-Script book
+\usepackage[T1]{fontenc}   
+\usepackage[linedheaders,parts,pdfspacing]{classicthesis}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{bgcolor-code}{rgb}{0.95,0.95,0.92}
+\definecolor{bgcolor-out}{rgb}{0,0,0}
+\definecolor{txtcolor-out}{rgb}{1,1,1}
+\definecolor{bgcolor-file}{rgb}{0.92,0.97,0.97}
+\definecolor{txtcolor-file}{rgb}{0,0,0}
+
+\lstdefinestyle{c++}{language=C++,
+    backgroundcolor=\color{bgcolor-code}, 
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\ttfamily,
+    stringstyle=\color{red}\ttfamily,
+    commentstyle=\color{green}\ttfamily,
+    morecomment=[l][\color{magenta}]{\#},
+    breaklines=true, postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space}
+}
+
+\lstdefinestyle{out}{
+    backgroundcolor=\color{bgcolor-out}, 
+    basicstyle=\ttfamily\small\color{txtcolor-out}
+}
+
+\lstdefinestyle{file}{
+    backgroundcolor=\color{bgcolor-file}, 
+    basicstyle=\ttfamily\small\color{txtcolor-file}
+}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[chapter]
+\newcommand{\code}[1]{\mbox{\texttt{#1}}}
+
+\title{The uunet library:\\an overview}
+
+\begin{document}
+%	\pagestyle{scrheadings}
+%	\manualmark
+%	\markboth{\spacedlowsmallcaps{\contentsname}}{\spacedlowsmallcaps{\contentsname}}
+	
+	\maketitle
+	
+	\tableofcontents 
+
+%	\automark[section]{chapter}
+%	\renewcommand{\chaptermark}[1]{\markboth{\spacedlowsmallcaps{#1}}{\spacedlowsmallcaps{#1}}}
+%	\renewcommand{\sectionmark}[1]{\markright{\thesection\enspace\spacedlowsmallcaps{#1}}}
+
+\cleardoublepage
+
+\input{ch_intro.tex}
+
+\cleardoublepage\part{Basic functionality}
+
+\input{ch_core.tex}
+
+\input{ch_cubes.tex}
+    
+\cleardoublepage\part{Networks}
+\label{part:networks}
+
+\input{ch_basics.tex}
+
+\input{ch_networks.tex}
+    
+\input{ch_creation.tex}
+
+\input{ch_operations.tex}
+
+\input{ch_measures.tex}
+
+\input{ch_community.tex}
+
+\input{ch_layout.tex}
+
+%	\include{multiToC}
+
+    %\appendix
+    %\cleardoublepage\part{Appendix}
+    %\chapter{Appendix Chapter}
+    
+\end{document}

@@ -1,0 +1,102 @@
+\chapter{Operations}
+
+The \code{operations/} module contains functions to manipulate networks.
+    
+\section{Simple graph operations}
+
+The library supports the basic graph operations from graph theory.
+
+\subsection{Graph induction}
+
+A first type of operations is graph induction. The definitions and corresponding library functions follow.
+
+\begin{definition}[Vertex-induced subgraph]
+Let $G = (V, E)$ and $V' \subseteq V$. The vertex-induced subgraph $G_{|V'} = (V', E')$ where $ E' = \{ (u,v) \ | \ u, v  \in V' \}$.
+\end{definition}
+
+\begin{lstlisting}[style=c++]
+std::vector<const Vertex*> vs1 = {v2, v4, v5};
+auto g_sub1 = vertex_induced_subgraph(g.get(), vs1.begin(), vs1.end());
+    
+std::vector<const Vertex*> vs2 = {v4, v5, v6};
+auto g_sub2 = vertex_induced_subgraph(g.get(), vs2.begin(), vs2.end());
+\end{lstlisting}
+
+\begin{definition}[Edge-induced subgraph]
+Let $G = (V, E)$ and $E' \subseteq E$. The vertex-induced subgraph $G_{|E'} = (V', E')$ where $ V' = \{ v \ | \ e  \in E' \land v \mbox{ is an end-vertex of } e \}$.
+\end{definition}
+
+\subsection{Vertex-set operations}
+
+A second type of operations is set-based manipulation. The definitions and corresponding library functions follow.
+
+\begin{definition}[Union]
+Let $G_1 = (V1, E1)$ and $G_2 = (V2, E2)$ be two graphs. Then $G_1 \cup G_2 = (V1 \cup V2, E1 \cup E2)$
+\end{definition}
+
+Please notice that according to this definition and in a setting where edges have identities, in general the union of two simple graphs can be a multigraph.
+
+\begin{lstlisting}[style=c++]
+auto g_union = graph_union(g_sub1.get(), g_sub2.get());
+\end{lstlisting}
+
+\begin{definition}[Intersection]
+Let $G_1 = (V1, E1)$ and $G_2 = (V2, E2)$ be two graphs. Then $G_1 \cap G_2 = (V1 \cap V2, E1 \cap E2)$
+\end{definition}
+
+\begin{lstlisting}[style=c++]
+auto g_intersection = graph_intersection(g_sub1.get(), g_sub2.get());
+\end{lstlisting}
+
+\begin{definition}[Complement]
+Let $G = (V, E)$. Then $\overline{G} = (V, E')$ where $ E' = \{ (u,v) \ | \ u, v  \in V \land (u,v) \notin E \}$.
+\end{definition}
+
+This definition adapts to the type of graph: it is appropriate for digraphs and also in case of loops.
+
+\begin{lstlisting}[style=c++]
+auto g_complement = graph_complement(g_sub1.get());
+\end{lstlisting}
+
+\subsection{Edge operations}
+
+A third type of operations manipulates edges. We can divide an edge, adding a new vertex in between:
+
+\begin{lstlisting}[style=c++]
+auto v10 = edge_subdivision(g.get(), e7, "v10");
+auto e8 = g->edges()->get(v8, v10);
+auto e9 = g->edges()->get(v10, v9);
+\end{lstlisting}
+
+And we can replace an edge with a vertex:    
+\begin{lstlisting}[style=c++]
+edge_contraction(g.get(), e9, "v11");
+\end{lstlisting}
+    
+\section{Flattening and projection}
+
+Flattening adds the edges from a number of layers to a target network/layer. For example, assume that \code{net} contains two layers, \code{l1} and \code{l2}. We can add a new layer \code{lf1} and add to it all edges in either \code{l1} or \code{l2} as follows:
+\begin{lstlisting}[style=c++]
+auto l = {l1, l2};
+auto lf1 = net->layers()->add("flat");
+flatten_unweighted(l.begin(), l.end(), lf1);
+\end{lstlisting}
+    
+Notice that the target network does not need to be a layer in the input multilayer network: we can flatten the layers into a layer in another multilayer network, or create a separate (simple) network that is the flattening of the input one.
+
+In addition, we can use a weighted flattening so that a weight is added to each edge in the flattened network, indicating in how many original layers the edge was present.
+\begin{lstlisting}[style=c++]
+auto lf2 = net->layers()->add("w_flat");
+flatten_weighted(l.begin(), l.end(), lf2);
+\end{lstlisting}
+
+While a flattening works on multiple networks, if a multilayer network has interlayer edges we can also compute a projection. In the following example two vertices in layer \code{l1} will be adjacent in the target layer/network \code{lf} whenever the two vertices are adjacent to a common vertex in \code{l2}.
+\begin{lstlisting}[style=c++]
+auto lf = net->layers()->add("flat");
+project_unweighted(net.get(), l2, l1, lf);
+\end{lstlisting}
+    
+
+\section{Anonymization}
+
+TBD

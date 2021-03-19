@@ -1,0 +1,17 @@
+\chapter{Introduction}
+
+This document contains an overview of the \code{uunet} library, with examples on how to use its functions.
+
+The \code{uunet} library contains the code used or developed at the Uppsala University Information Laboratory (InfoLab) to store, manipulate and analyze data about interconnected entities. Most of the functions provided by our multilayer network analysis libraries for R (https://cran.r-project.org/web/packages/multinet/index.html) and python (https://pypi.org/project/uunet/) are implemented in \code{uunet}.
+
+The most typical representation for data about interconnected entities are graphs. While \code{uunet} provides some graph management functionality, it is not intended as a full-fledged graph analysis library --- there are several already available. \code{uunet} focuses on richer data structures, such as multilayer networks.
+
+This document is about how to use the library. It is not (generally) intended to explain how the algorithms work.
+
+\section{Overview of the content of the library}
+
+The instructions to compile the library, tests and examples are in the \code{README.md} file. Guidelines on how to write code for the library are in \code{StyleGuide.md}. The main library code is contained inside \code{src/} and organized in modules, each corresponding to a directory. \code{src/core} provides basic functionality not specific for networks (such as exceptions, basic data structures, attribute management), \code{src/networks} defines the main network types, \code{src/community} defines data structures and functions for community detection, etc. Other directories contain unit tests (\code{test/}), examples (\code{examples/}), and external code (\code{ext/}).
+
+\section{Code conventions used in this document}
+
+In the code examples presented in this document we will omit the \code{std::} namespace and the two namespaces defined in the library: \code{uu::core::} and \code{uu::net::}. Classes and functions in \code{uu::core::} are those declared in the \code{core/} module and described in the chapter about this module, all other classes and functions are in namespace \code{uu::net::}.

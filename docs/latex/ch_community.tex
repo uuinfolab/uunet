@@ -1,0 +1,94 @@
+\chapter{Community detection} \label{ch:comm}
+
+The \code{community/} module provides three types of functionality: data structures to represent communities, community detection algorithms and evaluation functions.
+
+\section{Data structures}
+
+A Community Structure is a set of communities, and a Community is a set of elements. Communities are represented using a template class so that the type of elements adapts to the type of network. For example, in a community over networks its elements are vertices:
+\begin{lstlisting}[style=c++]
+auto com = make_unique<CommunityStructure<Network>>();
+
+auto c1 = make_unique<Community<Network>>();
+auto c2 = make_unique<Community<Network>>();
+
+auto v1 = make_unique<Vertex>("v1");
+auto v2 = make_unique<Vertex>("v2");
+
+// Adding vertices to the community
+
+c1->add(v1.get());
+c1->add(v2.get());
+c2->add(v2.get());
+
+// Adding communities to the community structure
+
+com->add(move(c1));
+com->add(move(c2));
+\end{lstlisting}
+
+A community over a multilayer network has multilayer vertices as elements:
+\begin{lstlisting}[style=c++]
+auto ml_c = make_unique<Community<MultilayerNetwork>>();
+
+// Creating multilayer vertices
+
+auto n = make_unique<Network>("net");
+auto ml_v1 = MLVertex(v1.get(), n.get());
+auto ml_v2 = MLVertex(v2.get(), n.get());
+
+// Adding multilayer vertices to the community
+
+ml_c->add(ml_v1);
+ml_c->add(ml_v2);
+\end{lstlisting}
+
+In general, one would not manually create communities, but obtain them using community detection algorithms.
+
+\section{Algorithms}
+
+The library provides two community detection algorithms for single networks:
+\begin{lstlisting}[style=c++]
+auto comm1 = label_propagation(net.get());
+auto comm2 = louvain(net.get());
+\end{lstlisting}
+    
+and five algorithms for multilayer networks.
+\begin{lstlisting}[style=c++]
+auto mlcomm1 = mlcpm(mlnet.get(), 3, 1);
+auto mlcomm2 = abacus(mlnet.get(), 3, 1);
+auto mlcomm3 = glouvain2(mlnet.get(), 1.0);
+auto mlcomm4 = infomap(mlnet.get());
+auto mlcomm5 = mlp(mlnet.get());
+\end{lstlisting}
+    
+\section{Evaluation}
+
+Two community structures can be compared using normalized mutual information (for partitioning communities) and omega index (for overlapping communities):
+\begin{lstlisting}[style=c++]
+nmi(comm1.get(), comm2.get(), order(net.get()));
+omega_index(comm1.get(), comm2.get(), order(net.get()));
+\end{lstlisting}
+
+The library also provides a function to compute multilayer modularity:
+\begin{lstlisting}[style=c++]
+modularity(mlnet.get(), mlcomm3.get(), 1.0);
+\end{lstlisting}
+
+\section{I/O}
+
+If one needs to compare communities found by an algorithm with some ground truth, then it can be useful to read communities from a file. The format for multilayer communities requires the name of the actor, the name of the layer and the community id, starting from 0.
+
+\begin{lstlisting}[style=file]
+vertex_name1,layer_name1,0
+vertex_name2,layer_name1,0
+% etc.
+vertex_name1,layer_name2,1
+% etc.
+\end{lstlisting}
+
+The \code{io/} module provides functions to read and write community files. Notice that the second parameter of the reading function is a multilayer network, so that the names of actors and layers can be matched with those in the network.
+\begin{lstlisting}[style=c++]
+read_multilayer_communities("com.txt", cml.get());
+
+write_multilayer_communities(communities.get(), fname);
+\end{lstlisting}

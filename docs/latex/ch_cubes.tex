@@ -1,0 +1,132 @@
+\chapter{The OLAP module (cubes)}
+
+A graph is a pair $(V,E)$ where $V$ is a set of vertices and $E$ is a set of edges. The uunet library is built around multilayer cubes, that are generalizations of vertex and edge sets allowing us to extend graphs into more complex data structures. In particular, a multilayer cube provides three sets of capabilities: handling a set of objects (creation, retrieval and deletion), storing attributes, and creating an internal structure to organize the objects into overlapping subsets (also known as \emph{cells}, or \emph{layers} in the multilayer network terminology, and also related to \emph{facts} in data warehousing). Assembling different combinations of cubes allows the creation of several types of models for interconnected data, from simple graphs to general multilayer networks.
+
+
+\section{Vertex Cubes}
+
+Let us start from the generalization of $V$, that we call Vertex Cube (short: VCube).
+
+\subsection{Set functionality}
+
+First, a VCube provides the functionality of a set of vertices. This is all we need to handle the vertices in a simple or directed graph. We can add new vertices, we can check if the cube contains a vertex, we can get the n-th vertex from the cube, or by name, or uniformly at random, we can check which position a vertex occupies and we can erase a vertex:
+
+\begin{lstlisting}[style=c++]
+auto V = make_unique<VCube>("V");
+auto v1 = V->add("v1"); // v1 has type const Vertex*
+V->size(); // 1
+V->contains(v1); // true
+V->contains("v1"); // true
+V->get("v1"); // v1
+V->get_at_random(); // v1 (as there is only one vertex)
+V->at(0); // v1
+V->index_of(v1); // 0
+V->erase(v1); // true
+V->erase("v1"); // false (already erased)
+\end{lstlisting}
+
+While a VCube allows us to create new vertices through the \code{add()} method, we can also add already existing vertices, e.g., vertices previously added to other VCubes or vertices created independently of any VCube:
+\begin{lstlisting}[style=c++]
+auto v2 = make_shared<const Vertex>("v2");
+V->add(v2.get()); // v2.get()
+\end{lstlisting}
+
+\subsection{Handling attributes}
+
+Second, a VCube allows us to associate attributes to its vertices. This allows us to define vertices in attributes graphs. Here we create an attribute $a1$ of type double and set/get a value for vertex v2:
+\begin{lstlisting}[style=c++]
+auto attr = V->attr(); // AttributeStore<Vertex>*
+attr->add("a1", AttributeType::DOUBLE); 
+attr->set_double(v2, "a1", 3.14);
+attr->get_double(v2, "a1"); // Value<double>
+\end{lstlisting}
+The result of \code{get\_double()} has two fields: \code{null} and \code{value}. If \code{null} is \code{false}, value contains the attribute value (in this example, 3.14). One can create attributes of basic type \code{INTEGER}, \code{DOUBLE}, \code{STRING}, \code{TIME}, and \code{TEXT}. In addition, we can also create set attributes, where multiple values can be associated to the same vertex, using types \code{INTEGERSET}, \code{DOUBLESET}, \code{STRINGSET}, and \code{TIMESET}.
+\begin{lstlisting}[style=c++]
+attr->add("a2", AttributeType::TIMESET); 
+attr->add_time(v2, "a2", epoch_to_time("3667"));
+attr->add_time(v2, "a2", epoch_to_time("3669"));
+attr->add_time(v2, "a2", epoch_to_time("3695"));
+attr->get_times(v2, "a2", ); // std::set<Time>
+\end{lstlisting}
+When cubes are used to define known types of attributed data structures, such as weighted graphs, the library also provides utility functions to handle attributes directly on the data structures without explicitly needing to access the cubes' attribute stores, as shown in Chapter \ref{ch:graphtheory}.
+
+Attributes are kept consistent with the vertices in the cube using an Observer pattern: we cannot set/add attribute values for vertices not in the cube, and removing a vertex from the cube also removes its attribute values. If we ask for values for vertices not in the cube, we get a null value (more precisely, a \code{Value<T>} object with field \code{null} set to \code{true}) for basic attribute types and an empty set of values for set attributes.
+
+\subsection{Dimensions and members}
+
+Third, a VCube provides an internal organization for its vertices. This allows us, for example, to separate partitions in multimode networks. VCubes support the creation of dimensions, each of which has one or more members, and to access the vertices in a specific dimension. When a VCube is created we have no dimensions:
+\begin{lstlisting}[style=c++]
+V->order(); // 0
+V->dsize(); // {}
+V->dimensions(); // {}
+V->members(); // {}
+\end{lstlisting}
+Here we add two dimensions, one with three members and one with two members. This results in a $3 \times 2$ cube, with 6 cells/layers. If no additional parameters are specified, as in this case, existing vertices are assigned to all the new cells. In Section \ref{sec:discr} we show how to  specify custom assignments.
+\begin{lstlisting}[style=c++]
+V->add_dimension("d1", {"m11", "m12", "m13"});
+V->add_dimension("d2", {"m21", "m22"});
+V->order(); // 2
+V->dsize(); // {3, 2}
+V->dimensions(); // {"d1", "d2"}
+V->members(); // {{"m11", "m12", "m13"}, {"m21", "m22"}}
+\end{lstlisting}
+Now we can access individual cells of the cube:
+ \begin{lstlisting}[style=c++]
+auto index = vector<string>({"m12", "m21"});
+V->cell(index)->add("v3");
+V->cell(index)->add("v4");
+V->size(); // 3
+\end{lstlisting}
+When the cube has more than one cell, we can still add and erase vertices to/from the cube. In this case the operation is replicated on all cells. For example:
+\begin{lstlisting}[style=c++]
+auto v5 = V->add("v5"); // (added to all cells)
+V->cell(index)->size(); // 4 (i.e., v2, v3, v4, v5)
+V->erase(v5); // true (erased from all cells)
+V->cell(index)->size(); // 3 (i.e., v2, v3, v4)
+\end{lstlisting}
+When a cube has more than one cell, the internal implementation of the cube keeps a pointer to a vertex for each cell where it belongs, plus one pointer for the whole cube. If the cube only has one cell (independently of its dimensionality) or no cells then there is no duplication.
+
+\section{Edge Cubes}
+
+Edge Cubes (ECubes) store edges and provide the same three types of functionality as VCubes: set, attributes, and internal structure. The main difference is that while a VCube exists independently of other data structures, an ECube must have two end VCubes from which the end vertices of its edges are taken. In addition, an ECube must specify whether its edges are directed or undirected, and whether it allows loops, that is, edges between a vertex on a VCube and the same vertex on the same VCube.
+
+\begin{lstlisting}[style=c++]
+// creating two vertex cubes
+auto vc1_up = make_unique<VCube>("V1");
+auto vc2_up = make_unique<VCube>("V2");
+auto vc1 = vc1_up.get(); // VCube*
+auto vc2 = vc2_up.get(); // VCube*
+
+auto d = EdgeDir::DIRECTED; // or UNDIRECTED (default)
+auto nl = LoopMode::DISALLOWED; // or ALLOWED (default)
+auto E = make_unique<ECube>("E", vc1, vc2, d, nl);
+\end{lstlisting}
+Notice that loops are possible only if the two end VCubes are the same, so disallowing loops is not really needed in the example above.
+
+Now we can use the cube to store edges, as we did with vertices. Here we only show the set functionality, to demonstrate how to add new edges. 
+
+First we have to add some vertices. In this example, we add the same vertex to both end VCubes:
+\begin{lstlisting}[style=c++]
+auto v1 = vc1->add("v1");
+vc2->add(v1);
+\end{lstlisting}
+Then we can connect these vertices with an edge. We also exemplify the set-based functions:
+\begin{lstlisting}[style=c++]
+auto e1 = E->add(v1, vc1, v1, vc2);
+E->size(); // 1
+E->contains(e1); // true
+E->contains(v1, vc1, v1, vc2); // true
+E->get(v1, vc1, v1, vc2); // e1
+E->get_at_random(); // e1
+E->at(0); // e1
+E->index_of(e1); // 0
+E->erase(e1); // true
+\end{lstlisting}
+The functions to handle attributes and structure are the same as for VCubes, so we do not repeat them here.
+
+\section{Operators}
+
+TBD
+
+
+%\subsection{Temporal text networks}

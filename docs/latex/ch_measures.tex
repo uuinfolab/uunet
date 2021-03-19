@@ -1,0 +1,163 @@
+\chapter{Measures}
+
+\section{Degree-based measures}
+
+\subsection{Degree}
+
+\begin{definition}[Degree]
+The degree of a vertex $v$ in a graph $G$, notated $\mathrm{deg}(v)$, is the number of edges incident to $v$ in $G$\footnote{Loops are counted twice.}. 
+\end{definition}
+
+\begin{lstlisting}[style=c++] 
+for (auto v: *g->vertices())
+{
+    size_t deg = degree(g.get(), v);
+    cout << "deg(" << (*v) << "): "
+        << deg << endl;
+}
+\end{lstlisting}
+\begin{lstlisting}[style=out]
+deg(v2): 1
+deg(v1): 0
+deg(v3): 1
+deg(v5): 2
+deg(v6): 2
+deg(v7): 2
+deg(v8): 1
+deg(v9): 1
+deg(v4): 4
+\end{lstlisting}
+
+
+\begin{lstlisting}[style=c++] 
+auto avg_deg = average_degree(g.get());
+cout << "Average degree: " << avg_deg << endl;
+\end{lstlisting}
+\begin{lstlisting}[style=out]
+Average degree: 1.55556
+\end{lstlisting}
+
+With loops, there exists at least a graph for any degree sequence whose sum is even. Without loops, there are some degree sequences that cannot correspond to any graph.
+
+\begin{lstlisting}[style=c++] 
+cout << "Degree sequence: ";
+auto deg_seq = degree_sequence(g.get());
+for (auto deg: deg_seq)
+{
+    cout << deg << " ";
+}
+cout << endl;
+\end{lstlisting}
+\begin{lstlisting}[style=out]
+Degree sequence: 0 1 1 1 1 2 2 2 4 
+\end{lstlisting}
+    
+\begin{lstlisting}[style=c++] 
+cout << "Degree distribution: ";
+auto deg_distr = degree_distribution(g.get());
+for (auto freq: deg_distr)
+{
+    cout << freq << " ";
+}
+cout << endl;
+\end{lstlisting}
+\begin{lstlisting}[style=out]
+Degree distribution: 1 4 3 0 1 
+\end{lstlisting}
+
+For weighted networks we can also compute the strength of a vertex, that is the sum of the weights in its incident edges (loops being counted twice):
+\begin{lstlisting}[style=c++]
+strength(g.get(), v1);
+\end{lstlisting}
+
+For probabilistic networks we can also compute the expected degree of a vertex:
+\begin{lstlisting}[style=c++]
+exp_degree(g.get(), v1);
+\end{lstlisting}
+
+\subsection{Multilayer degree}
+
+Degree in multilayer networks is computed in the same way as in single networks, where the degrees of a vertex in all the input layers are added:
+\begin{lstlisting}[style=c++] 
+size_t degree = degree(l.begin(), l.end(), v2);
+\end{lstlisting}
+
+The degree deviation of a vertex is just the standard deviation of its degree on the input layers:
+\begin{lstlisting}[style=c++] 
+double dd = degree_deviation(l.begin(), l.end(), v2);
+\end{lstlisting}
+
+\subsection{Neighborhood}
+
+Degree counts the same neighbors multiple times if it is a neighbor in all layers. Instead, we can extract the distinct neighbors of a vertex, that are the vertices adjacent to it in any of the input layers:
+\begin{lstlisting}[style=c++] 
+neighbors(net->layers()->begin(), net->layers()->end(), v1);
+\end{lstlisting}
+
+Exclusive neighbors are instead those which are neighbors in the input layers but not in the other layers in the network.
+\begin{lstlisting}[style=c++] 
+vector<const Network*> l = {l1};
+xneighbors(net.get(), l.begin(), l.end(), v2);
+\end{lstlisting}
+
+\section{Path-based}
+
+\subsection{Distances}
+
+The distance between two vertices can be computed on single and multilayer networks. For single networks the library implements Dijkstra's algorithm (available under \code{algorithms/}):
+\begin{lstlisting}[style=c++] 
+single_source_path_length(g, v2)
+\end{lstlisting}
+
+While for multilayer networks we can compute the generalized pareto distance:
+\begin{lstlisting}[style=c++] 
+pareto_distance(net.get(), v1);
+\end{lstlisting}
+
+%$w : E \rightarrow \mathcal{R}$
+
+%For a walk $W = (e_1, \dots, e_n)$, the length of $W$ is $w(W) = w(e_1) + \dots + w(e_n)$.
+
+%Distance:
+%\[
+%    d(u, v) = 
+%    \left\{
+%    \begin{array}{ll}
+%        \infty & \text{no path from u to v}\\
+%        \min\{w(W) : \text{W is a path from u to v}\} & \text{otherwise}\\
+%    \end{array}
+%    \right.
+%\]
+
+%Note: paths are used in case of negative weights.
+    
+\subsection{Betweenness}
+
+Betweenness is currently implemented for single networks:
+\begin{lstlisting}[style=c++]
+auto C_b = betweenness(g.get());
+C_b[v4]; // Betweenness of vertex v4
+\end{lstlisting}
+
+\section{Layer relevance}
+
+The percentage of a vertex's neighbors that are present in a subset of the layers is called layer relevance, and is computed as follows:
+\begin{lstlisting}[style=c++]
+vector<const Network*> l = {l1};
+relevance(net.get(), l.begin(), l.end(), v1);
+\end{lstlisting}
+
+The percentage of a vertex's neighbors that are present in a subset of the layers but not in the others is called exclusive layer relevance, and is computed as follows:
+\begin{lstlisting}[style=c++]
+vector<const Network*> l = {l1};
+xrelevance(net.get(), l.begin(), l.end(), v1);
+\end{lstlisting}
+
+\section{Layer comparison}
+
+Using property matrices we can define several functions to compare layers. Two that are pre-packaged into individual functions are Jaccard Edge and Pearson Degree, that compute respectively the Jaccard coefficient of edges in the two layers and the Pearson correlation coefficient computed on the degrees of the vertices in the two layers.
+\begin{lstlisting}[style=c++]
+jaccard_edge(net.get(), l1, l2);
+
+pearson_degree(net.get(), l1, l2);
+\end{lstlisting}

@@ -1,0 +1,16 @@
+\chapter{Layout}
+
+The library does not provide functions to draw network diagrams. Some basic functions to do so are available in the R and Python versions.
+
+However, two functions are available in the \code{layout/} module to compute coordinates. The first, \code{multiforce}, is a force-based layout computing coordinates inside a frame width $\times$ length. The parameters are the intralayer forces (repelling different vertices, and attracting adjacent ones), the interlayer forces (aligning the same actor on different layers) and gravity (attracting vertices towards the center of the frame). The last parameter is the number of iterations.
+\begin{lstlisting}[style=c++]
+multiforce(net, 10, 10, 
+           w_intra, w_inter, gravity,
+           100
+);
+\end{lstlisting}
+
+A circular layout draw all the vertices in a circle of radius r:
+\begin{lstlisting}[style=c++]
+circular(net, r);
+\end{lstlisting}
