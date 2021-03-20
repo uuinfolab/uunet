@@ -35,12 +35,12 @@ TEST_F(net_measures_w_test, strength_sequence)
 TEST_F(net_measures_w_test, strength)
 {
     double s1 = uu::net::strength(g.get(), v1);
-    EXPECT_EQ(s1, 0);
+    EXPECT_DOUBLE_EQ(s1, 0);
 
     double s2 = uu::net::strength(g.get(), v2);
-    EXPECT_EQ(s2, .7);
+    EXPECT_DOUBLE_EQ(s2, .7);
 
     double s4 = uu::net::strength(g.get(), v4);
-    EXPECT_EQ(s4, 1.9);
+    EXPECT_DOUBLE_EQ(s4, 1.9);
 }
 
