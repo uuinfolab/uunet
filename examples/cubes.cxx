@@ -245,7 +245,8 @@ model_definition_example()
         
         for (size_t i = 0; i < 3; i++)
         {
-            std::cout << "day " << (i+1) << ": " << IE->cell({i})->size() << std::endl;
+            std::vector<size_t> idx = {i};
+            std::cout << "day " << (i+1) << ": " << IE->cell(idx)->size() << std::endl;
         }
         
     }
