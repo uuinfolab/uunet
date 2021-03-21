@@ -195,14 +195,15 @@ auto er = make_unique<ERModel<MultilayerNetwork>>(50);
 ev_model.push_back(pa.get());
 ev_model.push_back(er.get());
 \end{lstlisting}
-Finally, we have to specify how many evolution steps we want to run:
+Finally, we have to specify how many actors are available to grow this network, and how many evolution steps we want to run:
 \begin{lstlisting}[style=c++]
+size_t num_actors = 100;
 size_t num_of_steps = 100;
 \end{lstlisting}
     
 The function \code{evolve} takes all these parameters and lets the multilayer network grow. Assume that \code{ml} is a pointer to a multilayer network with two layers.
 \begin{lstlisting}[style=c++]
-evolve(ml, layer_names,
+evolve(ml, num_actors, layer_names,
        pr_internal_event, pr_external_event, 
        dependency, ev_model,
        num_of_steps);
