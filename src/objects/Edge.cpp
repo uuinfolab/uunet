@@ -32,19 +32,35 @@ Edge::
 to_string(
 ) const
 {
-    switch (dir)
+    if (c1 == c2)
     {
-    case EdgeDir::DIRECTED:
-        return "(" + v1->to_string() +
-               "@" + c1->to_string() +
-               " -> " + v2->to_string() +
-               "@" + c2->to_string() + ")";
+        switch (dir)
+        {
+        case EdgeDir::DIRECTED:
+            return "(" + v1->to_string() +
+                   " -> " + v2->to_string() + ")";
 
-    case EdgeDir::UNDIRECTED:
-        return "(" + v1->to_string() +
-               "@" + c1->to_string() +
-               " -- " + v2->to_string() +
-               "@" + c2->to_string() + ")";
+        case EdgeDir::UNDIRECTED:
+            return "(" + v1->to_string() +
+                   " -- " + v2->to_string() + ")";
+        }
+    }
+    else
+    {
+        switch (dir)
+        {
+        case EdgeDir::DIRECTED:
+            return "(" + v1->to_string() +
+                   "@" + c1->to_string() +
+                   " -> " + v2->to_string() +
+                   "@" + c2->to_string() + ")";
+
+        case EdgeDir::UNDIRECTED:
+            return "(" + v1->to_string() +
+                   "@" + c1->to_string() +
+                   " -- " + v2->to_string() +
+                   "@" + c2->to_string() + ")";
+        }
     }
 }
 

@@ -21,10 +21,6 @@ TEST(net_creation_test, evolution)
     auto ml = std::make_unique<uu::net::MultilayerNetwork>("ml");
     auto l1 = ml->layers()->add("l1", und, loops);
     auto l2 = ml->layers()->add("l2", und, loops);
-    for (auto actor: uu::core::NameIterator("A", 100))
-    {
-        ml->actors()->add(actor);
-    }
     
     
     std::vector<std::string> layer_names = {"l1", "l2"};
@@ -38,7 +34,7 @@ TEST(net_creation_test, evolution)
     evolution_model.push_back(er.get());
     long num_of_steps = 50;
     
-    evolve(ml.get(), layer_names, pr_internal_event, pr_external_event,
+    evolve(ml.get(), 100, layer_names, pr_internal_event, pr_external_event,
            dependency, evolution_model,  num_of_steps);
     
     // this is stochastic, so not much we can test

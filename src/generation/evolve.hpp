@@ -26,6 +26,7 @@ namespace net {
 /**
  * @brief Grows the input multilayer network.
  * @param net MLNetwork to grow
+ * @param num_actors number of available actors to populate the network
  * @param num_of_steps number of evolution steps
  * @param pr_no_event[] for each layer, the probability that during an evolution step the layer does not change
  * @param pr_internal_event[] for each layer, the probability that if something happens it is an internal evolution according to the evolution_model[] parameter
@@ -36,12 +37,13 @@ template <typename M>
 void
 evolve(
     M* net,
+    size_t num_actors,
     const std::vector<std::string>& layer_names,
     const std::vector<double>& pr_internal_event,
     const std::vector<double>& pr_external_event,
     const std::vector<std::vector<double>>& dependency,
     const std::vector<EvolutionModel<M>*>& evolution_model,
-    long num_of_steps
+    size_t num_of_steps
 );
 
 

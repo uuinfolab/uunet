@@ -121,7 +121,7 @@ model_definition_example()
         for (auto v: *g->vertices()) std::cout << v->name << " ";
         std::cout << "}" << std::endl;
         std::cout << "E: { ";
-        for (auto e: *g->edges()) std::cout << "(" << e->v1->name << "-" << e->v2->name << ") ";
+        for (auto e: *g->edges()) std::cout << (*e) << " ";
         std::cout << "}" << std::endl;
         std::cout << std::endl;
     }
@@ -153,7 +153,7 @@ model_definition_example()
         for (std::string edge_type: E->members("rel-type"))
         {
             std::cout << "E (" << edge_type << "): { ";
-            for (auto e: *E->cell({edge_type})) std::cout << "(" << e->v1->name << "-" << e->v2->name << ") ";
+            for (auto e: *E->cell({edge_type})) std::cout << (*e) << " ";
             std::cout << "}" << std::endl;
         }
         std::cout << std::endl;
@@ -205,7 +205,7 @@ model_definition_example()
         for (auto E: edges)
         {
             std::cout << "E (" << E->name << "): { ";
-            for (auto e: *E) std::cout << "(" << e->v1->name << "-" << e->v2->name << ") ";
+            for (auto e: *E) std::cout << (*e) << " ";
             std::cout << "}" << std::endl;
         }
         std::cout << std::endl;
@@ -221,9 +221,7 @@ model_definition_example()
         auto e3 = IE->add(mirka2, offline.get(), bob2, facebook.get());
 
         std::cout << "Interlayer edges: {";
-        for (auto e: *IE)
-            std::cout << "(" << e->v1->name << "@" << e->c1->name << "-"
-                                                << e->v2->name << "@" << e->c2->name << ") ";
+        for (auto e: *IE) std::cout << (*e) << " ";
         std::cout << "}" << std::endl;
         std::cout << std::endl;
         
