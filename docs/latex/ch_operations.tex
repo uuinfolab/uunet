@@ -1,14 +1,14 @@
-\chapter{Operations}
+\chapter{Operations} \label{ch:operations}
 
 The \code{operations/} module contains functions to manipulate networks.
     
 \section{Simple graph operations}
 
-The library supports the basic graph operations from graph theory.
+The library supports basic operations from graph theory.
 
 \subsection{Graph induction}
 
-A first type of operations is graph induction. The definitions and corresponding library functions follow.
+A first type of operations is graph induction. The definitions and corresponding library functions follow. Notice that the following functions return unique pointers to \code{Network}s.
 
 \begin{definition}[Vertex-induced subgraph]
 Let $G = (V, E)$ and $V' \subseteq V$. The vertex-induced subgraph $G_{|V'} = (V', E')$ where $ E' = \{ (u,v) \ | \ u, v  \in V' \}$.
@@ -16,15 +16,19 @@ Let $G = (V, E)$ and $V' \subseteq V$. The vertex-induced subgraph $G_{|V'} = (V
 
 \begin{lstlisting}[style=c++]
 std::vector<const Vertex*> vs1 = {v2, v4, v5};
-auto g_sub1 = vertex_induced_subgraph(g.get(), vs1.begin(), vs1.end());
+auto g_sub1 = vertex_induced_subgraph(g.get(), 
+                        vs1.begin(), vs1.end());
     
 std::vector<const Vertex*> vs2 = {v4, v5, v6};
-auto g_sub2 = vertex_induced_subgraph(g.get(), vs2.begin(), vs2.end());
+auto g_sub2 = vertex_induced_subgraph(g.get(), 
+                        vs2.begin(), vs2.end());
 \end{lstlisting}
 
 \begin{definition}[Edge-induced subgraph]
 Let $G = (V, E)$ and $E' \subseteq E$. The vertex-induced subgraph $G_{|E'} = (V', E')$ where $ V' = \{ v \ | \ e  \in E' \land v \mbox{ is an end-vertex of } e \}$.
 \end{definition}
+
+Edge-induced subgraphs can be obtained using the function \code{edge\_induced\_subgraph()}.
 
 \subsection{Vertex-set operations}
 
@@ -37,7 +41,7 @@ Let $G_1 = (V1, E1)$ and $G_2 = (V2, E2)$ be two graphs. Then $G_1 \cup G_2 = (V
 Please notice that according to this definition and in a setting where edges have identities, in general the union of two simple graphs can be a multigraph.
 
 \begin{lstlisting}[style=c++]
-auto g_union = graph_union(g_sub1.get(), g_sub2.get());
+graph_union(g_sub1.get(), g_sub2.get());
 \end{lstlisting}
 
 \begin{definition}[Intersection]
@@ -45,7 +49,7 @@ Let $G_1 = (V1, E1)$ and $G_2 = (V2, E2)$ be two graphs. Then $G_1 \cap G_2 = (V
 \end{definition}
 
 \begin{lstlisting}[style=c++]
-auto g_intersection = graph_intersection(g_sub1.get(), g_sub2.get());
+graph_intersection(g_sub1.get(), g_sub2.get());
 \end{lstlisting}
 
 \begin{definition}[Complement]
@@ -55,12 +59,12 @@ Let $G = (V, E)$. Then $\overline{G} = (V, E')$ where $ E' = \{ (u,v) \ | \ u, v
 This definition adapts to the type of graph: it is appropriate for digraphs and also in case of loops.
 
 \begin{lstlisting}[style=c++]
-auto g_complement = graph_complement(g_sub1.get());
+graph_complement(g_sub1.get());
 \end{lstlisting}
 
 \subsection{Edge operations}
 
-A third type of operations manipulates edges. We can divide an edge, adding a new vertex in between:
+A third type of operations manipulate edges. We can divide an edge, adding a new vertex in between:
 
 \begin{lstlisting}[style=c++]
 auto v10 = edge_subdivision(g.get(), e7, "v10");
@@ -68,14 +72,14 @@ auto e8 = g->edges()->get(v8, v10);
 auto e9 = g->edges()->get(v10, v9);
 \end{lstlisting}
 
-And we can replace an edge with a vertex:    
+And we can replace an edge with a new vertex:    
 \begin{lstlisting}[style=c++]
 edge_contraction(g.get(), e9, "v11");
 \end{lstlisting}
     
 \section{Flattening and projection}
 
-Flattening adds the edges from a number of layers to a target network/layer. For example, assume that \code{net} contains two layers, \code{l1} and \code{l2}. We can add a new layer \code{lf1} and add to it all edges in either \code{l1} or \code{l2} as follows:
+Flattening adds the edges from a number of layers to a target network/layer. For example, assume that \code{net} contains two layers, \code{l1} and \code{l2}. We can add a new layer \code{lf1} and add all edges in either \code{l1} or \code{l2} to it as follows:
 \begin{lstlisting}[style=c++]
 auto l = {l1, l2};
 auto lf1 = net->layers()->add("flat");

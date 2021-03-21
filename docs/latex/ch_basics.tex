@@ -20,7 +20,7 @@ auto edge1 = make_shared<Edge>(v1.get(), v2.get(), dir);
 auto edge2 = make_shared<Edge>(v1.get(), v2.get(), dir);
 \end{lstlisting}
 
-\noindent creates the c++ objects in Figure~\ref{fig:vertices_edges-physical}. There are two Vertex objects and two Edge objects, where *v1 != *v2 even if they have the same name, and *edge1 != *edge2 even if they connect the same vertices.
+\noindent creates the C++ objects in Figure~\ref{fig:vertices_edges-physical}. There are two Vertex objects and two Edge objects, where *v1 != *v2 even if they have the same name, and *edge1 != *edge2 even if they connect the same vertices.
 These C++ objects correspond to the logical graph in Figure~\ref{fig:vertices_edges_logical}.
 
 \begin{figure}
@@ -41,11 +41,11 @@ These C++ objects correspond to the logical graph in Figure~\ref{fig:vertices_ed
 \label{fig:vertices_edges}
 \end{figure}
 
-In uunet, vertices and edges may be included in a graph. A graph:
+In uunet, vertices and edges may be included in a graph, where a graph:
 \begin{itemize}
-    \item Guarantees ownership, that is, vertices and edges will keep existing at least until when they are inside a graph.
-    \item Allows to associate attributes to vertices and edges, that are local to the graph.
-    \item Can create new vertices and edges.
+    \item guarantees ownership, that is, vertices and edges will keep existing at least until when they are inside some graph,
+    \item allows to associate attributes to vertices and edges, that are local to the graph, and
+    \item can create new vertices and edges.
 \end{itemize}
 
 \begin{figure}
@@ -97,6 +97,7 @@ We say that:
     \item $e_1$ is \emph{incident} to $v_2$ and $v_4$.
 \end{itemize}
 
+In the following we show the corresponding code in \code{uunet}.
 \begin{lstlisting}[style=c++] 
 cout << "End-vertices of e1: "
     << e1->v1->name << ", " << e1->v2->name 
@@ -133,20 +134,7 @@ Edges incident to v4:
 (v2 -- v4) (v3 -- v4) (v4 -- v5) (v4 -- v6) 
 \end{lstlisting}
 
-\begin{definition}[Loop]
-A loop is an edge with the same end-vertices. 
-\end{definition}
 
-\begin{definition}[Multiple edge]
-Multiple edges are edges with the same pair of end-vertices.
-\end{definition}
-
-In uunet, a Network only allows simple edges, while a MultiNetwork allows multiple edges. Both Network and MultiNetwork may allow or not loops, as specified when they are created.
-
-\begin{lstlisting}[style=c++]
-auto simple = make_unique<Network>("g", dir, false);
-auto multi = make_unique<MultiNetwork>("g", dir, true);
-\end{lstlisting}
 
 %\section{Special types of graphs}
 

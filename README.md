@@ -4,6 +4,11 @@ This repository contains C++ code for the analysis and mining of networks produc
 Uppsala University Information Laboratory (InfoLab, https://infolab.it.uu.se). _uunet_ provides most
 of the code behind the R and Python _multinet_ libraries.
 
+If you are interested in using the C++ library, please consider that this is research software: major changes
+can happen for example when the underlying theory is developed. While we try not to modify the interface of
+the library if not deemed necessary, our main effort to provide a stable interface goes into the R and Python
+versions.
+
 ## Requirements
 
 To install, use and modify the library you need:
@@ -53,7 +58,8 @@ make
 
 An overview of the library is available under `docs/` as a pdf file. Its latex source is also available.
 
-All classes, functions, etc. are documented inside the .hpp files. This documentation can be compiled into an API reference listing all types and functions using Doxygen. To produce the API reference documentation, use the option `-DDOXY=On`:
+All classes, functions, etc. are documented inside the .hpp files. This documentation can be compiled into an API reference listing all types and functions using Doxygen. To produce the API reference documentation, use the 
+option `-DDOXY=On`:
 
 ```
 cmake .. -DDOXY=On
@@ -80,15 +86,18 @@ make examples
 # ...
 ```
 
-[Unit Tests](test/) also provide small code snippets used to test most of the features of the library, so they can
+[Unit Tests](test/) also provide small code snippets used to test most of the features of the library, which can
 also be used as documentation.
 
 
 ## Contribute
 
-The `master` branch contains more stable code, mainly updated when new versions of the R and Python
+The `master` branch contains the most stable code, mainly updated when new versions of the R and Python
 libraries are released and when new research articles using the library are submitted. The `master` branch is
-updated by the administrators from the `development` branch. Please 
+updated by the administrators from the `development` branch. 
+
+To contribute to the library, please start from `development` and open a pull request when your update is ready
+to be merged. 
 
 ## Contact
 

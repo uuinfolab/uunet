@@ -1,4 +1,4 @@
-\chapter{Measures}
+\chapter{Measures} \label{ch:measures}
 
 \section{Degree-based measures}
 
@@ -7,6 +7,8 @@
 \begin{definition}[Degree]
 The degree of a vertex $v$ in a graph $G$, notated $\mathrm{deg}(v)$, is the number of edges incident to $v$ in $G$\footnote{Loops are counted twice.}. 
 \end{definition}
+
+In \code{uunet} we have the following degree-based functions.
 
 \begin{lstlisting}[style=c++] 
 for (auto v: *g->vertices())
@@ -77,8 +79,9 @@ exp_degree(g.get(), v1);
 
 \subsection{Multilayer degree}
 
-Degree in multilayer networks is computed in the same way as in single networks, where the degrees of a vertex in all the input layers are added:
+Degree in multilayer networks is computed in the same way as in single networks, where the degrees of an actor in all the input layers are added together:
 \begin{lstlisting}[style=c++] 
+auto l = net->layers();
 size_t degree = degree(l.begin(), l.end(), v2);
 \end{lstlisting}
 
@@ -89,12 +92,12 @@ double dd = degree_deviation(l.begin(), l.end(), v2);
 
 \subsection{Neighborhood}
 
-Degree counts the same neighbors multiple times if it is a neighbor in all layers. Instead, we can extract the distinct neighbors of a vertex, that are the vertices adjacent to it in any of the input layers:
+The multilayer degree function counts the same neighbor multiple times if it is a neighbor in more than one layer. Instead, we can extract the distinct neighbors of an actor, that are the actors adjacent to it in any of the input layers:
 \begin{lstlisting}[style=c++] 
 neighbors(net->layers()->begin(), net->layers()->end(), v1);
 \end{lstlisting}
 
-Exclusive neighbors are instead those which are neighbors in the input layers but not in the other layers in the network.
+Exclusive neighbors are instead those which are neighbors in the input layers but not in the other layers in the network. Notice that in this case we also have to pass a pointer to the multilayer network.
 \begin{lstlisting}[style=c++] 
 vector<const Network*> l = {l1};
 xneighbors(net.get(), l.begin(), l.end(), v2);
@@ -109,7 +112,7 @@ The distance between two vertices can be computed on single and multilayer netwo
 single_source_path_length(g, v2)
 \end{lstlisting}
 
-While for multilayer networks we can compute the generalized pareto distance:
+While for multilayer networks we can compute a generalized pareto distance:
 \begin{lstlisting}[style=c++] 
 pareto_distance(net.get(), v1);
 \end{lstlisting}
@@ -141,13 +144,13 @@ C_b[v4]; // Betweenness of vertex v4
 
 \section{Layer relevance}
 
-The percentage of a vertex's neighbors that are present in a subset of the layers is called layer relevance, and is computed as follows:
+The fraction of an actor's neighbors that are present in a subset of the layers is called layer relevance for the actor, and is computed as follows:
 \begin{lstlisting}[style=c++]
 vector<const Network*> l = {l1};
 relevance(net.get(), l.begin(), l.end(), v1);
 \end{lstlisting}
 
-The percentage of a vertex's neighbors that are present in a subset of the layers but not in the others is called exclusive layer relevance, and is computed as follows:
+The fraction of an actor's neighbors that are present in a subset of the layers but not in the others is called exclusive layer relevance, and is computed as follows:
 \begin{lstlisting}[style=c++]
 vector<const Network*> l = {l1};
 xrelevance(net.get(), l.begin(), l.end(), v1);
@@ -155,7 +158,7 @@ xrelevance(net.get(), l.begin(), l.end(), v1);
 
 \section{Layer comparison}
 
-Using property matrices we can define several functions to compare layers. Two that are pre-packaged into individual functions are Jaccard Edge and Pearson Degree, that compute respectively the Jaccard coefficient of edges in the two layers and the Pearson correlation coefficient computed on the degrees of the vertices in the two layers.
+Using property matrices we can define several functions to compare layers. Two that are pre-packaged into individual functions are Jaccard Edge and Pearson Degree, computing respectively the Jaccard coefficient of edges in the two layers and the Pearson correlation coefficient computed on the degrees of the actors in the two layers.
 \begin{lstlisting}[style=c++]
 jaccard_edge(net.get(), l1, l2);
 

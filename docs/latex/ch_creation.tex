@@ -1,4 +1,4 @@
-\chapter{Creating networks}
+\chapter{Creating networks} \label{ch:creation}
 
 Networks can be created in multiple ways: manually, that is, individually adding vertices and edges as seen above, or calling functions which create standard types of graphs, or using input/output functions, or using network generation models. All these (apart from manual creation) are reviewed in this chapter.
 
@@ -6,6 +6,7 @@ Networks can be created in multiple ways: manually, that is, individually adding
 
 The following pre-defined graphs can be created. The corresponding networks are shown in Figure \ref{fig:notable}.
 \begin{lstlisting}[style=c++] 
+#include "generation/standard_graphs.hpp"
 auto n_5 = null_graph(5);
 auto p_5 = path_graph(5);
 auto c_5 = cycle_graph(5);
@@ -60,7 +61,7 @@ auto k_3_2 = complete_bipartite_graph(3, 2);
 
 
 
-\section{I/O}
+\section{I/O}  \label{ch:io}
 
 The general syntax to read a network from file is the following:
 
@@ -88,22 +89,19 @@ v1,v3,4
 v2,v1,3            
 v1,v4,4.2          
 \end{lstlisting}
-    
 By default edges are undirected, so if no attributes are present the following is also a valid input file:
 \begin{lstlisting}[style=file]
 v1,v2              
 v1,v3              
 v1,v4              
 \end{lstlisting}
-
 Under \#TYPE we can also specify whether the network is weighted:
 \begin{lstlisting}[style=file]  
 #TYPE              
 directed           
 weighted    
 \end{lstlisting}        
-           
-If the network is weighted, then the first attribute must be the weight:
+If the network is weighted, then the first attribute value for edges must be the weight:
 \begin{lstlisting}[style=file]         
 #EDGES             
 v1,v2,143,2.3      
@@ -112,7 +110,7 @@ v2,v1,14,3
 v1,v4,10,4.2       
 \end{lstlisting}
     
-Multilayer networks allows to specify the features of each layer, and also differentiate between actors and vertices:
+Multilayer networks allow to specify the features of each layer, and also differentiate between actors and vertices:
 \begin{lstlisting}[style=file]
 #TYPE                
 multilayer           
@@ -168,7 +166,7 @@ l1,v1,v5,2,8
 
 \emph{Note: after the introduction of cubes we may define a new input format that allows more flexibility, without breaking backward compatibility. Working on it.}
 
-\section{Generation}
+\section{Generation}  \label{ch:generation}
 
 Three types of network generation approaches are currently available. ER models for simple graphs, multilayer network co-evolution, and multilayer community-based.
 
@@ -182,14 +180,13 @@ auto er_nm = erdos_renyi_nm(10, 4);
 
 \subsection{Multilayer network coevolution}
 
-Multilayer networks can be generated using a co-evolutionary model where, for every layer, we specify the probability that the layer evolves according do internal dynamics or importing an edge from another layer. A dependency matrix is used to specify from which other layers the edge can be imported, and with which probability.
+Multilayer networks can be generated using a co-evolutionary model where, for every layer, we specify the probability that the layer evolves according to internal dynamics or importing an edge from another layer. A dependency matrix is used to specify from which other layers the edge can be imported, and with which probability.
 \begin{lstlisting}[style=c++]
 vector<string> layer_names = {"l1", "l2"};
 vector<double> pr_internal_event = {.8, .5};
 vector<double> pr_external_event = {0, .5};
 vector<vector<double>> dependency = {{0, 1}, {1, 0}};
 \end{lstlisting}
-
 The internal evolution dynamic is specified in the form of an evolution model, either connecting vertices uniformly at random (\code{ERModel}) or using preferential attachment (\code{PAModel}).
 \begin{lstlisting}[style=c++]
 vector<EvolutionModel<MultilayerNetwork>*> ev_model;
@@ -198,15 +195,14 @@ auto er = make_unique<ERModel<MultilayerNetwork>>(50);
 ev_model.push_back(pa.get());
 ev_model.push_back(er.get());
 \end{lstlisting}
-
 Finally, we have to specify how many evolution steps we want to run:
 \begin{lstlisting}[style=c++]
 size_t num_of_steps = 100;
 \end{lstlisting}
     
-The function \code{evolve} takes all these parameters and let the multilayer network grow:
+The function \code{evolve} takes all these parameters and lets the multilayer network grow. Assume that \code{ml} is a pointer to a multilayer network with two layers.
 \begin{lstlisting}[style=c++]
-evolve(ml.get(), layer_names,
+evolve(ml, layer_names,
        pr_internal_event, pr_external_event, 
        dependency, ev_model,
        num_of_steps);
@@ -214,7 +210,7 @@ evolve(ml.get(), layer_names,
 
 \subsection{Community-based}
 
-The last way to obtain a multilayer network is by passing a community structure as input (see Chapter \ref{ch:comm}) specifying the the probability for two vertices of being adjacent if they are inside the same community or in different communities, for each layer.
+The last way to obtain a multilayer network is by passing a pointer to a community structure as input (see Chapter \ref{ch:community}) specifying the the probability for two vertices of being adjacent if they are inside the same community or in different communities, for each layer. 
 \begin{lstlisting}[style=c++]
-sample(cml.get(), com.get(), {.5, .5}, {.01, .01});
+sample(ml, com, {.5, .5}, {.01, .01});
 \end{lstlisting}

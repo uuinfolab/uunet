@@ -1,6 +1,6 @@
-\chapter{The OLAP module (cubes)}
+\chapter{The OLAP module (cubes)} \label{ch:olap}
 
-A graph is a pair $(V,E)$ where $V$ is a set of vertices and $E$ is a set of edges. The uunet library is built around multilayer cubes, that are generalizations of vertex and edge sets allowing us to extend graphs into more complex data structures. In particular, a multilayer cube provides three sets of capabilities: handling a set of objects (creation, retrieval and deletion), storing attributes, and creating an internal structure to organize the objects into overlapping subsets (also known as \emph{cells}, or \emph{layers} in the multilayer network terminology, and also related to \emph{facts} in data warehousing). Assembling different combinations of cubes allows the creation of several types of models for interconnected data, from simple graphs to general multilayer networks.
+A graph is a pair $(V,E)$ where $V$ is a set of vertices and $E$ is a set of edges. The uunet library is built around multilayer cubes, that are generalizations of vertex and edge sets allowing us to extend graphs into more complex data structures. In particular, a multilayer cube provides three sets of capabilities: handling a set of objects (creation, retrieval and deletion), storing attributes, and creating an internal structure to organize the objects into overlapping subsets (also known as \emph{cells}, or \emph{layers} in the multilayer network terminology, and also related to \emph{facts} in data warehousing). Assembling different combinations of cubes allows the creation of several types of meta models for interconnected data, from simple graphs to general multilayer networks and beyond.
 
 
 \section{Vertex Cubes}
@@ -33,14 +33,14 @@ V->add(v2.get()); // v2.get()
 
 \subsection{Handling attributes}
 
-Second, a VCube allows us to associate attributes to its vertices. This allows us to define vertices in attributes graphs. Here we create an attribute $a1$ of type double and set/get a value for vertex v2:
+Second, a VCube allows us to associate attributes to its vertices. This allows us to define vertices in attributed graphs. Here we create an attribute $a1$ of type double and set/get a value for vertex v2:
 \begin{lstlisting}[style=c++]
 auto attr = V->attr(); // AttributeStore<Vertex>*
 attr->add("a1", AttributeType::DOUBLE); 
 attr->set_double(v2, "a1", 3.14);
 attr->get_double(v2, "a1"); // Value<double>
 \end{lstlisting}
-The result of \code{get\_double()} has two fields: \code{null} and \code{value}. If \code{null} is \code{false}, value contains the attribute value (in this example, 3.14). One can create attributes of basic type \code{INTEGER}, \code{DOUBLE}, \code{STRING}, \code{TIME}, and \code{TEXT}. In addition, we can also create set attributes, where multiple values can be associated to the same vertex, using types \code{INTEGERSET}, \code{DOUBLESET}, \code{STRINGSET}, and \code{TIMESET}.
+The result of \code{get\_double()} has two fields: \code{null} and \code{value}. If \code{null} is \code{false}, \code{value} contains the attribute value (in this example, 3.14). One can create attributes of basic type \code{INTEGER}, \code{DOUBLE}, \code{STRING}, \code{TIME}, and \code{TEXT}. In addition, we can also create set attributes, where multiple values can be associated to the same vertex, using types \code{INTEGERSET}, \code{DOUBLESET}, \code{STRINGSET}, and \code{TIMESET}.
 \begin{lstlisting}[style=c++]
 attr->add("a2", AttributeType::TIMESET); 
 attr->add_time(v2, "a2", epoch_to_time("3667"));
@@ -84,7 +84,7 @@ V->cell(index)->size(); // 4 (i.e., v2, v3, v4, v5)
 V->erase(v5); // true (erased from all cells)
 V->cell(index)->size(); // 3 (i.e., v2, v3, v4)
 \end{lstlisting}
-When a cube has more than one cell, the internal implementation of the cube keeps a pointer to a vertex for each cell where it belongs, plus one pointer for the whole cube. If the cube only has one cell (independently of its dimensionality) or no cells then there is no duplication.
+When a cube has more than one cell, the internal implementation of the cube keeps a pointer to a vertex for each cell where it belongs, plus one pointer for the whole cube. If the cube only has one cell (independently of its dimensionality) or no cells then there is no duplication of pointers.
 
 \section{Edge Cubes}
 
@@ -103,14 +103,14 @@ auto E = make_unique<ECube>("E", vc1, vc2, d, nl);
 \end{lstlisting}
 Notice that loops are possible only if the two end VCubes are the same, so disallowing loops is not really needed in the example above.
 
-Now we can use the cube to store edges, as we did with vertices. Here we only show the set functionality, to demonstrate how to add new edges. 
+Now we can use the cube to store edges, as we did with vertices. Here we exemplify set functionality, to demonstrate how to add new edges. 
 
 First we have to add some vertices. In this example, we add the same vertex to both end VCubes:
 \begin{lstlisting}[style=c++]
 auto v1 = vc1->add("v1");
 vc2->add(v1);
 \end{lstlisting}
-Then we can connect these vertices with an edge. We also exemplify the set-based functions:
+Then we can connect these vertices with an edge. We also exemplify the other set-based functions:
 \begin{lstlisting}[style=c++]
 auto e1 = E->add(v1, vc1, v1, vc2);
 E->size(); // 1

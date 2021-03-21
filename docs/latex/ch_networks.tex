@@ -1,4 +1,4 @@
-\chapter{Networks}
+\chapter{Networks} \label{ch:networks}
 
 As we have seen in the previous chapter, \code{uunet} defines some basic types of network models, that are reviewed in more detail in Section \ref{ch:nets:basic}. Using cubes, more general custom models can be defined, as shown in Section \ref{ch:nets:cubes}.
 
@@ -7,6 +7,11 @@ As we have seen in the previous chapter, \code{uunet} defines some basic types o
 \subsection{Basic networks}
 
 The four main combinations defining the types of allowed edges are obtained by specifying edge directionality, and whether a network allows loops.
+
+\begin{definition}[Loop]
+A loop is an edge with the same end-vertices. 
+\end{definition}
+
 \begin{lstlisting}[style=c++]
 auto dir = EdgeDir::UNDIRECTED;
 auto und = EdgeDir::UNDIRECTED;
@@ -23,12 +28,11 @@ auto e = g->edges()->add(v1, v2); // new edge
 g->edges()->contains(v2, v1); // true
 // g->edges()->add(v1, v1); // throws exception
 \end{lstlisting}
-A network also allows to add attributes to its vertices and edges: the \code{attr} functions return attribute stores (see Section \ref{ch:core:attr}):
+A network also allows to add attributes to its vertices and edges: the \code{attr} functions return pointers to \code{AttributeStore}s (see Section \ref{ch:core:attr} for the list of attribute handling functions provided by \code{AttributeStore}s):
 \begin{lstlisting}[style=c++]
 g->vertices()->attr();
 g->edges()->attr();
 \end{lstlisting}
-
 The following examples create a directed network allowing loops:
 \begin{lstlisting}[style=c++]
 auto g2 = make_unique<Network>("g", dir, loops);
@@ -39,7 +43,16 @@ g2->edges()->add(v1, v2); // return nullptr
 g2->edges()->contains(v2, v1); // false
 g2->edges()->add(v1, v1);
 \end{lstlisting}
-and a directed network allowing loops and multi-edges. Notice that a \code{MultiNetwork} has a different interface: the function \code{edges()->get()} returns a container of edges, not a single edge.
+In \code{uunet}, a Network only allows simple edges, while a MultiNetwork allows multiple edges. 
+\begin{definition}[Multiple edge]
+Multiple edges are edges with the same pair of end-vertices.
+\end{definition}
+Both Network and MultiNetwork may allow or not loops, as specified when they are created.
+\begin{lstlisting}[style=c++]
+auto simple = make_unique<Network>("g", dir, false);
+auto multi = make_unique<MultiNetwork>("g", dir, true);
+\end{lstlisting}
+Notice that a \code{MultiNetwork} has a different interface: the function \code{edges()->get()} returns a container of edges, not a single edge.
 \begin{lstlisting}[style=c++]
 auto mg = make_unique<MultiNetwork>("g", dir, loops);
 mg->vertices()->add(v1);
@@ -70,7 +83,7 @@ set_prob(g.get(), e, .14);
 get_prob(g.get(), e); // .14
 \end{lstlisting}
 
-In a temporal network, multiple times can be associated to the same edge. For example, if we define the following times:
+In a temporal network, multiple timestamps can be associated to the same edge. For example, if we define the following times:
 \begin{lstlisting}[style=c++]
 auto t1 = uu::core::epoch_to_time(17438);
 auto t2 = uu::core::epoch_to_time(17468);
@@ -97,19 +110,20 @@ auto l2 = mnet->layers()->add("l2", und, no_loops);
 \code{l1} and \code{l2} are of type Network*, so we can use them as seen above. However, one should be careful when adding vertices to them if we want to have the same vertices in different layers:
 \begin{lstlisting}[style=c++]
 l1->vertices()->add(v1); // adding existing vertex v1
-l2->vertices()->add(v1);
+l2->vertices()->add(v1); // adding existing vertex v1
 \end{lstlisting}
-The command \code{l2->vertices()->add("v1")} would create and add a different vertex.
+The command \code{l2->vertices()->add("v1")} would instead create and add a different vertex.
 
 The set of distinct vertices in a multilayer network are called actors:
 \begin{lstlisting}[style=c++]
 mnet->actors(); // {v1}, only one actor so far
 \end{lstlisting}
 
-In addition, a multilayer network allows us to add interlayer edges. Before adding edges between two layers, we have to initialize that pair. The following example adds a directed edge between v1 in layer l1 and v1 in layer l2.
+In addition, a multilayer network allows us to add interlayer edges. Before adding edges between two layers, we have to initialize that pair. The following example initializes the pair of layers \code{l1,l2}, specifying that interlayer edges between these layers are directed, and adds two directed edge between \code{v11} in layer \code{l1} and \code{v1} in layer \code{l2}.
 \begin{lstlisting}[style=c++]
 mnet->interlayer_edges()->init(l1, l2, dir); 
 mnet->interlayer_edges()->add(v1, l1, v1, l2);
+mnet->interlayer_edges()->add(v1, l2, v1, l1);
 \end{lstlisting}
 
 

@@ -1,6 +1,7 @@
-\chapter{Community detection} \label{ch:comm}
+\chapter{Community detection} \label{ch:community}
 
-The \code{community/} module provides three types of functionality: data structures to represent communities, community detection algorithms and evaluation functions.
+The \code{community/} module provides data structures to represent communities, community detection algorithms, and evaluation functions.
+Functions to read and write communities from/to file are in \code{io/}. 
 
 \section{Data structures}
 
@@ -42,7 +43,7 @@ ml_c->add(ml_v1);
 ml_c->add(ml_v2);
 \end{lstlisting}
 
-In general, one would not manually create communities, but obtain them using community detection algorithms.
+In general, one does not manually create communities, but obtains them using community detection algorithms.
 
 \section{Algorithms}
 
@@ -51,8 +52,7 @@ The library provides two community detection algorithms for single networks:
 auto comm1 = label_propagation(net.get());
 auto comm2 = louvain(net.get());
 \end{lstlisting}
-    
-and five algorithms for multilayer networks.
+    and five algorithms for multilayer networks.
 \begin{lstlisting}[style=c++]
 auto mlcomm1 = mlcpm(mlnet.get(), 3, 1);
 auto mlcomm2 = abacus(mlnet.get(), 3, 1);
@@ -74,9 +74,9 @@ The library also provides a function to compute multilayer modularity:
 modularity(mlnet.get(), mlcomm3.get(), 1.0);
 \end{lstlisting}
 
-\section{I/O}
+\section{I/O} \label{ch:community:io}
 
-If one needs to compare communities found by an algorithm with some ground truth, then it can be useful to read communities from a file. The format for multilayer communities requires the name of the actor, the name of the layer and the community id, starting from 0.
+If one needs to compare communities found by an algorithm against some ground truth, then it can be useful to read communities from a file. The format for multilayer communities requires the name of the actor, the name of the layer and the community id, starting from $0$.
 
 \begin{lstlisting}[style=file]
 vertex_name1,layer_name1,0
@@ -88,7 +88,8 @@ vertex_name1,layer_name2,1
 
 The \code{io/} module provides functions to read and write community files. Notice that the second parameter of the reading function is a multilayer network, so that the names of actors and layers can be matched with those in the network.
 \begin{lstlisting}[style=c++]
-read_multilayer_communities("com.txt", cml.get());
+read_multilayer_communities("com.txt", ml_net.get());
 
 write_multilayer_communities(communities.get(), fname);
 \end{lstlisting}
+The \code{read\_multilayer\_communities()} function returns a unique pointer to a community structure.
