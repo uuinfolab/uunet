@@ -48,7 +48,7 @@ order_degrees_pearson(
     }
 
     // Parameters for the simulated annealing algorithm
-    size_t k_max = 4 * l * (size_t) ceil(pow(log(n), 2) * sqrt(n));
+    size_t k_max = 4 * l * n;
     double T_0 = n;
     double beta = 0.1;
 
