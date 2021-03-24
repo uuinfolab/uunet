@@ -114,7 +114,8 @@ class DegreesOfFreedom
 
         for (size_t i = 0; i < n; i++)
         {
-            df_[i] = (deg_seq[i] == 0) ? kMAX_ : available_stubs - remaining_stubs[i] - (deg_seq[i] > 0);
+            size_t cn_count = available_stubs - (deg_seq[i] > 0); // candidate nodes count
+            df_[i] = (deg_seq[i] == 0) ? kMAX_ : cn_count - std::min(remaining_stubs[i], cn_count);
         }
     };
 
@@ -123,7 +124,7 @@ class DegreesOfFreedom
         size_t ind
     )
     {
-        if (df_[ind] == kMAX_)
+        if (df_[ind] == kMAX_ || df_[ind] == 0)
         {
             return df_[ind];
         }
@@ -203,6 +204,12 @@ class DegreesOfFreedom
     {
         current_min_ = *std::min_element(df_.begin(), df_.end());
 
+        if (current_min_ == kMAX_)
+        {
+            candidates_ = std::set<size_t>();
+            return;
+        }
+
         for (size_t i = 0; i < df_.size(); i++)
         {
             if (df_[i] == current_min_)
@@ -237,6 +244,30 @@ DegreesOfFreedom::getCandidatesDirectedGraph(
 };
 
 void
+eliminate_node
+(
+    size_t v_ind,
+    std::set<size_t> &v_forbidden_nodes,
+    std::set<size_t> &left_nodes,
+    std::set<size_t> &left_nodes_impacted,
+    DegreesOfFreedom &v_df,
+    DegreesOfFreedom &impacted_df
+)
+{
+    v_df.setToMax(v_ind);
+    left_nodes.erase(v_ind);
+    std::vector<size_t> impacted_ind;
+    std::set_difference(left_nodes_impacted.begin(), left_nodes_impacted.end(),
+                        v_forbidden_nodes.begin(), v_forbidden_nodes.end(),
+                        std::back_inserter(impacted_ind));
+
+    for (auto ind : impacted_ind)
+    {
+        impacted_df.decrease(ind);
+    }
+}
+
+void
 decrease_degree(
     size_t v_ind,
     size_t peer_ind,
@@ -253,17 +284,7 @@ decrease_degree(
 
     if (left_stubs[v_ind] == 0)
     {
-        v_df.setToMax(v_ind);
-        left_nodes.erase(v_ind);
-        std::vector<size_t> impacted_ind;
-        std::set_difference(left_nodes_impacted.begin(), left_nodes_impacted.end(),
-                            v_forbidden_nodes.begin(), v_forbidden_nodes.end(),
-                            std::back_inserter(impacted_ind));
-
-        for (auto ind : impacted_ind)
-        {
-            impacted_df.decrease(ind);
-        }
+        eliminate_node(v_ind, v_forbidden_nodes, left_nodes, left_nodes_impacted, v_df, impacted_df);
     }
 }
 
@@ -299,12 +320,24 @@ from_degree_sequence(
     for (size_t i = 0; i < edges_count; i++)
     {
         std::vector<size_t> msc_candidates = df.getCandidates();
+
+        if (msc_candidates.empty()) // might happen in the sequence is not graphic
+        {
+            break;
+        }
+
         size_t msc_ind = msc_candidates[uu::core::irand(msc_candidates.size())];
 
         std::vector<size_t> allowed_vertices;
         std::set_difference(left_nodes.begin(), left_nodes.end(),
                             forbidden_nodes[msc_ind].begin(), forbidden_nodes[msc_ind].end(),
                             std::back_inserter(allowed_vertices));
+
+        if (allowed_vertices.empty()) // might happen if the sequence is not graphic
+        {
+            eliminate_node(msc_ind, forbidden_nodes[msc_ind], left_nodes, left_nodes, df, df);
+            continue;
+        }
 
         size_t peer_ind = allowed_vertices[uu::core::irand(allowed_vertices.size())];
         g->edges()->add(vertices[msc_ind].get(), vertices[peer_ind].get());
