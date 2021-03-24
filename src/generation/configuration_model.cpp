@@ -114,7 +114,7 @@ class DegreesOfFreedom
 
         for (size_t i = 0; i < n; i++)
         {
-            size_t cn_count = available_stubs - (deg_seq[i] > 0); // candidate nodes count
+            size_t cn_count = available_stubs - (deg_seq[i] > 0); // candidate vertices count
             df_[i] = (deg_seq[i] == 0) ? kMAX_ : cn_count - std::min(remaining_stubs[i], cn_count);
         }
     };
@@ -244,21 +244,21 @@ DegreesOfFreedom::getCandidatesDirectedGraph(
 };
 
 void
-eliminate_node
+eliminate_vertex
 (
     size_t v_ind,
-    std::set<size_t> &v_forbidden_nodes,
-    std::set<size_t> &left_nodes,
-    std::set<size_t> &left_nodes_impacted,
+    std::set<size_t> &v_forbidden_vertices,
+    std::set<size_t> &left_vertices,
+    std::set<size_t> &left_vertices_impacted,
     DegreesOfFreedom &v_df,
     DegreesOfFreedom &impacted_df
 )
 {
     v_df.setToMax(v_ind);
-    left_nodes.erase(v_ind);
+    left_vertices.erase(v_ind);
     std::vector<size_t> impacted_ind;
-    std::set_difference(left_nodes_impacted.begin(), left_nodes_impacted.end(),
-                        v_forbidden_nodes.begin(), v_forbidden_nodes.end(),
+    std::set_difference(left_vertices_impacted.begin(), left_vertices_impacted.end(),
+                        v_forbidden_vertices.begin(), v_forbidden_vertices.end(),
                         std::back_inserter(impacted_ind));
 
     for (auto ind : impacted_ind)
@@ -271,20 +271,20 @@ void
 decrease_degree(
     size_t v_ind,
     size_t peer_ind,
-    std::set<size_t> &v_forbidden_nodes,
+    std::set<size_t> &v_forbidden_vertices,
     std::vector<size_t> &left_stubs,
-    std::set<size_t> &left_nodes,
-    std::set<size_t> &left_nodes_impacted,
+    std::set<size_t> &left_vertices,
+    std::set<size_t> &left_vertices_impacted,
     DegreesOfFreedom &v_df,
     DegreesOfFreedom &impacted_df
 )
 {
-    v_forbidden_nodes.insert(peer_ind);
+    v_forbidden_vertices.insert(peer_ind);
     left_stubs[v_ind]--;
 
     if (left_stubs[v_ind] == 0)
     {
-        eliminate_node(v_ind, v_forbidden_nodes, left_nodes, left_nodes_impacted, v_df, impacted_df);
+        eliminate_vertex(v_ind, v_forbidden_vertices, left_vertices, left_vertices_impacted, v_df, impacted_df);
     }
 }
 
@@ -302,20 +302,20 @@ from_degree_sequence(
     }
 
     std::vector<size_t> left_stubs(deg_seq);
-    std::set<size_t> left_nodes;
-    std::unordered_map<size_t, std::set<size_t>> forbidden_nodes;
+    std::set<size_t> left_vertices;
+    std::unordered_map<size_t, std::set<size_t>> forbidden_vertices;
 
     for (size_t i = 0; i < deg_seq.size(); i++)
     {
         if (deg_seq[i] > 0)
         {
-            left_nodes.insert(i);
-            forbidden_nodes[i].insert(i);
+            left_vertices.insert(i);
+            forbidden_vertices[i].insert(i);
         }
     }
 
     size_t edges_count = std::accumulate(deg_seq.begin(), deg_seq.end(), 0) / 2;
-    DegreesOfFreedom df(deg_seq, deg_seq, left_nodes.size());
+    DegreesOfFreedom df(deg_seq, deg_seq, left_vertices.size());
 
     for (size_t i = 0; i < edges_count; i++)
     {
@@ -329,23 +329,23 @@ from_degree_sequence(
         size_t msc_ind = msc_candidates[uu::core::irand(msc_candidates.size())];
 
         std::vector<size_t> allowed_vertices;
-        std::set_difference(left_nodes.begin(), left_nodes.end(),
-                            forbidden_nodes[msc_ind].begin(), forbidden_nodes[msc_ind].end(),
+        std::set_difference(left_vertices.begin(), left_vertices.end(),
+                            forbidden_vertices[msc_ind].begin(), forbidden_vertices[msc_ind].end(),
                             std::back_inserter(allowed_vertices));
 
         if (allowed_vertices.empty()) // might happen if the sequence is not graphic
         {
-            eliminate_node(msc_ind, forbidden_nodes[msc_ind], left_nodes, left_nodes, df, df);
+            eliminate_vertex(msc_ind, forbidden_vertices[msc_ind], left_vertices, left_vertices, df, df);
             continue;
         }
 
         size_t peer_ind = allowed_vertices[uu::core::irand(allowed_vertices.size())];
         g->edges()->add(vertices[msc_ind].get(), vertices[peer_ind].get());
 
-        decrease_degree(msc_ind, peer_ind, forbidden_nodes[msc_ind], left_stubs,
-                        left_nodes, left_nodes, df, df);
-        decrease_degree(peer_ind, msc_ind, forbidden_nodes[peer_ind], left_stubs,
-                        left_nodes, left_nodes, df, df);
+        decrease_degree(msc_ind, peer_ind, forbidden_vertices[msc_ind], left_stubs,
+                        left_vertices, left_vertices, df, df);
+        decrease_degree(peer_ind, msc_ind, forbidden_vertices[peer_ind], left_stubs,
+                        left_vertices, left_vertices, df, df);
     }
 }
 
@@ -369,12 +369,12 @@ from_degree_sequence(
     }
 
     size_t n = in_deg_seq.size();
-    std::unordered_map<EdgeMode, std::set<size_t>> left_nodes =
+    std::unordered_map<EdgeMode, std::set<size_t>> left_vertices =
     {
         {EdgeMode::IN, std::set<size_t>() },
         {EdgeMode::OUT, std::set<size_t>() }
     };
-    std::unordered_map<EdgeMode, std::unordered_map<size_t, std::set<size_t>>> forbidden_nodes =
+    std::unordered_map<EdgeMode, std::unordered_map<size_t, std::set<size_t>>> forbidden_vertices =
     {
         {EdgeMode::IN, std::unordered_map<size_t, std::set<size_t>>() },
         {EdgeMode::OUT, std::unordered_map<size_t, std::set<size_t>>() }
@@ -384,19 +384,19 @@ from_degree_sequence(
     {
         if (in_deg_seq[i] > 0)
         {
-            left_nodes[EdgeMode::IN].insert(i);
-            forbidden_nodes[EdgeMode::IN][i].insert(i);
+            left_vertices[EdgeMode::IN].insert(i);
+            forbidden_vertices[EdgeMode::IN][i].insert(i);
         }
 
         if (out_deg_seq[i] > 0)
         {
-            left_nodes[EdgeMode::OUT].insert(i);
-            forbidden_nodes[EdgeMode::OUT][i].insert(i);
+            left_vertices[EdgeMode::OUT].insert(i);
+            forbidden_vertices[EdgeMode::OUT][i].insert(i);
         }
     }
 
-    DegreesOfFreedom idf(in_deg_seq, out_deg_seq, left_nodes[EdgeMode::OUT].size());
-    DegreesOfFreedom odf(in_deg_seq, in_deg_seq, left_nodes[EdgeMode::IN].size());
+    DegreesOfFreedom idf(in_deg_seq, out_deg_seq, left_vertices[EdgeMode::OUT].size());
+    DegreesOfFreedom odf(in_deg_seq, in_deg_seq, left_vertices[EdgeMode::IN].size());
     size_t edges_count = std::accumulate(in_deg_seq.begin(), in_deg_seq.end(), 0);
 
     for (size_t i = 0; i < edges_count; i++)
@@ -405,8 +405,8 @@ from_degree_sequence(
         size_t msc_ind = msc_candidates[uu::core::irand(msc_candidates.size())];
         EdgeMode mode = (odf.get(msc_ind) == odf.getMin()) ? EdgeMode::IN : EdgeMode::OUT; // mode of the stub to be matched
 
-        std::set<size_t> *fv_ptr = &forbidden_nodes[mode][msc_ind];
-        std::set<size_t> *ln_ptr = &left_nodes[mode];
+        std::set<size_t> *fv_ptr = &forbidden_vertices[mode][msc_ind];
+        std::set<size_t> *ln_ptr = &left_vertices[mode];
         std::vector<size_t> allowed_vertices;
         std::set_difference(ln_ptr->begin(), ln_ptr->end(),
                             fv_ptr->begin(), fv_ptr->end(),
@@ -417,12 +417,12 @@ from_degree_sequence(
         size_t target = (mode == EdgeMode::IN) ? peer_ind : msc_ind;
 
         g->edges()->add(vertices[source].get(), vertices[target].get());
-        decrease_degree(source, target, forbidden_nodes[EdgeMode::IN][source],
-                        left_stubs[EdgeMode::OUT], left_nodes[EdgeMode::OUT],
-                        left_nodes[EdgeMode::IN], odf, idf);
-        decrease_degree(target, source, forbidden_nodes[EdgeMode::OUT][target],
-                        left_stubs[EdgeMode::IN], left_nodes[EdgeMode::IN],
-                        left_nodes[EdgeMode::OUT], idf, odf);
+        decrease_degree(source, target, forbidden_vertices[EdgeMode::IN][source],
+                        left_stubs[EdgeMode::OUT], left_vertices[EdgeMode::OUT],
+                        left_vertices[EdgeMode::IN], odf, idf);
+        decrease_degree(target, source, forbidden_vertices[EdgeMode::OUT][target],
+                        left_stubs[EdgeMode::IN], left_vertices[EdgeMode::IN],
+                        left_vertices[EdgeMode::OUT], idf, odf);
     }
 }
 
