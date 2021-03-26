@@ -147,7 +147,7 @@ modify_according_to_jaccard_edge(
             auto l_j = net->layers()->at(j);
             size_t index = get_index(i, j);
 
-            for (auto s: P.objects())
+            for (auto s: P.structures())
             {
                 yy[index] += (P.get(s, l_i).value && P.get(s, l_j).value);
                 nn[index] -= (P.get(s, l_i).value || P.get(s, l_j).value);
