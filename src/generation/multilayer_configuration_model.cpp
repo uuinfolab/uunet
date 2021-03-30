@@ -95,99 +95,112 @@ order_degrees_pearson(
 
 
 void
-swap_edges(
-    Network *li,
-    uu::core::PropertyMatrix<s_pair, const Network *, bool> &P,
-    const s_pair &s1,
-    const s_pair &s2,
-    const s_pair &new_s1,
-    const s_pair &new_s2
+_property_matrix_comparison
+(
+    const std::vector<Network *> &layers,
+    std::unordered_map<Network *, std::unordered_set<Dyad>> &edges,
+    const std::vector<double> &j_e,
+    std::valarray<size_t> &yy,
+    std::valarray<size_t> &nn,
+    std::valarray<double> &error,
+    size_t num_structures
 )
 {
-    li->edges()->erase(s1.first, s1.second);
-    li->edges()->erase(s2.first, s2.second);
-    li->edges()->add(new_s1.first, new_s1.second);
-    li->edges()->add(new_s2.first, new_s2.second);
+    size_t l = edges.size();
+    auto get_index = [l](size_t i, size_t j) // expected i < j
+    {
+        return (size_t) (i * (l - i / 2.0 - 1.5) + j - 1);
+    }; // a function to return an index of a array storing a triangular matrix
 
-    P.set(s1, li, false);
-    P.set(std::make_pair(s1.second, s1.first), li, false);
-    P.set(s2, li, false);
-    P.set(std::make_pair(s2.second, s2.first), li, false);
-    P.set(new_s1, li, true);
-    P.set(std::make_pair(new_s1.second, new_s1.first), li, true);
-    P.set(new_s2, li, true);
-    P.set(std::make_pair(new_s2.second, new_s2.first), li, true);
+
+    for (size_t i = 0; i < layers.size(); i++)
+    {
+        for (size_t j = i + 1; j < layers.size(); j++)
+        {
+            size_t index = get_index(i, j);
+            yy[index] = 0;
+
+            for(const auto &edge: edges[layers[i]])
+            {
+                yy[index] += 2 * edges[layers[j]].count(edge);
+            }
+
+            nn[index] = num_structures - ( 2 * edges[layers[i]].size() + 2 * edges[layers[j]].size() - yy[index]);
+            error[index] = yy[index] / (double) (num_structures - nn[index]) - j_e[index];
+        }
+
+    }
 }
 
 void
-modify_according_to_jaccard_edge(
-    MultilayerNetwork *net,
+_modify_jaccard_edge
+(
+    const std::vector<Network *> &layers,
     const std::vector<double> &j_e,
+    std::unordered_map<Network *, std::unordered_set<Dyad>> &edges,
+    size_t n,
     double tol
 )
 {
-    auto P = edge_existence_property_matrix(net);
-    size_t n = net->actors()->size();
-    size_t l = net->layers()->size();
-    auto get_index = [l](size_t i, size_t j)
-    {
-        auto p = std::minmax(i, j);
-        return (size_t) (p.first * (l - p.first / 2.0 - 1.5) + p.second - 1);
-    }; // a function to return an index of a array storing a triangular matrix
+    std::unordered_map<Network *, std::vector<const Dyad *>> edges_vec;
 
-    // number of coordinates for each pair of layers where vectors are true (yy), false (nn)
-    std::valarray<size_t> yy((size_t) 0, j_e.size()), nn(P.num_structures, j_e.size());
-    std::valarray<double> error(j_e.size()); // error for each pair of layers
-
-    for (size_t i = 0; i < l; ++i)
+    for(const auto &it: edges)
     {
-        for (size_t j = i + 1; j < l; ++j)
+        auto layer = it.first;
+        edges_vec[layer] = std::vector<const Dyad *>();
+        edges_vec[layer].reserve(layer->edges()->size());
+
+        for(const auto &edge: it.second)
         {
-            auto l_i = net->layers()->at(i);
-            auto l_j = net->layers()->at(j);
-            size_t index = get_index(i, j);
-
-            for (auto s: P.structures())
-            {
-                yy[index] += (P.get(s, l_i).value && P.get(s, l_j).value);
-                nn[index] -= (P.get(s, l_i).value || P.get(s, l_j).value);
-            }
-
-            error[index] = yy[index] / (double) (P.num_structures - nn[index]) - j_e[index];
+            edges_vec[layer].push_back(&edge);
         }
     }
 
-    // Parameters for the simulated annealing algorithm
-    double T_0 = 1e-3;
-    double beta = 0.01;
-    size_t k_max = 100 * ceil(std::log(n) * n);
+    size_t l = edges.size(); // number of layers
+    size_t num_structures = n * (n-1); // number of structures in the property matrix
+    auto get_index = [l](size_t i, size_t j) // expected i < j
+    {
+        return (size_t) (i * (l - i / 2.0 - 1.5) + j - 1);
+    }; // a function to return an index of a array storing a triangular matrix
 
-    s_pair s1, s2, new_s1, new_s2;
+    // number of coordinates for each pair of layers where vectors are true (yy), false (nn)
+    std::valarray<size_t> yy(j_e.size()), nn(j_e.size());
+    std::valarray<double> error(j_e.size()); // error for each pair of layers
+
+    _property_matrix_comparison(layers, edges, j_e, yy, nn, error, num_structures);
+
+    // Parameters for the simulated annealing algorithm
+    double Temp = 1.5 * l * n; // initial temperature
+    const double alpha = 0.95; // value governing the decrease of temperature
+    const double beta = 1000; // value used in the probability function
+    const size_t k_max = 50 * l * n; // max number of iterations
 
     for (size_t k = 0; k < k_max; k++)
     {
-        double T = T_0 / (1 + beta + k);
+        Temp *= alpha;
         size_t l_ind = uu::core::irand(l); // index of the layer which might be updated
-        auto li = net->layers()->at(l_ind);
-        auto e1 = li->edges()->get_at_random();
-        auto e2 = li->edges()->get_at_random();
+        auto li = layers[l_ind];
+        size_t e1_ind = uu::core::irand(edges_vec[li].size()), e2_ind = uu::core::irand(edges_vec[li].size());
+        auto e1 = *edges_vec[li][e1_ind];
+        auto e2 = *edges_vec[li][e2_ind];
+        auto e1_first = *e1.begin(), e1_second = *(++e1.begin());
+        auto e2_first = *e2.begin(), e2_second = *(++e2.begin());
 
-        if (e1->v1 == e2->v1 || e1->v1 == e2->v2 || e1->v2 == e2->v2 || e1->v2 == e2->v1) // the edges cannot be swapped
+        if (e1_first == e2_first || e1_first == e2_second || e1_second == e2_second || e1_second == e2_first) // edges cannot be swapped
         {
             continue;
         }
 
-        s1 = std::make_pair(e1->v1, e1->v2);
-        s2 = std::make_pair(e2->v1, e2->v2);
-        new_s1 = std::make_pair(e1->v1, e2->v1);
-        new_s2 = std::make_pair(e1->v2, e2->v2);
+        bool ff_ss = (uu::core::drand() <= 0.5); // if connect e1_first with e2_first and e1_second with e2_second
+        auto new_e1 = Dyad(e1_first, (ff_ss) ? e2_first : e2_second);
+        auto new_e2 = Dyad(e1_second, (ff_ss) ? e2_second : e2_first);
 
-        if (P.get(new_s1, li).value || P.get(new_s2, li).value)
+        if (edges[li].count(new_e1) || edges[li].count(new_e2)) // edges cannot be swapped
         {
-            new_s1 = std::make_pair(e1->v1, e2->v2);
-            new_s2 = std::make_pair(e1->v2, e2->v1);
+            new_e1 = Dyad(e1_first, (ff_ss) ? e2_second : e2_first);
+            new_e2 = Dyad(e1_second, (ff_ss) ? e2_first : e2_second);
 
-            if (P.get(new_s1, li).value || P.get(new_s2, li).value) // the edges cannot be swapped
+            if (edges[li].count(new_e1) || edges[li].count(new_e2)) // edges cannot be swapped
             {
                 continue;
             }
@@ -196,6 +209,7 @@ modify_according_to_jaccard_edge(
         std::valarray<size_t> yy_new(yy), nn_new(nn);
         std::valarray<double> new_error(error);
 
+        // compute the error after the swap
         for (size_t j = 0; j < l; ++j)
         {
             if (j == l_ind)
@@ -203,16 +217,17 @@ modify_according_to_jaccard_edge(
                 continue;
             }
 
-            size_t index = get_index(l_ind, j);
-            auto l_j = net->layers()->at(j);
-            std::valarray<bool> Pl1slice = { P.get(s1, l_j).value, P.get(s2, l_j).value, P.get(new_s1, l_j).value, P.get(new_s2, l_j).value };
+            auto indices = std::minmax(l_ind, j);
+            size_t index = get_index(indices.first, indices.second);
+            auto l_j = layers[j];
+            std::valarray<bool> Pl1slice = { edges[l_j].count(e1) > 0, edges[l_j].count(e2) > 0, edges[l_j].count(new_e1) > 0, edges[l_j].count(new_e2) > 0 };
             yy_new[index] += 2 * (- Pl1slice[0] - Pl1slice[1] + Pl1slice[2] + Pl1slice[3]);
             nn_new[index] += 2 * (- !Pl1slice[2] - !Pl1slice[3] + !Pl1slice[0] + !Pl1slice[1]);
-            new_error[index] = yy_new[index] / (double) (P.num_structures - nn_new[index]) - j_e[index];
+            new_error[index] = yy_new[index] / (double) (num_structures - nn_new[index]) - j_e[index];
         }
 
         double diff = (std::abs(new_error) - std::abs(error)).sum();
-        double p = std::min(1.0, (diff < 0) + std::exp(-diff / T));
+        double p = std::min(1.0 - (diff == 0), (diff < 0) + std::exp(-beta * diff / Temp));
 
         if (p >= uu::core::drand())
         {
@@ -220,7 +235,13 @@ modify_according_to_jaccard_edge(
             nn = nn_new;
             error = new_error;
 
-            swap_edges(li, P, s1, s2, new_s1, new_s2);
+            // swap edges
+            auto res1 = edges[li].emplace(new_e1);
+            auto res2 = edges[li].emplace(new_e2);
+            edges_vec[li][e1_ind] = &(*res1.first);
+            edges_vec[li][e2_ind] = &(*res2.first);
+            edges[li].erase(e1);
+            edges[li].erase(e2);
 
             if (std::abs(error).max() <= tol)
             {
@@ -229,6 +250,58 @@ modify_according_to_jaccard_edge(
         }
     }
 }
+
+void
+modify_jaccard_edge
+(
+    MultilayerNetwork *net,
+    const std::vector<double> &j_e,
+    double tol
+)
+{
+    std::unordered_map<Network *, std::unordered_set<Dyad>> edges;
+    std::vector<Network *> layers(net->layers()->size());
+    // TODO remove the layers vector, but for now it is necessary because we need to keep the same order as j_e,
+    //  when it's constructed with net->layers()->at(i), which is not preserved when calling net->layers()
+
+    for(size_t i = 0; i < net->layers()->size(); i++)
+    {
+        auto layer = net->layers()->at(i);
+        layers[i] = layer;
+        edges[layer] = std::unordered_set<Dyad>();
+        edges[layer].reserve(layer->edges()->size());
+
+        for(const auto &edge: *layer->edges())
+        {
+            edges[layer].emplace(Dyad(edge->v1, edge->v2));
+        }
+    }
+
+    _modify_jaccard_edge(layers, j_e, edges, net->actors()->size(), tol);
+
+    // update the edges in the network
+    for (auto layer: *net->layers())
+    {
+        for (auto edge: *layer->edges())
+        {
+            auto pos = edges[layer].find(Dyad(edge->v1, edge->v2));
+            if (pos != edges[layer].end())
+            {
+                edges[layer].erase(pos);
+            }
+            else
+            {
+                layer->edges()->erase(edge);
+            }
+        }
+
+        for(const auto& dyad: edges[layer])
+        {
+            layer->edges()->add(*dyad.begin(), *(++dyad.begin()));
+        }
+    }
+}
+
 void
 add_layers_with_given_degrees(
     const std::vector<std::vector<size_t>> &deg_seq,
@@ -261,6 +334,45 @@ add_layers_with_given_degrees(
     {
         auto l = ml->layers()->add(layers_names[i], EdgeDir::DIRECTED, LoopMode::DISALLOWED);
         from_degree_sequence(in_deg_seq[i], out_deg_seq[i], actors, l);
+    }
+}
+
+void
+add_layers_with_given_degrees
+(
+    const std::vector<std::vector<size_t>> &deg_seq,
+    const std::vector<std::shared_ptr<Vertex>> &actors,
+    const std::vector<std::string> &layers_names,
+    MultilayerNetwork *ml,
+    const std::vector<double> &j_e,
+    double tol
+)
+{
+    size_t layers_count = layers_names.size();
+    std::unordered_map<Network *, std::unordered_set<Dyad>> edges;
+    std::vector<Network *> layers;
+
+    for (size_t i = 0; i < layers_count; i++)
+    {
+        auto l = ml->layers()->add(layers_names[i], EdgeDir::UNDIRECTED, LoopMode::DISALLOWED);
+        layers[i] = l;
+
+        for (const auto& v : actors)
+        {
+            l->vertices()->add(v);
+        }
+        edges[l] = std::unordered_set<Dyad>();
+        edges_from_degree_sequence(deg_seq[i], actors, edges[l]);
+    }
+
+    _modify_jaccard_edge(layers, j_e, edges, actors.size(), tol);
+
+    for (auto layer: *ml->layers())
+    {
+        for (const auto &dyad: edges[layer])
+        {
+            layer->edges()->add(*dyad.begin(), *(++dyad.begin()));
+        }
     }
 }
 

@@ -1,11 +1,10 @@
 #ifndef UU_GENERATION_MULTILAYER_CONFIGURATION_MODEL_H
 #define UU_GENERATION_MULTILAYER_CONFIGURATION_MODEL_H
 
+#include "networks/Network.hpp"
 #include "networks/MultilayerNetwork.hpp"
 #include "generation/configuration_model.hpp"
 #include "core/utils/random.hpp"
-#include "core/propertymatrix/PropertyMatrix.hpp"
-#include "measures/layer.hpp"
 #include <algorithm>
 #include <valarray>
 
@@ -20,7 +19,7 @@ order_degrees_pearson(
 );
 
 void
-modify_according_to_jaccard_edge(
+modify_jaccard_edge(
     MultilayerNetwork *net,
     const std::vector<double> &j_e,
     double tol=1e-3
@@ -41,6 +40,17 @@ add_layers_with_given_degrees(
     const std::vector<std::shared_ptr<Vertex>> &actors,
     const std::vector<std::string> &layers_names,
     MultilayerNetwork *ml
+);
+
+void
+add_layers_with_given_degrees
+(
+    const std::vector<std::vector<size_t>> &deg_seq,
+    const std::vector<std::shared_ptr<Vertex>> &actors,
+    const std::vector<std::string> &layers_names,
+    MultilayerNetwork *ml,
+    const std::vector<double> &j_e,
+    double tol=1e-3
 );
 
 }
