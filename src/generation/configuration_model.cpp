@@ -1,5 +1,6 @@
 #include "configuration_model.hpp"
-#include <limits> // numeric limits
+#include <limits>
+#include "_impl/DegreesOfFreedom.hpp"
 
 namespace uu {
 namespace net {
@@ -100,148 +101,6 @@ is_digraphic(
     return true;
 }
 
-class DegreesOfFreedom
-{
-  public:
-    DegreesOfFreedom(
-        const std::vector<size_t> &deg_seq,
-        const std::vector<size_t> &remaining_stubs,
-        size_t available_stubs
-    )
-    {
-        size_t n = deg_seq.size();
-        df_.resize(n);
-
-        for (size_t i = 0; i < n; i++)
-        {
-            size_t cn_count = available_stubs - (deg_seq[i] > 0); // candidate vertices count
-            df_[i] = (deg_seq[i] == 0) ? kMAX_ : cn_count - std::min(remaining_stubs[i], cn_count);
-        }
-    };
-
-    size_t
-    decrease(
-        size_t ind
-    )
-    {
-        if (df_[ind] == kMAX_ || df_[ind] == 0)
-        {
-            return df_[ind];
-        }
-
-        df_[ind]--;
-
-        if (df_[ind] == current_min_)
-        {
-            candidates_.emplace(ind);
-        }
-
-        else if (df_[ind] < current_min_)
-        {
-            candidates_ = std::set<size_t>({ind});
-            current_min_ = df_[ind];
-        }
-
-        return df_[ind];
-    };
-
-    void
-    setToMax(
-        size_t ind
-    )
-    {
-        df_[ind] = kMAX_;
-        candidates_.erase(ind);
-    };
-
-    size_t
-    get(
-        size_t ind
-    )
-    {
-        return df_[ind];
-    }
-
-    size_t
-    getMin(
-    )
-    {
-        if (candidates_.empty())
-        {
-            recomputeCandidates_();
-        }
-
-        return current_min_;
-    }
-
-    std::vector<size_t>
-    getCandidates(
-    )
-    {
-        if (candidates_.empty())
-        {
-            recomputeCandidates_();
-        }
-
-        return std::vector<size_t>(candidates_.begin(), candidates_.end());
-    };
-
-    static std::vector<size_t>
-    getCandidatesDirectedGraph(
-        DegreesOfFreedom &idf,
-        DegreesOfFreedom &odf
-    );
-
-  private:
-    const size_t kMAX_ = std::numeric_limits<size_t>::max();
-    std::vector<size_t> df_;
-    std::set<size_t> candidates_;
-    size_t current_min_ = kMAX_;
-
-    void
-    recomputeCandidates_(
-    )
-    {
-        current_min_ = *std::min_element(df_.begin(), df_.end());
-
-        if (current_min_ == kMAX_)
-        {
-            candidates_ = std::set<size_t>();
-            return;
-        }
-
-        for (size_t i = 0; i < df_.size(); i++)
-        {
-            if (df_[i] == current_min_)
-            {
-                candidates_.insert(i);
-            }
-        }
-    }
-};
-
-std::vector<size_t>
-DegreesOfFreedom::getCandidatesDirectedGraph(
-    DegreesOfFreedom &idf,
-    DegreesOfFreedom &odf
-)
-{
-    if (idf.getMin() < odf.getMin())
-    {
-        return idf.getCandidates();
-    }
-
-    if (idf.getMin() > odf.getMin())
-    {
-        return odf.getCandidates();
-    }
-
-    // otherwise candidates must be combined
-    std::vector<size_t> candidates = idf.getCandidates();
-    std::vector<size_t> candidates_odf = odf.getCandidates();
-    candidates.insert(candidates.end(), candidates_odf.begin(), candidates_odf.end());
-    return candidates;
-};
 
 void
 eliminate_vertex
@@ -288,19 +147,14 @@ decrease_degree(
     }
 }
 
-
+template<typename EDGES>
 void
-from_degree_sequence(
+_from_degree_sequence(
     const std::vector<size_t> &deg_seq,
     const std::vector<std::shared_ptr<Vertex>> &vertices,
-    Network *g
+    EDGES *edges
 )
 {
-    for (auto v : vertices)
-    {
-        g->vertices()->add(v);
-    }
-
     std::vector<size_t> left_stubs(deg_seq);
     std::set<size_t> left_vertices;
     std::unordered_map<size_t, std::set<size_t>> forbidden_vertices;
@@ -321,7 +175,7 @@ from_degree_sequence(
     {
         std::vector<size_t> msc_candidates = df.getCandidates();
 
-        if (msc_candidates.empty()) // might happen in the sequence is not graphic
+        if (msc_candidates.empty()) // might happen if the sequence is not graphic
         {
             break;
         }
@@ -340,13 +194,57 @@ from_degree_sequence(
         }
 
         size_t peer_ind = allowed_vertices[uu::core::irand(allowed_vertices.size())];
-        g->edges()->add(vertices[msc_ind].get(), vertices[peer_ind].get());
+        // g->edges()->add(vertices[msc_ind].get(), vertices[peer_ind].get());
+        edges->add(vertices[msc_ind].get(), vertices[peer_ind].get());
+
 
         decrease_degree(msc_ind, peer_ind, forbidden_vertices[msc_ind], left_stubs,
                         left_vertices, left_vertices, df, df);
         decrease_degree(peer_ind, msc_ind, forbidden_vertices[peer_ind], left_stubs,
                         left_vertices, left_vertices, df, df);
     }
+}
+
+void
+from_degree_sequence(
+    const std::vector<size_t> &deg_seq,
+    const std::vector<std::shared_ptr<Vertex>> &vertices,
+    Network *g
+)
+{
+    for (auto v : vertices)
+    {
+        g->vertices()->add(v);
+    }
+
+    _from_degree_sequence(deg_seq, vertices, g->edges());
+}
+
+
+void
+edges_from_degree_sequence(
+    const std::vector<size_t> &deg_seq,
+    const std::vector<std::shared_ptr<Vertex>> &vertices,
+    std::unordered_set<Dyad> &edges_set
+)
+{
+    class EdgesSet
+    {
+    public:
+        std::unordered_set<Dyad> *edges_set_ptr;
+        EdgesSet(std::unordered_set<Dyad> *edges_set)
+        {
+            edges_set_ptr = edges_set;
+        }
+
+        void add(Vertex *v1, Vertex *v2)
+        {
+            edges_set_ptr->emplace(Dyad(v1, v2));
+        }
+    };
+
+    EdgesSet es(&edges_set);
+    _from_degree_sequence(deg_seq, vertices, &es);
 }
 
 void

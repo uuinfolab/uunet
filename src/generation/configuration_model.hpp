@@ -4,6 +4,7 @@
 #include "networks/Network.hpp"
 #include "core/utils/random.hpp"
 #include <numeric>
+#include "objects/Dyad.hpp"
 
 namespace uu {
 namespace net {
@@ -26,6 +27,13 @@ from_degree_sequence(
     const std::vector<size_t> &deg_seq,
     const std::vector<std::shared_ptr<Vertex>> &vertices,
     Network *g
+);
+
+void
+edges_from_degree_sequence(
+    const std::vector<size_t> &deg_seq,
+    const std::vector<std::shared_ptr<Vertex>> &vertices,
+    std::unordered_set<Dyad> &edges_set
 );
 
 void
