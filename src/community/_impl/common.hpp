@@ -8,12 +8,10 @@
 namespace uu {
 namespace net {
 
-
 std::unique_ptr<CommunityStructure<Network>>
-        to_community_structure(
-            std::unordered_map<const Vertex*, size_t> membership
-        );
-
+to_community_structure(
+    std::unordered_map<const Vertex*, size_t> membership
+);
 
 }
 }

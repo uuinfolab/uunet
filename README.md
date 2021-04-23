@@ -18,7 +18,7 @@ To install, use and modify the library you need:
 * A C++14 compiler.
 * Doxygen (optional, only to generate the API reference documentation).
 
-## Installation
+## Quickstart
 
 To download the library:
 
@@ -90,14 +90,13 @@ make examples
 also be used as documentation.
 
 
-## Contribute
-
 The `master` branch contains the most stable code, mainly updated when new versions of the R and Python
 libraries are released and when new research articles using the library are submitted. The `master` branch is
 updated by the administrators from the `development` branch. 
 
 To contribute to the library, please start from `development` and open a pull request when your update is ready
 to be merged. 
+
 
 ## Contact
 

@@ -18,11 +18,11 @@ namespace net {
  */
 template <typename M>
 std::unique_ptr<CommunityStructure<M>>
-abacus(
-    const M* mnet,
-    int min_actors,
-    int min_layers
-);
+                                    abacus(
+                                        const M* mnet,
+                                        int min_actors,
+                                        int min_layers
+                                    );
 
 }
 }

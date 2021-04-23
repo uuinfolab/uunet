@@ -29,6 +29,8 @@ class
         LoopMode loops
     );
 
+    virtual
+    ~MultiEdgeStore() {}
 
     /**
      * Adds a new edge.

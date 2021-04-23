@@ -1,6 +1,12 @@
 #ifndef UU_NET_COMMUNITY_OMEGAINDEX_H_
 #define UU_NET_COMMUNITY_OMEGAINDEX_H_
 
+<<<<<<< HEAD
+=======
+#include <map>
+
+#include "core/exceptions/assert_not_null.hpp"
+>>>>>>> 253b282c9f8ce12198c3b52a60fe87b8cf693500
 #include "community/CommunityStructure.hpp"
 
 namespace uu {

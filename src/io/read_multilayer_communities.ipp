@@ -30,6 +30,7 @@ std::unique_ptr<CommunityStructure<M>>
 
     std::unordered_map<std::string, std::set<MLVertex> > result;
 
+
     while (csv.has_next())
     {
         auto line = csv.get_next();

@@ -7,9 +7,9 @@ namespace net {
 
 template <typename G>
 std::unique_ptr<CommunityStructure<G>>
-label_propagation(
-    const G* net
-)
+                                    label_propagation(
+                                        const G* net
+                                    )
 {
 
     std::unordered_map<const Vertex*, size_t> membership; // community membership

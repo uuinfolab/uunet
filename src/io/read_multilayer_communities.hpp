@@ -13,11 +13,11 @@ namespace net {
 
 template <typename M>
 std::unique_ptr<CommunityStructure<M>>
-read_multilayer_communities(
-    const std::string& infile,
-    const M* net,
-    char separator = ','
-);
+                                    read_multilayer_communities(
+                                        const std::string& infile,
+                                        const M* net,
+                                        char separator = ','
+                                    );
 
 }
 }

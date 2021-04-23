@@ -54,62 +54,6 @@ get_sum_of_w0(
     return sum_of_w0;
 }
 
-/**
- * @brief evaluate the relevance of a group of layers to an actor "act".
- * This is called "Dimensions relevance" (according to Berlingerio) and it is a ratio of the actor neighbours that can be
- * exclusively reached within the given set of dimensions (layers) to the total number of actor neighbours in all dimensions (layers)
- * @mnet : the multi-layer network instance
- * @dims : a subset of layers (dimensions)
- * @act : an actor
- * @return : a real number [0..1] reflecting the relevance of the given "dimensions" to the actor.
-
-
-double get_dimentions_relevance_for_actor(const vector<typename M::layer_type*>& dims,
-                                 const std::unordered_map<const Vertex*,vector<typename M::layer_type*>>& actor_neighbours){
-
-
-
-    //count the number of actors that are exclusively neighbours with "actr" within "dims"
-    int num_of_all_neighbours=0 ;
-    int num_of_exclusive_neighbours = 0;
-    for(std::unordered_map<const Vertex*,vector<typename M::layer_type*>>::const_iterator itr = actor_neighbours.begin();itr!=actor_neighbours.end();++itr){
-         num_of_all_neighbours++;
-        if(is_subset(itr->second,dims)) num_of_exclusive_neighbours++;
-    }
-    double relevance = (double)(num_of_exclusive_neighbours)/num_of_all_neighbours;
-    return relevance;
-
-} **/
-
-/**
- * @brief recover the actor community structure given their memberships
- * @membership : the memberships of the actors
- * @return : actor communities
- **/
-
-/*
-ActorCommunityStructureSharedPtr to_community_structure(std::unordered_map<const Vertex*,int> membership,std::unordered_map<const Vertex*,vector<typename M::layer_type*>> actors_relevant_layers){
-
-    ActorCommunityStructureSharedPtr result = actor_community_structure::create();
-    std::unordered_map<int,hash_set<const Vertex*> > communities;
-    for (auto pair: membership) {
-         communities[pair.second].insert(pair.first);
-    }
-    for (auto pair: communities) {
-        ActorCommunitySharedPtr c = actor_community::create();
-        for (const Vertex* actor: pair.second){
-            c->add_actor(actor);
-            //add the layers of this actor to the community
-            for(typename M::layer_type* layer: actors_relevant_layers[actor]){
-                if(c->get_layers().find(layer)==c->get_layers().end()){
-                    c->add_layer(layer);
-                }
-            }
-        }
-         result->add_community(c);
-    }
-    return result;
-}*/
 
 template <typename Obj>
 std::set<Obj>
@@ -150,7 +94,7 @@ std::unique_ptr<CommunityStructure<M>>
 {
 
     core::assert_not_null(mnet, "mlp", "mnet");
-    /*(1) calculate the initinal attraction weights w0 for actors (affinity of actors to their neighbours)*/
+    /*(1) calculate the initial attraction weights w0 for actors (affinity of actors to their neighbours)*/
 
     //initialization
     std::unordered_map<const Vertex*, std::unordered_map<const Vertex*, double>> initial_attraction_weights; //w0 in the article
@@ -265,6 +209,7 @@ std::unique_ptr<CommunityStructure<M>>
         }
     }
 
+
     // (4)The labeling step
     //ActorListSharedPtr actors = mnet->get_actors();
     std::unordered_map<const Vertex*, size_t> membership; // community membership
@@ -276,7 +221,12 @@ std::unique_ptr<CommunityStructure<M>>
     for (const Vertex* actor: *mnet->actors())
     {
         membership[actor] = label;
-        order.push_back(actor);
+
+        if (updated_attraction_weights.find(actor) != updated_attraction_weights.end())
+        {
+            order.push_back(actor);
+        }
+
         label++;
     }
 
@@ -291,7 +241,6 @@ std::unique_ptr<CommunityStructure<M>>
 
     while (!stop)
     {
-
 
         // shuffle the order of the actors
         unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -373,14 +322,15 @@ std::unique_ptr<CommunityStructure<M>>
 
         }
 
-
         /*
                   for (auto pair: membership)
                   {
                       std::cout << (*pair.first) << " " << pair.second << std::endl;
+
                   }*/
 
         //std::cout << "CHECK STOP" << std::endl;
+
         stop = true;
 
         //check the stopping condition
@@ -443,6 +393,7 @@ std::unique_ptr<CommunityStructure<M>>
 
         for (auto actor: pair.second)
         {
+
             for (auto layer: *mnet->layers())
             {
                 if (layer->vertices()->contains(actor))
@@ -452,7 +403,11 @@ std::unique_ptr<CommunityStructure<M>>
             }
         }
 
-        res->add(std::move(c));
+        // @todo control needed?
+        if (c->size() > 0)
+        {
+            res->add(std::move(c));
+        }
     }
 
     return  res;
@@ -461,6 +416,5 @@ std::unique_ptr<CommunityStructure<M>>
 }
 }
 
-//#include "ml-cpm.ipp"
 
 #endif

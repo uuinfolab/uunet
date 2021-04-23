@@ -28,6 +28,9 @@ class
         LoopMode loops
     );
 
+    virtual
+    ~SimpleEdgeStore() {}
+    
     using super::super;
 
     //using super::value_type;

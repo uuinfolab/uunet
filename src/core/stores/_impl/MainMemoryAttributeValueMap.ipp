@@ -1,6 +1,7 @@
 namespace uu {
 namespace core {
 
+
 template <typename ID>
 MainMemoryAttributeValueMap<ID>::
 MainMemoryAttributeValueMap (
