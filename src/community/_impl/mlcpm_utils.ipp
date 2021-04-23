@@ -1,67 +1,6 @@
 namespace uu {
 namespace net {
 
-
-template <typename M>
-std::unique_ptr<CommunityStructure<M>>
-                                    mlcpm(
-                                        const M* mnet,
-                                        size_t k,
-                                        size_t m
-                                    )
-{
-    // Step 1: find max-cliques
-    auto cliques = find_max_cliques(mnet,k,m);
-
-    if (cliques.size()==0)
-    {
-        return std::make_unique<CommunityStructure<M>>();
-    }
-
-    // Step 2: bluid adjacency graph
-    auto adjacency = build_max_adjacency_graph(cliques,k,m);
-    // @todo use a Network?
-
-    /*std::cout << "ADJACENCY" << std::endl;
-    for (auto pair: adjacency)
-    {
-        std::cout << "node: " << pair.first->to_string() << std::endl;
-        for (auto cl: pair.second)
-        {
-            std::cout << "  " << cl->to_string() << std::endl;
-
-        }
-    }
-    std::cout << std::endl;*/
-
-    // Step 3: extract communities
-    auto comm = find_max_communities(adjacency,m);
-
-    // Translate the result, so that it is compatible with the other clustering algorithms
-    auto result = std::make_unique<CommunityStructure<M>>();
-
-    for (auto c: comm)
-    {
-        result->add(std::move(c->to_community()));
-        /*
-        for (auto c2: comm)
-        {
-            if (c<=c2) continue;
-            auto il = core::s_intersection(c->get_layers(),c2->get_layers());
-            auto ia = core::s_intersection(c->actors(),c2->actors());
-            if (il.size() == std::min(c->get_layers().size(),c2->get_layers().size()) &&
-                ia.size() == c->actors().size() && ia.size() ==  c2->actors().size() )
-            {std::cout << "pair" << std::endl;
-            std::cout << c->to_string() << std::endl;
-            std::cout << c2->to_string() << std::endl;
-            }
-        }
-         */
-    }
-
-    return result;
-}
-
 // STEP 1: FIND MAX CLIQUES
 
 template <typename M>
