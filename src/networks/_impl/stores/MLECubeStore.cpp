@@ -43,7 +43,7 @@ add(
     core::assert_not_null(vertex2, "MLECubeStore::add", "vertex2");
     core::assert_not_null(layer2, "MLECubeStore::add", "layer2");
 
-    return get(layer1, layer2)->add(vertex1, layer1->vertices(), vertex2, layer2->vertices());
+    return get_(layer1, layer2)->add(vertex1, layer1->vertices(), vertex2, layer2->vertices());
 }
 
 const Edge *
@@ -60,7 +60,7 @@ get(
     core::assert_not_null(vertex2, "MLECubeStore::add", "vertex2");
     core::assert_not_null(layer2, "MLECubeStore::add", "layer2");
 
-    return get(layer1, layer2)->get(vertex1, layer1->vertices(), vertex2, layer2->vertices());
+    return get_(layer1, layer2)->get(vertex1, layer1->vertices(), vertex2, layer2->vertices());
 }
 
 
@@ -97,7 +97,7 @@ get(
 
 ECube*
 MLECubeStore::
-get(
+get_(
     const Network* layer1,
     const Network* layer2
 )

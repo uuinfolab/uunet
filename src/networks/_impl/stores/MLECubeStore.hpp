@@ -154,7 +154,7 @@ class
   private:
 
     ECube*
-    get(
+    get_(
         const Network* layer1,
         const Network* layer2
     );

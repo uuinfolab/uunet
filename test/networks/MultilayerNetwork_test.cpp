@@ -106,7 +106,10 @@ TEST(networks_test, MultilayerNetwork)
     
     net->layers()->erase(layer1);
     
-    //net->interlayer_edges()->get(layer1, layer2);
+    EXPECT_THROW(
+        net->interlayer_edges()->get(layer1, layer2),
+        uu::core::ElementNotFoundException
+    );
     
     // @todo More removal tests
 }
