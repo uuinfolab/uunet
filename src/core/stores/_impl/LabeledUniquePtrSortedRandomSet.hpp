@@ -54,7 +54,7 @@ class
     virtual
     bool
     erase(
-        E * const element
+        const E * const element
     ) override;
 
     /**
@@ -134,7 +134,7 @@ template <typename E>
 bool
 LabeledUniquePtrSortedRandomSet<E>::
 erase(
-    E * const element
+    const E * const element
 )
 {
 

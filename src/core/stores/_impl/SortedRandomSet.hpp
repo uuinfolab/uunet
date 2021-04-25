@@ -255,7 +255,7 @@ class SortedRandomSet
         >
     bool
     erase(
-        KEY
+        const KEY
     );
 
   private:
@@ -705,7 +705,7 @@ template <typename KEY, typename LT, typename EQ>
 bool
 SortedRandomSet<ELEMENT_TYPE>::
 erase(
-    KEY value
+    const KEY value
 )
 {
 

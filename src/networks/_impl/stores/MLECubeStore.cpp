@@ -228,7 +228,7 @@ set_directed(
 
 
 
-
+/*
 void
 MLECubeStore::
 add(
@@ -239,7 +239,7 @@ add(
 
     // @todo
 }
-
+*/
 
 
 
@@ -251,7 +251,20 @@ erase(
 {
     core::assert_not_null(layer, "MLECubeStore::erase", "layer");
 
-    // @todo
+    std::vector<std::pair<const Network*, const Network*>> to_delete;
+    for (auto& p: interlayer_edges_)
+    {
+        auto layer1 = p.first.first;
+        auto layer2 = p.first.second;
+        if (layer1 == layer || layer2 == layer)
+        {
+            to_delete.push_back(p.first);
+        }
+    }
+    for (auto del: to_delete)
+    {
+        interlayer_edges_.erase(del);
+    }
 }
 
 

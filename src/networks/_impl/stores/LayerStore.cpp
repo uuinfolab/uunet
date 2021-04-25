@@ -88,6 +88,15 @@ contains(
     return store.contains(layer);
 }
 
+bool
+LayerStore::
+erase(
+    const Network* layer
+)
+{
+    return store.erase(layer);
+}
+
 size_t
 LayerStore::
 index_of(

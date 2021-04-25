@@ -113,13 +113,13 @@ class
     /** Returns true if an object with the input id is present in the collection */
     bool
     contains(
-        const E*
+        const E* const
     ) const;
 
     /** Returns the position of the input value in the collection, or -1 */
     int
     index_of(
-        const E*
+        const E* const
     ) const;
 
     /** Returns the object at the given position in the collection.
@@ -156,7 +156,7 @@ class
     virtual
     bool
     erase(
-        E * const element
+        const E * const element
     );
 
 };
@@ -182,12 +182,12 @@ template <typename E, typename PTR, typename PtrLT, typename PtrEQ>
 bool
 PtrSortedRandomSet<E, PTR, PtrLT, PtrEQ>::
 erase(
-    E * const element
+    const E * const element
 )
 {
     core::assert_not_null(element, "erase", "e");
 
-    return set.template erase<E*,PtrLT,PtrEQ>(element);
+    return set.template erase<const E* const,PtrLT,PtrEQ>(element);
 }
 
 
@@ -286,7 +286,7 @@ template <typename E, typename PTR, typename PtrLT, typename PtrEQ>
 bool
 PtrSortedRandomSet<E, PTR, PtrLT, PtrEQ>::
 contains(
-    const E* search_value
+    const E* const search_value
 ) const
 {
 
@@ -299,7 +299,7 @@ template <typename E, typename PTR, typename PtrLT, typename PtrEQ>
 int
 PtrSortedRandomSet<E, PTR, PtrLT, PtrEQ>::
 index_of(
-    const E* search_value
+    const E* const search_value
 ) const
 {
 

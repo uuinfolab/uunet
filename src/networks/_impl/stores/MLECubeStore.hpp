@@ -129,13 +129,14 @@ class
         bool directed
     );
 
-
+/*
     virtual
     void
     add(
         const Network* layer
     );
-
+*/
+    
     virtual
     void
     erase(

@@ -5,12 +5,18 @@
 #include <utility>
 #include "networks/Network.hpp"
 #include "olap/VCube.hpp"
+#include "core/observers/Observer.hpp"
+#include "core/observers/ObserverStore.hpp"
+#include "core/observers/Subject.hpp"
 
 namespace uu {
 namespace net {
 
 
 class LayerStore
+:
+   public core::Subject<const Network>,
+   public core::ObserverStore
 {
   private:
 
@@ -46,6 +52,10 @@ class LayerStore
         const Network* layer
     ) const;
 
+    bool
+    erase(
+        const Network* layer
+    );
 
     size_t
     index_of(

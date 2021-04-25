@@ -97,13 +97,17 @@ TEST(networks_test, MultilayerNetwork)
     EXPECT_EQ((size_t)0, net->interlayer_edges()->incident(layer3, layer2, v2, uu::net::EdgeMode::OUT)->size())
             << "wrong number of directed interlayer neighbors";
 
-    /*
+    
     layer1->vertices()->erase(v1);
     EXPECT_EQ((size_t)0, net->interlayer_edges()->neighbors(layer3, layer1, v2, uu::net::EdgeMode::INOUT)->size())
             << "wrong number of interlayer neighbors after vertex deletion";
     EXPECT_EQ((size_t)0, net->interlayer_edges()->incident(layer3, layer1, v2, uu::net::EdgeMode::INOUT)->size())
             << "wrong number of interlayer incident edges after vertex deletion";
-    */
+    
+    net->layers()->erase(layer1);
+    
+    //net->interlayer_edges()->get(layer1, layer2);
+    
     // @todo More removal tests
 }
 

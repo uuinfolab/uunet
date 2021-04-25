@@ -1,4 +1,5 @@
 #include "networks/MultilayerNetwork.hpp"
+#include "networks/_impl/observers/PropagateObserver.hpp"
 
 namespace uu {
 namespace net {
@@ -15,6 +16,10 @@ MultilayerNetwork(
     layers_ = std::make_unique<LayerStore>(actors_.get());
 
     interlayer_edges_ = std::make_unique<MLECubeStore>(layers_.get());
+    
+    auto obs = std::make_unique<PropagateObserver<MLECubeStore, const Network>>(interlayer_edges_.get());
+    layers_->attach(obs.get());
+    layers_->register_observer(std::move(obs));
 
 }
 
