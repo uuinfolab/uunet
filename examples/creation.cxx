@@ -81,7 +81,7 @@ main()
     
     // Random graph generation
     
-    auto er_nm = uu::net::erdos_renyi_nm(10, 4);
+    auto er_nm = uu::net::erdos_renyi_nm(10000, 5000000);
     std::cout << "ER(n, m): " << uu::net::summary_short(er_nm.get()) << std::endl;
     
     auto er_np = uu::net::erdos_renyi_np(10, .2);

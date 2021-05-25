@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <unordered_map>
+#include "core/stores/AttributeStore.hpp"
 #include "objects/Edge.hpp"
 #include "objects/EdgeDir.hpp"
 #include "objects/EdgeMode.hpp"
@@ -22,6 +23,9 @@ class
     std::map<std::pair<const Network*, const Network*>, std::unique_ptr<ECube>> interlayer_edges_;
 
     const LayerStore* layers_;
+    
+    // Element attributes
+    std::unique_ptr<core::AttributeStore<Edge>> attr_;
 
   public:
 
@@ -52,6 +56,7 @@ class
         const Network* layer2
     );
 
+    /*
     const Edge *
     get(
         const Vertex* vertex1,
@@ -59,11 +64,25 @@ class
         const Vertex* vertex2,
         const Network* layer2
     );
-
+    */
+     
+    const Edge *
+    get(
+        const Vertex* vertex1,
+        const Network* layer1,
+        const Vertex* vertex2,
+        const Network* layer2
+    ) const;
+    
+    
     bool
     erase(
-        const Edge* e
+          const Vertex* vertex1,
+          const Network* layer1,
+          const Vertex* vertex2,
+          const Network* layer2
     );
+    
 
 
     const ECube*
@@ -150,6 +169,10 @@ class
         const Network* layer,
         const Vertex* vertex
     );
+    
+    core::AttributeStore<Edge>*
+    attr(
+    ) const;
 
   private:
 
@@ -158,6 +181,13 @@ class
         const Network* layer1,
         const Network* layer2
     );
+    
+    
+    const ECube*
+    get_(
+        const Network* layer1,
+        const Network* layer2
+    ) const;
 };
 
 

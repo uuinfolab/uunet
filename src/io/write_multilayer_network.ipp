@@ -69,7 +69,7 @@ write_multilayer_network(
                 {
                     continue;
                 }
-
+                if (!mnet->interlayer_edges()->get(*layer1,*layer2)) continue;
                 outfile << (*layer1)->name << sep << (*layer2)->name << sep << (mnet->interlayer_edges()->is_directed((*layer1),(*layer2))?"DIRECTED":"UNDIRECTED") << std::endl;
             }
         }
@@ -298,7 +298,8 @@ write_multilayer_network(
                 {
                     continue;
                 }
-
+                
+                if (!mnet->interlayer_edges()->get(*layer1,*layer2)) continue;
                 for (auto edge: *mnet->interlayer_edges()->get((*layer1),(*layer2)))
                 {
                     outfile << edge->v1->name << sep << (*layer1)->name << sep << edge->v2->name << sep << (*layer2)->name;
@@ -346,10 +347,10 @@ write_graphml(
     bool include_all_actors
 )
 {
-
+    
     std::ofstream outfile;
     outfile.open(path.data());
-
+    
     outfile << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << std::endl;
     outfile << "<graphml xmlns=\"http://graphml.graphdrawing.org/xmlns\"" << std::endl;
     outfile << "    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\""  << std::endl;
@@ -359,7 +360,7 @@ write_graphml(
     // if there are directed edges, then the output graph will be directed
     // and undirected edges will be split into pairs of directed edges
     bool directed = false;
-
+    
     for (auto layer=begin; layer!=end; ++layer)
     {
         if ((*layer)->is_directed())
@@ -377,7 +378,7 @@ write_graphml(
             {
                 continue;    // @todo check if layer2=layer1+1 can be used above
             }
-
+            if (!mnet->interlayer_edges()->get(*layer1,*layer2)) continue;
             if (mnet->interlayer_edges()->is_directed(*layer1,*layer2))
             {
                 directed = true;
@@ -387,7 +388,7 @@ write_graphml(
     }
 
 end_loop:
-
+    
 
     // Vertex attributes
     for (auto layer=begin; layer!=end; ++layer)
@@ -410,7 +411,7 @@ end_loop:
             }
         }
     }
-
+    
     // Actor attributes
     for (auto attr: *mnet->actors()->attr())
     {
@@ -427,7 +428,7 @@ end_loop:
 
     outfile << "    <key id=\"v_name\" for=\"node\" attr.name=\"name\" attr.type=\"string\"/>" << std::endl;
     outfile << "    <key id=\"e_type\" for=\"edge\" attr.name=\"e_type\" attr.type=\"string\"/>" << std::endl;
-
+    
     // Edge attributes
     for (auto layer1=begin; layer1!=end; ++layer1)
     {
@@ -476,7 +477,7 @@ end_loop:
             }
         }
     }
-
+    
     outfile << "  <graph id=\"" << mnet->name << "\" edgedefault=\"" << (directed?"directed":"undirected") << "\">" << std::endl;
 
     // Nodes
@@ -510,7 +511,7 @@ end_loop:
 
             outfile << "    <node id=\"" << actor << "\">" << std::endl;
             outfile << "        <data key=\"v_name\">" << actor_name << "</data>" << std::endl;
-
+            
             for (auto layer=begin; layer!=end; ++layer)
             {
 
@@ -569,6 +570,7 @@ end_loop:
 
     else
     {
+        
         // No actor merging: one node for each node in the original multilayer network.
         // Only actors present in at least one layer are included: the include_all_actors parameter is not used in this case.
         for (auto layer=begin; layer!=end; ++layer)
@@ -610,7 +612,7 @@ end_loop:
     }
 
     outfile << "    <key id=\"e_type\" for=\"edge\" attr.name=\"e_type\" attr.type=\"string\"/>" << std::endl;
-
+    
     // Edges
     if (merge_actors)
     {
@@ -658,6 +660,7 @@ end_loop:
 
                 else
                 {
+                    if (!mnet->interlayer_edges()->get(*layer1,*layer2)) continue;
                     for (auto edge: *mnet->interlayer_edges()->get((*layer1),(*layer2)))
                     {
                         outfile << "    <edge id=\"e" << edge << "\" source=\"" << edge->v1 << "\" target=\"" << edge->v2 << "\">" << std::endl;
@@ -692,6 +695,7 @@ end_loop:
 
     else
     {
+        
         // connect node ids
         for (auto layer1=begin; layer1!=end; ++layer1)
         {
@@ -736,6 +740,7 @@ end_loop:
 
                 else
                 {
+                    if (!mnet->interlayer_edges()->get(*layer1,*layer2)) continue;
                     for (auto edge: *mnet->interlayer_edges()->get((*layer1),(*layer2)))
                     {
                         outfile << "    <edge id=\"e" << edge << "\" source=\"" << edge->v1 << ":" << (*layer1) << "\" target=\"" << edge->v2 << ":" << (*layer2) << "\">" << std::endl;

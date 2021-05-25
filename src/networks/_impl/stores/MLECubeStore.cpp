@@ -12,7 +12,10 @@ MLECubeStore::
 MLECubeStore(
     const LayerStore* layers_
 ) : layers_(layers_)
-{}
+{
+    // @todo erasing edges does not erase the corresponding attributes
+    attr_ = std::make_unique<core::AttributeStore<Edge>>();
+}
 
 size_t
 MLECubeStore::
@@ -46,6 +49,7 @@ add(
     return get_(layer1, layer2)->add(vertex1, layer1->vertices(), vertex2, layer2->vertices());
 }
 
+/*
 const Edge *
 MLECubeStore::
 get(
@@ -62,7 +66,42 @@ get(
 
     return get_(layer1, layer2)->get(vertex1, layer1->vertices(), vertex2, layer2->vertices());
 }
+*/
+ 
+const Edge *
+MLECubeStore::
+get(
+    const Vertex* vertex1,
+    const Network* layer1,
+    const Vertex* vertex2,
+    const Network* layer2
+) const
+{
+    core::assert_not_null(vertex1, "MLECubeStore::add", "vertex1");
+    core::assert_not_null(layer1, "MLECubeStore::add", "layer1");
+    core::assert_not_null(vertex2, "MLECubeStore::add", "vertex2");
+    core::assert_not_null(layer2, "MLECubeStore::add", "layer2");
 
+    return get_(layer1, layer2)->get(vertex1, layer1->vertices(), vertex2, layer2->vertices());
+}
+
+
+bool
+MLECubeStore::
+erase(
+      const Vertex* vertex1,
+      const Network* layer1,
+      const Vertex* vertex2,
+      const Network* layer2
+)
+{
+    core::assert_not_null(vertex1, "MLECubeStore::erase", "vertex1");
+    core::assert_not_null(layer1, "MLECubeStore::erase", "layer1");
+    core::assert_not_null(vertex2, "MLECubeStore::erase", "vertex2");
+    core::assert_not_null(layer2, "MLECubeStore::erase", "layer2");
+    
+    return get_(layer1, layer2)->erase(vertex1, layer1->vertices(), vertex2, layer2->vertices());
+}
 
 const ECube*
 MLECubeStore::
@@ -89,7 +128,7 @@ get(
 
     if (f == interlayer_edges_.end())
     {
-        throw core::OperationNotSupportedException("interlayer edges between " + layer1->name + " and " + layer2->name + " not initialized");
+        return nullptr;
     }
 
     return f->second.get();
@@ -120,7 +159,38 @@ get_(
 
     if (f == interlayer_edges_.end())
     {
-        throw core::OperationNotSupportedException("interlayer edges between " + layer1->name + " and " + layer2->name + " not initialized");
+        return nullptr;
+    }
+
+    return f->second.get();
+}
+
+const ECube*
+MLECubeStore::
+get_(
+    const Network* layer1,
+    const Network* layer2
+) const
+{
+    core::assert_not_null(layer1, "MLECubeStore::get", "layer1");
+    core::assert_not_null(layer2, "MLECubeStore::get", "layer2");
+
+    if (!layers_->contains(layer1))
+    {
+        throw core::ElementNotFoundException("layer " + layer1->name);
+    }
+
+    if (!layers_->contains(layer2))
+    {
+        throw core::ElementNotFoundException("layer " + layer2->name);
+    }
+
+    auto key = std::make_pair(std::min(layer1, layer2), std::max(layer1, layer2));
+    auto f = interlayer_edges_.find(key);
+
+    if (f == interlayer_edges_.end())
+    {
+        return nullptr;
     }
 
     return f->second.get();
@@ -267,7 +337,13 @@ erase(
     }
 }
 
-
+core::AttributeStore<Edge>*
+MLECubeStore::
+attr(
+) const
+{
+    return attr_.get();
+}
 
 
 void
@@ -280,8 +356,15 @@ erase(
     core::assert_not_null(layer, "MLECubeStore::erase", "layer");
     core::assert_not_null(vertex, "MLECubeStore::erase", "vertex");
 
-    // @todo
-    std::vector<const Network*> layers;
+    for (auto& p: interlayer_edges_)
+    {
+        auto layer1 = p.first.first;
+        auto layer2 = p.first.second;
+        if (layer1 == layer || layer2 == layer)
+        {
+            p.second->erase(layer->vertices(), vertex);
+        }
+    }
 
 }
 }

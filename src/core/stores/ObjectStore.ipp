@@ -186,7 +186,6 @@ erase(
 {
     core::assert_not_null(obj, "ObjectStore::erase", "obj");
 
-    
     auto search = cidx_element_by_key.find(obj->key());
 
     if (search != cidx_element_by_key.end())

@@ -512,7 +512,7 @@ add_dimension(
     dim_idx_[name] = 0;
     members_.resize(dim_.size());
     members_idx_.resize(dim_.size());
-
+    
     for (auto m_name: members)
     {
         members_.back().push_back(m_name);
