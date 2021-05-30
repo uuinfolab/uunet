@@ -8,7 +8,6 @@
 #include "olap/indexing.hpp"
 #include <string>
 #include <unordered_map>
-#include <vector>
 
 namespace uu {
 namespace net {
@@ -485,7 +484,9 @@ register_obs(
 }
 
 
-// SF is a pointer to an object with a function get_store(), returning a new store
+// SF is an object with a function get_store(), returning a new store
+// D is an object with an operator (), returning a discretization vector (vector of boolean) for
+// each input element, and a function order(), returning the size of the discretization vector
 template <class STORE>
 template <class SF, class D>
 void
@@ -494,9 +495,15 @@ add_dimension(
     const std::string& name,
     const std::vector<std::string>& members,
     const SF& store_factory,
-    const D& discretize
+    const D& f
 )
 {
+    // @todo check f order
+    //if (f.order() != members.size())
+    //{
+    //    std::string err = "order of discretization function != number new members";
+    //    throw core::WrongParameterException(err);
+    //}
 
     // @todo see if it can be simplified
 
@@ -507,137 +514,117 @@ add_dimension(
 
     IndexIterator old_indexes(size_);
 
+    // Updating the cube's metadata (dimensions, size, ...)
     size_.push_back(members.size());
     dim_.push_back(name);
-    dim_idx_[name] = 0;
+    dim_idx_[name] = dim_.size() - 1;
     members_.resize(dim_.size());
     members_idx_.resize(dim_.size());
-    
     for (auto m_name: members)
     {
         members_.back().push_back(m_name);
         members_idx_.back()[m_name] = members_.back().size() - 1;
     }
 
+    // A -> B: from no dimensions to single cell
     if (data_.size() == 0 && members.size() == 1)
+    {
+        // creating the 1-cell cube
+        data_ = std::vector<std::shared_ptr<STORE>>(1);
+        data_[0] = elements_;
+        
+        // remove elements not assigned to the new cell
+        filter(f);
+        
+    }
+    // A -> C:
+    else if (data_.size() == 0 && members.size() > 1)
+    {
+        auto old_elements = elements_;
+
+        // resize the cube
+        resize(store_factory);
+
+        // Copy elements from each cell in the previous cube to the new corresponding cells
+        discretize(old_elements, f);
+    }
+    // B -> B:
+    else if (data_.size() == 1 && members.size() == 1)
+    {
+        // remove elements not assigned to the new cell
+        filter(f);
+    }
+    // B -> C or C -> C
+    else
+    {
+        auto old_data = data_;
+
+        // resize the cube
+        resize(store_factory);
+
+        // Copy elements from each cell in the previous cube to the new corresponding cells
+        discretize(old_data, old_indexes, f);
+    }
+}
+
+
+template <class STORE>
+template <class SF>
+void
+MLCube<STORE>::
+erase_dimension(
+    const SF& store_factory
+)
+{
+    if (order() == 0)
+    {
+        throw core::OperationNotSupportedException("no dimension to erase");
+    }
+
+    IndexIterator old_indexes(size_);
+    
+
+    // Updating the cube's metadata (dimensions, size, ...)
+    std::string dim_to_erase = dim_.back();
+    size_.pop_back();
+    dim_.pop_back();
+    dim_idx_.erase(dim_to_erase);
+    members_.pop_back();
+    members_idx_.pop_back();
+    
+    // number of cells in the new cube (only true/used if order>0)
+    size_t num_cells = 1;
+    for (size_t s: size_) num_cells *= s;
+    
+    //  -> A: to order 0
+    if (dim_.size() == 0)
+    {
+        data_ = std::vector<std::shared_ptr<STORE>>(0);
+    }
+    // B -> B
+    else if (data_.size() == 1 && num_cells == 1)
+    {
+        // no action needed, only one cell
+    }
+    // C -> B
+    else if (num_cells == 1)
     {
         data_ = std::vector<std::shared_ptr<STORE>>(1);
         data_[0] = elements_;
-        // If no discretization function is used, all the elements are preserved
-        std::set<const typename STORE::value_type*> to_erase;
-
-        for (auto el: *elements_)
-        {
-            std::vector<bool> to_add = discretize(el);
-
-            if (!to_add[0]) // warning - not checking size
-            {
-                to_erase.insert(el);
-            }
-
-            for (auto v: to_erase)
-            {
-                elements_->erase(v);
-            }
-        }
     }
-
-    else if (data_.size() == 0 && members.size() > 1)
-    {
-        auto old_elements_ = elements_;
-
-        size_t new_num_cells = members.size();
-        data_ = std::vector<std::shared_ptr<STORE>>(new_num_cells);
-
-        init(store_factory->get_store()); // initialize elements_
-        union_obs = std::make_unique<core::UnionObserver<STORE>>(elements_.get());
-
-        for (size_t p = 0; p < data_.size(); p++)
-        {
-            init(p, store_factory->get_store());
-            register_obs(p);
-        }
-
-        // Copy elements from each cell in the previous cube to the new corresponding cells
-        std::set<const typename STORE::value_type*> to_erase;
-
-        for (auto el: *old_elements_)
-        {
-            std::vector<bool> to_add = discretize(el);
-
-            for (size_t i = 0; i < to_add.size(); i++)
-            {
-                if (to_add[i])
-                {
-                    data_[i]->add(el);
-                }
-            }
-        }
-
-        for (auto el: *old_elements_)
-        {
-            if (!elements_->contains(el))
-            {
-                attr_->notify_erase(el);
-            }
-        }
-
-    }
-
+    // C -> C
     else
     {
-        // Temporarily saving current data
-
-        auto old_elements_ = elements_;
-        std::vector<std::shared_ptr<STORE>> old_data_ = data_;
-
-        // Create new data
-
-        size_t new_num_cells = data_.size() * members.size();
-        data_ = std::vector<std::shared_ptr<STORE>>(new_num_cells);
-
-        init(store_factory->get_store()); // initialize elements_
-        union_obs = std::make_unique<core::UnionObserver<STORE>>(elements_.get());
-
-        for (size_t p = 0; p < data_.size(); p++)
-        {
-            init(p, store_factory->get_store());
-            register_obs(p);
-        }
+        auto old_data = data_;
+        
+        // resize the cube
+        resize(store_factory);
 
         // Copy elements from each cell in the previous cube to the new corresponding cells
-
-        size_t old_pos = 0;
-
-        for (auto index: old_indexes)
-        {
-            for (auto el: *old_data_[old_pos++])
-            {
-                std::vector<bool> to_add = discretize(el);
-
-                for (size_t i = 0; i < to_add.size(); i++)
-                {
-                    if (to_add[i])
-                    {
-                        index.push_back(i);
-                        data_[pos(index)]->add(el);
-                        index.pop_back();
-                    }
-                }
-
-                for (auto el: *old_elements_)
-                {
-                    if (!elements_->contains(el))
-                    {
-                        attr_->notify_erase(el);
-                    }
-                }
-            }
-        }
-
+        compact(old_data, old_indexes);
     }
-
 }
+
 
 template <class STORE>
 template <class SF>
@@ -715,9 +702,167 @@ add_member(
 
         }
     }
+}
 
+template <class STORE>
+void
+MLCube<STORE>::
+erase_member(
+    const std::string& dim_name
+)
+{
 
+    // Temporarily saving current data
 
+    std::vector<std::shared_ptr<STORE>> old_data = data_;
+    auto old_size = size_;
+
+    // finding the target dimension
+
+    auto dim = dim_idx_.find(dim_name);
+    if (dim == dim_idx_.end())
+    {
+        throw core::ElementNotFoundException("dimension " + dim_name);
+    }
+    size_t d_idx = dim->second;
+
+    // updating metadata
+    
+    size_[d_idx] -= 1;
+    std::string memb_name = members_[d_idx].back();
+    members_[d_idx].pop_back();
+    members_idx_[d_idx].erase(memb_name);
+
+    size_t new_num_cells = data_.size() * size_[d_idx] / (size_[d_idx] + 1);
+    size_t removed_member_id = members_idx_[d_idx].size();
+
+    // C -> C
+    if (new_num_cells > 1)
+    {
+        // Create new data
+
+        data_ = std::vector<std::shared_ptr<STORE>>(new_num_cells);
+
+        // Copy cells and elements
+
+        IndexIterator old_indexes(old_size);
+
+        for (auto index: old_indexes)
+        {
+            if (index[d_idx] != removed_member_id)
+            {
+                size_t pos_old_data = idx_to_pos(index, old_size);
+                data_[pos(index)] = old_data[pos_old_data];
+            }
+            else
+            {
+                size_t pos_old_data = idx_to_pos(index, old_size);
+                for (auto el: *old_data[pos_old_data])
+                {
+                    union_obs->notify_erase(el);
+                }
+            }
+        }
+    }
+    else
+    // C -> B
+    {
+        for (auto el: *data_[1])
+        {
+            union_obs->notify_erase(el);
+        }
+        data_ = std::vector<std::shared_ptr<STORE>>(1);
+        data_[0] = elements_;
+    }
+}
+
+template <class STORE>
+void
+MLCube<STORE>::
+sort(
+    const std::string& dim_name,
+    const std::vector<size_t>& f
+)
+{
+    // Temporarily saving current data
+
+    std::vector<std::shared_ptr<STORE>> old_data = data_;
+    
+    // finding the target dimension
+    
+    auto dim = dim_idx_.find(dim_name);
+    if (dim == dim_idx_.end())
+    {
+        throw core::ElementNotFoundException("dimension " + dim_name);
+    }
+    size_t d_idx = dim->second;
+    
+    // Updating the cube's metadata (dimensions, size, ...)
+    
+    auto old_members = members_[d_idx];
+    
+    for (size_t i = 0; i < size_[d_idx]; i++)
+    {
+        std::string memb_name_at_i = old_members[f[i]];
+        members_[d_idx][i] = memb_name_at_i;
+        members_idx_[d_idx][memb_name_at_i] = i;
+    }
+    
+    // moving the stores
+    
+    data_ = std::vector<std::shared_ptr<STORE>>(old_data.size());
+
+    IndexIterator old_indexes(size_);
+
+    for (auto index: old_indexes)
+    {
+        auto new_index = index;
+        new_index[d_idx] = f[index[d_idx]];
+        data_[pos(new_index)] = old_data[pos(index)];
+    }
+}
+
+template <class STORE>
+void
+MLCube<STORE>::
+pivot(
+    const std::vector<size_t>& f
+)
+{
+    // Temporarily saving current data
+
+    std::vector<std::shared_ptr<STORE>> old_data = data_;
+
+    // Updating the cube's metadata (dimensions, size, ...)
+    auto old_size = size_;
+    auto old_dim = dim_;
+    auto old_members = members_;
+    auto old_members_idx = members_idx_;
+    for (size_t i = 0; i < size_.size(); i++)
+    {
+        size_[i] = old_size[f[i]];
+        dim_[i] = old_dim[f[i]];
+        dim_idx_[dim_[i]] = i;
+        members_[i] = old_members[f[i]];
+        members_idx_[i] = old_members_idx[f[i]];
+    }
+    
+    // moving the stores
+    
+    data_ = std::vector<std::shared_ptr<STORE>>(old_data.size());
+
+    IndexIterator old_indexes(old_size);
+
+    for (auto index: old_indexes)
+    {
+        auto new_index = std::vector<size_t>(size_.size());
+        for (size_t i = 0; i < size_.size(); i++)
+        {
+            new_index[i] = index[f[i]];
+        }
+        size_t pos_old_data = idx_to_pos(index, old_size);
+        data_[pos(new_index)] = old_data[pos_old_data];
+    }
 }
 
 template <class STORE>
@@ -776,7 +921,166 @@ index_of(
     return res;
 }
 
+template <class STORE>
+template <class SF>
+void
+MLCube<STORE>::
+resize(
+    const SF& store_factory
+)
+{
+    // new cube cells (data_)
+    size_t num_cells = 1;
+    for (size_t s: size_) num_cells *= s;
+    data_ = std::vector<std::shared_ptr<STORE>>(num_cells);
 
+    // new union set of all elements in the cube (elements_)
+    init(store_factory->get_store());
+    
+    // registering the observers to keep the union set correct
+    union_obs = std::make_unique<core::UnionObserver<STORE>>(elements_.get());
+    for (size_t p = 0; p < data_.size(); p++)
+    {
+        init(p, store_factory->get_store());
+        register_obs(p);
+    }
+}
+
+template <class STORE>
+template <class D>
+void
+MLCube<STORE>::
+discretize(
+    const std::vector<std::shared_ptr<STORE>>& old_data,
+    const IndexIterator& old_indexes,
+    const D& f
+)
+{
+    std::set<const typename STORE::value_type*> candidate_to_erase;
+    
+    // iterate over previous stores
+    size_t old_pos = 0;
+    for (auto index: old_indexes)
+    {
+        // adding one dimension to the index
+        index.push_back(0);
+        
+        // distribute all the elements in this store to the new stores, based on f()
+        for (auto el: *old_data[old_pos++])
+        {
+            std::vector<bool> to_add = f(el);
+
+            bool added = false;
+            for (size_t i = 0; i < to_add.size(); i++)
+            {
+                if (to_add[i])
+                {
+                    index.back() = i;
+                    data_[pos(index)]->add(el);
+                    added = true;
+                    //index.pop_back();
+                }
+            }
+            if (!added) candidate_to_erase.insert(el);
+        }
+    }
+    
+    // update attributes if elements have been erased
+    for (auto el: candidate_to_erase)
+    {
+        if (!elements_->contains(el))
+        {
+            attr_->notify_erase(el);
+        }
+    }
+}
+
+template <class STORE>
+template <class D>
+void
+MLCube<STORE>::
+discretize(
+    const std::shared_ptr<STORE>& old_elements,
+    const D& f
+)
+{
+    std::vector<size_t> index = {0};
+        
+    // distribute all the previous  elements to the new stores, based on f()
+    std::set<const typename STORE::value_type*> candidate_to_erase;
+    for (auto el: *old_elements)
+    {
+        std::vector<bool> to_add = f(el);
+
+        bool added = false;
+        for (size_t i = 0; i < to_add.size(); i++)
+        {
+            if (to_add[i])
+            {
+                index.back() = i;
+                data_[pos(index)]->add(el);
+                added = true;
+                //index.pop_back();
+            }
+        }
+        if (!added) candidate_to_erase.insert(el);
+    }
+    
+    // update attributes if elements have been erased
+    for (auto el: candidate_to_erase)
+    {
+        if (!elements_->contains(el))
+        {
+            attr_->notify_erase(el);
+        }
+    }
+}
+
+template <class STORE>
+template <class D>
+void
+MLCube<STORE>::
+filter(
+    const D& f
+)
+{
+    std::set<const typename STORE::value_type*> to_erase;
+    for (auto el: *elements_)
+    {
+        std::vector<bool> to_add = f(el);
+        if (!to_add[0])
+        {
+            to_erase.insert(el);
+        }
+    }
+    for (auto v: to_erase)
+    {
+        elements_->erase(v);
+    }
+}
+
+template <class STORE>
+void
+MLCube<STORE>::
+compact(
+    const std::vector<std::shared_ptr<STORE>>& old_data,
+    const IndexIterator& old_indexes
+)
+{
+    // iterate over previous stores
+    size_t old_pos = 0;
+    for (auto index: old_indexes)
+    {
+        // adding one dimension to the index
+        std::vector<size_t> new_index(index.begin(), index.end() - 1);
+        
+        // distribute all the elements in this store to the new store
+        for (auto el: *old_data[old_pos++])
+        {
+            data_[pos(new_index)]->add(el);
+        }
+    }
+}
 
 }
 }

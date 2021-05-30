@@ -224,6 +224,13 @@ class MLCube
         const D& discretize
     );
 
+
+    template <class SF>
+    void
+    erase_dimension(
+        const SF& store_factory
+    );
+    
     /**
      * Adds a member to an existing dimension.
      */
@@ -236,6 +243,22 @@ class MLCube
         //bool (*copy)(typename STORE::value_type*) = nullptr
     );
 
+    void
+    erase_member(
+        const std::string& dim_name
+    );
+    
+    void
+    sort(
+        const std::string& dim_name,
+        const std::vector<size_t>& f
+    );
+    
+    void
+    pivot(
+        const std::vector<size_t>& f
+    );
+    
     /**
      * Returns the cell at the given position in the cube.
      * @throw OutOfBoundsException if the index is outside the bounds on the cube
@@ -444,6 +467,50 @@ class MLCube
         const std::vector<std::string>& index
     ) const;
 
+    /**
+     *  Creates new storage for the cube based on the current metadata
+     *  (dimensions, size, ...)
+     */
+    template <class SF>
+    void
+    resize(
+        const SF& store_factory
+    );
+    
+    
+    /**
+     *  Distribute elements from each previous cell to the new cells
+     *  based on the discretization function f().
+     *  Also updates the attributes if some elements are not assigned to
+     *  any new cell.
+     */
+    template <class D>
+    void
+    discretize(
+        const std::vector<std::shared_ptr<STORE>>& old_data,
+        const IndexIterator& old_indexes,
+        const D& f
+    );
+    
+    template <class D>
+    void
+    discretize(
+        const std::shared_ptr<STORE>& old_elements,
+        const D& f
+    );
+    
+    template <class D>
+    void
+    filter(
+        const D& f
+    );
+    
+    void
+    compact(
+        const std::vector<std::shared_ptr<STORE>>& old_data,
+        const IndexIterator& old_indexes
+    );
+    
     /*
         virtual
         void

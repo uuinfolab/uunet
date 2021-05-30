@@ -261,6 +261,14 @@ add_dimension(
 
 void
 VCube::
+erase_dimension(
+)
+{
+    data_->erase_dimension(this);
+}
+
+void
+VCube::
 add_member(
     const std::string& name,
     const std::string& member//,
@@ -270,6 +278,34 @@ add_member(
     return data_->add_member(name, member, this);
 }
 
+
+void
+VCube::
+erase_member(
+    const std::string& dim_name
+)
+{
+    return data_->erase_member(dim_name);
+}
+
+void
+VCube::
+sort(
+    const std::string& dim_name,
+    const std::vector<size_t>& f
+)
+{
+    data_->sort(dim_name, f);
+}
+
+void
+VCube::
+pivot(
+    const std::vector<size_t>& f
+)
+{
+    data_->pivot(f);
+}
 
 VertexStore*
 VCube::
@@ -441,6 +477,7 @@ get_store(
 {
     return std::make_shared<VertexStore>();
 }
+
 
 }
 }

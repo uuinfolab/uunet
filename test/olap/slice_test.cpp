@@ -1,10 +1,10 @@
 #include "gtest/gtest.h"
 
-#include "./operators.hpp"
+#include "./slice.hpp"
 
 #include "olap/op/slicing.hpp"
 
-TEST_F(olap_operators_test, vslice)
+TEST_F(olap_operators_slice_test, vslice)
 {
 
     std::vector<std::vector<size_t>> s1 = {{1}, {0,1}, {0,1}};

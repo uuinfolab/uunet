@@ -239,6 +239,10 @@ class
         const std::vector<std::string>& members
     );
 
+    void
+    erase_dimension(
+    );
+    
     /**
      * Adds a member to an existing dimension.
      */
@@ -248,7 +252,23 @@ class
         const std::string& member//,
         //bool (*copy)(const Vertex*) = nullptr
     );
+    
+    void
+    erase_member(
+        const std::string& dim_name
+    );
 
+    void
+    sort(
+        const std::string& dim_name,
+        const std::vector<size_t>& f
+    );
+    
+    void
+    pivot(
+        const std::vector<size_t>& f
+    );
+    
     /**
      * Returns the cell at the given position in the cube.
      * @throw OutOfBoundsException if the index is outside the bounds on the cube
