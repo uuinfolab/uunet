@@ -278,6 +278,15 @@ add_member(
     return data_->add_member(name, member, this);
 }
 
+void
+VCube::
+erase_member(
+    const std::string& dim_name,
+    const std::string& memb_name
+)
+{
+    return data_->erase_member(dim_name, memb_name);
+}
 
 void
 VCube::

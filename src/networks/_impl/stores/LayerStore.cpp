@@ -94,7 +94,15 @@ erase(
     const Network* layer
 )
 {
-    return store.erase(layer);
+    core::assert_not_null(layer, "LayerStore::erase", "layer");
+    std::string layer_name = layer->name;
+    auto res = store.erase(layer);
+    if (store.size() == 0)
+    {
+        actors_->erase_dimension();
+    }
+    else actors_->erase_member("L", layer_name);
+    return res;
 }
 
 size_t

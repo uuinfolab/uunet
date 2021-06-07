@@ -62,6 +62,7 @@ to_string(
                    "@" + c2->to_string() + ")";
         }
     }
+    return ""; // cannot get here
 }
 
 

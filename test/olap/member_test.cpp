@@ -45,5 +45,9 @@ TEST(olap_operators_test, erase_member)
     EXPECT_EQ(V->cell(idx00)->size(), (size_t) 1);
     EXPECT_EQ(V->cell(idx01)->size(), (size_t) 1);
     
+    V->erase_member("d0");
+    V->erase_member("d1");
+    
+    
     
 }

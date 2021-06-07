@@ -114,3 +114,25 @@ TEST(networks_test, MultilayerNetwork)
     // @todo More removal tests
 }
 
+TEST(networks_test, MultilayerNetwork_erase)
+{
+
+    // Creating an empty multilayer network
+
+    auto net = std::make_unique<uu::net::MultilayerNetwork>("a ml net");
+
+    // Adding layers
+    auto l1 = net->layers()->add("1", uu::net::EdgeDir::UNDIRECTED);
+    auto l2 = net->layers()->add("2", uu::net::EdgeDir::UNDIRECTED);
+    auto l3 = net->layers()->add("3", uu::net::EdgeDir::UNDIRECTED);
+    auto l4 = net->layers()->add("4", uu::net::EdgeDir::UNDIRECTED);
+    auto l5 = net->layers()->add("5", uu::net::EdgeDir::UNDIRECTED);
+    auto l6 = net->layers()->add("6", uu::net::EdgeDir::UNDIRECTED);
+    
+    net->layers()->erase(l1);
+    net->layers()->erase(l5);
+    net->layers()->erase(l6);
+    net->layers()->erase(l4);
+    net->layers()->erase(l3);
+    net->layers()->erase(l2);
+}

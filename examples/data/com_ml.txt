@@ -17,7 +17,7 @@ a5,l1,1
 12g
 
 
-
+Alexandra Segerberg <alexandra.segerberg@statsvet.uu.se>
 
 ACCEPT
 
@@ -25,5 +25,10 @@ ACCEPT
 
 REJECT
 
+- Number of credits to get resident permit.
+- AI project in Java?
+- Email from Ladok for re-exams? (Statistical machine learning)
+- Not to pay again for the tuition fee if course is taken again.
 
+python exec.py -i queries/queries_cc.txt -e 20-12-31 -u query_res3 -k secret_api_key7.txt
 

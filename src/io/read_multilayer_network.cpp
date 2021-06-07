@@ -94,6 +94,8 @@ read_multilayer_network(
     // Read data (vertices, edges, attribute values)
     read_multilayer_data(net.get(),  meta, infile, separator);
 
+    read_actor_attributes(net.get(),  meta, infile, separator);
+    
     // Align
     if (align)
     {
@@ -143,13 +145,16 @@ read_vertex(
 )
 {
     core::assert_not_null(ml, "read_vertex", "ml");
-    (void)fields;
-    (void)meta;
-    (void)line_number;
-    // @todo actors not read
-    //auto v = read_actor(ml, fields, 0, line_number);
+    
+    std::string actor_name = fields.at(0);
 
-    //read_attr_values(ml->actors()->attr(), v, meta.vertex_attributes, fields, 1, line_number);
+    auto actor = ml->actors()->get(actor_name);
+    
+    if (!actor)
+    {
+        throw core::ElementNotFoundException("actor " + actor_name + " must exist in at least one layer");
+    }
+    read_attr_values(ml->actors()->attr(), actor, meta.vertex_attributes, fields, 1, line_number);
 
 }
 

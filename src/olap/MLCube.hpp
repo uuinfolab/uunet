@@ -249,6 +249,12 @@ class MLCube
     );
     
     void
+    erase_member(
+        const std::string& dim_name,
+        const std::string& memb_name
+    );
+    
+    void
     sort(
         const std::string& dim_name,
         const std::vector<size_t>& f

@@ -79,9 +79,11 @@ TEST(io_test, read_multilayer_network)
     auto v5 = vertices->get("v5");
     auto e = edges->get(v1, v5);
     double val1 = edges->attr()->get_double(e, "attr.name2").value;
-    EXPECT_EQ(8.0, val1)
-            << "wrong attribute value: edge on layer";
-
+    EXPECT_EQ(8.0, val1);
+    
+    std::string val2 = net->actors()->attr()->get_string(v1, "ssn").value;
+    EXPECT_EQ("122343242", val2);
+    
     auto il_edges = net->interlayer_edges();
     //auto il_e =
     il_edges->get(v1,l1,v2,l2);

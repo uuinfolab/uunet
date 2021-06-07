@@ -257,7 +257,13 @@ class
     erase_member(
         const std::string& dim_name
     );
-
+    
+    void
+    erase_member(
+        const std::string& dim_name,
+        const std::string& memb_name
+    );
+    
     void
     sort(
         const std::string& dim_name,

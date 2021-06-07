@@ -711,6 +711,24 @@ erase_member(
     const std::string& dim_name
 )
 {
+    auto dim = dim_idx_.find(dim_name);
+    if (dim == dim_idx_.end())
+    {
+        throw core::ElementNotFoundException("dimension " + dim_name);
+    }
+    size_t d_idx = dim->second;
+    
+    erase_member(dim_name, members_[d_idx].back());
+}
+    
+template <class STORE>
+void
+MLCube<STORE>::
+erase_member(
+    const std::string& dim_name,
+    const std::string& memb_name
+)
+{
 
     // Temporarily saving current data
 
@@ -725,16 +743,27 @@ erase_member(
         throw core::ElementNotFoundException("dimension " + dim_name);
     }
     size_t d_idx = dim->second;
+    
+    auto mem = members_idx_[d_idx].find(memb_name);
+    if (mem == members_idx_[d_idx].end())
+    {
+        throw core::ElementNotFoundException("member " + memb_name);
+    }
+    size_t m_idx = mem->second;
 
     // updating metadata
     
     size_[d_idx] -= 1;
-    std::string memb_name = members_[d_idx].back();
-    members_[d_idx].pop_back();
+    members_[d_idx].erase(members_[d_idx].begin() + m_idx);
     members_idx_[d_idx].erase(memb_name);
+    
+    for (size_t i = 0; i < members_[d_idx].size(); i++)
+    {
+        std::string name = members_[d_idx][i];
+        members_idx_[d_idx][name] = i;
+    }
 
     size_t new_num_cells = data_.size() * size_[d_idx] / (size_[d_idx] + 1);
-    size_t removed_member_id = members_idx_[d_idx].size();
 
     // C -> C
     if (new_num_cells > 1)
@@ -749,10 +778,17 @@ erase_member(
 
         for (auto index: old_indexes)
         {
-            if (index[d_idx] != removed_member_id)
+            if (index[d_idx] < m_idx)
             {
                 size_t pos_old_data = idx_to_pos(index, old_size);
                 data_[pos(index)] = old_data[pos_old_data];
+            }
+            else if (index[d_idx] > m_idx)
+            {
+                auto new_index = index;
+                new_index[d_idx] -= 1;
+                size_t pos_old_data = idx_to_pos(index, old_size);
+                data_[pos(new_index)] = old_data[pos_old_data];
             }
             else
             {

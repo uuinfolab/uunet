@@ -56,6 +56,15 @@ read_multilayer_data(
     char separator
 );
 
+template <typename ML>
+void
+read_actor_attributes(
+    ML* ml,
+    const MultilayerMetadata& meta,
+    const std::string& infile,
+    char separator
+);
+
 /**
  * Utility function to read ...
  * @param graph_type...
@@ -201,6 +210,73 @@ read_multilayer_data(
 
             break;
         }
+
+        default:
+            break;
+        }
+    }
+
+}
+
+
+template <typename ML>
+void
+read_actor_attributes(
+    ML* ml,
+    const MultilayerMetadata& meta,
+    const std::string& infile,
+    char separator
+)
+{
+
+    // PASS 3
+
+    core::CSVReader csv;
+    csv.trim_fields(true);
+    csv.set_field_separator(separator);
+    csv.set_comment("--");
+    csv.open(infile);
+
+    MultilayerIOFileSection section = MultilayerIOFileSection::EDGES;
+
+    while (csv.has_next())
+    {
+
+        std::vector<std::string> fields = csv.get_next();
+        std::string line = csv.get_current_raw_line();
+        // std::cout << line << std::endl;
+        // remove trailing spaces
+        line.erase(line.find_last_not_of(" \t")+1);
+        line.erase(0,line.find_first_not_of(" \t"));
+
+        if (line.size()==0)
+        {
+            continue;
+        }
+
+        // if new section starts here, set the current section and proceed
+        if (new_multilayer_section_start(line))
+        {
+            section = get_multilayer_section(line);
+            //fields = csv.get_next();
+            continue;
+        }
+
+        switch (section)
+        {
+        case MultilayerIOFileSection::ACTORS:
+        {
+            // @todo no longer actors before layers
+            read_vertex(ml, fields, meta, csv.row_num());
+            break;
+        }
+
+        case MultilayerIOFileSection::INTRALAYER_VERTICES:
+        case MultilayerIOFileSection::INTRALAYER_EDGES:
+        case MultilayerIOFileSection::INTERLAYER_EDGES:
+        case MultilayerIOFileSection::EDGES:
+            break;
+        
 
         default:
             break;
