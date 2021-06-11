@@ -3,7 +3,7 @@ cmake_minimum_required( VERSION 3.15...3.18 )
 # Meta information about the project
 #include( "${PROJECT_SOURCE_DIR}/project-meta-info.in" )
 
-set (META_PROJECT_NAME			"uunet")
+set (META_LIBRARY_NAME			"uunet")
 set (META_PROJECT_VERSION_FULL 		"0.9")
 set (META_PROJECT_HOMEPAGE 		"https://bitbucket.org/uuinfolab/uunet")
 set (META_PROJECT_DESCRIPTION 		"Network analysis library")
