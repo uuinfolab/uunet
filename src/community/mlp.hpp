@@ -180,44 +180,42 @@ std::unique_ptr<CommunityStructure<M>>
 //         }
 //         std::cout << std::endl;*/
 //    }
-
-
-        // (2) recover the relevant dimensions (layers) Dv for each actor using equation(8) in the reference
-        for (const Vertex* actor: *mnet->actors())
-        {
-            double max_sum_of_w0 = 0;
-            std::set<typename M::layer_type*> actor_relevant_dimensions;
+        // (2) recover the relevant dimensions (layers) Dv for each actor using equation(8) in the reference
+        for (const Vertex* actor: *mnet->actors())
+        {
+            double max_sum_of_w0 = 0;
+            std::set<typename M::layer_type*> actor_relevant_dimensions;
      
-            //calculate the sum of w0 for neighbours within all subsets of layers in which the actor is active
-            for (auto sub: actors_shared_layers[actor])
-            {
-                //get the sum of initial attraction weights within this subset of layers
-                double sum_of_w0 = get_sum_of_w0<M>(sub.second, actor, actors_shared_layers[actor], initial_attraction_weights);
+            //calculate the sum of w0 for neighbours within all subsets of layers in which the actor is active
+            for (auto sub: actors_shared_layers[actor])
+            {
+                //get the sum of initial attraction weights within this subset of layers
+                double sum_of_w0 = get_sum_of_w0<M>(sub.second, actor, actors_shared_layers[actor], initial_attraction_weights);
      
-                if (sum_of_w0 > max_sum_of_w0)
-                {
-                    max_sum_of_w0 = sum_of_w0;
-                    actor_relevant_dimensions = sub.second;
-                }
+                if (sum_of_w0 > max_sum_of_w0)
+                {
+                    max_sum_of_w0 = sum_of_w0;
+                    actor_relevant_dimensions = sub.second;
+                }
      
-                else if (sum_of_w0 == max_sum_of_w0)
-                {
-                    //actor_relevant_dimensions.insert(actor_relevant_dimensions.begin(), actor_relevant_dimensions.end());
+                else if (sum_of_w0 == max_sum_of_w0)
+                {
+                    //actor_relevant_dimensions.insert(actor_relevant_dimensions.begin(), actor_relevant_dimensions.end());
      
-                    actor_relevant_dimensions.insert(sub.second.begin(), sub.second.end());
-                }
-            }
+                    actor_relevant_dimensions.insert(sub.second.begin(), sub.second.end());
+                }
+            }
      
-            actors_relevant_dimensions[actor] = actor_relevant_dimensions;
+            actors_relevant_dimensions[actor] = actor_relevant_dimensions;
      
-            /* std::cout << (*actor) << ": ";
-             for (auto l: actors_relevant_dimensions[actor])
-             {
-                 std::cout << l->name << " ";
+            /* std::cout << (*actor) << ": ";
+             for (auto l: actors_relevant_dimensions[actor])
+             {
+                 std::cout << l->name << " ";
      
-             }
-             std::cout << std::endl;*/
-        }
+             }
+             std::cout << std::endl;*/
+        }
     
     // END OF REPLACEMENT
     
