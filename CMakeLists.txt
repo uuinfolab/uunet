@@ -1,7 +1,7 @@
 cmake_minimum_required( VERSION 3.15...3.18 )
 
 # Meta information about the project
-include( "${CMAKE_CURRENT_LIST_DIR}/project-meta-info.in" )
+# include( "${CMAKE_CURRENT_LIST_DIR}/project-meta-info.in" )
 
 #
 # Preamble
@@ -47,8 +47,12 @@ endif()
 # Project definition
 #
 
+set (META_PROJECT_VERSION_FULL 		"0.9")
+set (META_PROJECT_HOMEPAGE 		"https://bitbucket.org/uuinfolab/uunet")
+set (META_PROJECT_DESCRIPTION 		"Network analysis library")
+
 # Declare new project
-project( ${META_PROJECT_NAME}
+project( uunet
 	VERSION 		${META_PROJECT_VERSION_FULL}
 	DESCRIPTION 	${META_PROJECT_DESCRIPTION}
 	HOMEPAGE_URL 	${META_PROJECT_HOMEPAGE}
