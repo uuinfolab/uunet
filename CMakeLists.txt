@@ -47,12 +47,13 @@ endif()
 # Project definition
 #
 
+set (META_PROJECT_NAME			"uunet")
 set (META_PROJECT_VERSION_FULL 		"0.9")
 set (META_PROJECT_HOMEPAGE 		"https://bitbucket.org/uuinfolab/uunet")
 set (META_PROJECT_DESCRIPTION 		"Network analysis library")
 
 # Declare new project
-project( uunet
+project( ${META_PROJECT_NAME}
 	VERSION 		${META_PROJECT_VERSION_FULL}
 	DESCRIPTION 	${META_PROJECT_DESCRIPTION}
 	HOMEPAGE_URL 	${META_PROJECT_HOMEPAGE}
