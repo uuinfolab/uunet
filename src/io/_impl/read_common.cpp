@@ -4,7 +4,6 @@
  */
 
 #include "io/_impl/read_common.hpp"
-#include "networks/Network.hpp"
 #include "core/utils/string.hpp"
 #include "core/exceptions/WrongParameterException.hpp"
 #include "core/exceptions/WrongFormatException.hpp"
@@ -252,7 +251,7 @@ read_attr_def(
 }
 
 
-template <>
+
 void
 read_vertex(
     Network* g,
@@ -279,7 +278,7 @@ read_vertex(
 }
 
 
-template <>
+
 void
 read_edge(
     Network* g,

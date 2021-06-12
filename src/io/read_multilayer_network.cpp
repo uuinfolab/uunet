@@ -137,7 +137,7 @@ read_layer(
 
 template <>
 void
-read_vertex(
+read_actor(
     MultilayerNetwork* ml,
     const std::vector<std::string>& fields,
     const MultilayerMetadata& meta,
