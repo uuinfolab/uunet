@@ -173,6 +173,7 @@ struct MemNodeSet
 template<typename FlowType>
 class InfomapGreedyTypeSpecialized<FlowType, WithMemory> : public InfomapGreedyCommon<InfomapGreedyTypeSpecialized<FlowType, WithMemory> >
 {
+    public:
     friend class InfomapGreedyCommon<InfomapGreedyTypeSpecialized<FlowType, WithMemory> >;
     typedef InfomapGreedyCommon<InfomapGreedyTypeSpecialized<FlowType, WithMemory> >		Super;
     typedef typename flowData_traits<FlowType>::detailed_balance_type 						DetailedBalanceType;
