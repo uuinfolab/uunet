@@ -51,6 +51,8 @@ else()
 	set ( LIBRARY_DEBUG_OPTIONS -Wall -Wextra -Wpedantic )
 endif()
 
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON) # to create a .lib file besides the .dll (windows)
+
 target_compile_features( ${META_LIBRARY_NAME} PUBLIC cxx_std_14 )
 target_compile_options( ${META_LIBRARY_NAME} PUBLIC "$<$<CONFIG:DEBUG>:${LIBRARY_DEBUG_OPTIONS}>" )
 
