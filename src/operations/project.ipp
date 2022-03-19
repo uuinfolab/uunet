@@ -1,3 +1,6 @@
+#include "core/exceptions/assert_not_null.hpp"
+#include "networks/time.hpp"
+
 namespace uu {
 namespace net {
 
@@ -41,10 +44,19 @@ project_temporal(
     const M* net,
     const typename M::layer_type* from,
     const typename M::layer_type* to,
-    TemporalNetwork* target,
+    Network* target,
     size_t delta_time
 )
 {
+    core::assert_not_null(from, "project_temporal", "from");
+    core::assert_not_null(to, "project_temporal", "to");
+    core::assert_not_null(target, "project_temporal", "target");
+    
+    if (!is_temporal(target))
+    {
+        make_temporal(target);
+    }
+    
     for (auto v: *to->vertices())
     {
         target->vertices()->add(v);
@@ -54,7 +66,7 @@ project_temporal(
     {
         for (auto e1: *net->interlayer_edges()->incident(from, to, v, EdgeMode::INOUT))
         {
-            auto t1 = net->interlayer_edges()->attr()->get_time(e1, "t").value;
+            auto t1 = net->interlayer_edges()->get(from,to)->attr()->get_time(e1, "t").value;
             // @todo check time
 
             for (auto e2: *net->interlayer_edges()->incident(from, to, v, EdgeMode::INOUT))
@@ -64,12 +76,12 @@ project_temporal(
                     continue;
                 }
 
-                auto t2 = net->interlayer_edges()->attr()->get_time(e2, "t").value;
+                auto t2 = net->interlayer_edges()->get(from,to)->attr()->get_time(e2, "t").value;
                 // @todo check time
 
                 auto time_diff = std::chrono::seconds(std::max(t1, t2) - std::min(t1, t2)).count();
 
-                if (delta_time <= time_diff)
+                if (delta_time <= (size_t) time_diff)
                 {
                     continue;
                 }
@@ -83,7 +95,7 @@ project_temporal(
                 }
 
                 auto edge = target->edges()->add(u1, u2);
-                target->set_time(edge, std::min(t1, t2));
+                add_time(target, edge, std::min(t1, t2));
             }
         }
     }
