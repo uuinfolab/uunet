@@ -1,12 +1,9 @@
-#include "multilayer_community_algorithms_test.hpp"
-
-#include <cstdio>
-#include <iostream>
+#include "algoml_test.hpp" // defines the input network
 
 #include "community/mlp.hpp"
 
 
-TEST_F(multilayer_community_algorithms_test, mlp)
+TEST_F(community_mlalgo_test, mlp)
 {
     auto c = uu::net::mlp(net.get());
 

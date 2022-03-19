@@ -1,0 +1,45 @@
+\chapter{Introduction}
+
+This document provides an overview of the \code{uunet} library, with examples on how to use its classes and functions. It is not aimed at explaining how the algorithms work; references where to learn more about multilayer network theory and methods are available in Chapter \ref{ch:readings}.
+
+The \code{uunet} library contains code used or developed at the Uppsala University Information Laboratory (InfoLab) to store, manipulate and analyze data about interconnected entities. Most of the functions provided by our multilayer network analysis libraries for R\footnote{https://cran.r-project.org/web/packages/multinet/index.html} and Python\footnote{https://pypi.org/project/uunet/} are implemented in \code{uunet}.
+
+While \code{uunet} provides some graph management functionality, it is not intended as a full-fledged graph analysis library; several are already available. \code{uunet} focuses on more expressive data structures, such as multilayer networks.
+
+
+\section{A short history of the library}
+
+In 2011 we published our first paper on multilayer networks, where we introduced what at the time we called the ML-Model: 
+\begin{quote}
+Matteo Magnani and Luca Rossi (2011). The ML-Model for Multi-Layer Social Networks. International conference on social network analysis and mining (ASONAM). IEEE.
+\end{quote}
+At the same time we also started writing code to test our research contributions on multilayer networks, and a few years later we decided to make our work more easily available. So we wrote our book, which covers our contributions but also research results from many other researchers working on multilayer networks:
+\begin{quote}
+Mark E.~Dickison, Matteo Magnani, and Luca Rossi (2016). Multilayer Social Networks. Cambridge University Press.
+\end{quote}
+and we published the first version of the \code{multinet} library on the R Archive (CRAN), at that time covering most of the concepts presented in the book. This library was based on C++ code not designed to be directly used by others, but still mainly used as our research playground.
+
+After some major restructurings of the C++ library, and after including additional research results produced by the multilayer network research community, we made the Python porting and also polished and documented the C++ code to make it usable by people outside our lab.
+
+\section{An overview of the code}
+
+Instructions to obtain, compile and install the library can be found in the \code{README.md} file, together with additional instructions for developers. Guidelines on how to write code for the library are in \code{StyleGuide.md}. The main code is contained inside \code{src/} and organized into modules, each corresponding to a directory: 
+\begin{itemize}
+\item \code{core/} (Chapter \ref{ch:core}), defining exceptions, basic data structures, CSV reader, mathematical functions, \dots
+\item \code{olap/} (Chapter \ref{ch:olap} and Section \ref{ch:nets:cubes}), defining cubes,
+\item \code{objects/} (Chapter \ref{ch:graphtheory}), defining basic objects such as Vertex, Edge, \dots
+\item \code{networks/} (Chapter \ref{ch:networks}), defining basic network meta models,
+\item \code{generation/} (Chapter \ref{ch:creation}), defining functions to generate new networks,
+\item \code{io/} (Chapter \ref{ch:io} and Section \ref{ch:community:io}), defining functions to read and write networks from/to file,
+\item \code{operations/} (Chapter \ref{ch:operations}), defining functions to manipulate networks,
+\item \code{measures/} (Chapter \ref{ch:measures}), defining functions to measure network properties,
+\item \code{community/} (Chapter \ref{ch:community}), defining data structures, algorithms and evaluation measures for community detection,
+\item \code{algorithms/}, defining basic graph algorithms,
+\item \code{layout/} (Chapter \ref{ch:layout}), defining functions to associate coordinates to network vertices, and
+\item \code{utils/}, defining printing functions.
+\end{itemize}
+Other directories contain unit tests (\code{test/}), examples (\code{examples/}), and external code (\code{ext/}).
+
+\section{Code conventions used in this document}
+
+In the code examples presented in this document we will omit the \code{std::} namespace and the two namespaces defined in the library: \code{uu::core::} and \code{uu::net::} when we think they are clear from the context. Classes and functions in \code{uu::core::} are those declared in the \code{core/} module and described in Chapter \ref{ch:core}, all other classes and functions are in namespace \code{uu::net::}.

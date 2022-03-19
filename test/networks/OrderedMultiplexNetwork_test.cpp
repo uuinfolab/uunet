@@ -9,21 +9,17 @@ TEST(networks_test, OrderedMultiplexNetwork)
 
     auto net = std::make_unique<uu::net::OrderedMultiplexNetwork>("a ml net");
 
+    // Adding layers
+
+    net->layers()->add("layer1", uu::net::EdgeDir::DIRECTED);
+    net->layers()->add("layer2", uu::net::EdgeDir::UNDIRECTED);
+    net->layers()->add("layer3", uu::net::EdgeDir::UNDIRECTED);
+
     // Adding actors
 
     auto v1 = net->actors()->add("miao");
     auto v2 = net->actors()->add("bau");
 
-    // Adding layers
-
-    auto ptr = std::make_unique<uu::net::Network>("layer1", uu::net::EdgeDir::DIRECTED);
-    net->layers()->push_back(std::move(ptr));
-
-    ptr = std::make_unique<uu::net::Network>("layer2", uu::net::EdgeDir::UNDIRECTED);
-    net->layers()->push_back(std::move(ptr));
-
-    ptr = std::make_unique<uu::net::Network>("layer3", uu::net::EdgeDir::UNDIRECTED);
-    net->layers()->push_back(std::move(ptr));
 
     // Adding "nodes", that is, vertices to layers
 

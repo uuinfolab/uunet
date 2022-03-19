@@ -1,4 +1,4 @@
-#include "multilayer_community_algorithms_test.hpp"
+#include "algoml_test.hpp"
 
 #include <cstdio>
 #include <iostream>
@@ -6,7 +6,7 @@
 #include "community/flat.hpp"
 
 
-TEST_F(multilayer_community_algorithms_test, flat_nw)
+TEST_F(community_mlalgo_test, flat_nw)
 {
     auto c = uu::net::flat_nw(net.get());
 
@@ -16,7 +16,7 @@ TEST_F(multilayer_community_algorithms_test, flat_nw)
     }
 }
 
-TEST_F(multilayer_community_algorithms_test, flat_ec)
+TEST_F(community_mlalgo_test, flat_ec)
 {
     auto c = uu::net::flat_ec(net.get());
 

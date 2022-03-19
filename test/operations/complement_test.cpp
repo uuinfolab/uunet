@@ -6,7 +6,7 @@
 #include "core/exceptions/NullPtrException.hpp"
 
 
-TEST(net_operations_test, graph_complement_directed)
+TEST(operations_test, graph_complement_directed)
 {
 
     // creating a simple graph
@@ -29,7 +29,7 @@ TEST(net_operations_test, graph_complement_directed)
     size_t m = c_graph->edges()->size();
 
     EXPECT_EQ(n, (size_t) 3);
-    EXPECT_EQ(m, (size_t) 4);
+    EXPECT_EQ(m, (size_t) 7);
 
     EXPECT_TRUE(c_graph->edges()->get(v2, v1) != nullptr);
     EXPECT_TRUE(c_graph->edges()->get(v3, v2) != nullptr);
@@ -39,7 +39,7 @@ TEST(net_operations_test, graph_complement_directed)
 }
 
 
-TEST(net_operations_test, graph_complement_undirected)
+TEST(operations_test, graph_complement_undirected)
 {
 
     // creating a simple graph
@@ -62,14 +62,14 @@ TEST(net_operations_test, graph_complement_undirected)
     size_t m = c_graph->edges()->size();
 
     EXPECT_EQ(n, (size_t) 3);
-    EXPECT_EQ(m, (size_t) 1);
+    EXPECT_EQ(m, (size_t) 4);
 
     EXPECT_TRUE(c_graph->edges()->get(v1, v3) != nullptr);
 
 }
 
 
-TEST(net_operations_test, graph_complement_exceptions)
+TEST(operations_test, graph_complement_exceptions)
 {
     EXPECT_THROW(
         uu::net::graph_complement((uu::net::Network*)nullptr),

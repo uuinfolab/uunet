@@ -4,13 +4,7 @@
 #include "networks/Network.hpp"
 
 
-class net_community_test : public ::testing::Test
-{
-  protected:
-
-};
-
-TEST_F(net_community_test, VertexCommunity)
+TEST(net_community_test, VertexCommunity)
 {
 
     uu::net::Community<uu::net::Network> c;

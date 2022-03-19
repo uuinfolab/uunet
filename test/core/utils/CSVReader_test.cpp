@@ -28,7 +28,6 @@ TEST(core_utils_test, CSVReader)
     test_file << "d;e;f" << std::endl;
     test_file << "\"a; b; c\"" << std::endl;
     test_file << "\"a; b; \"\"c\"\"\"" << std::endl;
-    //test_file << "\"a; b; \"c\";d" << std::endl;
     test_file << "\"a; b; c\";d" << std::endl;
     test_file << "-- a comment" << std::endl;
     test_file << "last line" << std::endl;

@@ -3,7 +3,7 @@
 #include "operations/test.hpp"
 #include "generation/standard_graphs.hpp"
 
-TEST(operations_test_test, is_bipartite)
+TEST(operations_test, is_bipartite)
 {
 
     auto n_5 = uu::net::null_graph(5);

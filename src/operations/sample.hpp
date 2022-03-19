@@ -2,7 +2,7 @@
 #define UU_OPERATIONS_SAMPLE_H_
 
 #include "networks/Network.hpp"
-#include "networks/ProbabilisticNetwork.hpp"
+#include "networks/probability.hpp"
 
 namespace uu {
 namespace net {
@@ -14,7 +14,7 @@ namespace net {
  */
 std::unique_ptr<Network>
 sample(
-    const ProbabilisticNetwork* g
+    const Network* g
 );
 
 }

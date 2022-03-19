@@ -1,17 +1,22 @@
-# uunet
+# The uunet library
 
 This repository contains C++ code for the analysis and mining of networks produced by the
-Uppsala University Information Laboratory (https://infolab.it.uu.se). _uunet_ provides most
+Uppsala University Information Laboratory (InfoLab, https://infolab.it.uu.se). _uunet_ provides most
 of the code behind the R and Python _multinet_ libraries.
+
+If you are interested in using the C++ library, please consider that this is research software: major changes
+can happen for example when the underlying theory is developed. While we try not to modify the interface of
+the library if not deemed necessary, our main effort to provide a stable interface goes into the R and Python
+versions.
 
 ## Requirements
 
 To install, use and modify the library you need:
 
 * A recent version of git.
-* The *cmake* build system.
-* A modern, C++14-ready compiler.
-* Doxygen (optional, only to generate the API reference documentation)
+* The *cmake* build system version 3.15 or higher.
+* A C++14 compiler.
+* Doxygen (optional, only to generate the API reference documentation).
 
 ## Quickstart
 
@@ -37,12 +42,10 @@ make
 make install
 ```
 
-## Installation options
+## Tests
 
-By default, the *library* and the *examples* are compiled usign C++ optimization flags. To
-compile the tests, run cmake with the option `-DCMAKE_BUILD_TESTS=On` or in *Debug* mode with
-the option `-DCMAKE_BUILD_TYPE=Debug`. Make will then also generate an executable based on
-*gtests* running all the unit tests:
+To compile the tests, run cmake with the option `-DCMAKE_BUILD_TYPE=Debug`. Make will then also generate
+an executable running all the unit tests:
 
 ```
 cmake .. -DCMAKE_BUILD_TYPE=Debug
@@ -50,7 +53,13 @@ make
 ./run_tests
 ```
 
-To produce the API reference documentation, use the option `-DCMAKE_BUILD_DOCS=On`:
+
+## Documentation
+
+An overview of the library is available under `docs/` as a pdf file. Its latex source is also available.
+
+All classes, functions, etc. are documented inside the .hpp files. This documentation can be compiled into an API reference listing all types and functions using Doxygen. To produce the API reference documentation, use the 
+option `-DDOXY=On`:
 
 ```
 cmake .. -DDOXY=On
@@ -59,19 +68,35 @@ make doc
 
 The documentation is generated inside the `build/doc` directory.
 
-## Documentation
+[Short examples](examples/) are also provided to illustrate the functionality of the library. Individual examples
+correspond to the .cxx files inside the `examples/` directory, and can be individually compiled and executed using
+the name of the example (from inside the `build/` directory):
 
-* All classes, functions, etc. are documented inside the .hpp files.
-* This documentation can be compiled into an API reference listing all types and functions using Doxygen, as described above.
-* [Short examples](examples/) are provided to illustrate the functionality of the library.
-* [Unit Tests](test/) also provide small code snippets used to test most of the features of the library.
+```
+make creation
+./creation
+```
+
+One can also compile all the examples in one line:
+```
+make examples
+# now all the individual examples can be executed
+./creation
+./networks
+# ...
+```
+
+[Unit Tests](test/) also provide small code snippets used to test most of the features of the library, which can
+also be used as documentation.
 
 
-## Contributions
+The `master` branch contains the most stable code, mainly updated when new versions of the R and Python
+libraries are released and when new research articles using the library are submitted. The `master` branch is
+updated by the administrators from the `development` branch. 
 
-We have not decided yet how we will manage new contributions to the library. The development of the
-library is currently supported by the members of the Uppsala University Information Laboratory
-group. You can find the list of contributors in the `CONTRIBUTORS` file.
+To contribute to the library, please start from `development` and open a pull request when your update is ready
+to be merged. 
+
 
 ## Contact
 

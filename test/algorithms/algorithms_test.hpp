@@ -3,7 +3,7 @@
 
 #include "gtest/gtest.h"
 
-#include "io/read_network.hpp"
+#include "networks/Network.hpp"
 
 class net_algorithms_test : public ::testing::Test
 {

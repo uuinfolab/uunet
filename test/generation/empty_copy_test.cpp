@@ -4,9 +4,9 @@
 
 TEST(net_creation_test, empty_copy)
 {
-    auto pn = std::make_unique<uu::net::ProbabilisticNetwork>("probnet", uu::net::EdgeDir::DIRECTED, false);
+    auto net = std::make_unique<uu::net::Network>("net", uu::net::EdgeDir::DIRECTED, uu::net::LoopMode::DISALLOWED);
 
-    auto copy = uu::net::empty_copy(pn.get(), "copy");
+    auto copy = uu::net::empty_copy(net.get(), "copy");
 
     ASSERT_EQ(copy->is_directed(), true);
     ASSERT_EQ(copy->allows_loops(), false);

@@ -13,9 +13,10 @@ std::unique_ptr<Network>
 read_network(
     const std::string& infile,
     const std::string& name,
-    char separator
+    char separator = ','
 );
 
+/*
 template <>
 void
 read_vertex(
@@ -34,7 +35,7 @@ read_edge(
     const std::vector<core::Attribute>& edge_attributes,
     size_t line_number
 );
-
+*/
 
 }
 }

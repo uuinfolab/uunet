@@ -7,7 +7,7 @@ We currently use the C++14 standard.
 
 Many of the following conventions can be automatically formatted using the astyle program:
 
-    astyle -r -s4 -xn -A1 -xB -xD -xG -j -F -H -Y -n --recursive src/
+    astyle -r -s4 -xn -A1 -xB -xD -xG -j -F -H -Y -n --recursive *pp
 
 ## Structure
 
@@ -17,24 +17,20 @@ The code is contained in four main top-level folders:
  - `examples/` (examples showing how to use the library)
  - `src/` (original library code)
 
-The folder `src/` contains eleven folders, each providing some homogeneous set of classes and functions:
+The folder `src/` contains eleven folders (that we informally call modules), each providing a homogeneous set of 
+classes and functions:
 
- - Basic non-network functionality:
-   * `core/` (basic functionality such as exceptions, mathematical functions, CSV reading...)
- - Network data structures:
-   * `networks/` (various types of networks such as Network, WeightedNetwork, MultilayerNetwork, ...)
+   * `core/` (exceptions, basic data structures, CSV reader, mathematical functions, ...)
+   * `olap/` (cubes)
+   * `networks/` (pre-defined network meta models)
    * `objects/` (parts of networks such as Vertex, Edge, Trail, Clique, ...)
- - Obtaining networks:
    * `io/` (functions to read and write networks from/to file)
-   * `generation/` (functions to generate new networks from scratch such as ER, complete, ...)
- - Manipulating networks:
-   * `operations/` (functions to manipulate networks such as union, contraction, slicing, projection, ...)
- - Analyzing networks:
-   * `measures/` (functions to measure networks, such as degree, betweenness, ...)
-   * `community/` (data structures, algorithms and measures for community detection such as Louvain, ...)
-   * `algorithms/` (basic graph algorithms such as BFS, SSSP, ...)
- - Inspection/visualization:
-   * `layout/` (functions to associate coordinates with network vertices)
+   * `generation/` (functions to generate new networks)
+   * `operations/` (functions to manipulate networks)
+   * `measures/` (functions to measure network properties)
+   * `community/` (data structures, algorithms and evaluation measures for community detection)
+   * `algorithms/` (basic graph algorithms)
+   * `layout/` (functions to associate coordinates to network vertices)
    * `utils/` (printing functions)
 
 Some code is included inside directories named `_impl`.  These contain code to implement the functions in
@@ -61,13 +57,10 @@ Class data members: same as variables, with trailing _ if private/protected.
     
 Enumerations: all capital, with underscore if needed. They are used as: `AttributeType::TIME`.
 
-    enum class AttributeType
+    enum class LoopMode
     {
-        STRING,
-        NUMERIC,
-        DOUBLE,
-        INTEGER,
-        TIME
+        ALLOWED,
+        DISALLOWED
     };
     
 Constants: all capital, with underscores if needed, with small k at the beginning.
@@ -87,7 +80,7 @@ without _ between words. Extensions: .cpp, .hpp (declarations) and .ipp (definit
 Define guards: UU + sequence of directories where the header file is located + the name of the header file + H,
 with _ at the end, all capital.
 
-    #ifndef UU_NETWORKS_TEMPORALNETWORK_H_
+    #ifndef UU_OBJECTS_EDGEDIR_H_
 
 ## Coding style
 
@@ -149,7 +142,17 @@ and initializers:
 
     std::vector<int> vec = {1, 2, 3};
   
-Always use braces after `if`, `for` etc., even if the body consists of only one statement (option -j in astyle).
+Always use braces after `if`, `for` etc., even if the body consists of only one statement (option -j in astyle),
+except if the statement is on the same line:
+
+    if (test)
+    {
+        // do something
+    }
+    
+but:
+    
+    if (test) continue;
 
 Line length should be max 120 chars.
 
@@ -173,7 +176,8 @@ description (if necessary).
      */
 
 Do not indicate the author, because files can be updated by multiple people in time and details about
-authorship are already available in the version control system if necessary.
+authorship are already available in the version control system. We keep a list of contributors in the
+`master` branch. Only contributors to code included in `master` are acknolwedged in this file.
 
 Comment every class member with a comment above it. End the comment with a full stop.
 

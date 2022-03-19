@@ -1,0 +1,244 @@
+\chapter{Networks} \label{ch:networks}
+
+As we have seen in the previous chapter, \code{uunet} defines some basic types of network models, that are reviewed in more detail in Section \ref{ch:nets:basic}. Using cubes, more general custom models can be defined, as shown in Section \ref{ch:nets:cubes}.
+
+\section{Predefined models} \label{ch:nets:basic}
+
+\subsection{Basic networks}
+
+The four main combinations defining the types of allowed edges are obtained by specifying edge directionality, and whether a network allows loops.
+
+\begin{definition}[Loop]
+A loop is an edge with the same end-vertices. 
+\end{definition}
+
+\begin{lstlisting}[style=c++]
+auto dir = EdgeDir::UNDIRECTED;
+auto und = EdgeDir::UNDIRECTED;
+auto loops = LoopMode::ALLOWED;
+auto no_loops = LoopMode::DISALLOWED;
+\end{lstlisting}
+    
+The following example creates an undirected network not allowing loops (which is checked behind the scenes using an observer monitoring the insertion of new edges):
+\begin{lstlisting}[style=c++]
+auto g = make_unique<Network>("g", und, no_loops);
+auto v1 = g->vertices()->add("v1"); // new vertex
+auto v2 = g->vertices()->add("v2"); // new vertex
+auto e = g->edges()->add(v1, v2); // new edge
+g->edges()->contains(v2, v1); // true
+// g->edges()->add(v1, v1); // throws exception
+\end{lstlisting}
+A network also allows to add attributes to its vertices and edges: the \code{attr} functions return pointers to \code{AttributeStore}s (see Section \ref{ch:core:attr} for the list of attribute handling functions provided by \code{AttributeStore}s):
+\begin{lstlisting}[style=c++]
+g->vertices()->attr();
+g->edges()->attr();
+\end{lstlisting}
+The following examples create a directed network allowing loops:
+\begin{lstlisting}[style=c++]
+auto g2 = make_unique<Network>("g", dir, loops);
+g2->vertices()->add(v1); // adding existing vertex v1
+g2->vertices()->add(v2);
+g2->edges()->add(v1, v2);
+g2->edges()->add(v1, v2); // return nullptr
+g2->edges()->contains(v2, v1); // false
+g2->edges()->add(v1, v1);
+\end{lstlisting}
+In \code{uunet}, a Network only allows simple edges, while a MultiNetwork allows multiple edges. 
+\begin{definition}[Multiple edge]
+Multiple edges are edges with the same pair of end-vertices.
+\end{definition}
+Both Network and MultiNetwork may allow or not loops, as specified when they are created.
+\begin{lstlisting}[style=c++]
+auto simple = make_unique<Network>("g", dir, false);
+auto multi = make_unique<MultiNetwork>("g", dir, true);
+\end{lstlisting}
+Notice that a \code{MultiNetwork} has a different interface: the function \code{edges()->get()} returns a container of edges, not a single edge.
+\begin{lstlisting}[style=c++]
+auto mg = make_unique<MultiNetwork>("g", dir, loops);
+mg->vertices()->add(v1);
+mg->vertices()->add(v2);
+mg->edges()->add(v1, v2);
+mg->edges()->add(v1, v2);
+mg->edges()->get(v1, v2); // returns two edges
+\end{lstlisting}
+
+\subsection{Weights, times and probabilities}
+
+Networks can be made weighted:
+\begin{lstlisting}[style=c++]    
+make_weighted(g.get());
+is_weighted(g.get()); // true
+set_weight(g.get(), e, 3.14);
+get_weight(g.get(), e); // 3.14
+\end{lstlisting}
+By default, an edge whose weight has not been set will return weight 1.
+
+Probabilistic networks are defined and manipulated similarly to weighted networks, with the difference that probabilities must be in the [0,1] range:
+\begin{lstlisting}[style=c++]
+make_probabilistic(g.get());
+is_probabilistic(g.get()); // true
+// set_prob(g.get(), e, -.3); // throws exception
+// set_prob(g.get(), e, 1.14); // throws exception
+set_prob(g.get(), e, .14);
+get_prob(g.get(), e); // .14
+\end{lstlisting}
+
+In a temporal network, multiple timestamps can be associated to the same edge. For example, if we define the following times:
+\begin{lstlisting}[style=c++]
+auto t1 = uu::core::epoch_to_time(17438);
+auto t2 = uu::core::epoch_to_time(17468);
+\end{lstlisting}
+We can then associate both of them to the same edge:
+\begin{lstlisting}[style=c++]
+make_temporal(g.get());
+is_temporal(g.get()); // true
+add_time(g.get(), e, t1);
+add_time(g.get(), e, t2);
+get_times(g.get(), e); // returns two times
+\end{lstlisting}
+
+
+\subsection{Multilayer networks}
+
+In a multilayer network we can add multiple networks as layers:
+\begin{lstlisting}[style=c++]
+auto mnet = make_unique<MultilayerNetwork>("m");
+auto l1 = mnet->layers()->add("l1", dir, loops);
+auto l2 = mnet->layers()->add("l2", und, no_loops);
+\end{lstlisting}
+
+\code{l1} and \code{l2} are of type Network*, so we can use them as seen above. However, one should be careful when adding vertices to them if we want to have the same vertices in different layers:
+\begin{lstlisting}[style=c++]
+l1->vertices()->add(v1); // adding existing vertex v1
+l2->vertices()->add(v1); // adding existing vertex v1
+\end{lstlisting}
+The command \code{l2->vertices()->add("v1")} would instead create and add a different vertex.
+
+The set of distinct vertices in a multilayer network are called actors:
+\begin{lstlisting}[style=c++]
+mnet->actors(); // {v1}, only one actor so far
+\end{lstlisting}
+
+In addition, a multilayer network allows us to add interlayer edges. Before adding edges between two layers, we have to initialize that pair. The following example initializes the pair of layers \code{l1,l2}, specifying that interlayer edges between these layers are directed, and adds two directed edge between \code{v11} in layer \code{l1} and \code{v1} in layer \code{l2}.
+\begin{lstlisting}[style=c++]
+mnet->interlayer_edges()->init(l1, l2, dir); 
+mnet->interlayer_edges()->add(v1, l1, v1, l2);
+mnet->interlayer_edges()->add(v1, l2, v1, l1);
+\end{lstlisting}
+
+
+\section{Construction of custom network models}\label{ch:nets:cubes}
+
+Using cubes we can build several types of networks combining cubes in different ways. 
+
+\subsection{Simple graphs}
+
+A simple graph has a set of vertices, a set of edges between those vertices, and edges are undirected and do not allow loops:
+\begin{lstlisting}[style=c++]
+auto V = make_unique<VCube>("V");
+auto E = make_unique<ECube>("E", V.get(), V.get(), EdgeDir::UNDIRECTED, LoopMode::DISALLOWED);
+\end{lstlisting}
+Once we have created \code{V} and \code{E} we can add vertices and edges.
+\begin{lstlisting}[style=c++]
+auto v1 = V->add("v1");
+auto v2 = V->add("v2");
+auto v3 = V->add("v3");
+auto e1 = E->add(v1, v3);
+auto e2 = E->add(v2, v3);
+\end{lstlisting}
+Notice that while cubes allow us to assemble many types of data models, for some models it can be more intuitive to wrap the cubes inside a better-known and more specific interface. For example, we may want to define networks, and retrieve their vertices, or we may want to define multiplex networks, and retrieve their actors, or we may be interested in getting messages from a temporal text network. In these cases, we can define an interface and use cubes to implement it behind the scenes, so that a user does not need to know about them for basic structures and operations. As an example, we can wrap the two cubes above inside a \code{Network}:
+\begin{lstlisting}[style=c++]
+auto g = make_unique<Network>("G", move(V), move(E));
+g->vertices() // VCube*
+g->edges() // ECube*
+g->vertices()->add("v4") // const Vertex*
+// etc.
+\end{lstlisting}
+Even when we create a network from scratch, behind the scenes the network is implemented using cubes, but this knowledge is not needed to work with the network.
+\begin{lstlisting}[style=c++]
+auto g = make_unique<Network>("G");
+auto v1 = g->vertices()->add("v1") 
+auto v2 = g->vertices()->add("v2") 
+auto e1 = g->edges()->add(v1, v2) 
+// etc.
+\end{lstlisting}
+
+
+
+\subsection{Multiplex and multirelational networks}
+
+A multiplex network can be defined in different ways, corresponding to the variations found in the literature. In general, a multiplex network has a set of actors and a set of edges of different types.
+So we can just first create a graph (we'll call its vertices \code{A} instead of \code{V}, for Actors):
+\begin{lstlisting}[style=c++]
+auto A = make_unique<VCube>("A");
+auto E = make_unique<ECube>("E", A.get(), A.get());
+\end{lstlisting}
+then we can transform it into a multiplex network just by structuring its edges into multiple cells, one for each type of edges:
+\begin{lstlisting}[style=c++]
+E->add_dimension("e-type", {"friend", "work"});
+\end{lstlisting}
+
+Now we can add actors and edges between actors. Notice that we can add edges to specific cells.
+\begin{lstlisting}[style=c++]
+auto alice = A->add("Alice");
+auto bob = A->add("Bob");
+auto mirka = A->add("Mirka");
+E->cell({"friend"})->add(alice, bob);
+E->cell({"work"})->add(alice, bob);
+E->cell({"friend"})->add(alice, mirka);
+\end{lstlisting}
+It is worth noticing that with this design this multiplex network has \emph{two multiplex} edges (and not three, as we would have in a multigraph): one multiplex edge between Alice and Bob on \code{friend} and \code{work}, and one edge only on \code{friend}.
+
+An alternative design is to use different cubes for the different types of edges:
+\begin{lstlisting}[style=c++]
+auto A = make_unique<VCube>("A");
+auto E1 = make_unique<ECube>("fri.", A.get(), A.get());
+auto E2 = make_unique<ECube>("work", A.get(), A.get());
+\end{lstlisting}
+In this case we would be able to add different edges among the same actors in different cubes.
+
+Finally, we can build a generalized multiplex network with different actors depending on the edges. For example, we can structure the actors into two cells, one with all the actors (that we call \code{offline}) and one only for the actors with a Facebook account:
+\begin{lstlisting}[style=c++]
+auto A = make_unique<VCube>("A");
+A->add_dimension("actor-type", {"facebook", "offline"});
+\end{lstlisting}
+In this way we can specify facebook edges that can only join actors with a facebook account. To do this, we can build virtual VCubes on individual cells (or more in general slices of the cubes):
+\begin{lstlisting}[style=c++]
+auto fb = vslice("facebook", A.get(), {{0}});
+auto Efb = make_unique<ECube>("fb", fb.get(), fb.get());
+\end{lstlisting}
+Notice that \code{fb} is itself a VCube. In addition, the \code{vslice()} function does not replicate any vertex pointer, because it creates a single-cell cube that is a virtual view over the original one (as in SQL) and so it occupies a marginal amount of additional memory not depending on the size of the original cube.
+
+\subsection{General multilayer networks}
+
+Finally, we can add "interlayer" edges between actors of different types to obtain a general multilayer network:
+\begin{lstlisting}[style=c++]
+auto off = vslice("offline", A.get(), {{1}});
+auto IE = make_unique<ECube>("ie", off.get(), fb.get());
+auto e1 = IE->add(alice, off.get(), bob, fb.get());
+auto e2 = IE->add(bob, off.get(), alice, fb.get());
+auto e3 = IE->add(mirka, off.get(), bob, fb.get());
+\end{lstlisting}
+
+
+\subsection{Temporal interlayer edges}
+\label{sec:discr}
+
+Using the attribute handling functionality of the cubes we can extend the previous data models with times, weights, probabilities, text messages and other attributes. For some special attributes (times, weights and probabilities) that are very common and have specialized algorithms requiring them, we can also use utility functions to setup the cubes (e.g., making their elements temporal, or uncertain) and manipulate these special attributes. The following example extends our interlayer edges with temporal information, then adding one or more timestamps to each of them:
+\begin{lstlisting}[style=c++]
+make_temporal(IE);
+add_time(IE.get(), e1, "1970-01-01 01:01:07+0000");
+add_time(IE.get(), e1, "1970-01-02 07:21:07+0000");
+add_time(IE.get(), e2, "1970-01-02 13:09:05+0000");
+add_time(IE.get(), e3, "1970-01-03 14:01:07+0000");
+\end{lstlisting}
+Here we have specified times as strings with a standard format, but we can express them in different ways, using the library's own \code{Time} format, or the number of seconds from epoch or custom string representations of time.
+
+If we want to slice the edges into multiple time windows we can use a discretization function, which is a fundamental concept in the theory of multilayer cubes and for practical applications. One can define custom discretization functions, but here we use a predefined one that takes a minimum time, a maximum time and the number of windows as input and if used while adding a (temporal) dimension it redistributes the original edges in the new cells. In the next example, three slices/layers are created:
+\begin{lstlisting}[style=c++]
+Time min = to_time("1970-01-01 00:00:00+0000");
+Time max = to_time("1970-01-03 23:59:59+0000");
+auto d = UniformTemporalDiscretization<ECube>(IE.get(), min, max, 3);
+IE->add_dimension("times", {"day1", "day2", "day3"}, d);
+\end{lstlisting}
+Now the extended ECube \code{IE} still contains all the original edges (because all of them had at least one associated time between \code{min} and \code{max}), but if we access the individual cells we will find respectively edge \code{e1} (day1), edges \code{e1} and \code{e2} (day2), and edge \code{e3} (day3). The same functionality can be used to assign tweets to different topical layers based on their hashtags, actors to different institution layers based on their affiliations, etc.

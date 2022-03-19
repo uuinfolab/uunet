@@ -25,31 +25,24 @@ class core_utils_math_test : public ::testing::Test
 
 };
 
-TEST_F(core_utils_math_test, s_intersection)
+TEST(core_utils_test, math)
 {
-    EXPECT_EQ((size_t)2, uu::core::s_intersection(sets).size())
-            << "Wrong intersection of multiple sets";
-    EXPECT_EQ((size_t)3, uu::core::s_intersection(hs1, hs2).size())
-            << "Wrong intersection of two sets";
-}
+    std::unordered_set<int> hs1 = {1, 2, 3, 4, 5};
+    std::unordered_set<int> hs2 = {3, 4, 5, 6, 7};
+    std::unordered_set<int> hs3 = {1, 3, 5, 8};
+    std::unordered_set<int> hs4 = {2, 3, 4, 5};
+    std::vector<std::unordered_set<int>> sets = {hs1, hs2, hs3};
+        
+    EXPECT_EQ((size_t)2, uu::core::s_intersection(sets).size());
+    EXPECT_EQ((size_t)3, uu::core::s_intersection(hs1, hs2).size());
 
-TEST_F(core_utils_math_test, s_union)
-{
-    EXPECT_EQ((size_t)8, uu::core::s_union(sets).size())
-            << "Wrong union of multiple sets";
-    EXPECT_EQ((size_t)7, uu::core::s_union(hs1, hs2).size())
-            << "Wrong union of two sets";
-}
+    EXPECT_EQ((size_t)8, uu::core::s_union(sets).size());
+    EXPECT_EQ((size_t)7, uu::core::s_union(hs1, hs2).size());
+    
+    EXPECT_EQ((double)2/8, uu::core::jaccard_similarity(sets));
+    
+    EXPECT_EQ(3.5, uu::core::mean(hs4.begin(), hs4.end()));
 
-
-TEST_F(core_utils_math_test, mean)
-{
-    EXPECT_EQ(3.5, uu::core::mean(hs4.begin(), hs4.end()))
-            << "Wrong mean";
-}
-
-TEST_F(core_utils_math_test, stdev)
-{
-    EXPECT_EQ(std::sqrt(5.0/4), uu::core::stdev(hs4.begin(), hs4.end()))
-            << "Wrong standard deviation";
+    EXPECT_EQ(std::sqrt(5.0/4), uu::core::stdev(hs4.begin(), hs4.end()));
+    
 }
