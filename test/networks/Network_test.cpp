@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 
 #include "networks/Network.hpp"
+#include "community/louvain.hpp"
 #include "core/exceptions/DuplicateElementException.hpp"
 #include "core/exceptions/ElementNotFoundException.hpp"
 #include "core/exceptions/WrongParameterException.hpp"
@@ -8,17 +9,19 @@
 TEST(networks_test, Network)
 {
 
-    auto g = std::make_unique<uu::net::Network>("g");
+    auto dir = uu::net::EdgeDir::UNDIRECTED;
+    auto loops = uu::net::LoopMode::DISALLOWED;
+    auto g = std::make_unique<uu::net::Network>("g", dir, loops);
 
     // Adding vertices
 
-    const uu::net::Vertex* v1 = g->vertices()->add("v1");
-    const uu::net::Vertex* v2 = g->vertices()->add("v2");
-    const uu::net::Vertex* v3 = g->vertices()->add("v3");
+    auto v1 = g->vertices()->add("v1");
+    auto v2 = g->vertices()->add("v2");
+    auto v3 = g->vertices()->add("v3");
 
     // Adding edges
 
-    const uu::net::Edge* e = g->edges()->add(v1, v2);
+    auto e = g->edges()->add(v1, v2);
     g->edges()->add(v1, v3);
 
     // Attributes
@@ -68,18 +71,10 @@ TEST(networks_test, Network)
     EXPECT_EQ((size_t)0, g->edges()->size())
             << "Vertex removal was not propagated to the edges";
 
-    // Checking network properties
+}
 
-    EXPECT_FALSE(g->is_directed());
 
-    EXPECT_FALSE(g->allows_multi_edges());
-
-    EXPECT_FALSE(g->allows_loops());
-
-    EXPECT_FALSE(g->is_weighted());
-
-    EXPECT_FALSE(g->is_probabilistic());
-
-    EXPECT_FALSE(g->is_temporal());
-
+TEST(networks_test, Network_from_cubes)
+{
+        // @todo 
 }

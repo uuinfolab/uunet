@@ -1,18 +1,15 @@
-#include "multilayer_community_algorithms_test.hpp"
+#include "algoml_test.hpp" // defines the input network
 
-#include <cstdio>
-#include <iostream>
-
-#include "community/ml-cpm.hpp"
+#include "community/mlcpm.hpp"
 
 
-TEST_F(multilayer_community_algorithms_test, mlcpm)
+TEST_F(community_mlalgo_test, mlcpm)
 {
     auto c = uu::net::mlcpm(net.get(), 3, 1);
 
     for (auto com: *c)
     {
-        EXPECT_EQ((size_t)6, com->size());
+        EXPECT_EQ((size_t) 6, com->size());
     }
 
 }

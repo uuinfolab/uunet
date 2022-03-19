@@ -119,7 +119,7 @@ std::unique_ptr<CommunityStructure<M>>
                 }
             }
 
-            double affinity = relevance(mnet, actors_shared_layers[actor][neighbor].begin(), actors_shared_layers[actor][neighbor].end(), actor, EdgeMode::INOUT);
+            double affinity = xrelevance(mnet, actors_shared_layers[actor][neighbor].begin(), actors_shared_layers[actor][neighbor].end(), actor, EdgeMode::INOUT);
             initial_attraction_weights[actor][neighbor] = affinity;
 
             //std::cout << "   with: " << (*neighbor) << " " << affinity << std::endl;
@@ -128,59 +128,97 @@ std::unique_ptr<CommunityStructure<M>>
     }
 
 
-
-    // (2) recover the relevant dimensions (layers) Dv for each actor using equation(8) in the reference
-    for (const Vertex* actor: *mnet->actors())
-    {
-        //retrieve the layers in which the actor has neighbours
-        std::vector<typename M::layer_type*> active_in_layers;
-
-        for (auto layer: *mnet->layers())
+// REPLACED BY THE FOLLOWING CODE - FROM OUALID
+//    // (2) recover the relevant dimensions (layers) Dv for each actor using equation(8) in the reference
+//    for (const Vertex* actor: *mnet->actors())
+//    {
+//        //retrieve the layers in which the actor has neighbours
+//        std::vector<typename M::layer_type*> active_in_layers;
+//
+//        for (auto layer: *mnet->layers())
+//        {
+//            if (degree(layer, actor) > 0)
+//            {
+//                active_in_layers.push_back(layer);
+//            }
+//        }
+//
+//        //std::sort(active_in_layers.begin(), active_in_layers.end());
+//
+//        double max_sum_of_w0 = 0;
+//        std::set<typename M::layer_type*> actor_relevant_dimensions;
+//
+//        //calculate the sum of w0 for neighbours within all subsets of layers in which the actor is active
+//        for (unsigned long long int spec = 1; spec < std::pow(2, active_in_layers.size()); spec++)
+//        {
+//            auto sub = subset(active_in_layers, spec);
+//
+//            //get the sum of initial attraction weights within this subset of layers
+//            double sum_of_w0 = get_sum_of_w0<M>(sub, actor, actors_shared_layers[actor], initial_attraction_weights);
+//
+//            if (sum_of_w0 > max_sum_of_w0)
+//            {
+//                max_sum_of_w0 = sum_of_w0;
+//                actor_relevant_dimensions = sub;
+//            }
+//
+//            else if (sum_of_w0 == max_sum_of_w0)
+//            {
+//                actor_relevant_dimensions.insert(actor_relevant_dimensions.begin(), actor_relevant_dimensions.end());
+//
+//                actor_relevant_dimensions.insert(sub.begin(), sub.end());
+//            }
+//        }
+//
+//        actors_relevant_dimensions[actor] = actor_relevant_dimensions;
+//
+//        /* std::cout << (*actor) << ": ";
+//         for (auto l: actors_relevant_dimensions[actor])
+//         {
+//             std::cout << l->name << " ";
+//
+//         }
+//         std::cout << std::endl;*/
+//    }
+        // (2) recover the relevant dimensions (layers) Dv for each actor using equation(8) in the reference
+        for (const Vertex* actor: *mnet->actors())
         {
-            if (degree(layer, actor) > 0)
+            double max_sum_of_w0 = 0;
+            std::set<typename M::layer_type*> actor_relevant_dimensions;
+     
+            //calculate the sum of w0 for neighbours within all subsets of layers in which the actor is active
+            for (auto sub: actors_shared_layers[actor])
             {
-                active_in_layers.push_back(layer);
+                //get the sum of initial attraction weights within this subset of layers
+                double sum_of_w0 = get_sum_of_w0<M>(sub.second, actor, actors_shared_layers[actor], initial_attraction_weights);
+     
+                if (sum_of_w0 > max_sum_of_w0)
+                {
+                    max_sum_of_w0 = sum_of_w0;
+                    actor_relevant_dimensions = sub.second;
+                }
+     
+                else if (sum_of_w0 == max_sum_of_w0)
+                {
+                    //actor_relevant_dimensions.insert(actor_relevant_dimensions.begin(), actor_relevant_dimensions.end());
+     
+                    actor_relevant_dimensions.insert(sub.second.begin(), sub.second.end());
+                }
             }
+     
+            actors_relevant_dimensions[actor] = actor_relevant_dimensions;
+     
+            /* std::cout << (*actor) << ": ";
+             for (auto l: actors_relevant_dimensions[actor])
+             {
+                 std::cout << l->name << " ";
+     
+             }
+             std::cout << std::endl;*/
         }
-
-        //std::sort(active_in_layers.begin(), active_in_layers.end());
-
-        double max_sum_of_w0 = 0;
-        std::set<typename M::layer_type*> actor_relevant_dimensions;
-
-        //calculate the sum of w0 for neighbours within all subsets of layers in which the actor is active
-        for (unsigned long long int spec = 1; spec < std::pow(2, active_in_layers.size()); spec++)
-        {
-            auto sub = subset(active_in_layers, spec);
-
-            //get the sum of initial attraction weights within this subset of layers
-            double sum_of_w0 = get_sum_of_w0<M>(sub, actor, actors_shared_layers[actor], initial_attraction_weights);
-
-            if (sum_of_w0 > max_sum_of_w0)
-            {
-                max_sum_of_w0 = sum_of_w0;
-                actor_relevant_dimensions = sub;
-            }
-
-            else if (sum_of_w0 == max_sum_of_w0)
-            {
-                actor_relevant_dimensions.insert(actor_relevant_dimensions.begin(), actor_relevant_dimensions.end());
-
-                actor_relevant_dimensions.insert(sub.begin(), sub.end());
-            }
-        }
-
-        actors_relevant_dimensions[actor] = actor_relevant_dimensions;
-
-        /* std::cout << (*actor) << ": ";
-         for (auto l: actors_relevant_dimensions[actor])
-         {
-             std::cout << l->name << " ";
-
-         }
-         std::cout << std::endl;*/
-    }
-
+    
+    // END OF REPLACEMENT
+    
     // (3)  calculate the new attraction weights w for actors (equation (7) in the article)
     for (auto pair: initial_attraction_weights)
     {
@@ -327,9 +365,11 @@ std::unique_ptr<CommunityStructure<M>>
                   for (auto pair: membership)
                   {
                       std::cout << (*pair.first) << " " << pair.second << std::endl;
-                  }
 
-                  std::cout << "CHECK STOP" << std::endl;*/
+                  }*/
+
+        //std::cout << "CHECK STOP" << std::endl;
+
         stop = true;
 
         //check the stopping condition
@@ -377,7 +417,6 @@ std::unique_ptr<CommunityStructure<M>>
         //break;
     }
 
-
     std::unordered_map<size_t, std::vector<const Vertex*>> group_by_community_id;
 
     for (auto pair: membership)
@@ -398,11 +437,12 @@ std::unique_ptr<CommunityStructure<M>>
             {
                 if (layer->vertices()->contains(actor))
                 {
-                    c->add(MLVertex<M>(actor, layer));
+                    c->add(MLVertex(actor, layer));
                 }
             }
         }
 
+        // @todo control needed?
         if (c->size() > 0)
         {
             res->add(std::move(c));
@@ -415,6 +455,5 @@ std::unique_ptr<CommunityStructure<M>>
 }
 }
 
-//#include "ml-cpm.ipp"
 
 #endif

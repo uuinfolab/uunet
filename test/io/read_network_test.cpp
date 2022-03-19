@@ -7,63 +7,60 @@
 
 #include "io/read_network.hpp"
 
-class io_readnetwork_test : public ::testing::Test
+TEST(io_test, read_network)
 {
-  protected:
-
+    // preparing a file to read
+    
     std::string test_file_name = "net_io_read_graph_file.tmp";
 
-    void
-    SetUp() override
+    std::ofstream test_file;
+    test_file.open(test_file_name);
+
+    if (!test_file.is_open())
     {
-        // Create a test file
-        std::ofstream test_file;
-        test_file.open(test_file_name);
-
-        if (!test_file.is_open())
-        {
-            FAIL()
-                    << "Could not create temporary file. Test not executed.";
-        }
-
-        test_file << "#VERSION           " << std::endl;
-        test_file << "2.0                " << std::endl;
-        test_file << "                   " << std::endl;
-        test_file << "#TYPE              " << std::endl;
-        test_file << "directed           " << std::endl;
-        test_file << "                   " << std::endl;
-        test_file << "#VERTEX ATTRIBUTES " << std::endl;
-        test_file << "a1,string          " << std::endl;
-        test_file << "                   " << std::endl;
-        test_file << "#EDGE ATTRIBUTES   " << std::endl;
-        test_file << "a1,double          " << std::endl;
-        test_file << "                   " << std::endl;
-        test_file << "#VERTICES          " << std::endl;
-        test_file << "v1,a_value         " << std::endl;
-        test_file << "v2,another_value   " << std::endl;
-        test_file << "v4,one_more_value  " << std::endl;
-        test_file << "                   " << std::endl;
-        test_file << "#EDGES             " << std::endl;
-        test_file << "v1,v2,2.3          " << std::endl;
-        test_file << "v1,v3,4            " << std::endl;
-        test_file << "v2,v1,3            " << std::endl;
-        test_file << "v1,v4,4.2          " << std::endl;
-        test_file.close();
+        FAIL()
+                << "Could not create temporary file. Test not executed.";
     }
 
-    void
-    TearDown() override
-    {
-        std::remove(test_file_name.data());
-    }
+    test_file << "#VERSION           " << std::endl;
+    test_file << "2.0                " << std::endl;
+    test_file << "                   " << std::endl;
+    test_file << "#TYPE              " << std::endl;
+    test_file << "directed           " << std::endl;
+    test_file << "                   " << std::endl;
+    test_file << "#VERTEX ATTRIBUTES " << std::endl;
+    test_file << "a1,string          " << std::endl;
+    test_file << "                   " << std::endl;
+    test_file << "#EDGE ATTRIBUTES   " << std::endl;
+    test_file << "a1,double          " << std::endl;
+    test_file << "                   " << std::endl;
+    test_file << "#VERTICES          " << std::endl;
+    test_file << "v1,a_value         " << std::endl;
+    test_file << "v2,another_value   " << std::endl;
+    test_file << "v4,one_more_value  " << std::endl;
+    test_file << "                   " << std::endl;
+    test_file << "#EDGES             " << std::endl;
+    test_file << "v1,v2,2.3          " << std::endl;
+    test_file << "v1,v3,4            " << std::endl;
+    test_file << "v2,v1,3            " << std::endl;
+    test_file << "v1,v4,4.2          " << std::endl;
+    test_file.close();
+    
+    // tests
+    
+    auto g = uu::net::read_network(test_file_name, "g", ',');
 
-};
+    auto v1 = g->vertices()->get("v1");
+    ASSERT_TRUE(v1);
+    auto v2 = g->vertices()->get("v2");
+    ASSERT_TRUE(v2);
+    auto e = g->edges()->get(v2,v1);
+    ASSERT_TRUE(e);
+    double val = g->edges()->attr()->get_double(e, "a1").value;
+    EXPECT_EQ(val, 3.0);
+    
+    // cleaning up
 
-TEST_F(io_readnetwork_test, read)
-{
-    auto g = uu::net::read<uu::net::Network>(test_file_name, "g", ',');
-
-    //std::cout << g->summary() << std::endl;
-
+    std::remove(test_file_name.data());
 }
 

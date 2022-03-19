@@ -1,0 +1,34 @@
+a0,l0,0
+a1,l0,0
+a2,l0,0
+a0,l1,0
+a1,l1,0
+a2,l1,0
+a3,l0,1
+a4,l0,1
+a5,l0,1
+a3,l1,1
+a4,l1,1
+a5,l1,1
+
+
+2ml
+
+12g
+
+
+Alexandra Segerberg <alexandra.segerberg@statsvet.uu.se>
+
+ACCEPT
+
+
+
+REJECT
+
+- Number of credits to get resident permit.
+- AI project in Java?
+- Email from Ladok for re-exams? (Statistical machine learning)
+- Not to pay again for the tuition fee if course is taken again.
+
+python exec.py -i queries/queries_cc.txt -e 20-12-31 -u query_res3 -k secret_api_key7.txt
+

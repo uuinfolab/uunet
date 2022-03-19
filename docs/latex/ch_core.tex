@@ -1,0 +1,299 @@
+\chapter{The core module} \label{ch:core}
+
+The core module (\texttt{core/}) provides basic functions that are not specific of networks. This includes storing objects, handling attributes, managing exceptions, generating random numbers, reading CSV files, etc.
+
+\section{Stores and attributes}
+
+One main functionality provided by the \code{core} module is to store and retrieve objects and assign attributes to them. This is implemented in the \code{core/stores} and \code{core/attributes} sub-modules.
+
+\subsection{Object stores}
+
+The class \code{ObjectStore} is defined in \code{core/stores}. It can be used to store and retrieve objects with the following features:
+\begin{enumerate}
+\item defining a typedef key\_type (the type of the key used to identify the object in the store),
+\item providing a const member function key() returning the key value for the object, and
+\item inheriting from enable\_shared\_from\_this.
+\end{enumerate}
+Notice that the key is only used to retrieve the objects from the stores where they are indexed. Therefore, a key value is guaranteed to be unique only inside an \code{ObjectStore}. Different objects can have the same key. To check if two objects are the same, one should use the == operator (if provided by the class) or compare their pointers.
+
+\code{ObjectStore}s are mainly used to store vertices and edges, but in the following example we use objects representing people, identified by their social security number (ssn) and also having a name. The social security number is also used as a key.
+\begin{lstlisting}[style=c++]
+class
+Person :
+    public enable_shared_from_this<Person>
+{
+    
+  public:
+    
+    const string ssn;
+    const string name;
+    
+    typedef string key_type;
+    key_type key() const {return ssn;}
+    
+    Person(
+        const string& ssn, 
+        const string& name
+    ) : ssn(ssn), name(name) {};
+};
+\end{lstlisting}
+Now we can create a store and add, retrieve, and erase objects (that is, people in this case):
+\begin{lstlisting}[style=c++]
+ObjectStore<Person> store;
+
+auto p1 = make_shared<Person>("0001", "Alice");
+auto p2 = make_shared<Person>("0002", "Hatter");
+
+store.add(p1.get());
+store.add(p2.get());
+
+store.size(); // 2
+store.contains(p1.get()); // true
+store.contains("0001"); // true
+store.get("0002"); // p2
+store.get_at_random(); // p1 or p2
+store.at(0); // p1 or p2
+store.index_of(p1.get()); // 0 or 1
+store.erase(p1.get()); // true
+store.erase("0001"); // false (already erased)
+\end{lstlisting}
+Notice that \code{store.at(0)} returns either p1 or p2 depending on the execution: \code{ObjectStore}s correspond to mathematical sets, so  there is no fixed order for the objects they contain. However, until when an \code{ObjectStore} is modified the order of the objects it contains is fixed, so their positions can be used as (temporary and local) object identifiers.
+
+
+\subsection{Attributes}
+
+Attribute Stores, introduced in the next section, allow us to associate values to objects. The sub-module \code{core/attributes} provides basic functions to manipulate attributes. The file \code{AttributeType.hpp} defines the supported attribute types:
+\begin{itemize}
+    \item STRING (std::string)
+    \item DOUBLE (double)
+    \item INTEGER (int)
+    \item TIME (uu::core::Time -- currently an alias for time\_t)
+    \item TEXT (uu::core::Text -- currently an alias for string)
+    \item STRINGSET (std::set<std::string>)
+    \item DOUBLESET (std::set<double>)
+    \item INTEGERSET (std::set<int>)
+    \item TIMESET (std::set<uu::core::Time>)
+\end{itemize}
+
+The first five are simple types, and we would typically store them wrapped into a \texttt{Value} object that allows us to represent null values. For example, a \code{Value<double>} has two fields: a flag \code{null} and a double field \code{value}. The value in \code{value} should only be used if the \code{null} flag is not set. The reason why we have aliased basic C++ types for time and text is that in the future we may decide to extend them with additional functions.
+
+The file \code{conversion.hpp} contains various functions to manipulate attributes. In particular, it provides the following functions to create \code{Time} values:
+\begin{itemize}
+    \item \code{epoch\_to\_time}, taking the number of seconds since epoch as input (as int or string),
+    \item \code{to\_time}, taking a string and the format specifying how to interpret the string as input. Valid formats are described in the documentation of the \code{get\_time} function in the standard library.
+\end{itemize}
+One example of format specifier (the default one) is:\\ \texttt{\%Y-\%m-\%d~\%H:\%M:\%S~\%z}.
+
+\subsection{Attribute stores} \label{ch:core:attr}
+
+Attribute Stores allow us to associate attribute values to objects.
+\begin{lstlisting}[style=c++]
+AttributeStore<Person> attr;
+attr.add("A1", AttributeType::DOUBLE);
+attr.add("A2", AttributeType::DOUBLESET);
+\end{lstlisting}
+The functions available to assign and retrieve attribute values depend on the type of attribute. Simple types provide set and get functions:
+\begin{lstlisting}[style=c++]
+attr.set_double(p1.get(), "A1", 3.14); // void
+attr.get_double(p1.get(), "A1");    // Value<double>
+                                    // null set to false
+attr.get_double(p3.get(), "A1");    // Value<double>
+                                    // null set to true
+\end{lstlisting}
+While set types provide add and get functions:
+\begin{lstlisting}[style=c++]
+attr.add_double(p2.get(), "A2", 3.14); // void
+attr.get_doubles(p2.get(), "A2");   // set<double>
+                                    // size = 1
+attr.get_doubles(p3.get(), "A2");   // set<double>
+                                    // size = 0
+\end{lstlisting}
+
+\section{Utilities}
+
+The sub-module \texttt{core/utils} contains a variety of functions to manipulate strings (\texttt{string.hpp}), perform mathematical operations (\texttt{math.hpp}), generate random numbers (\texttt{random.hpp}). Some of these functions were implemented in the library because they were not available in all the implementations of the standard library on all the systems where the library is expected to work --- in particular, the R package depending on this library is tested against several systems and configurations. The intention is to use standard functions when possible, and some of these can be replaced with standard functions in time when they become (broadly) available. In the following we show four utility classes that are used in various other modules.
+
+
+\subsection{Counter.hpp}
+
+A \code{Counter} allows us to count the occurrences of any object, either by increasing the count by 1 (\code{inc}) or by directly setting a value (\code{set}).
+\begin{lstlisting}[style=c++]
+Counter<char> c;
+c.count('a');  // 0
+c.inc('a');    // c.count('a') would now return 1
+c.set('a', 3); // c.count('a') would now return 3
+c.inc('a');    // c.count('a') would now return 4
+c.max(); // any of the elements with highest count 
+         // ('a' in this case)
+\end{lstlisting}
+
+
+\subsection{CSVReader.hpp}
+
+CSV files can be read using a \code{CSVReader}. This works
+for both Windows and Unix/Mac systems (handling the different ways to start a new line), and provides settings to trim space characters at the beginning and the end of each field, to specify different separators, and to indicate which characters at
+the beginning of a line indicate a comment.
+
+\begin{lstlisting}[style=c++]
+CSVReader csv;
+// setting up the reader
+csv.trim_fields(true);
+csv.set_field_separator('\t');
+csv.set_comment("--");
+// opening a file
+csv.open(infile);
+\end{lstlisting}
+
+We can then iterate over the lines of the file as follows, by obtaining the full line as a string or a vector with a string for each field:
+\begin{lstlisting}[style=c++]
+while (csv.has_next())
+{
+    vector<string> fields = csv.get_next();
+    string line = csv.get_current_raw_line();
+    // process the line...
+}
+csv.close();
+\end{lstlisting}
+
+If we know that the lines should have a given number of fields, then we can set this property:
+\begin{lstlisting}[style=c++]
+csv.set_expected_num_fields(8);
+\end{lstlisting}
+In this way, lines with a different number of fields will be skipped, and at the end we can check how many, for example to check that no lines were omitted because of format errors:
+\begin{lstlisting}[style=c++]
+csv.skipped_lines(); // returns num. of skipped lines
+\end{lstlisting}
+
+
+\subsection{NameIterator.hpp}
+
+Various functions need to generate a list of names, for example functions generating new vertices. A \code{NameIterator} takes a prefix and the number of names to generate as input, also guaranteeing that all names have the same length. For example, the following code would print \texttt{U00} to \texttt{U10}:
+\begin{lstlisting}[style=c++]
+auto names = NameIterator("U", 11);
+for (auto name: names)
+{
+    cout << name << endl
+}
+\end{lstlisting}
+
+
+\subsection{Stopwatch.hpp}
+
+A \code{Stopwatch} can be used to compute execution times. We can start it, then call the \code{lap} function multiple times.
+Later we can obtain the time passed for each lap, indicating the lap number (starting from $0$)
+\begin{lstlisting}[style=c++]
+Stopwatch clock;
+clock.start();
+// do something
+clock.lap(); // lap1
+// do something
+clock.lap(); // lap2
+clock.millis(0); // milliseconds between start and lap1
+clock.sec(0); // seconds between start and lap1
+clock.millis(1); // milliseconds between lap1 and lap2
+\end{lstlisting}
+
+\subsection{math.hpp and string.hpp}
+
+These modules provides basic mathematical functions not available in the standard library, or not implemented in all the systems where we need our R library to work. \code{math.hpp} declares \code{mean}, \code{stdev}, \code{union}, \code{intersection}, while \code{string.hpp} declares the following functions:
+
+\begin{lstlisting}[style=c++]
+string s = "An <example> &";
+to_upper_case(s); // s is now: "AN <EXAMPLE> &"
+to_xml(s); // s is now: "AN &lt;EXAMPLE&gt; &amp;"
+\end{lstlisting}
+
+\subsection{random.hpp}
+
+Random number generation is another type of functionality that was still not consolidated in the C++ standard library when we started developing \code{uunet}. The following functions are available:
+\begin{lstlisting}[style=c++]
+irand(10); // a number (size_t) between 0 and 9 
+drand(); // a double between 0 and 1 (excluded)
+get_binomial(10, .3); // a size_t between 0 and 10
+get_k_uniform(10, 3); // a vector of 3 numbers (size_t) 
+                      // between 0 and 9 
+\end{lstlisting}
+We can also run tests as follows:
+\begin{lstlisting}[style=c++]
+test(.2); // true with probability .2, false o.w.
+vector<double> probs = {.2, .5, .3};
+test(probs); // 0 with probability .2, 
+             // 1 with probability .5, 
+             // 2 with probability .3
+\end{lstlisting}
+
+\subsection{vector.hpp}
+
+This file declares functions to generate vectors, R style:
+\begin{lstlisting}[style=c++]
+seq(2, 4) // {2,3,4}
+seq(4, 2) // {4,3,2}
+\end{lstlisting}
+and to update vectors by moving the element from one position to another:
+\begin{lstlisting}[style=c++]
+vector<size_t> vec = {1,2,3,4,5};
+move(vec, 1, 4); // {1,3,5,4,2}
+\end{lstlisting}
+    
+
+\subsection{hashing.hpp}
+
+This file specifies hash functions for custom types so that they can be used in hash data structures, for example inside an \code{unordered\_map}. One would not normally touch this file, except if there is a need to enable such possibility for new types defined in the library that do not already provide it.
+
+\section{Property Matrix}
+
+Property matrices are sparse data structures where we can associate a \emph{value} to a \emph{structure} in a specific \emph{context}. This is currently used to count motifs (that is, structures: vertices, edges, triangles, \dots) in layers of a multilayer network (that is, contexts) to compute layer comparison functions. Property matrices were also defined to support the identification of positions and roles, and in principle can be used to implement adjacency matrices, term-document matrices, etc.
+
+In the following example we define an adjacency matrix: the rows and columns of the matrix (respectively structures and contexts) are indexed by \code{size\_t}, and the value at $i,j$ is true when there is an edge between vertex $i$ and vertex $j$. In general terms, contexts in this property matrix represent the neighborhood of vertices, structures are also vertices, and values indicate whether structure $i$ is present in context $j$ (that is, whether the two vertices are adjacent). The three parameters of the contructor indicate the number of structures, the number of contexts and the default value.
+\begin{lstlisting}[style=c++]
+auto A = PropertyMatrix<size_t,size_t,bool>(4,4,false);
+A.set(0, 2, true);
+A.set(3, 1, true);
+A.get(0, 1).value; // false
+\end{lstlisting}
+
+We can also specify if a value in not known for a pair structure/context, retrieve the number of unknown values for a context and (for numerical matrices) replace the values with their rank.
+\begin{lstlisting}[style=c++]
+A.set_na(0, 3); // unknown whether the edge is present
+A.get(0, 3).null; // true
+A.get(0, 3).value; // undefined (should not be used)
+A.num_na(3); // 1
+// Numerical property matrix
+auto P = PropertyMatrix<size_t,size_t,double>(4,4,0.0);
+P.rankify();
+\end{lstlisting}
+
+\section{Exceptions}
+
+The sub-module \texttt{core/exceptions} contains exceptions to be thrown by library functions. For example:
+\begin{lstlisting}[style=c++]
+throw FileNotFoundException(file_name)
+\end{lstlisting}
+The available exceptions are: DuplicateElementException, ExternalLibException, OperationNotSupportedException, WrongFormatException, FileNotFoundException, WrongParameterException, ElementNotFoundException, OutOfBoundsException, and NullPtrException. NullPtrException is typically not used directly: \texttt{assert\_not\_null} should be called every time another function takes a pointer as input to check that it is not null. To provide a more useful
+error message, \texttt{assert\_not\_null} takes the name of the function and parameter as input, and throws a meaningful NullPtrException. For example,
+\begin{lstlisting}[style=c++]
+assert_not_null(obj, "VCube::add", "obj")
+\end{lstlisting}
+is called at the beginning of the method \texttt{add} of the \texttt{VCube} class to check if parameter \texttt{obj} is null.
+
+\section{Observers}
+
+To keep stores synchronized, the library uses the Subject/Observer pattern, with classes contained in \texttt{core/observers}. One specific Observer available in the core module is used to synchronize stores, for example to automatically update a store so that it represents the union of others:
+\begin{lstlisting}[style=c++]
+ObjectStore<Person> store1;
+ObjectStore<Person> store2;
+ObjectStore<Person> union_store;
+
+UnionObserver<ObjectStore<Person>> obs(&union_store);
+store1.attach(&obs);
+store2.attach(&obs);
+\end{lstlisting} 
+From now \code{union\_store} will represent the union of\code{store1} and \code{store2}. In the following code, assume that \code{p1} and \code{p2} are pointers to \code{Person}s.
+\begin{lstlisting}[style=c++]
+store1.add(p1); // now union_store has size 1
+store2.add(p1);
+store2.add(p2); // now union_store has size 2
+store1.erase(p1);
+store2.erase(p1); // now union_store has size 1
+\end{lstlisting}
+Another usage of observers is to propagate deletions from one store to another.

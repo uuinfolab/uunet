@@ -152,16 +152,16 @@ read_metadata(
         case GraphIOFileSection::VERTEX_ATTRIBUTES:
         {
             size_t from_idx = 0;
-            core::Attribute vertex_att = read_attr_def(fields, from_idx, csv.row_num());
-            meta.vertex_attributes.push_back(vertex_att);
+            auto vertex_att = read_attr_def(fields, from_idx, csv.row_num());
+            meta.vertex_attributes.push_back(std::move(vertex_att));
             break;
         }
 
         case GraphIOFileSection::EDGE_ATTRIBUTES:
         {
             size_t from_idx = 0;
-            core::Attribute edge_att = read_attr_def(fields, from_idx, csv.row_num());
-            meta.edge_attributes.push_back(edge_att);
+            auto edge_att = read_attr_def(fields, from_idx, csv.row_num());
+            meta.edge_attributes.push_back(std::move(edge_att));
             break;
         }
 
@@ -250,6 +250,56 @@ read_attr_def(
     return core::Attribute(attr_name,attr_type);
 }
 
+
+
+void
+read_vertex(
+    Network* g,
+    const std::vector<std::string>& fields,
+    const std::vector<core::Attribute>& vertex_attributes,
+    size_t line_number
+)
+{
+
+
+    if (fields.size()>1+vertex_attributes.size())
+    {
+        throw core::WrongFormatException("Line " +
+                                         std::to_string(line_number) +
+                                         ": wrong number of attributes");
+    }
+
+    auto v = read_vertex(g, fields, 0, line_number);
+
+
+    read_attr_values(g->vertices()->attr(), v, vertex_attributes, fields, 1, line_number);
+
+
+}
+
+
+
+void
+read_edge(
+    Network* g,
+    const std::vector<std::string>& fields,
+    const std::vector<core::Attribute>& edge_attributes,
+    size_t line_number
+)
+{
+
+    if (fields.size()!=2+edge_attributes.size())
+    {
+        throw core::WrongFormatException("Line " +
+                                         std::to_string(line_number) +
+                                         ": wrong number of fields");
+    }
+
+    auto edge = read_edge(g, fields, 0, line_number);
+
+    read_attr_values(g->edges()->attr(), edge, edge_attributes, fields, 2, line_number);
+
+}
 
 }
 }

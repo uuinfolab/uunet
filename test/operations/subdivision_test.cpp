@@ -6,7 +6,7 @@
 #include "core/exceptions/NullPtrException.hpp"
 
 
-TEST(net_operations_test, edge_subdivision_directed)
+TEST(operations_test, edge_subdivision_directed)
 {
 
     // creating a simple graph
@@ -36,7 +36,7 @@ TEST(net_operations_test, edge_subdivision_directed)
 
 
 
-TEST(net_operations_test, edge_subdivision_undirected)
+TEST(operations_test, edge_subdivision_undirected)
 {
 
     // creating a simple graph
@@ -66,7 +66,7 @@ TEST(net_operations_test, edge_subdivision_undirected)
 
 
 
-TEST(net_operations_test, edge_subdivision_exceptions)
+TEST(operations_test, edge_subdivision_exceptions)
 {
 
     // creating a simple graph

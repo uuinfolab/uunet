@@ -1,53 +1,48 @@
 #include "gtest/gtest.h"
 
 #include "core/stores/ObjectStore.hpp"
-#include "objects/Vertex.hpp"
-#include <map>
-
+#include "../Person.hpp"
 
 TEST(core_stores_test, ObjectStore)
 {
-    
-    std::map<int, uu::core::ObjectStore<uu::net::Vertex>> map;
-    
-    auto v1_ = std::make_shared<uu::net::Vertex>("vertex 1");
-    std::cout << "vertex: " << v1_.get() << std::endl;
-    map[0].add(v1_.get());
-    std::cout << "added" << std::endl;
 
-    auto v2_ = std::make_shared<uu::net::Vertex>("vertex 2");
-    std::cout << "vertex: " << v2_.get() << std::endl;
-    map[0].add(v2_.get());
-    std::cout << "added" << std::endl;
-
-    size_t c = 0;
+    uu::core::ObjectStore<Person> store;
     
-    std::cout << "it" << std::endl;
-    for (auto pair: map)
+    auto p1 = std::make_shared<Person>("0001", "Alice");
+    auto p2 = std::make_shared<Person>("0002", "Hatter");
+    
+    store.add(p1.get());
+    store.add(p2.get());
+    
+    EXPECT_EQ(store.size(), (size_t) 2);
+    EXPECT_EQ(store.contains(p1.get()), true);
+    EXPECT_EQ(store.contains("0001"), true);
+    EXPECT_EQ(store.get("0002"), p2.get());
+    auto p = store.get_at_random();
+    EXPECT_TRUE(p == p1.get() || p == p2.get());
+    p = store.at(0);
+    EXPECT_TRUE(p == p1.get() || p == p2.get());
+    auto idx = store.index_of(p1.get());
+    EXPECT_TRUE(idx == 0 || idx == 1);
+    EXPECT_EQ(store.erase(p1.get()), true);
+    EXPECT_EQ(store.erase("0001"), false);
+    
+    auto p3 = std::make_shared<Person>("0002", "Rabbit");
+    EXPECT_FALSE(store.add(p3.get()));
+    EXPECT_FALSE(store.contains(p3.get()));
+    
+    auto p4 = std::make_shared<Person>("0003", "Rabbit");
+    idx = store.index_of(p4.get());
+    EXPECT_TRUE(idx == -1);
+    
+    store.add(p1.get());
+    store.add(p4.get());
+    size_t count = 0;
+    for (auto obj: store)
     {
-        std::cout << "assign" << std::endl;
-        auto set = pair.second;
-        std::cout << "s: " << set.size() << std::endl;
-        for (auto v: set)
-        {
-            c++;
-        }
+        (void)obj;
+        count++;
     }
-    EXPECT_EQ((size_t)2, c)
-    << "First iteration";
-    c = 0;
-    for (auto pair: map)
-    {
-        auto set = pair.second;
-        std::cout << "s: " << set.size() << std::endl;
-        for (auto v: set)
-        {
-            c++;
-        }
-    }
-    EXPECT_EQ((size_t)2, c)
-    << "Second iteration";
+    EXPECT_EQ(count, (size_t) 3);
     
 }
-
-

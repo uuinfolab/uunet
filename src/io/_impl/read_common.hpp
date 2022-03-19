@@ -1,8 +1,3 @@
-/**
- * History:
- * - 2018.03.09 file created, following a restructuring of the previous library.
- */
-
 #ifndef UU_NET_IO_READCOMMON_H_
 #define UU_NET_IO_READCOMMON_H_
 
@@ -11,12 +6,11 @@
 #include "core/exceptions/OperationNotSupportedException.hpp"
 #include "core/exceptions/WrongFormatException.hpp"
 #include "core/attributes/Attribute.hpp"
-//#include "core/attributes/AttributeStore.hpp"
 #include "core/utils/CSVReader.hpp"
-#include "core/datastructures/objects/Object.hpp"
-#include "networks/_impl/Graph.hpp"
+#include "core/objects/Object.hpp"
 #include "objects/Vertex.hpp"
 #include "objects/Edge.hpp"
+#include "networks/Network.hpp"
 #include "io/_impl/GraphMetadata.hpp"
 #include "io/_impl/GraphIOFileSection.hpp"
 
@@ -120,20 +114,18 @@ read_edge(
     size_t line_number
 );
 
-template <typename G>
 void
 read_vertex(
-    G* g,
+    Network* g,
     const std::vector<std::string>& fields,
     const std::vector<core::Attribute>& vertex_attributes,
     size_t line_number
 );
 
 
-template <typename G>
 void
 read_edge(
-    G* g,
+    Network* g,
     const std::vector<std::string>& fields,
     const std::vector<core::Attribute>& edge_attributes,
     size_t line_number
@@ -304,38 +296,6 @@ read_edge(
     return edge;
 }
 
-template <typename G>
-void
-read_vertex(
-    G* g,
-    const std::vector<std::string>& fields,
-    const std::vector<core::Attribute>& vertex_attributes,
-    size_t line_number
-)
-{
-    (void)g; // attribute not used
-    (void)fields; // attribute not used
-    (void)vertex_attributes; // attribute not used
-    (void)line_number; // attribute not used
-    throw core::OperationNotSupportedException("Graph type not supported (IO)");
-}
-
-
-template <typename G>
-void
-read_edge(
-    G* g,
-    const std::vector<std::string>& fields,
-    const std::vector<core::Attribute>& edge_attributes,
-    size_t line_number
-)
-{
-    (void)g; // attribute not used
-    (void)fields; // attribute not used
-    (void)edge_attributes; // attribute not used
-    (void)line_number; // attribute not used
-    throw core::OperationNotSupportedException("Graph type not supported (IO)");
-}
 
 
 /* This function assumes that all the attribute values are present. */
@@ -354,7 +314,25 @@ read_attr_values(
 
     for (size_t i=from_idx; i<from_idx+attributes.size(); i++)
     {
-        store->set_as_string(element, attributes.at(i-from_idx).name, line.at(i));
+        switch (attributes.at(i-from_idx).type)
+        {
+        case core::AttributeType::DOUBLESET:
+        case core::AttributeType::INTEGERSET:
+        case core::AttributeType::STRINGSET:
+        case core::AttributeType::TIMESET:
+            store->add_as_string(element, attributes.at(i-from_idx).name, line.at(i));
+            break;
+
+        case core::AttributeType::NUMERIC:
+        case core::AttributeType::DOUBLE:
+        case core::AttributeType::INTEGER:
+        case core::AttributeType::STRING:
+        case core::AttributeType::TIME:
+        case core::AttributeType::TEXT:
+            store->set_as_string(element, attributes.at(i-from_idx).name, line.at(i));
+            break;
+
+        }
     }
 }
 
