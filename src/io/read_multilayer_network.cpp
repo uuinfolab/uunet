@@ -91,6 +91,27 @@ read_multilayer_network(
         }
     }
 
+    for (auto&& attr: meta.interlayer_edge_attributes)
+    {
+        for (auto l1: *net->layers())
+        {
+            for (auto l2: *net->layers())
+            {
+                
+                auto iedges = net->interlayer_edges()->get(l1,l2);
+                
+                if (!iedges) continue;
+                
+                bool res = iedges->attr()->add(attr.name, attr.type);
+                
+                if (!res)
+                {
+                    throw core::DuplicateElementException("edge attribute " + attr.name);
+                }
+            }
+        }
+    }
+    
     // Read data (vertices, edges, attribute values)
     read_multilayer_data(net.get(),  meta, infile, separator);
 
@@ -244,11 +265,9 @@ read_interlayer_edge(
 
     else
     {
-        //auto e =
-        ml->interlayer_edges()->add(v1,l1,v2,l2);
+        auto e = ml->interlayer_edges()->add(v1,l1,v2,l2);
 
-        // @todo attr
-        //read_attr_values(ml->interlayer_edges()->attr(), e, meta.interlayer_edge_attributes, fields, 4, line_number);
+        read_attr_values(ml->interlayer_edges()->get(l1,l2)->attr(), e, meta.interlayer_edge_attributes, fields, 4, line_number);
 
     }
 
