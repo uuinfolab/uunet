@@ -12,7 +12,7 @@ set (PROJECT_URL 			"https://bitbucket.org/uuinfolab/uunet")
 set (PROJECT_DESCRIPTION 		"Network analysis library")
 
 # Setting the project version
-file (READ				"${CMAKE_CURRENT_SOURCE_DIR}/VERSION" PROJECT_VERSION_FULL)
+file (READ				"${CMAKE_CURRENT_LIST_DIR}/VERSION" PROJECT_VERSION_FULL)
 string (REGEX REPLACE 			"[\n\r]" "" PROJECT_VERSION_FULL "${PROJECT_VERSION_FULL}")
 string (REGEX REPLACE 			"^([0-9]+)\\.[0-9]+\\.[0-9]+$" "\\1" PROJECT_VERSION_MAJOR "${PROJECT_VERSION_FULL}")
 string (REGEX REPLACE 			"^[0-9]+\\.([0-9]+)\\.[0-9]+$" "\\1" PROJECT_VERSION_MINOR "${PROJECT_VERSION_FULL}")
