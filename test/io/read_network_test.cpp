@@ -41,7 +41,7 @@ TEST(io_test, read_network)
     test_file << "                   " << std::endl;
     test_file << "#EDGES             " << std::endl;
     test_file << "v1,v2,2.3          " << std::endl;
-    test_file << "v1,v3,4            " << std::endl;
+    test_file << "v1,v3,NaN          " << std::endl;
     test_file << "v2,v1,3            " << std::endl;
     test_file << "v1,v4,4.2          " << std::endl;
     test_file.close();
@@ -54,10 +54,16 @@ TEST(io_test, read_network)
     ASSERT_TRUE(v1);
     auto v2 = g->vertices()->get("v2");
     ASSERT_TRUE(v2);
+    auto v3 = g->vertices()->get("v3");
+    ASSERT_TRUE(v3);
     auto e = g->edges()->get(v2,v1);
     ASSERT_TRUE(e);
     double val = g->edges()->attr()->get_double(e, "a1").value;
     EXPECT_EQ(val, 3.0);
+    auto e2 = g->edges()->get(v1,v3);
+    ASSERT_TRUE(e2);
+    uu::core::Value<double> val2 = g->edges()->attr()->get_double(e2, "a1");
+    ASSERT_TRUE(val2.null);
     
     // cleaning up
 
