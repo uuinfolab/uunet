@@ -101,3 +101,106 @@ TEST(io_test, read_multilayer_network)
     std::remove(test_file_name.data());
 }
 
+TEST(io_test, read_multilayer_network_wrongformat1)
+{
+    // preparing a file to read
+    
+    std::string test_file_name = "net_io_read_graph_file.tmp";
+    
+    std::ofstream test_file;
+    test_file.open(test_file_name);
+
+    if (!test_file.is_open())
+    {
+        FAIL()
+                << "Could not create temporary file. Test not executed.";
+    }
+
+    test_file << "#TYPE                " << std::endl;
+    test_file << "multilayer           " << std::endl;
+    test_file << "                     " << std::endl;
+    test_file << "#LAYERS              " << std::endl;
+    test_file << "l1,l1,UNDIRECTED     " << std::endl;
+    test_file << "l2,l2,UNDIRECTED,LOOPS" << std::endl;
+    test_file << "l1,l2,DIRECTED       " << std::endl;
+    test_file << "                     " << std::endl;
+    test_file << "#ACTOR ATTRIBUTES    " << std::endl;
+    test_file << "ssn, string          " << std::endl;
+    test_file << "                     " << std::endl;
+    test_file << "#ACTORS              " << std::endl;
+    test_file << "v1,122343242         " << std::endl;
+    test_file << "v3,122343654         " << std::endl;
+    test_file << "                     " << std::endl;
+    test_file << "#VERTEX ATTRIBUTES   " << std::endl;
+    test_file << "l2,day,string        " << std::endl;
+    test_file << "                     " << std::endl;
+    test_file << "#VERTICES            " << std::endl;
+    test_file << "v6,l2,Monday         " << std::endl;
+    test_file << "                     " << std::endl;
+    test_file << "#EDGE ATTRIBUTES     " << std::endl;
+    test_file << "l1,attr.name,numeric " << std::endl;
+    test_file << "attr.name2,numeric   " << std::endl;
+    test_file << "                     " << std::endl;
+    test_file << "#EDGES               " << std::endl;
+    test_file << "v3,l1,v4,l1,12       " << std::endl;
+    test_file << "v1,l1,v4,l2,13       " << std::endl;
+    test_file << "                     " << std::endl;
+    test_file.close();
+    
+    EXPECT_THROW(uu::net::read_multilayer_network(test_file_name, "g", ','), uu::core::WrongFormatException);
+
+    std::remove(test_file_name.data());
+}
+
+
+TEST(io_test, read_multilayer_network_wrongformat2)
+{
+    // preparing a file to read
+    
+    std::string test_file_name = "net_io_read_graph_file.tmp";
+    
+    std::ofstream test_file;
+    test_file.open(test_file_name);
+
+    if (!test_file.is_open())
+    {
+        FAIL()
+                << "Could not create temporary file. Test not executed.";
+    }
+
+    test_file << "#TYPE                " << std::endl;
+    test_file << "multilayer           " << std::endl;
+    test_file << "                     " << std::endl;
+    test_file << "#LAYERS              " << std::endl;
+    test_file << "l1,l1,UNDIRECTED     " << std::endl;
+    test_file << "l2,l2,UNDIRECTED,LOOPS" << std::endl;
+    test_file << "l1,l2,DIRECTED       " << std::endl;
+    test_file << "                     " << std::endl;
+    test_file << "#ACTOR ATTRIBUTES    " << std::endl;
+    test_file << "ssn, string          " << std::endl;
+    test_file << "                     " << std::endl;
+    test_file << "#ACTORS              " << std::endl;
+    test_file << "v1                   " << std::endl;
+    test_file << "v3,122343654         " << std::endl;
+    test_file << "                     " << std::endl;
+    test_file << "#VERTEX ATTRIBUTES   " << std::endl;
+    test_file << "l2,day,string        " << std::endl;
+    test_file << "                     " << std::endl;
+    test_file << "#VERTICES            " << std::endl;
+    test_file << "v6,l2,Monday         " << std::endl;
+    test_file << "                     " << std::endl;
+    test_file << "#EDGE ATTRIBUTES     " << std::endl;
+    test_file << "l1,attr.name,numeric " << std::endl;
+    test_file << "attr.name2,numeric   " << std::endl;
+    test_file << "                     " << std::endl;
+    test_file << "#EDGES               " << std::endl;
+    test_file << "v3,l1,v4,l1,8,12       " << std::endl;
+    test_file << "v1,l1,v4,l2,13       " << std::endl;
+    test_file << "                     " << std::endl;
+    test_file.close();
+    
+    EXPECT_THROW(uu::net::read_multilayer_network(test_file_name, "g", ','), uu::core::WrongFormatException);
+
+    std::remove(test_file_name.data());
+}
+
