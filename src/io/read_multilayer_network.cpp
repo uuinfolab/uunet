@@ -10,6 +10,131 @@ namespace uu {
 namespace net {
 
 std::unique_ptr<MultilayerNetwork>
+read_multilayer_network2(
+    const std::string& infile,
+    const std::string& name,
+    char separator,
+    bool align
+)
+{
+
+    // Read metadata
+    MultilayerMetadata meta;
+    
+    
+    auto net = std::make_unique<MultilayerNetwork>(name);
+
+    for (auto l: meta.layers)
+    {
+        std::string layer_name = l.first;
+        auto layer_type = l.second;
+
+        //std::cout << "creating layer " << l.first << " " << layer_type.is_directed << std::endl;
+        auto dir = layer_type.is_directed ? EdgeDir::DIRECTED : EdgeDir::UNDIRECTED;
+        auto loops = layer_type.allows_loops ? LoopMode::ALLOWED : LoopMode::DISALLOWED;
+        net->layers()->add(layer_name, dir, loops);
+    }
+
+    for (auto inter: meta.interlayer_dir)
+    {
+        std::string layer_name1 = inter.first.first;
+        std::string layer_name2 = inter.first.second;
+        auto layer1 = net->layers()->get(layer_name1);
+
+        if (!layer1)
+        {
+            throw core::WrongFormatException("unknown layer name (" + layer_name1 + ")");
+        }
+
+        auto layer2 = net->layers()->get(layer_name2);
+
+        if (!layer2)
+        {
+            throw core::WrongFormatException("unknown layer name (" + layer_name2 + ")");
+        }
+
+        auto dir = inter.second ? EdgeDir::DIRECTED : EdgeDir::UNDIRECTED;
+        net->interlayer_edges()->init(layer1, layer2, dir);
+
+    }
+
+
+    for (auto&& attr: meta.vertex_attributes)
+    {
+
+        net->actors()->attr()->add(attr.name, attr.type);
+
+    }
+
+    for (auto layer_attr: meta.intralayer_vertex_attributes)
+    {
+        std::string layer_name = layer_attr.first;
+
+        for (auto&& attr: layer_attr.second)
+        {
+            net->layers()->get(layer_name)->vertices()->attr()->add(attr.name, attr.type);
+        }
+    }
+
+    for (auto layer_attr: meta.intralayer_edge_attributes)
+    {
+        std::string layer_name = layer_attr.first;
+
+        for (auto&& attr: layer_attr.second)
+        {
+            bool res = net->layers()->get(layer_name)->edges()->attr()->add(attr.name, attr.type);
+
+            if (!res)
+            {
+                throw core::DuplicateElementException("edge attribute " + attr.name);
+            }
+        }
+    }
+
+    for (auto&& attr: meta.interlayer_edge_attributes)
+    {
+        for (auto l1: *net->layers())
+        {
+            for (auto l2: *net->layers())
+            {
+                
+                auto iedges = net->interlayer_edges()->get(l1,l2);
+                
+                if (!iedges) continue;
+                
+                bool res = iedges->attr()->add(attr.name, attr.type);
+                
+                if (!res)
+                {
+                    throw core::DuplicateElementException("edge attribute " + attr.name);
+                }
+            }
+        }
+    }
+    
+    /* Read data (vertices, edges, attribute value(s))
+    read_multilayer_data(net.get(),  meta, infile, separator);
+
+    read_actor_attributes(net.get(),  meta, infile, separator);
+    
+    // Align
+    if (align)
+    {
+        for (auto layer: *net->layers())
+        {
+            for (auto a: *net->actors())
+            {
+                layer->vertices()->add(a);
+            }
+        }
+    }
+    */
+    return net;
+
+}
+
+
+std::unique_ptr<MultilayerNetwork>
 read_multilayer_network(
     const std::string& infile,
     const std::string& name,

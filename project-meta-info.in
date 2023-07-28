@@ -1,8 +1,8 @@
 set( META_PROJECT_NAME        		"uunet" )
-set( META_LIBRARY_NAME			"uunet" )
+set( META_LIBRARY_NAME			    "uunet" )
 set( META_PROJECT_DESCRIPTION 		"Network analysis library" )
 set( META_PROJECT_ORGANIZATION 		"Uppsala University Information Laboratory" )
-set( META_PROJECT_HOMEPAGE      	"https://bitbucket.org/uuinfolab/uunet" )
+set( META_PROJECT_HOMEPAGE      	"https://github.com/uuinfolab/uunet" )
 
 # Setting the project version
 file (READ				"${CMAKE_CURRENT_LIST_DIR}/VERSION" META_PROJECT_VERSION_FULL )

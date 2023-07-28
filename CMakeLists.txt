@@ -79,7 +79,8 @@ target_include_directories (uunet PUBLIC
 	ext/eclat/math/src
 	ext/eclat/util/src
 	ext/eclat/apriori/src
-	ext/infomap)
+	ext/infomap
+    ext/boost)
 
 add_definitions(-DNS_INFOMAP -DONLY_C_LOCALE=1)
 
