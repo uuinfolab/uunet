@@ -27,7 +27,8 @@ struct version_act
     inline void
     on_success(It const& first, It const& last, T& attr, Ctx const& ctx)
     {
-
+        auto& meta = x3::get<data>(ctx).get();
+        std::cout << attr << std::endl;
     }
 };
 
@@ -37,7 +38,8 @@ struct type_act
     inline void
     on_success(It const& first, It const& last, T& attr, Ctx const& ctx)
     {
-
+        auto& meta = x3::get<data>(ctx).get();
+        std::cout << attr << std::endl;
     }
 };
 
@@ -47,7 +49,8 @@ struct layer_def_act
     inline void
     on_success(It const& first, It const& last, T& attr, Ctx const& ctx)
     {
-
+        auto& meta = x3::get<data>(ctx).get();
+        std::cout << "layer def" << std::endl;
     }
 };
 
@@ -57,7 +60,8 @@ struct actor_attr_act
     inline void
     on_success(It const& first, It const& last, T& attr, Ctx const& ctx)
     {
-
+        auto& meta = x3::get<data>(ctx).get();
+        std::cout << "actor attr" << std::endl;
     }
 };
 
@@ -67,7 +71,8 @@ struct vertex_attr_act
     inline void
     on_success(It const& first, It const& last, T& attr, Ctx const& ctx)
     {
-
+        auto& meta = x3::get<data>(ctx).get();
+        std::cout << "vertex attr" << std::endl;
     }
 };
 
@@ -77,7 +82,8 @@ struct edge_attr_act
     inline void
     on_success(It const& first, It const& last, T& attr, Ctx const& ctx)
     {
-
+        auto& meta = x3::get<data>(ctx).get();
+        std::cout << "edge attr" << std::endl;
     }
 };
 
@@ -88,7 +94,7 @@ struct actor_act
     on_success(It const& first, It const& last, T& attr, Ctx const& ctx)
     {
         auto& meta = x3::get<data>(ctx).get();
-        
+        std::cout << "actor" << std::endl;
     }
 };
 
@@ -98,7 +104,8 @@ struct vertex_act
     inline void
     on_success(It const& first, It const& last, T& attr, Ctx const& ctx)
     {
-
+        auto& meta = x3::get<data>(ctx).get();
+        std::cout << "vertex def" << std::endl;
     }
 };
 
@@ -108,7 +115,8 @@ struct edge_act
     inline void
     on_success(It const& first, It const& last, T& attr, Ctx const& ctx)
     {
-
+        auto& meta = x3::get<data>(ctx).get();
+        std::cout << "edge def" << std::endl;
     }
 };
 

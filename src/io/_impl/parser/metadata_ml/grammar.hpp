@@ -30,51 +30,51 @@ using boost::spirit::x3::ascii::char_;
 
 // Associate actions to rules
 
-class start_id : error_handler {};
-class empty_line_id {};
-class section_id {};
-class version_id : version_act {};
-class type_spec_id : type_act {};
-class actor_attr_list_id {};
-class vertex_attr_list_id {};
-class edge_attr_list_id {};
-class layer_list_id {};
-class actor_list_id {};
-class vertex_list_id {};
-class edge_list_id {};
-class actor_attr_id : actor_attr_act  {};
-class vertex_attr_id : vertex_attr_act {};
-class edge_attr_id : edge_attr_act {};
-class layer_id : layer_def_act {};
-class actor_id : actor_act {};
-class vertex_id : vertex_act {};
-class edge_id : edge_act {};
-class id_id {};
-class val_id {};
+struct start_id : error_handler {};
+struct empty_line_id {};
+struct section_id {};
+struct version_id : version_act {};
+struct type_spec_id : type_act {};
+struct actor_attr_list_id {};
+struct vertex_attr_list_id {};
+struct edge_attr_list_id {};
+struct layer_list_id {};
+struct actor_list_id {};
+struct vertex_list_id {};
+struct edge_list_id {};
+struct actor_attr_id : actor_attr_act  {};
+struct vertex_attr_id : vertex_attr_act {};
+struct edge_attr_id : edge_attr_act {};
+struct layer_id : layer_def_act {};
+struct actor_id : actor_act {};
+struct vertex_id : vertex_act {};
+struct edge_id : edge_act {};
+struct id_id {};
+struct val_id {};
 
 // Create rules
 
-x3::rule<class start_id> const start = "start";
-x3::rule<class section_id> const section = "section";
-x3::rule<class empty_line_id> const empty_line = "empty_line";
-x3::rule<class version_id, double> const version = "version";
-x3::rule<class type_spec_id, std::vector<std::string>> const type_spec = "type_spec";
-x3::rule<class actor_attr_list_id> const actor_attr_list = "actor_attr_list";
-x3::rule<class vertex_attr_list_id> const vertex_attr_list = "vertex_attr_list";
-x3::rule<class edge_attr_list_id> const edge_attr_list = "edge_attr_list";
-x3::rule<class layer_list_id> const layer_list = "layer_list";
-x3::rule<class actor_list_id> const actor_list = "actor_list";
-x3::rule<class vertex_list_id> const vertex_list = "vertex_list";
-x3::rule<class edge_list_id> const edge_list = "edge_list";
-x3::rule<class actor_attr_id, std::vector<std::string>> const actor_attr = "actor_attr";
-x3::rule<class vertex_attr_id, std::vector<std::string>> const vertex_attr = "vertex_attr";
-x3::rule<class edge_attr_id, std::vector<std::string>> const edge_attr = "edge_attr";
-x3::rule<class layer_id, std::vector<std::string>> const layer = "layer";
-x3::rule<class actor_id, std::vector<std::string>> const actor = "actor";
-x3::rule<class vertex_id, std::vector<std::string>> const vertex = "vertex";
-x3::rule<class edge_id, std::vector<std::string>> const edge = "edge";
-x3::rule<class id_id, std::string> const id = "id";
-x3::rule<class val_id, std::string> const val = "val";
+x3::rule<struct start_id> const start = "start";
+x3::rule<struct section_id> const section = "section";
+x3::rule<struct empty_line_id> const empty_line = "empty_line";
+x3::rule<struct version_id, double> const version = "version";
+x3::rule<struct type_spec_id, std::string> const type_spec = "type_spec";
+x3::rule<struct actor_attr_list_id> const actor_attr_list = "actor_attr_list";
+x3::rule<struct vertex_attr_list_id> const vertex_attr_list = "vertex_attr_list";
+x3::rule<struct edge_attr_list_id> const edge_attr_list = "edge_attr_list";
+x3::rule<struct layer_list_id> const layer_list = "layer_list";
+x3::rule<struct actor_list_id> const actor_list = "actor_list";
+x3::rule<struct vertex_list_id> const vertex_list = "vertex_list";
+x3::rule<struct edge_list_id> const edge_list = "edge_list";
+x3::rule<struct actor_attr_id, std::vector<std::string>> const actor_attr = "actor_attr";
+x3::rule<struct vertex_attr_id, std::vector<std::string>> const vertex_attr = "vertex_attr";
+x3::rule<struct edge_attr_id, std::vector<std::string>> const edge_attr = "edge_attr";
+x3::rule<struct layer_id, std::vector<std::string>> const layer = "layer";
+x3::rule<struct actor_id, std::vector<std::string>> const actor = "actor";
+x3::rule<struct vertex_id, std::vector<std::string>> const vertex = "vertex";
+x3::rule<struct edge_id, std::vector<std::string>> const edge = "edge";
+x3::rule<struct id_id, std::string> const id = "id";
+x3::rule<struct val_id, std::string> const val = "val";
 
 // Keywords
 
@@ -85,7 +85,7 @@ struct net_types_ : x3::symbols<std::string>
         add
         ("directed", "directed")
         ("undirected", "undirected")
-        ("allow loops", "allow loops")
+        ("loops", "loops")
         ("no loops", "no loops")
         ("weighted",  "weighted")
         ("probabilistic",  "probabilistic")
@@ -225,7 +225,9 @@ auto const edge_attr_def =
     id >> ',' >> id >> ',' >> id >> ',' >> x3::no_case[attr_t] >> eol
     ;
 auto const layer_def =
-    id > *(',' > x3::no_case[net_t] % ',') > eol
+    id >> +(',' >> x3::no_case[net_t]) >> eol
+    |
+    id >> ',' >> id >> +(',' >> x3::no_case[net_t]) >> eol
     ;
 auto const actor_def =
     id > *(',' > val % ',') > eol

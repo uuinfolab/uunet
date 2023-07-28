@@ -3,6 +3,8 @@
 #include "core/exceptions/assert_not_null.hpp"
 #include "io/read_multilayer_network.hpp"
 #include "io/read_network.hpp"
+#include "io/_impl/parser/metadata_ml/parser.hpp"
+
 #include <sstream>
 
 
@@ -20,7 +22,7 @@ read_multilayer_network2(
 
     // Read metadata
     MultilayerMetadata meta;
-    
+    std::cout << uu::net::parser::metadata_ml::parse(infile, meta) << std::endl;
     
     auto net = std::make_unique<MultilayerNetwork>(name);
 

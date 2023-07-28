@@ -68,6 +68,7 @@ TEST(io_test, read_multilayer_network)
     test_file.close();
     
     auto net = uu::net::read_multilayer_network(test_file_name, "g", ',');
+    auto net2 = uu::net::read_multilayer_network2(test_file_name, "g", ',');
 
     //std::cout << net->summary() << std::endl;
     auto l1 = net->layers()->get("l1");
