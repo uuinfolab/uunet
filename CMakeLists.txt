@@ -8,7 +8,7 @@ project (uunet LANGUAGES C CXX)
 
 set (PROJECT_VENDOR 			"Matteo Magnani")
 set (PROJECT_CONTACT 			"matteo.magnani@it.uu.se")
-set (PROJECT_URL 			"https://bitbucket.org/uuinfolab/uunet")
+set (PROJECT_URL 			    "https://github.com/uuinfolab/uunet")
 set (PROJECT_DESCRIPTION 		"Network analysis library")
 
 # Setting the project version
@@ -25,7 +25,7 @@ set (LIBRARY_VERSION_PATCH 		"${PROJECT_VERSION_PATCH}")
 set (LIBRARY_VERSION 			"${LIBRARY_VERSION_MAJOR}.${LIBRARY_VERSION_MINOR}")
 set (LIBRARY_VERSION_FULL 		"${LIBRARY_VERSION}.${LIBRARY_VERSION_PATCH}")
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -74,8 +74,6 @@ add_library (uunet SHARED ${SOURCES})
 
 # Include private components
 target_include_directories (uunet PUBLIC
-	ext/eigen3 
-	ext/spectra
 	ext/eclat/eclat/src
 	ext/eclat/tract/src
 	ext/eclat/math/src
@@ -94,11 +92,11 @@ target_include_directories (uunet PUBLIC
 # Compile uunet target
 if (${CMAKE_VERSION} VERSION_LESS 3.8)
 	set_target_properties (uunet PROPERTIES
-		CXX_STANDARD 14
+		CXX_STANDARD 17
 		CXX_STANDARD_REQUIRED YES
 		CXX_EXTENSIONS NO)
 else()
-	target_compile_features (uunet PUBLIC cxx_std_14)
+	target_compile_features (uunet PUBLIC cxx_std_17)
 	set_target_properties (uunet PROPERTIES CXX_EXTENSIONS OFF)
 endif()
 
@@ -130,27 +128,27 @@ install (TARGETS uunet
 	RUNTIME DESTINATION bin)
 
 install(DIRECTORY "src/" # source directory
-DESTINATION "include/uunet" # target directory
-FILES_MATCHING # install only matched files
-PATTERN "*.hpp" # select header files
+        DESTINATION "include/uunet" # target directory
+        FILES_MATCHING # install only matched files
+        PATTERN "*.hpp" # select header files
 )
 
 install(DIRECTORY "src/" # source directory
-DESTINATION "include/uunet" # target directory
-FILES_MATCHING # install only matched files
-PATTERN "*.ipp" # select header files
+        DESTINATION "include/uunet" # target directory
+        FILES_MATCHING # install only matched files
+        PATTERN "*.ipp" # select header files
 )
 
 install(DIRECTORY "libs/" # source directory
-DESTINATION "include/uunet" # target directory
-FILES_MATCHING # install only matched files
-PATTERN "*.hpp" # select header files
+        DESTINATION "include/uunet" # target directory
+        FILES_MATCHING # install only matched files
+        PATTERN "*.hpp" # select header files
 )
 
 install(DIRECTORY "libs/" # source directory
-DESTINATION "include/uunet" # target directory
-FILES_MATCHING # install only matched files
-PATTERN "*.ipp" # select header files
+        DESTINATION "include/uunet" # target directory
+        FILES_MATCHING # install only matched files
+        PATTERN "*.ipp" # select header files
 )
 
 install(DIRECTORY "ext/eclat/" # source directory
