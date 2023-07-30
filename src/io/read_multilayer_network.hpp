@@ -13,7 +13,6 @@ std::unique_ptr<MultilayerNetwork>
 read_multilayer_network2(
     const std::string& infile,
     const std::string& name,
-    char separator = ',',
     bool align = false
 );
 

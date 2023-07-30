@@ -1,5 +1,5 @@
-#ifndef PARSER_EXAMPLE_GRAMMAR_HPP
-#define PARSER_EXAMPLE_GRAMMAR_HPP
+#ifndef PARSER_MLPASS1_GRAMMAR_HPP
+#define PARSER_MLPASS1_GRAMMAR_HPP
 
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/home/x3.hpp>
@@ -14,13 +14,14 @@
 namespace uu {
 namespace net {
 namespace parser {
-namespace metadata_ml {
+namespace mlpass1 {
 
 using x3::int_;
 using x3::double_;
 using x3::alnum;
 using x3::alpha;
 using x3::lit;
+using x3::eps;
 using x3::eol;
 using x3::lexeme;
 using x3::skip;
@@ -30,7 +31,7 @@ using boost::spirit::x3::ascii::char_;
 
 // Associate actions to rules
 
-struct start_id : error_handler {};
+struct start_id : error_handler, final_act {};
 struct empty_line_id {};
 struct section_id {};
 struct version_id : version_act {};
@@ -42,7 +43,7 @@ struct layer_list_id {};
 struct actor_list_id {};
 struct vertex_list_id {};
 struct edge_list_id {};
-struct actor_attr_id : actor_attr_act  {};
+struct actor_attr_id {};
 struct vertex_attr_id : vertex_attr_act {};
 struct edge_attr_id : edge_attr_act {};
 struct layer_id : layer_def_act {};
@@ -236,7 +237,7 @@ auto const vertex_def =
     id > *(',' > val % ',') > eol
     ;
 auto const edge_def =
-    id > ',' > id > *(',' > val % ',') > eol
+    id > ',' > id > ',' > id > *(',' > val % ',') > eol // fourth can also be id, so the grammar is less restrictive
     ;
 auto const id_def =
     char_("A-Za-z_") > *char_("A-Za-z0-9._")

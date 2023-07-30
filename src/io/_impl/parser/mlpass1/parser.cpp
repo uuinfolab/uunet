@@ -1,4 +1,4 @@
-#include "io/_impl/parser/metadata_ml/parser.hpp"
+#include "io/_impl/parser/mlpass1/parser.hpp"
 
 #include <boost/spirit/include/support_multi_pass.hpp>
 
@@ -6,17 +6,18 @@
 #include <string>
 #include <fstream>
 #include <iterator>
+#include <utility>
 
 
 namespace uu {
 namespace net {
 namespace parser {
-namespace metadata_ml {
+namespace mlpass1 {
 
 bool
 parse(
     std::string const& file_name,
-    MultilayerMetadata& meta)
+    MultilayerNetwork* net)
 {
     std::ifstream fin(file_name);
     
@@ -44,12 +45,14 @@ parse(
     // Our error handler
     error_handler_type error_handler(iter, end, std::cerr);
      
+    MultilayerMetadata2 meta;
+    auto data = std::make_pair(net, meta);
     auto const parser_err =
-    with<parser::metadata_ml::data>(std::ref(meta))
+    with<parser::mlpass1::data>(std::ref(data))
     [
         with<error_handler_tag>(std::ref(error_handler))
         [
-            parser::metadata_ml::start
+            parser::mlpass1::start
         ]
     ];
     
