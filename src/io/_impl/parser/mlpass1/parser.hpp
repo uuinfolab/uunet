@@ -15,7 +15,9 @@ namespace mlpass1 {
 bool
 parse(
       std::string const& file_name,
-      MultilayerNetwork* meta);
+      MultilayerNetwork* net,
+      MultilayerMetadata2& meta
+      );
 
 }
 }

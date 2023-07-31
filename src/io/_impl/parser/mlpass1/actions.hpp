@@ -73,7 +73,6 @@ struct layer_def_act
         (void)last;
         auto net = x3::get<data>(ctx).get().first;
         auto& meta = x3::get<data>(ctx).get().second;
-        //auto& meta = x3::get<data>(ctx).get();
         if (meta.is_multiplex)
         {
             if (layer_spec.size() < 2)
@@ -95,7 +94,6 @@ struct layer_def_act
             auto dir = layer_type.is_directed ? EdgeDir::DIRECTED : EdgeDir::UNDIRECTED;
             auto loops = layer_type.allows_loops ? LoopMode::ALLOWED : LoopMode::DISALLOWED;
             l = net->layers()->add(layer_name, dir, loops);
-            std::cout << "Created layer: " << l->name << std::endl;
         }
 
         else
@@ -165,14 +163,13 @@ struct actor_attr_act
         (void)last;
         auto net = x3::get<data>(ctx).get().first;
         auto& meta = x3::get<data>(ctx).get().second;
-        //auto& meta = x3::get<data>(ctx).get();
         if (actor_attr_spec.size()!=2)
             throw core::WrongFormatException("\"" +
                                              actor_attr_spec.at(0) + "...\" attribute name and attribute type expected");
         std::string attr_name = actor_attr_spec.at(0);
         auto attr_type = read_attr_type(actor_attr_spec.at(1));
         net->actors()->attr()->add(attr_name, attr_type);
-        meta.vertex_attributes.push_back(core::Attribute(attr_name, attr_type));
+        meta.actor_attributes.push_back(core::Attribute(attr_name, attr_type));
     }
 };
 
@@ -186,7 +183,6 @@ struct vertex_attr_act
         (void)last;
         auto net = x3::get<data>(ctx).get().first;
         auto& meta = x3::get<data>(ctx).get().second;
-        //auto& meta = x3::get<data>(ctx).get();
         
         if (vertex_attr_spec.size()!=3)
             throw core::WrongFormatException("\"" +
@@ -205,7 +201,7 @@ struct vertex_attr_act
         std::string attr_name = vertex_attr_spec.at(1);
         auto attr_type = read_attr_type(vertex_attr_spec.at(2));
         layer->vertices()->attr()->add(attr_name, attr_type);
-        meta.intralayer_vertex_attributes[layer_name].push_back(core::Attribute(attr_name,attr_type));
+        meta.vertex_attributes[layer_name].push_back(core::Attribute(attr_name,attr_type));
     }
 };
 
@@ -219,7 +215,6 @@ struct edge_attr_act
         (void)last;
         auto net = x3::get<data>(ctx).get().first;
         auto& meta = x3::get<data>(ctx).get().second;
-        //auto& meta = x3::get<data>(ctx).get();
         
         if (edge_attr_spec.size()==2)
         {
@@ -304,9 +299,6 @@ struct actor_act
         (void)last;
         (void)attr;
         (void)ctx;
-        //auto net = x3::get<data>(ctx).get().first;
-        //auto& meta = x3::get<data>(ctx).get().second;
-        //auto& meta = x3::get<data>(ctx).get();
     }
 };
 
@@ -342,7 +334,7 @@ struct vertex_act
             layer->vertices()->add(actor);
         }
         
-        read_attr_values(layer->vertices()->attr(), actor, meta.intralayer_vertex_attributes[layer_name], vertex, 2);
+        read_attr_values(layer->vertices()->attr(), actor, meta.vertex_attributes[layer_name], vertex, 2);
     }
 };
 
@@ -356,7 +348,6 @@ struct edge_act
         (void)last;
         auto net = x3::get<data>(ctx).get().first;
         auto& meta = x3::get<data>(ctx).get().second;
-        //auto& meta = x3::get<data>(ctx).get();
         if (meta.is_multiplex)
         {
             std::string actor_name1 = edge.at(0);
@@ -472,7 +463,7 @@ struct final_act
         (void)attr;
         auto net = x3::get<data>(ctx).get().first;
         auto& meta = x3::get<data>(ctx).get().second;
-        //auto& meta = x3::get<data>(ctx).get();
+        
         // Global edge attributes added to all layers at the end.
         for (auto edge_att: meta.global_edge_attributes)
         {

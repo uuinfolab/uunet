@@ -17,7 +17,9 @@ namespace mlpass1 {
 bool
 parse(
     std::string const& file_name,
-    MultilayerNetwork* net)
+    MultilayerNetwork* net,
+    MultilayerMetadata2& meta
+    )
 {
     std::ifstream fin(file_name);
     
@@ -45,7 +47,6 @@ parse(
     // Our error handler
     error_handler_type error_handler(iter, end, std::cerr);
      
-    MultilayerMetadata2 meta;
     auto data = std::make_pair(net, meta);
     auto const parser_err =
     with<parser::mlpass1::data>(std::ref(data))

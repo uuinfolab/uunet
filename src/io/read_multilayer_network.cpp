@@ -21,18 +21,10 @@ read_multilayer_network2(
 
     // Read metadata
     auto net = std::make_unique<MultilayerNetwork>(name);
-
-    std::cout << uu::net::parser::mlpass1::parse(infile, net.get()) << std::endl;
+    MultilayerMetadata2 meta;
     
+    std::cout << uu::net::parser::mlpass1::parse(infile, net.get(), meta) << std::endl;
     
-    
-    
-    /* Read data (vertices, edges, attribute value(s))
-    read_multilayer_data(net.get(),  meta, infile, separator);
-
-    read_actor_attributes(net.get(),  meta, infile, separator);
-    
-    */
     
     if (align)
     {
