@@ -20,39 +20,6 @@ namespace net {
 namespace parser {
 namespace mlpass2 {
 
-/**
- * Utility function to read ...
- * @param graph_type...
- * @param line_number current line in the input file, for error management
- */
-void
-read_layer_type(
-    const std::string& graph_type,
-    GraphType& meta
-);
-
-/**
- * Utility function to read an attribute definition.
- * @param store attribute store where the attribute values are saved
- * @param id identifier of the object for which the attributes should be read
- * @param attr_types vector with the expected types of attributes
- * @param attr_names vector with the expected names of attributes
- * @param line a vector of strings where the attribute values are stores
- * @param idx the index of the first attribute value in the line vector
- * @param line_number current line in the input file, for error management
- */
-core::AttributeType
-read_attr_type(
-    const std::string& name
-);
-
-/*
-typename MultilayerNetwork::layer_type*
-create_and_get_layer(
-    MultilayerNetwork* net,
-    const std::vector<std::string>& layer_spec
-                     );
-*/
 template <typename ASPtr, typename EPtr>
 void
 read_attr_values(
@@ -62,210 +29,6 @@ read_attr_values(
     const std::vector<std::string>& line,
     size_t from_idx
 );
-
-
-/*
-template <typename G>
-const Vertex*
-read_vertex(
-    G* g,
-    const std::vector<std::string>& fields,
-    size_t from_idx,
-    size_t line_number
-);
-
-template <typename G>
-const Edge*
-read_edge(
-    G* g,
-    const std::vector<std::string>& fields,
-    size_t from_idx,
-    size_t line_number
-);
-
-void
-read_vertex(
-    Network* g,
-    const std::vector<std::string>& fields,
-    const std::vector<core::Attribute>& vertex_attributes,
-    size_t line_number
-);
-
-
-void
-read_edge(
-    Network* g,
-    const std::vector<std::string>& fields,
-    const std::vector<core::Attribute>& edge_attributes,
-    size_t line_number
-);
-
-
-template <typename NET>
-std::unique_ptr<NET>
-read(
-    const std::string& infile,
-    const std::string& name,
-    char separator
-)
-{
-    // Read metadata
-    GraphMetadata meta = read_metadata(infile, ',');
-    EdgeDir dir = meta.features.is_directed?EdgeDir::DIRECTED:EdgeDir::UNDIRECTED;
-
-    // Check metadata consistency (@todo)
-    // create network
-    // and add attributes
-    auto g = std::make_unique<NET>(name, dir, meta.features.allows_loops);
-
-    for (auto attr: meta.vertex_attributes)
-    {
-        g->vertices()->attr()->add(attr.name, attr.type);
-    }
-
-    for (auto attr: meta.edge_attributes)
-    {
-        g->edges()->attr()->add(attr.name, attr.type);
-    }
-
-    // Read data (vertices, edges, attribute values)
-    read_data(g.get(),  meta, infile, separator);
-
-    return g;
-
-}
-
-template <typename G>
-void
-read_data(
-    G* g,
-    GraphMetadata meta,
-    const std::string& infile,
-    char separator
-)
-{
-
-    // PASS 2: read the graph data
-
-    core::CSVReader csv;
-    csv.trim_fields(true);
-    csv.set_field_separator(separator);
-    csv.set_comment("--");
-    csv.open(infile);
-
-    GraphIOFileSection section = GraphIOFileSection::EDGES;
-
-    while (csv.has_next())
-    {
-        std::vector<std::string> fields = csv.get_next();
-        std::string line = csv.get_current_raw_line();
-        // remove trailing spaces
-        line.erase(line.find_last_not_of(" \t")+1);
-        line.erase(0,line.find_first_not_of(" \t"));
-
-
-        if (line.size()==0)
-        {
-            continue;
-        }
-
-
-        // if new section starts here, set the current section and proceed
-        if (new_section_start(line))
-        {
-            section = get_section(line);
-            fields = csv.get_next();
-        }
-
-        switch (section)
-        {
-        case GraphIOFileSection::VERTICES:
-        {
-            read_vertex(g, fields, meta.vertex_attributes, csv.row_num());
-            break;
-        }
-
-        case GraphIOFileSection::EDGES:
-        {
-            read_edge(g, fields, meta.edge_attributes, csv.row_num());
-            break;
-        }
-
-        default:
-            break;
-        }
-    }
-
-}
-
-
-template <typename G>
-const Vertex*
-read_vertex(
-    G* g,
-    const std::vector<std::string>& fields,
-    size_t from_idx,
-    size_t line_number
-)
-{
-    (void)line_number; // attribute not used
-
-    core::assert_not_null(g, "read_vertex", "g");
-
-    std::string vertex_name = fields.at(from_idx);
-
-    auto vertex = g->vertices()->add(vertex_name);
-
-    if (!vertex)
-    {
-        vertex = g->vertices()->get(vertex_name);
-    }
-
-    return vertex;
-}
-
-template <typename G>
-const Edge*
-read_edge(
-    G* g,
-    const std::vector<std::string>& fields,
-    size_t from_idx,
-    size_t line_number
-)
-{
-    (void)line_number; // attribute not used
-
-    core::assert_not_null(g, "read_edge", "g");
-
-    std::string from_vertex = fields.at(from_idx);
-    std::string to_vertex = fields.at(from_idx+1);
-
-    auto vertex1 = g->vertices()->add(from_vertex);
-
-    if (!vertex1)
-    {
-        vertex1 = g->vertices()->get(from_vertex);
-    }
-
-    auto vertex2 = g->vertices()->add(to_vertex);
-
-    if (!vertex2)
-    {
-        vertex2 = g->vertices()->get(to_vertex);
-    }
-
-    auto edge = g->edges()->add(vertex1,vertex2);
-
-    / * @todo check consequences of returning NULL if edge already exists
-    if (!edge)
-    {
-        edge = g->edges()->get(vertex1,vertex2);
-    }
-     * /
-    return edge;
-}
-*/
-
 
 /* This function assumes that all the attribute values are present.
  */
@@ -283,13 +46,17 @@ read_attr_values(
     {
         std::stringstream ss;
         ss << "\"" <<
-        line.at(0);
+           line.at(0);
+
         for (size_t i = 1; i < from_idx; i++)
+        {
             ss << "," << line.at(i);
+        }
+
         ss << "...\" " << attributes.size() << " attribute value(s) expected";
         throw core::WrongFormatException(ss.str());
     }
-    
+
     for (size_t i=from_idx; i<from_idx+attributes.size(); i++)
     {
         switch (attributes.at(i-from_idx).type)
@@ -318,6 +85,5 @@ read_attr_values(
 }
 }
 }
-
 
 #endif

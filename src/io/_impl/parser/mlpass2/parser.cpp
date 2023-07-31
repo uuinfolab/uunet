@@ -8,7 +8,6 @@
 #include <iterator>
 #include <utility>
 
-
 namespace uu {
 namespace net {
 namespace parser {
@@ -19,46 +18,46 @@ parse(
     std::string const& file_name,
     MultilayerNetwork* net,
     MultilayerMetadata2& meta
-    )
+)
 {
     std::ifstream fin(file_name);
-    
+
     if (!fin.is_open())
     {
         std::cout << "failed to open " << file_name << std::endl;
         exit(-1);
     }
-    
+
     fin.unsetf(std::ios::skipws);
-    
+
     typedef std::istreambuf_iterator<char> base_iterator_type;
     typedef boost::spirit::multi_pass<base_iterator_type> multipass_iterator_type;
-    
+
     multipass_iterator_type iter =
-    boost::spirit::make_default_multi_pass(base_iterator_type(fin));
+        boost::spirit::make_default_multi_pass(base_iterator_type(fin));
     multipass_iterator_type end = boost::spirit::make_default_multi_pass(base_iterator_type());
-    
+
     using boost::spirit::x3::ascii::space;
-    
+
     using boost::spirit::x3::with;
     using boost::spirit::x3::error_handler_tag;
     using error_handler_type = boost::spirit::x3::error_handler<multipass_iterator_type>;
-    
+
     // Our error handler
     error_handler_type error_handler(iter, end, std::cerr);
-     
+
     auto data = std::make_pair(net, meta);
     auto const parser_err =
-    with<parser::mlpass2::data_tag>(std::ref(data))
-    [
-        with<error_handler_tag>(std::ref(error_handler))
+        with<parser::mlpass2::data_tag>(std::ref(data))
         [
-            parser::mlpass2::start
-        ]
-    ];
-    
+            with<error_handler_tag>(std::ref(error_handler))
+            [
+                parser::mlpass2::start
+            ]
+        ];
+
     bool r = parse(iter, end, parser_err);
-    
+
     return (r && iter == end);
 }
 
@@ -66,4 +65,3 @@ parse(
 }
 }
 }
-
