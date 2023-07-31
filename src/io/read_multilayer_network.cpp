@@ -4,6 +4,7 @@
 #include "io/read_multilayer_network.hpp"
 #include "io/read_network.hpp"
 #include "io/_impl/parser/mlpass1/parser.hpp"
+#include "io/_impl/parser/mlpass2/parser.hpp"
 
 #include <sstream>
 
@@ -23,8 +24,11 @@ read_multilayer_network2(
     auto net = std::make_unique<MultilayerNetwork>(name);
     MultilayerMetadata2 meta;
     
-    std::cout << uu::net::parser::mlpass1::parse(infile, net.get(), meta) << std::endl;
+    bool res = uu::net::parser::mlpass1::parse(infile, net.get(), meta);
     
+    if (!res) throw core::WrongFormatException("unknown file format error");
+    
+    uu::net::parser::mlpass2::parse(infile, net.get(), meta);
     
     if (align)
     {

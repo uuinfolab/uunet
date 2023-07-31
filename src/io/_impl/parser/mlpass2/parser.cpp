@@ -1,4 +1,4 @@
-#include "io/_impl/parser/mlpass1/parser.hpp"
+#include "io/_impl/parser/mlpass2/parser.hpp"
 
 #include <boost/spirit/include/support_multi_pass.hpp>
 
@@ -12,7 +12,7 @@
 namespace uu {
 namespace net {
 namespace parser {
-namespace mlpass1 {
+namespace mlpass2 {
 
 bool
 parse(
@@ -47,13 +47,13 @@ parse(
     // Our error handler
     error_handler_type error_handler(iter, end, std::cerr);
      
-    auto data = std::make_pair(net, std::ref(meta));
+    auto data = std::make_pair(net, meta);
     auto const parser_err =
-    with<parser::mlpass1::data_tag>(std::ref(data))
+    with<parser::mlpass2::data_tag>(std::ref(data))
     [
         with<error_handler_tag>(std::ref(error_handler))
         [
-            parser::mlpass1::start
+            parser::mlpass2::start
         ]
     ];
     

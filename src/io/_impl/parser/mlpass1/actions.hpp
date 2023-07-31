@@ -24,7 +24,7 @@ namespace mlpass1 {
 // Actions
 
 namespace x3 = boost::spirit::x3;
-struct data;
+struct data_tag;
 
 struct version_act
 {
@@ -50,7 +50,7 @@ struct type_act
         (void)first;
         (void)last;
         (void)ctx;
-        auto& meta = x3::get<data>(ctx).get().second;
+        auto& meta = x3::get<data_tag>(ctx).get().second;
         if (net_type == "multiplex")
         {
             meta.is_multiplex = true;
@@ -71,8 +71,8 @@ struct layer_def_act
     {
         (void)first;
         (void)last;
-        auto net = x3::get<data>(ctx).get().first;
-        auto& meta = x3::get<data>(ctx).get().second;
+        auto net = x3::get<data_tag>(ctx).get().first;
+        auto& meta = x3::get<data_tag>(ctx).get().second;
         if (meta.is_multiplex)
         {
             if (layer_spec.size() < 2)
@@ -161,8 +161,8 @@ struct actor_attr_act
     {
         (void)first;
         (void)last;
-        auto net = x3::get<data>(ctx).get().first;
-        auto& meta = x3::get<data>(ctx).get().second;
+        auto net = x3::get<data_tag>(ctx).get().first;
+        auto& meta = x3::get<data_tag>(ctx).get().second;
         if (actor_attr_spec.size()!=2)
             throw core::WrongFormatException("\"" +
                                              actor_attr_spec.at(0) + "...\" attribute name and attribute type expected");
@@ -170,6 +170,7 @@ struct actor_attr_act
         auto attr_type = read_attr_type(actor_attr_spec.at(1));
         net->actors()->attr()->add(attr_name, attr_type);
         meta.actor_attributes.push_back(core::Attribute(attr_name, attr_type));
+        
     }
 };
 
@@ -181,8 +182,8 @@ struct vertex_attr_act
     {
         (void)first;
         (void)last;
-        auto net = x3::get<data>(ctx).get().first;
-        auto& meta = x3::get<data>(ctx).get().second;
+        auto net = x3::get<data_tag>(ctx).get().first;
+        auto& meta = x3::get<data_tag>(ctx).get().second;
         
         if (vertex_attr_spec.size()!=3)
             throw core::WrongFormatException("\"" +
@@ -213,8 +214,8 @@ struct edge_attr_act
     {
         (void)first;
         (void)last;
-        auto net = x3::get<data>(ctx).get().first;
-        auto& meta = x3::get<data>(ctx).get().second;
+        auto net = x3::get<data_tag>(ctx).get().first;
+        auto& meta = x3::get<data_tag>(ctx).get().second;
         
         if (edge_attr_spec.size()==2)
         {
@@ -287,21 +288,6 @@ struct edge_attr_act
     }
 };
 
-struct actor_act
-{
-    template <typename T, typename It, typename Ctx>
-    inline void
-    on_success(It const& first, It const& last, T& attr, Ctx const& ctx)
-    {
-        // NOTHING IN PHASE 1
-        // NEEDS TO HAVE CREATED THE VERTICES FIRST
-        (void)first;
-        (void)last;
-        (void)attr;
-        (void)ctx;
-    }
-};
-
 struct vertex_act
 {
     template <typename T, typename It, typename Ctx>
@@ -310,9 +296,7 @@ struct vertex_act
     {
         (void)first;
         (void)last;
-        auto net = x3::get<data>(ctx).get().first;
-        auto& meta = x3::get<data>(ctx).get().second;
-        //auto& meta = x3::get<data>(ctx).get();
+        auto net = x3::get<data_tag>(ctx).get().first;
         
         // Get layer (or create it)
         std::string layer_name = vertex.at(1);
@@ -334,7 +318,7 @@ struct vertex_act
             layer->vertices()->add(actor);
         }
         
-        read_attr_values(layer->vertices()->attr(), actor, meta.vertex_attributes[layer_name], vertex, 2);
+        // attributes read in pass 2
     }
 };
 
@@ -346,8 +330,8 @@ struct edge_act
     {
         (void)first;
         (void)last;
-        auto net = x3::get<data>(ctx).get().first;
-        auto& meta = x3::get<data>(ctx).get().second;
+        auto net = x3::get<data_tag>(ctx).get().first;
+        auto& meta = x3::get<data_tag>(ctx).get().second;
         if (meta.is_multiplex)
         {
             std::string actor_name1 = edge.at(0);
@@ -384,7 +368,7 @@ struct edge_act
             if (!e)
                 e = layer->edges()->get(actor1, actor2);
             
-            read_attr_values(layer->edges()->attr(), e, meta.intralayer_edge_attributes[layer_name], edge, 3);
+            // attributes read in pass 2
             
         }
         else // multilayer
@@ -435,7 +419,7 @@ struct edge_act
                 if (!e)
                     e = layer1->edges()->get(actor1, actor2);
                 
-                read_attr_values(layer1->edges()->attr(), e, meta.intralayer_edge_attributes[layer_name1], edge, 4);
+                // attributes read in pass 2
             }
             else {
                 auto iedges = net->interlayer_edges()->get(layer1,layer2);
@@ -446,7 +430,7 @@ struct edge_act
                 if (!e)
                     e = net->interlayer_edges()->get(actor1, layer1, actor2, layer2);
                 
-                read_attr_values(iedges->attr(), e, meta.interlayer_edge_attributes[layer_name1][layer_name2], edge, 4);
+                // attributes read in pass 2
             }
         }
     }
@@ -461,8 +445,8 @@ struct final_act
         (void)first;
         (void)last;
         (void)attr;
-        auto net = x3::get<data>(ctx).get().first;
-        auto& meta = x3::get<data>(ctx).get().second;
+        auto net = x3::get<data_tag>(ctx).get().first;
+        auto& meta = x3::get<data_tag>(ctx).get().second;
         
         // Global edge attributes added to all layers at the end.
         for (auto edge_att: meta.global_edge_attributes)
@@ -477,7 +461,8 @@ struct final_act
             {
                 for (auto layer2: *net->layers())
                 {
-                    
+                    if (layer1 <= layer2)
+                        continue;
                     auto iedges = net->interlayer_edges()->get(layer1,layer2);
                     if (iedges)
                         iedges->attr()->add(edge_att.name, edge_att.type);

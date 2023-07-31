@@ -67,9 +67,8 @@ TEST(io_test, read_multilayer_network)
     test_file << "                     " << std::endl;
     test_file.close();
     
-    auto net = uu::net::read_multilayer_network(test_file_name, "g", ',');
-    auto net2 = uu::net::read_multilayer_network2(test_file_name, "g", ',');
-
+    auto net = uu::net::read_multilayer_network2(test_file_name, "g", ',');
+    
     //std::cout << net->summary() << std::endl;
     auto l1 = net->layers()->get("l1");
     auto l2 = net->layers()->get("l2");
@@ -86,11 +85,11 @@ TEST(io_test, read_multilayer_network)
     EXPECT_EQ("122343242", val2);
     
     auto il_edges = net->interlayer_edges();
-    //auto il_e =
+    auto il_e =
     il_edges->get(v1,l1,v2,l2);
-    //double val2 = il_edges->attr()->get_double(il_e, "attr.name2").value;
-    //EXPECT_EQ(18.0, val2)
-    //        << "wrong attribute value: interlayer edge";
+    double val3 = il_edges->get(l1,l2)->attr()->get_double(il_e, "attr.name2").value;
+    EXPECT_EQ(18.0, val3)
+            << "wrong attribute value: interlayer edge";
 
 
     double dir = il_edges->is_directed(l1, l2);
@@ -148,7 +147,7 @@ TEST(io_test, read_multilayer_network_wrongformat1)
     test_file << "                     " << std::endl;
     test_file.close();
     
-    EXPECT_THROW(uu::net::read_multilayer_network(test_file_name, "g", ','), uu::core::WrongFormatException);
+    EXPECT_THROW(uu::net::read_multilayer_network2(test_file_name, "g", ','), uu::core::WrongFormatException);
 
     std::remove(test_file_name.data());
 }
@@ -200,7 +199,7 @@ TEST(io_test, read_multilayer_network_wrongformat2)
     test_file << "                     " << std::endl;
     test_file.close();
     
-    EXPECT_THROW(uu::net::read_multilayer_network(test_file_name, "g", ','), uu::core::WrongFormatException);
+    EXPECT_THROW(uu::net::read_multilayer_network2(test_file_name, "g", ','), uu::core::WrongFormatException);
 
     std::remove(test_file_name.data());
 }

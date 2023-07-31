@@ -1,5 +1,5 @@
-#ifndef PARSER_MLPASS1_GRAMMAR_HPP
-#define PARSER_MLPASS1_GRAMMAR_HPP
+#ifndef PARSER_MLPASS2_GRAMMAR_HPP
+#define PARSER_MLPASS2_GRAMMAR_HPP
 
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/home/x3.hpp>
@@ -14,7 +14,7 @@
 namespace uu {
 namespace net {
 namespace parser {
-namespace mlpass1 {
+namespace mlpass2 {
 
 using x3::int_;
 using x3::double_;
@@ -31,11 +31,11 @@ using boost::spirit::x3::ascii::char_;
 
 // Associate actions to rules
 
-struct start_id : error_handler, final_act {};
+struct start_id {};
 struct empty_line_id {};
 struct section_id {};
-struct version_id : version_act {};
-struct type_spec_id : type_act {};
+struct version_id {};
+struct type_spec_id {};
 struct actor_attr_list_id {};
 struct vertex_attr_list_id {};
 struct edge_attr_list_id {};
@@ -43,11 +43,11 @@ struct layer_list_id {};
 struct actor_list_id {};
 struct vertex_list_id {};
 struct edge_list_id {};
-struct actor_attr_id : actor_attr_act {};
-struct vertex_attr_id : vertex_attr_act {};
-struct edge_attr_id : edge_attr_act {};
-struct layer_id : layer_def_act {};
-struct actor_id {}; // read in pass 2
+struct actor_attr_id {};
+struct vertex_attr_id {};
+struct edge_attr_id {};
+struct layer_id {};
+struct actor_id : actor_act {};
 struct vertex_id : vertex_act {};
 struct edge_id : edge_act {};
 struct id_id {};
