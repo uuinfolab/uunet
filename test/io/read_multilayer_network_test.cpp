@@ -67,7 +67,7 @@ TEST(io_test, read_multilayer_network)
     test_file << "                     " << std::endl;
     test_file.close();
     
-    auto net = uu::net::read_multilayer_network2(test_file_name, "g", ',');
+    auto net = uu::net::read_multilayer_network(test_file_name, "g");
     
     //std::cout << net->summary() << std::endl;
     auto l1 = net->layers()->get("l1");
@@ -147,7 +147,7 @@ TEST(io_test, read_multilayer_network_wrongformat1)
     test_file << "                     " << std::endl;
     test_file.close();
     
-    EXPECT_THROW(uu::net::read_multilayer_network2(test_file_name, "g", ','), uu::core::WrongFormatException);
+    EXPECT_THROW(uu::net::read_multilayer_network(test_file_name, "g"), uu::core::WrongFormatException);
 
     std::remove(test_file_name.data());
 }
@@ -199,7 +199,7 @@ TEST(io_test, read_multilayer_network_wrongformat2)
     test_file << "                     " << std::endl;
     test_file.close();
     
-    EXPECT_THROW(uu::net::read_multilayer_network2(test_file_name, "g", ','), uu::core::WrongFormatException);
+    EXPECT_THROW(uu::net::read_multilayer_network(test_file_name, "g"), uu::core::WrongFormatException);
 
     std::remove(test_file_name.data());
 }

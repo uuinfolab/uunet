@@ -16,7 +16,7 @@ namespace uu {
 namespace net {
 
 struct MultilayerMetadata
-{
+/*{
     GraphType features;
 
     bool is_multiplex = true;
@@ -33,7 +33,7 @@ struct MultilayerMetadata
 
 
 struct MultilayerMetadata2
-{
+*/{
     bool is_multiplex = true;
 
     std::vector<core::Attribute> actor_attributes;
