@@ -1,10 +1,9 @@
-cmake_minimum_required( VERSION 3.15...3.18 )
+cmake_minimum_required( VERSION 3.15...3.23 )
 
 # Meta information about the project
 #include( "${PROJECT_SOURCE_DIR}/project-meta-info.in" )
 
 set (META_LIBRARY_NAME			"uunet")
-set (META_PROJECT_VERSION_FULL 	"0.9")
 set (META_PROJECT_HOMEPAGE 		"https://github.com/uuinfolab/uunet")
 set (META_PROJECT_DESCRIPTION 	"Network analysis library")
 
@@ -66,7 +65,7 @@ install(
 	${META_LIBRARY_NAME}-config
 	COMPONENT ${META_LIBRARY_NAME}_dev
 	RUNTIME
-		DESTINATION ${CAMKE_INSTALL_BINDIR}
+		DESTINATION ${CMAKE_INSTALL_BINDIR}
 		COMPONENT ${META_LIBRARY_NAME}_rt
 	LIBRARY
 		DESTINATION ${CMAKE_INSTALL_LIBDIR}

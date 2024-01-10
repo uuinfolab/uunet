@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.1...3.15)
+cmake_minimum_required (VERSION 3.1...3.23)
 
 if (${CMAKE_VERSION} VERSION_LESS 3.12)
 	cmake_policy (VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
@@ -9,7 +9,6 @@ project (uunet LANGUAGES C CXX)
 set (PROJECT_VENDOR 			"Matteo Magnani")
 set (PROJECT_CONTACT 			"matteo.magnani@it.uu.se")
 set (PROJECT_URL 			    "https://github.com/uuinfolab/uunet")
-set (PROJECT_DESCRIPTION 		"Network analysis library")
 
 # Setting the project version
 file (READ				"${CMAKE_CURRENT_LIST_DIR}/VERSION" PROJECT_VERSION_FULL)

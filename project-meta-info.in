@@ -1,5 +1,5 @@
 set( META_PROJECT_NAME        		"uunet" )
-set( META_LIBRARY_NAME			    "uunet" )
+set( META_LIBRARY_NAME			"uunet" )
 set( META_PROJECT_DESCRIPTION 		"Network analysis library" )
 set( META_PROJECT_ORGANIZATION 		"Uppsala University Information Laboratory" )
 set( META_PROJECT_HOMEPAGE      	"https://github.com/uuinfolab/uunet" )
