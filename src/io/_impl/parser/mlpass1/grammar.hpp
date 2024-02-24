@@ -240,7 +240,8 @@ auto const edge_def =
     id > ',' > id > ',' > id > *(',' > val % ',') > eol // fourth can also be id, so the grammar is less restrictive
     ;
 auto const id_def =
-    char_("A-Za-z_") > *char_("A-Za-z0-9._")
+    +char_("A-Za-z0-9._")
+    //char_("A-Za-z_") > *char_("A-Za-z0-9._")
     ;
 auto const val_def =
     +char_("A-Za-z0-9._")
