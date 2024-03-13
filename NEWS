@@ -1,3 +1,3 @@
 # version 0.6.3
 
-- 
+- Updated clique percolation: fixed a missing duplicate check (potentially leading to redundant sub-communities being returned) and now automatically discarding directionality if executed on a directed graph.

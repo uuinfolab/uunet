@@ -13,11 +13,22 @@ TEST_F(community_mlalgo_test, mlcpm)
         EXPECT_EQ((size_t) 6, com->size());
     }
     
-    //std::string test_file_name = "data/aucs.mpx";
-    std::string test_file_name = "data/test_dup.txt";
-    std::cout << "reading " << test_file_name << std::endl;
+    // Determinism test
+    /*
+    std::string test_file_name = "data/test_dup_small.txt";
     auto net = uu::net::read_multilayer_network(test_file_name, "g");
+    
     auto c_dup = uu::net::mlcpm(net.get(), 3, 1);
-    std::cout << c->size() << std::endl;
+    size_t num_comm = c_dup->size();
+    
+    size_t num_mistakes = 0;
+    for (int i=0; i<100; i++)
+    {
+        net = uu::net::read_multilayer_network(test_file_name, "g");
+        c_dup = uu::net::mlcpm(net.get(), 3, 1);
+        if (num_comm != c_dup->size()) num_mistakes++;
+    }
+    ASSERT_EQ(0, num_mistakes);
+    */
 }
 
