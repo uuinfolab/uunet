@@ -20,14 +20,23 @@ TEST(core_stores_test, AttributeStore)
     // add attributes
     const uu::core::Attribute *a0, *a1, *a2, *a3, *a4, *a5, *a6, *a7, *a8;
     a0 = attr.add(std::make_unique<uu::core::Attribute>("s_att", uu::core::AttributeType::STRING));
+    EXPECT_EQ(nullptr, a0);
     a1 = attr.add(std::make_unique<uu::core::Attribute>("d_att", uu::core::AttributeType::DOUBLE));
+    EXPECT_EQ(nullptr, a1);
     a2 = attr.add(std::make_unique<uu::core::Attribute>("i_att", uu::core::AttributeType::INTEGER));
+    EXPECT_EQ(nullptr, a2);
     a3 = attr.add(std::make_unique<uu::core::Attribute>("t_att", uu::core::AttributeType::TIME));
+    EXPECT_EQ(nullptr, a3);
     a4 = attr.add(std::make_unique<uu::core::Attribute>("txt_att", uu::core::AttributeType::TEXT));
+    EXPECT_EQ(nullptr, a4);
     a5 = attr.add(std::make_unique<uu::core::Attribute>("s_satt", uu::core::AttributeType::STRINGSET));
+    EXPECT_EQ(nullptr, a5);
     a6 = attr.add(std::make_unique<uu::core::Attribute>("d_satt", uu::core::AttributeType::DOUBLESET));
+    EXPECT_EQ(nullptr, a6);
     a7 = attr.add(std::make_unique<uu::core::Attribute>("i_satt", uu::core::AttributeType::INTEGERSET));
+    EXPECT_EQ(nullptr, a7);
     a8 = attr.add(std::make_unique<uu::core::Attribute>("t_satt", uu::core::AttributeType::TIMESET));
+    EXPECT_EQ(nullptr, a8);
     
     // adding attributes that already exist
     EXPECT_EQ(nullptr,
