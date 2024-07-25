@@ -60,3 +60,4 @@ TEST_F(core_propertymatrix_test, summarization)
             << "Wrong function: simple_matching";
 
 }
+

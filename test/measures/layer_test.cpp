@@ -1,6 +1,7 @@
 #include "./measures_ml.hpp"
 
 #include "measures/layer.hpp"
+#include "io/read_multilayer_network.hpp"
 
 #include <vector>
 
@@ -21,4 +22,5 @@ TEST_F(net_measures_ml_test, pearson_degree)
     
     val = uu::net::pearson_degree(net.get(), l1, l2);
     EXPECT_DOUBLE_EQ(val, 0.0);
+    
 }
