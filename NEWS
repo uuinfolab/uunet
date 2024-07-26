@@ -1,5 +1,13 @@
+# version 0.7
+
+- Added weighted Louvain.
+
 # version 0.6.3
 
 - Updated layer degree correlation: the correlation is now computed on the degree, not the number of neighbours. That is, if a vertex V has two incident edges V -> U and V <- U, its degree with mode INOUT is 2 (it was previously 1, as the neighbour is the same). 
 
 - Updated clique percolation: fixed a missing duplicate check (potentially leading to redundant sub-communities being returned) and now automatically discarding directionality if executed on a directed graph.
+
+#
+
+Started summarising the main changes for each new version.

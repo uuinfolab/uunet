@@ -47,9 +47,19 @@ convert(
         meta->add(v);
     }
 
+    bool weighted = is_weighted(g);
+    
     for (auto e: *g->edges())
     {
-        meta->edge(e->v1, e->v2);
+        if (weighted)
+        {
+            double w = get_weight(g, e);
+            meta->edge(e->v1, e->v2, w);
+        }
+        else 
+        {
+            meta->edge(e->v1, e->v2);
+        }
     }
 
     return meta;
