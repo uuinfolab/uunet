@@ -40,7 +40,6 @@ TEST_F(community_algo_test, louvain_resolution)
     
     auto communities2 = uu::net::louvain(net.get(), .1);
     
-    // Not a test of correctness
     std::cout << "Communities:" << std::endl;
     for (auto com: *communities2)
     {
@@ -53,7 +52,6 @@ TEST_F(community_algo_test, louvain_resolution)
     
     auto communities3 = uu::net::louvain(net.get(), 10.0);
     
-    // Not a test of correctness
     std::cout << "Communities:" << std::endl;
     for (auto com: *communities3)
     {

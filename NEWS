@@ -1,6 +1,8 @@
 # version 0.7
 
-- Added weighted Louvain.
+- Added weighted Louvain and Generalised Louvain. Weighted are automatically considered if present.
+
+- Added resolution parameter to Louvain and Generalised Louvain.
 
 # version 0.6.3
 

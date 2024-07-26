@@ -300,7 +300,8 @@ aggregate(
 
 std::unique_ptr<GMetaNetwork>
 pass(
-    const GMetaNetwork* meta
+    const GMetaNetwork* meta,
+    double gamma
 )
 {
     //std::cout << "PASS" << std::endl;
@@ -445,7 +446,7 @@ pass(
                             auto d1 = w_degree[vertex_layer1];
                             auto d2 = w_degree[vertex_layer2];
 
-                            contribution = A_ij - d1*d2/m[edge_type]/2;
+                            contribution = A_ij - gamma*d1*d2/m[edge_type]/2;
 
                         }
 
@@ -521,7 +522,7 @@ pass(
                         auto d1 = w_degree[vertex_layer1];
                         auto d2 = w_degree[vertex_layer2];
 
-                        contribution = A_ij - d1*d2/m[edge_type]/2;
+                        contribution = A_ij - gamma*d1*d2/m[edge_type]/2;
 
                     }
 
