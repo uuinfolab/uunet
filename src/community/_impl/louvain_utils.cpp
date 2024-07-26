@@ -160,7 +160,8 @@ std::unique_ptr<CommunityStructure<Network>>
 
 std::unique_ptr<MetaNetwork>
 pass(
-    const Network* g
+    const Network* g,
+    double gamma
 )
 {
     //std::cout << "PASS" << std::endl;
@@ -232,7 +233,7 @@ pass(
 
                     double A_ij = e ? get_weight(g, e) : 0;
 
-                    double contribution = A_ij - w_degree.at(v)*w_degree.at(n)/m/2;
+                    double contribution = A_ij - gamma*w_degree.at(v)*w_degree.at(n)/m/2;
 
                     improvement[c] += contribution;
                 }
@@ -252,7 +253,7 @@ pass(
 
                 double A_ij = e ? get_weight(g, e) : 0;
 
-                double contribution = A_ij - w_degree.at(v)*w_degree.at(n)/m/2;
+                double contribution = A_ij - gamma*w_degree.at(v)*w_degree.at(n)/m/2;
 
                 loss += contribution;
             }

@@ -14,14 +14,9 @@ TEST_F(community_mlalgo_test, glouvain2)
     }
 }
 
-/*
-TEST_F(multilayer_community_algorithms_test, glouvain)
+TEST_F(community_mlalgo_test, weighted_glouvain)
 {
-    auto c = uu::net::generalized_louvain<uu::net::MultilayerNetwork,uu::net::Network>(net.get(), 1.0, 1.0, 0);
-
-    for (auto com: *c)
-    {
-        EXPECT_EQ((size_t)6, com->size());
-    }
+    auto c = uu::net::glouvain2(wnet.get(), 1.0);
+    
+    // Not a test of correctness
 }
-*/
