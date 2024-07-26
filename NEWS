@@ -1,3 +1,7 @@
+# version 0.7.1
+
+- Minor modification to external library for CRAN compatibility
+
 # version 0.7
 
 - Added weighted Louvain and Generalised Louvain. Weighted are automatically considered if present.
