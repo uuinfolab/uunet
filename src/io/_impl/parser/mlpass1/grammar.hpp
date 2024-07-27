@@ -25,8 +25,9 @@ using x3::eps;
 using x3::eol;
 using x3::lexeme;
 using x3::skip;
+using x3::punct;
 using x3::blank;
-using x3::ascii::space;
+using x3::space;
 using boost::spirit::x3::ascii::char_;
 
 // Associate actions to rules
@@ -244,7 +245,9 @@ auto const id_def =
     //char_("A-Za-z_") > *char_("A-Za-z0-9._")
     ;
 auto const val_def =
-    +char_("A-Za-z0-9._")
+    x3::no_skip[+(alnum | blank | punct - ',' - '"')]
+    |
+    x3::no_skip['"' > +(alnum | blank | punct - '"') > '"']
     ;
 
 // Bind rules and their properties/definitions

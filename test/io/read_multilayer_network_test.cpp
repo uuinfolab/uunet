@@ -38,8 +38,8 @@ TEST(io_test, read_multilayer_network)
     test_file << "ssn, string          " << std::endl;
     test_file << "                     " << std::endl;
     test_file << "#ACTORS              " << std::endl;
-    test_file << "v1,122343242         " << std::endl;
-    test_file << "v3,122343654         " << std::endl;
+    test_file << "v1,1223/43 242" << std::endl;
+    test_file << "v3,\"122 3-4,3654\"" << std::endl;
     test_file << "                     " << std::endl;
     test_file << "#VERTEX ATTRIBUTES   " << std::endl;
     test_file << "l2,day,string        " << std::endl;
@@ -52,18 +52,18 @@ TEST(io_test, read_multilayer_network)
     test_file << "attr.name2,numeric   " << std::endl;
     test_file << "                     " << std::endl;
     test_file << "#EDGES               " << std::endl;
-    test_file << "v1,l1,v2,l1,1,7      " << std::endl;
-    test_file << "v1,l1,v5,l1,2,8      " << std::endl;
-    test_file << "v2,l1,v5,l1,3,9      " << std::endl;
-    test_file << "v2,l1,v3,l1,4,10     " << std::endl;
-    test_file << "v2,l1,v4,l1,5,11     " << std::endl;
-    test_file << "v3,l1,v4,l1,6,12     " << std::endl;
-    test_file << "v1,l1,v4,l2,13       " << std::endl;
-    test_file << "v2,l1,v3,l2,14       " << std::endl;
-    test_file << "v2,l1,v4,l2,15       " << std::endl;
-    test_file << "v3,l1,v3,l2,16       " << std::endl;
-    test_file << "v3,l1,v4,l2,17       " << std::endl;
-    test_file << "v1,l1,v2,l2,18       " << std::endl;
+    test_file << "v1,l1,v2,l1,1,7" << std::endl;
+    test_file << "v1,l1,v5,l1,2,8" << std::endl;
+    test_file << "v2,l1,v5,l1,3,9" << std::endl;
+    test_file << "v2,l1,v3,l1,4,10" << std::endl;
+    test_file << "v2,l1,v4,l1,5,11" << std::endl;
+    test_file << "v3,l1,v4,l1,6,12" << std::endl;
+    test_file << "v1,l1,v4,l2,13" << std::endl;
+    test_file << "v2,l1,v3,l2,14" << std::endl;
+    test_file << "v2,l1,v4,l2,15" << std::endl;
+    test_file << "v3,l1,v3,l2,16" << std::endl;
+    test_file << "v3,l1,v4,l2,17" << std::endl;
+    test_file << "v1,l1,v2,l2,18" << std::endl;
     test_file << "                     " << std::endl;
     test_file.close();
     
@@ -76,13 +76,16 @@ TEST(io_test, read_multilayer_network)
     auto edges = l1->edges();
     auto v1 = vertices->get("v1");
     auto v2 = vertices->get("v2"); // @todo taking from l1, using on l2... change
+    auto v3 = vertices->get("v3");
     auto v5 = vertices->get("v5");
     auto e = edges->get(v1, v5);
     double val1 = edges->attr()->get_double(e, "attr.name2").value;
     EXPECT_EQ(8.0, val1);
     
     std::string val2 = net->actors()->attr()->get_string(v1, "ssn").value;
-    EXPECT_EQ("122343242", val2);
+    EXPECT_EQ("1223/43 242", val2);
+    std::string val2b = net->actors()->attr()->get_string(v3, "ssn").value;
+    EXPECT_EQ("122 3-4,3654", val2b);
     
     auto il_edges = net->interlayer_edges();
     auto il_e =
@@ -128,8 +131,8 @@ TEST(io_test, read_multilayer_network_wrongformat1)
     test_file << "ssn, string          " << std::endl;
     test_file << "                     " << std::endl;
     test_file << "#ACTORS              " << std::endl;
-    test_file << "v1,122343242         " << std::endl;
-    test_file << "v3,122343654         " << std::endl;
+    test_file << "v1,122343242" << std::endl;
+    test_file << "v3,122343654" << std::endl;
     test_file << "                     " << std::endl;
     test_file << "#VERTEX ATTRIBUTES   " << std::endl;
     test_file << "l2,day,string        " << std::endl;
@@ -142,8 +145,8 @@ TEST(io_test, read_multilayer_network_wrongformat1)
     test_file << "attr.name2,numeric   " << std::endl;
     test_file << "                     " << std::endl;
     test_file << "#EDGES               " << std::endl;
-    test_file << "v3,l1,v4,l1,12       " << std::endl;
-    test_file << "v1,l1,v4,l2,13       " << std::endl;
+    test_file << "v3,l1,v4,l1,12" << std::endl;
+    test_file << "v1,l1,v4,l2,13" << std::endl;
     test_file << "                     " << std::endl;
     test_file.close();
     
