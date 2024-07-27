@@ -7,6 +7,51 @@
 
 #include "io/read_multilayer_network.hpp"
 
+TEST(io_test, read_multilayer_network_aucs)
+{
+    // Subset of the AUCS net as released in the R and Python libraries.
+    // Just checking that it can be parsed.
+    
+    // preparing a file to read
+    
+    std::string test_file_name = "net_io_read_graph_file.tmp";
+    
+    std::ofstream test_file;
+    test_file.open(test_file_name);
+
+    if (!test_file.is_open())
+    {
+        FAIL()
+                << "Could not create temporary file. Test not executed.";
+    }
+
+    test_file << "#ACTOR ATTRIBUTES" << std::endl;
+    test_file << "group,STRING" << std::endl;
+    test_file << "role,STRING" << std::endl;
+    test_file << "" << std::endl;
+    test_file << "#ACTORS" << std::endl;
+    test_file << "U102,G1,Associate" << std::endl;
+    test_file << "U139,G2,Postdoc" << std::endl;
+    test_file << "U33,G2/G3,Admin" << std::endl;
+    test_file << "U106,G4,PhD" << std::endl;
+    test_file << "U107,G1,Postdoc" << std::endl;
+    test_file << "U118,G3,Postdoc" << std::endl;
+    test_file << "" << std::endl;
+    test_file << "#EDGES" << std::endl;
+    test_file << "U102,U139,lunch" << std::endl;
+    test_file << "U102,U33,lunch" << std::endl;
+    test_file << "U106,U107,facebook" << std::endl;
+    test_file << "U106,U118,coauthor" << std::endl;
+    test_file << "U106,U119,leisure" << std::endl;
+    test_file << "                     " << std::endl;
+    test_file.close();
+    
+    auto net = uu::net::read_multilayer_network(test_file_name, "g");
+    
+    // cleaning up
+
+    std::remove(test_file_name.data());
+}
 
 TEST(io_test, read_multilayer_network)
 {
@@ -38,8 +83,8 @@ TEST(io_test, read_multilayer_network)
     test_file << "ssn, string          " << std::endl;
     test_file << "                     " << std::endl;
     test_file << "#ACTORS              " << std::endl;
-    test_file << "v1,1223/43 242" << std::endl;
-    test_file << "v3,\"122 3-4,3654\"" << std::endl;
+    test_file << "v1,1223/43 242"        << std::endl;
+    test_file << "v3,\"122 3-4,3654\""   << std::endl;
     test_file << "                     " << std::endl;
     test_file << "#VERTEX ATTRIBUTES   " << std::endl;
     test_file << "l2,day,string        " << std::endl;
@@ -52,18 +97,18 @@ TEST(io_test, read_multilayer_network)
     test_file << "attr.name2,numeric   " << std::endl;
     test_file << "                     " << std::endl;
     test_file << "#EDGES               " << std::endl;
-    test_file << "v1,l1,v2,l1,1,7" << std::endl;
-    test_file << "v1,l1,v5,l1,2,8" << std::endl;
-    test_file << "v2,l1,v5,l1,3,9" << std::endl;
-    test_file << "v2,l1,v3,l1,4,10" << std::endl;
-    test_file << "v2,l1,v4,l1,5,11" << std::endl;
-    test_file << "v3,l1,v4,l1,6,12" << std::endl;
-    test_file << "v1,l1,v4,l2,13" << std::endl;
-    test_file << "v2,l1,v3,l2,14" << std::endl;
-    test_file << "v2,l1,v4,l2,15" << std::endl;
-    test_file << "v3,l1,v3,l2,16" << std::endl;
-    test_file << "v3,l1,v4,l2,17" << std::endl;
-    test_file << "v1,l1,v2,l2,18" << std::endl;
+    test_file << "v1,l1,v2,l1,1,7"       << std::endl;
+    test_file << "v1,l1,v5,l1,2,8"       << std::endl;
+    test_file << "v2,l1,v5,l1,3,9"       << std::endl;
+    test_file << "v2,l1,v3,l1,4,10"      << std::endl;
+    test_file << "v2,l1,v4,l1,5,11"      << std::endl;
+    test_file << "v3,l1,v4,l1,6,12"      << std::endl;
+    test_file << "v1,l1,v4,l2,13"        << std::endl;
+    test_file << "v2,l1,v3,l2,14"        << std::endl;
+    test_file << "v2,l1,v4,l2,15"        << std::endl;
+    test_file << "v3,l1,v3,l2,16"        << std::endl;
+    test_file << "v3,l1,v4,l2,17"        << std::endl;
+    test_file << "v1,l1,v2,l2,18"        << std::endl;
     test_file << "                     " << std::endl;
     test_file.close();
     
