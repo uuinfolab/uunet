@@ -133,54 +133,76 @@ const attr_types_ attr_t;
 
 auto const start_def =
     skip(blank)[
+        (
         +section
+        )
         |
+        (
         edge_list >
         *empty_line
+        )
     ];
 auto const section_def =
+    (
     x3::no_case["#version"] > eol >
     version >
     *empty_line
+    )
     |
+    (
     x3::no_case["#type"] > eol >
     type_spec >
     *empty_line
+    )
     |
+    (
     x3::no_case["#actor attributes"] > eol >
     *empty_line >
     -actor_attr_list >
     *empty_line
+    )
     |
+    (
     x3::no_case["#vertex attributes"] > eol >
     *empty_line >
     -vertex_attr_list >
     *empty_line
+    )
     |
+    (
     x3::no_case["#edge attributes"] > eol >
     *empty_line >
     -edge_attr_list >
     *empty_line
+    )
     |
+    (
     x3::no_case["#layers"] > eol >
     *empty_line >
     -layer_list >
     *empty_line
+    )
     |
+    (
     x3::no_case["#actors"] > eol >
     *empty_line >
     -actor_list >
     *empty_line
+    )
     |
+    (
     x3::no_case["#vertices"] > eol >
     *empty_line >
     -vertex_list >
     *empty_line
+    )
     |
+    (
     x3::no_case["#edges"] > eol >
     *empty_line >
     -edge_list >
     *empty_line
+    )
     ;
 auto const empty_line_def =
     *blank >> eol
