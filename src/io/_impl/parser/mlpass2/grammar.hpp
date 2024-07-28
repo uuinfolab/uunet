@@ -150,37 +150,37 @@ auto const section_def =
     |
     x3::no_case["#actor attributes"] > eol >
     *empty_line >
-    actor_attr_list >
+    -actor_attr_list >
     *empty_line
     |
     x3::no_case["#vertex attributes"] > eol >
     *empty_line >
-    vertex_attr_list >
+    -vertex_attr_list >
     *empty_line
     |
     x3::no_case["#edge attributes"] > eol >
     *empty_line >
-    edge_attr_list >
+    -edge_attr_list >
     *empty_line
     |
     x3::no_case["#layers"] > eol >
     *empty_line >
-    layer_list >
+    -layer_list >
     *empty_line
     |
     x3::no_case["#actors"] > eol >
     *empty_line >
-    actor_list >
+    -actor_list >
     *empty_line
     |
     x3::no_case["#vertices"] > eol >
     *empty_line >
-    vertex_list >
+    -vertex_list >
     *empty_line
     |
     x3::no_case["#edges"] > eol >
     *empty_line >
-    edge_list >
+    -edge_list >
     *empty_line
     ;
 auto const empty_line_def =

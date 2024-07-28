@@ -7,6 +7,10 @@
 #include <fstream>
 #include <iterator>
 #include <utility>
+#include "core/exceptions/FileNotFoundException.hpp"
+#if defined(CRAN)
+    #include <Rcpp.h>
+#endif
 
 namespace uu {
 namespace net {
@@ -24,8 +28,7 @@ parse(
 
     if (!fin.is_open())
     {
-        std::cout << "failed to open " << file_name << std::endl;
-        exit(-1);
+        throw core::FileNotFoundException(file_name);
     }
 
     fin.unsetf(std::ios::skipws);
@@ -44,7 +47,11 @@ parse(
     using error_handler_type = boost::spirit::x3::error_handler<multipass_iterator_type>;
 
     // Our error handler
+    #if defined(CRAN)
+    error_handler_type error_handler(iter, end, Rcpp::Rcout);
+    #else
     error_handler_type error_handler(iter, end, std::cerr);
+    #endif
 
     auto data = std::make_pair(net, std::ref(meta));
     auto const parser_err =

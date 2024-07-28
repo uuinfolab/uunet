@@ -29,6 +29,8 @@ TEST(io_test, read_multilayer_network_aucs)
     test_file << "group,STRING" << std::endl;
     test_file << "role,STRING" << std::endl;
     test_file << "" << std::endl;
+    test_file << "#VERTEX ATTRIBUTES" << std::endl;
+    test_file << "" << std::endl;
     test_file << "#ACTORS" << std::endl;
     test_file << "U102,G1,Associate" << std::endl;
     test_file << "U139,G2,Postdoc" << std::endl;
