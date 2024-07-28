@@ -23,8 +23,8 @@
 #endif
 
 #if defined( BOOST_SP_DISABLE_DEPRECATED )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+//#pragma GCC diagnostic push
+//#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif
 
 namespace boost {
@@ -180,7 +180,7 @@ get_pointer(scoped_ptr<T> const & p) BOOST_SP_NOEXCEPT
 } // namespace boost
 
 #if defined( BOOST_SP_DISABLE_DEPRECATED )
-#pragma GCC diagnostic pop
+//#pragma GCC diagnostic pop
 #endif
 
 #endif // #ifndef BOOST_SMART_PTR_SCOPED_PTR_HPP_INCLUDED

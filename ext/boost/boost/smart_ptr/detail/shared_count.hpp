@@ -42,8 +42,8 @@
 #endif
 
 #if defined( BOOST_SP_DISABLE_DEPRECATED )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+//#pragma GCC diagnostic push
+//#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif
 
 namespace boost {
@@ -792,7 +792,7 @@ shared_count::operator<( weak_count const & r ) const BOOST_SP_NOEXCEPT
 } // namespace boost
 
 #if defined( BOOST_SP_DISABLE_DEPRECATED )
-#pragma GCC diagnostic pop
+//#pragma GCC diagnostic pop
 #endif
 
 #if defined(__BORLANDC__) && !defined(__clang__)

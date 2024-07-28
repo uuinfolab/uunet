@@ -32,8 +32,8 @@ advance_impl(
 
 #if BOOST_WORKAROUND(BOOST_GCC_VERSION, >= 40600)
 // type-limits warning issued below when n is an unsigned integral
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wtype-limits"
+//#pragma GCC diagnostic push
+//#pragma GCC diagnostic ignored "-Wtype-limits"
 #endif
 
 template <typename BidirectionalIterator, typename Distance>
@@ -64,7 +64,7 @@ advance_impl(
 }
 
 #if BOOST_WORKAROUND(BOOST_GCC_VERSION, >= 40600)
-#pragma GCC diagnostic pop
+//#pragma GCC diagnostic pop
 #endif
 
 template <typename RandomAccessIterator, typename Distance>
