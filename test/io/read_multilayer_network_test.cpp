@@ -14,6 +14,7 @@ TEST(io_test, read_multilayer_network_file)
     // preparing a file to read
     //std::string test_file_name = "data/test.ml";
     //auto net = uu::net::read_multilayer_network(test_file_name, "g");
+    //uu::net::write_multilayer_network(net.get(), "__testnet.ml");
     //std::cout << net->layers()->size() << std::endl;
 }
 
