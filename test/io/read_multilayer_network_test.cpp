@@ -6,6 +6,16 @@
 #include <vector>
 
 #include "io/read_multilayer_network.hpp"
+#include "io/write_multilayer_network.hpp"
+
+
+TEST(io_test, read_multilayer_network_file)
+{
+    // preparing a file to read
+    //std::string test_file_name = "data/test.ml";
+    //auto net = uu::net::read_multilayer_network(test_file_name, "g");
+    //std::cout << net->layers()->size() << std::endl;
+}
 
 TEST(io_test, read_multilayer_network_aucs)
 {
@@ -29,7 +39,7 @@ TEST(io_test, read_multilayer_network_aucs)
     test_file << "group,STRING" << std::endl;
     test_file << "role,STRING" << std::endl;
     test_file << "" << std::endl;
-    test_file << "#VERTEX ATTRIBUTES" << std::endl;
+    //test_file << "#VERTEX ATTRIBUTES" << std::endl;
     test_file << "" << std::endl;
     test_file << "#ACTORS" << std::endl;
     test_file << "U102,G1,Associate" << std::endl;
@@ -115,7 +125,8 @@ TEST(io_test, read_multilayer_network)
     test_file.close();
     
     auto net = uu::net::read_multilayer_network(test_file_name, "g");
-    
+    uu::net::write_multilayer_network(net.get(), "__testnet");
+    auto writeread_test = uu::net::read_multilayer_network("__testnet", "gw");
     //std::cout << net->summary() << std::endl;
     auto l1 = net->layers()->get("l1");
     auto l2 = net->layers()->get("l2");

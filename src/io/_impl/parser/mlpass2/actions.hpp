@@ -66,7 +66,6 @@ struct vertex_act
 
         std::string actor_name = vertex.at(0);
         auto actor = net->actors()->get(actor_name);
-
         read_attr_values(layer->vertices()->attr(), actor, meta.vertex_attributes[layer_name], vertex, 2);
     }
 };
