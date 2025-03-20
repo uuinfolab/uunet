@@ -1,3 +1,7 @@
+# version 0.7.3
+
+- Minor modification for CRAN compatibility
+
 # version 0.7.2
 
 - Minor modification to parser for CRAN compatibility
