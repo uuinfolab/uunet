@@ -51,7 +51,7 @@ MemFlowNetwork::calculateFlow(const Network& net, const Config& config)
         return;
     }
 
-    Log() << "Calculating global flow... " << std::flush;
+    //Log() << "Calculating global flow... " << std::flush;
     const MemNetwork& network = static_cast<const MemNetwork&>(net);
 
     // Prepare data in sequence containers for fast access of individual elements
@@ -225,7 +225,7 @@ MemFlowNetwork::calculateFlow(const Network& net, const Config& config)
 
                             if (from >= numStateNodes || to >= numStateNodes)
                             {
-                                Log() << "\nRange error adding dangling links " << from << " " << to << " !!!";
+                                //Log() << "\nRange error adding dangling links " << from << " " << to << " !!!";
                             }
 
                             m_flowLinks.push_back(Link(from, to, linkWeight));
@@ -237,7 +237,7 @@ MemFlowNetwork::calculateFlow(const Network& net, const Config& config)
         }
 
         if (m_flowLinks.size() - numLinks != 0)
-            Log() << "\n  -> Added " << (m_flowLinks.size() - numLinks) << " links to " <<
+            //Log() << "\n  -> Added " << (m_flowLinks.size() - numLinks) << " links to " <<
                   numDanglingStateNodesCompleted << " dangling memory nodes -> " << m_flowLinks.size() << " links" <<
                   "\n  -> " << (numDanglingStateNodes - numDanglingStateNodesCompleted) << " dangling nodes left" << std::flush;
 
@@ -279,9 +279,9 @@ MemFlowNetwork::calculateFlow(const Network& net, const Config& config)
             m_nodeFlow[i] /= sumNodeRank;
         }
 
-        Log() << "\n  -> Using directed links with raw flow.";
-        Log() << "\n  -> Total link weight: " << totalStateLinkWeight << ".";
-        Log() << std::endl;
+        //Log() << "\n  -> Using directed links with raw flow.";
+        //Log() << "\n  -> Total link weight: " << totalStateLinkWeight << ".";
+        //Log() << std::endl;
         return;
     }
 
@@ -330,30 +330,30 @@ MemFlowNetwork::calculateFlow(const Network& net, const Config& config)
 
         if (config.outdirdir)
         {
-            Log() << "\n  -> Counting only ingoing links.";
+            //Log() << "\n  -> Counting only ingoing links.";
         }
 
         else
-            Log() << "\n  -> Using undirected links" << (config.undirdir? ", switching to directed after steady state." :
+            //Log() << "\n  -> Using undirected links" << (config.undirdir? ", switching to directed after steady state." :
                     ".");
 
-        Log() << std::endl;
+        //Log() << std::endl;
         return;
     }
 
-    Log() << "\n  -> Using " << (config.recordedTeleportation ? "recorded" : "unrecorded") << " teleportation to memory " <<
+    //Log() << "\n  -> Using " << (config.recordedTeleportation ? "recorded" : "unrecorded") << " teleportation to memory " <<
           (config.teleportToNodes ? "nodes" : "links") << " " << std::flush;
 
     if (config.originallyUndirected)
     {
         if (config.recordedTeleportation || !config.teleportToNodes)
         {
-            Log() << "(warning: should be unrecorded teleportation to nodes to correspond to undirected flow on physical network) " << std::flush;
+            //Log() << "(warning: should be unrecorded teleportation to nodes to correspond to undirected flow on physical network) " << std::flush;
         }
 
         else
         {
-            Log() << "(corresponding to undirected flow on physical network) " << std::flush;
+            //Log() << "(corresponding to undirected flow on physical network) " << std::flush;
         }
     }
 
@@ -447,7 +447,7 @@ MemFlowNetwork::calculateFlow(const Network& net, const Config& config)
         // Normalize if needed
         if (std::abs(sum - 1.0) > 1.0e-10)
         {
-            Log() << "(Normalizing ranks after " <<	numIterations << " power iterations with error " << (sum-1.0) << ") ";
+            //Log() << "(Normalizing ranks after " <<	numIterations << " power iterations with error " << (sum-1.0) << ") ";
 
             for (unsigned int i = 0; i < numStateNodes; ++i)
             {
@@ -492,7 +492,7 @@ MemFlowNetwork::calculateFlow(const Network& net, const Config& config)
         linkIt->flow *= beta * nodeFlowTmp[linkIt->source] / sumNodeRank;
     }
 
-    Log() << "\n  -> PageRank calculation done in " << numIterations << " iterations." << std::endl;
+    //Log() << "\n  -> PageRank calculation done in " << numIterations << " iterations." << std::endl;
 }
 
 #ifdef NS_INFOMAP
