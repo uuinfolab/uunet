@@ -237,10 +237,12 @@ MemFlowNetwork::calculateFlow(const Network& net, const Config& config)
         }
 
         if (m_flowLinks.size() - numLinks != 0)
+        {
             //Log() << "\n  -> Added " << (m_flowLinks.size() - numLinks) << " links to " <<
-                  numDanglingStateNodesCompleted << " dangling memory nodes -> " << m_flowLinks.size() << " links" <<
-                  "\n  -> " << (numDanglingStateNodes - numDanglingStateNodesCompleted) << " dangling nodes left" << std::flush;
-
+            // numDanglingStateNodesCompleted << " dangling memory nodes -> " << m_flowLinks.size() << " links" <<
+            // "\n  -> " << (numDanglingStateNodes - numDanglingStateNodesCompleted) << " dangling nodes left" << std::flush;
+        }
+        
         totalStateLinkWeight += sumExtraLinkWeight;
         sumUndirLinkWeight = 2 * totalStateLinkWeight - network.totalMemorySelfLinkWeight();
         numLinks = m_flowLinks.size();
@@ -334,15 +336,17 @@ MemFlowNetwork::calculateFlow(const Network& net, const Config& config)
         }
 
         else
+        {
             //Log() << "\n  -> Using undirected links" << (config.undirdir? ", switching to directed after steady state." :
-                    ".");
+            //           ".");
+        }
 
         //Log() << std::endl;
         return;
     }
 
     //Log() << "\n  -> Using " << (config.recordedTeleportation ? "recorded" : "unrecorded") << " teleportation to memory " <<
-          (config.teleportToNodes ? "nodes" : "links") << " " << std::flush;
+       //   (config.teleportToNodes ? "nodes" : "links") << " " << std::flush;
 
     if (config.originallyUndirected)
     {

@@ -1149,11 +1149,11 @@ InfomapBase::findSuperModulesIterativelyFast(PartitionQueue& partitionQueue)
     moduleCodelength = codelength - indexCodelength;
 
     //Log() << std::setprecision(m_config.verboseNumberPrecision);
-    Log(0,0) << "to codelength " << io::toPrecision(hierarchicalCodelength) << " in " <<
-             numTopModules() << " top modules. ";
-    Log(1) << "done! Added " << numLevelsCreated << " levels with " <<
-           numTopModules() << " top modules to codelength: " <<
-           io::toPrecision(hierarchicalCodelength) << " ";
+    //Log(0,0) << "to codelength " << io::toPrecision(hierarchicalCodelength) << " in " <<
+    //         numTopModules() << " top modules. ";
+    //Log(1) << "done! Added " << numLevelsCreated << " levels with " <<
+     //      numTopModules() << " top modules to codelength: " <<
+     //      io::toPrecision(hierarchicalCodelength) << " ";
 
     return numLevelsCreated;
 }
@@ -1416,9 +1416,9 @@ InfomapBase::partition(unsigned int recursiveCount, bool fast, bool forceConsoli
     if (verbose)
     {
         //Log() << "Initiated to codelength " << indexCodelength << " + " << moduleCodelength << " = " <<
-              io::toPrecision(codelength) << " in " << numTopModules() << " modules.\n";
-        Log(0,0) << "Two-level compression: " << std::setprecision(2) << std::flush;
-        Log(1) << "Trying to find modular structure... \n";
+        //      io::toPrecision(codelength) << " in " << numTopModules() << " modules.\n";
+        //Log(0,0) << "Two-level compression: " << std::setprecision(2) << std::flush;
+        //Log(1) << "Trying to find modular structure... \n";
 
         if (m_config.benchmark)
         {
@@ -1603,11 +1603,12 @@ InfomapBase::mergeAndConsolidateRepeatedly(bool forceConsolidation, bool fast)
         indexCodelength = root()->codelength;
         moduleCodelength = codelength - indexCodelength;
 
-        if (verbose)
+        if (verbose) {
             //Log() << numFastLoops << " nodes*loops to codelength " << codelength <<
-                  " (" << indexCodelength << " + " << moduleCodelength << ")" <<
-                  " in " << numTopModules() << " modules. (" << m_numNonTrivialTopModules <<
-                  " non-trivial modules)" << std::endl;
+            // " (" << indexCodelength << " + " << moduleCodelength << ")" <<
+            // " in " << numTopModules() << " modules. (" << m_numNonTrivialTopModules <<
+            // " non-trivial modules)" << std::endl;
+        }
 
         setActiveNetworkFromChildrenOfRoot();
         initModuleOptimization();
@@ -1677,9 +1678,9 @@ InfomapBase::mergeAndConsolidateRepeatedly(bool forceConsolidation, bool fast)
     if (verbose)
     {
         //Log() << (m_isCoarseTune ? "modules" : "nodes") << "*loops to codelength " << codelength <<
-              " (" << indexCodelength << " + " << moduleCodelength << ")" <<
-              " in " << numTopModules() << " modules. (" << m_numNonTrivialTopModules <<
-              " non-trivial modules)" << std::endl;
+          //    " (" << indexCodelength << " + " << moduleCodelength << ")" <<
+              //" in " << numTopModules() << " modules. (" << m_numNonTrivialTopModules <<
+             // " non-trivial modules)" << std::endl;
     }
 
     if (m_subLevel == 0 && m_config.benchmark)
@@ -2516,7 +2517,7 @@ InfomapBase::initPreClustering(bool printResults)
     moduleCodelength = hierarchicalCodelength - indexCodelength;
 
     //Log() << " -> Codelength " << indexCodelength << " + " << moduleCodelength <<
-          " = " << io::toPrecision(hierarchicalCodelength) << std::endl;
+        //  " = " << io::toPrecision(hierarchicalCodelength) << std::endl;
 
     if (!printResults)
     {

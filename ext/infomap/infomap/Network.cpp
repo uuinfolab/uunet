@@ -128,8 +128,8 @@ Network::parsePajekNetwork(std::string filename)
         return;
     }
 
-    //Log() << "Parsing " << (m_config.isUndirected() ? "undirected" : "directed") << " network from file '" <<
-          filename << "'... " << std::flush;
+    //Log() << "Parsing " << (m_config.isUndirected() ? "undirected" : "directed") << " network from file '" //<<
+         // filename << "'... " << std::flush;
 
     SafeInFile input(filename.c_str());
 
@@ -174,8 +174,8 @@ Network::parsePajekNetwork(std::string filename)
 void
 Network::parsePajekNetworkWithoutIOStreams(std::string filename)
 {
-    //Log() << "Parsing " << (m_config.isUndirected() ? "undirected" : "directed") << " network from file '" <<
-          filename << "' (without iostreams)... " << std::flush;
+    //Log() << "Parsing " << (m_config.isUndirected() ? "undirected" : "directed") << " network from file '" //<<
+      //    filename << "' (without iostreams)... " << std::flush;
     FILE* file;
     file = fopen(filename.c_str(), "r");
 
@@ -333,7 +333,7 @@ Network::parseLinkList(std::string filename)
     string buf;
     SafeInFile input(filename.c_str());
     //Log() << "Parsing " << (m_config.directed ? "directed" : "undirected") << " link list from file '" <<
-          filename << "'... " << std::flush;
+        //  filename << "'... " << std::flush;
 
     std::istringstream ss;
 
@@ -363,7 +363,7 @@ void
 Network::parseLinkListWithoutIOStreams(std::string filename)
 {
     //Log() << "Parsing " << (m_config.isUndirected() ? "undirected" : "directed") << " link list from file '" <<
-          filename << "' (without iostreams)... " << std::flush;
+        //  filename << "' (without iostreams)... " << std::flush;
     FILE* file;
     file = fopen(filename.c_str(), "r");
 
@@ -397,7 +397,7 @@ void
 Network::parseGeneralNetwork(std::string filename)
 {
     //Log() << "Parsing network from file '" <<
-          filename << "'... " << std::flush;
+        //  filename << "'... " << std::flush;
 
     SafeInFile input(filename.c_str());
 
@@ -447,7 +447,7 @@ void
 Network::parseBipartiteNetwork(std::string filename)
 {
     //Log() << "Parsing bipartite network from file '" <<
-          filename << "'... " << std::flush;
+       //   filename << "'... " << std::flush;
 
     SafeInFile input(filename.c_str());
 
@@ -1284,10 +1284,10 @@ Network::printParsingResult(bool onlySummary)
         //Log() << "\n ==> " << getParsingResultSummary();
     }
 
-    if (isBipartite())
+    if (isBipartite()) {
         //Log() << "\nBipartite => " << m_numNodes - m_numBipartiteNodes << " ordinary nodes and " <<
-              m_numBipartiteNodes << " feature nodes.";
-
+        //   m_numBipartiteNodes << " feature nodes.";
+    }
     //Log() << std::endl;
 }
 

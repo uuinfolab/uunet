@@ -102,7 +102,7 @@ FlowNetwork::calculateFlow(const Network& network, const Config& config)
 
         else
             //Log() << "\n  -> Using undirected links" << (config.undirdir? ", switching to directed after steady state." :
-                    ".");
+            //        ".");
 
         //Log() << std::endl;
 
@@ -149,7 +149,7 @@ FlowNetwork::calculateFlow(const Network& network, const Config& config)
     }
 
     //Log() << "\n  -> Using " << (config.recordedTeleportation ? "recorded" : "unrecorded") << " teleportation to " <<
-          (config.teleportToNodes ? "nodes" : "links") << ". " << std::flush;
+        //  (config.teleportToNodes ? "nodes" : "links") << ". " << std::flush;
 
 
     // Calculate the teleport rate distribution

@@ -150,7 +150,7 @@ void
 MemNetwork::parseStateNetwork(std::string filename)
 {
     //Log() << "Parsing state network from file '" <<
-          filename << "'... " << std::flush;
+       //   filename << "'... " << std::flush;
 
     SafeInFile input(filename.c_str());
 
@@ -415,7 +415,7 @@ MemNetwork::simulateMemoryToIncompleteData()
     }
 
     //Log() << "\n  -> Found " << m_numStateLinksFound << " trigrams with " <<
-          m_numIncompleteStateLinksFound << " incomplete trigrams.";
+       //   m_numIncompleteStateLinksFound << " incomplete trigrams.";
     //Log() << "\n  -> Patching " << m_numIncompleteStateLinks << " incomplete trigrams.." << std::flush;
 
     // Store all incomplete data on a compact array, with fast mapping from incomplete link source index to the compact index
@@ -520,7 +520,7 @@ MemNetwork::simulateMemoryToIncompleteData()
     }
 
     //Log() << "\r    -> Found " << numExactMatches << " exact, " << numPartialMatches << " partial and " <<
-          numShiftedMatches << " shifted matches.\n" << std::flush;
+      //    numShiftedMatches << " shifted matches.\n" << std::flush;
     linkCount = 0;
     unsigned int numStateLinksBefore = m_numStateLinks;
     unsigned int tempNumStateLinksBefore = 0;
@@ -610,13 +610,13 @@ MemNetwork::simulateMemoryToIncompleteData()
     }
 
     //Log() << "\n  -> " << m_numStateLinks - numStateLinksBefore << " memory links added and " <<
-          m_numAggregatedStateLinks - numAggregatedLinksBefore << " updated:" <<
-          "\n    -> " << numIncompleteLinksWithExactMatches << " incomplete " << io::toPlural("link", numIncompleteLinksWithExactMatches) << " patched by " <<
-          numExactAggregations << " updates and " << numExactLinksAdded << " new links from exact matches." <<
-          "\n    -> " << numIncompleteLinksWithPartialMatches << " incomplete " << io::toPlural("link", numIncompleteLinksWithPartialMatches) << " patched by " <<
-          numPartialAggregations << " updates and " << numPartialLinksAdded << " new links from partial matches." <<
-          "\n    -> " << numIncompleteLinksWithShiftedMatches << " incomplete " << io::toPlural("link", numIncompleteLinksWithShiftedMatches) << " patched by " <<
-          numShiftedAggregations << " updates and " << numShiftedLinksAdded << " new links from shifted matches." << std::flush;
+       //   m_numAggregatedStateLinks - numAggregatedLinksBefore << " updated:" <<
+        //  "\n    -> " << numIncompleteLinksWithExactMatches << " incomplete " << io::toPlural("link", numIncompleteLinksWithExactMatches) << " patched by " <<
+       //   numExactAggregations << " updates and " << numExactLinksAdded << " new links from exact matches." <<
+      //    "\n    -> " << numIncompleteLinksWithPartialMatches << " incomplete " << io::toPlural("link", numIncompleteLinksWithPartialMatches) << " patched by " <<
+      //    numPartialAggregations << " updates and " << numPartialLinksAdded << " new links from partial matches." <<
+    //      "\n    -> " << numIncompleteLinksWithShiftedMatches << " incomplete " << io::toPlural("link", numIncompleteLinksWithShiftedMatches) << " patched by " <<
+     //     numShiftedAggregations << " updates and " << numShiftedLinksAdded << " new links from shifted matches." << std::flush;
 
     if (numIncompleteLinksWithNoMatches != 0)
     {
