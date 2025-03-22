@@ -115,7 +115,7 @@ InfomapBase::run(HierarchicalNetwork& output)
 
     if (m_config.benchmark)
     {
-        Logger::benchmark("calcFlow", root()->codelength, 1, 1, 1);
+        //Logger::benchmark("calcFlow", root()->codelength, 1, 1, 1);
     }
 
     unsigned int numTrials = m_config.numTrials;
@@ -1422,7 +1422,7 @@ InfomapBase::partition(unsigned int recursiveCount, bool fast, bool forceConsoli
 
         if (m_config.benchmark)
         {
-            Logger::benchmark("init", codelength, numTopModules(), numNonTrivialTopModules(), 2);
+            //Logger::benchmark("init", codelength, numTopModules(), numNonTrivialTopModules(), 2);
         }
     }
 
@@ -1644,8 +1644,10 @@ InfomapBase::mergeAndConsolidateRepeatedly(bool forceConsolidation, bool fast)
         ++m_aggregationLevel;
 
         if (m_subLevel == 0 && m_config.benchmark)
-            Logger::benchmark(io::Str() << "lvl" << numLevelsConsolidated, codelength, numTopModules(),
-                              numNonTrivialTopModules(), 2);
+        {
+            // Logger::benchmark(io::Str() << "lvl" << numLevelsConsolidated, codelength, numTopModules(),
+            //numNonTrivialTopModules(), 2);
+        }
 
         if (verbose)
         {
@@ -1685,8 +1687,8 @@ InfomapBase::mergeAndConsolidateRepeatedly(bool forceConsolidation, bool fast)
 
     if (m_subLevel == 0 && m_config.benchmark)
     {
-        Logger::benchmark(io::Str() << "iter" << m_tuneIterationIndex, codelength, numTopModules(),
-                          numNonTrivialTopModules(), 2);
+        //Logger::benchmark(io::Str() << "iter" << m_tuneIterationIndex, codelength, numTopModules(),
+        //numNonTrivialTopModules(), 2);
     }
 
     // Set module indices from a zero-based contiguous set
