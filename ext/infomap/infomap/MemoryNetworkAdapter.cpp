@@ -345,7 +345,7 @@ MemoryNetworkAdapter::readHumanReadableTree(std::string filename)
     if (nodeCount < m_numNodes)
     {
         // Add unassigned nodes to their own modules
-        unsigned int numUnassignedNodes = m_numNodes - nodeCount;
+        //unsigned int numUnassignedNodes = m_numNodes - nodeCount;
         //Log() << "\n -> Warning: " << numUnassignedNodes << " unassigned nodes are put in their own modules.";
     }
 
@@ -405,7 +405,7 @@ MemoryNetworkAdapter::readHumanReadableTree(std::string filename)
 
     if (!header.empty())
     {
-        Log(1) << " -> Parsed header: '" << header << "'" << std::endl;
+        //Log(1) << " -> Parsed header: '" << header << "'" << std::endl;
     }
 }
 
