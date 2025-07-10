@@ -1,6 +1,6 @@
-cmake_minimum_required (VERSION 3.15...3.23)
+cmake_minimum_required (VERSION 4.0)
 
-if (${CMAKE_VERSION} VERSION_LESS 3.15)
+if (${CMAKE_VERSION} VERSION_LESS 4.0)
 	cmake_policy (VERSION ${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION})
 endif()
 
@@ -42,7 +42,7 @@ set (default_build_type "Release")
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 	message (STATUS "Setting build type to '${default_build_type}' as none was specified.")
 	set (CMAKE_BUILD_TYPE "${default_build_type}" CACHE STRING "Choose the type of build." FORCE)
-	
+
 	set_property (CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
@@ -56,7 +56,7 @@ if (MSVC)
 else()
 	set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O2")
 	set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -O3 -ggdb -g3 -Wall -Wextra")
-    
+
 	if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
         add_compile_options("-stdlib=libc++")
     else()
@@ -84,7 +84,7 @@ target_include_directories (uunet PUBLIC
 add_definitions(-DNS_INFOMAP -DONLY_C_LOCALE=1)
 
 # Include public components
-target_include_directories (uunet PUBLIC 
+target_include_directories (uunet PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/libs>
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
 	$<INSTALL_INTERFACE:include>)
@@ -104,12 +104,12 @@ endif()
 option (DOXY "Generate DoxyGen documentation" OFF)
 if (DOXY)
 	find_package (Doxygen)
-	
+
 	if (DOXYGEN_FOUND)
 		set (DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/uunet.doxyfile)
 		set (DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
 		configure_file (${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
-		
+
 		add_custom_target (doc ALL
 			COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
 			WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}

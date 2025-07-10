@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.15...3.23)
+cmake_minimum_required (VERSION 4.0)
 
 # Meta information about the project
 include( "${PROJECT_SOURCE_DIR}/project-meta-info.in" )

@@ -1,4 +1,4 @@
-# 
+#
 #
 # Downloads GTest and provides a helper macro to add tests. Add make check, as well, which
 # gives output on failed tests without having to set an environment variable.
@@ -11,9 +11,9 @@ if(CMAKE_VERSION VERSION_LESS 3.11)
 
     include(DownloadProject)
     download_project(PROJ                googletest
-		     GIT_REPOSITORY      https://github.com/google/googletest.git
-		     GIT_TAG             v1.14.0
-		     UPDATE_DISCONNECTED 1
+		     GIT_REPOSITORY         https://github.com/google/googletest.git
+		     GIT_TAG                v1.17.0
+		     UPDATE_DISCONNECTED    1
 		     QUIET
     )
 
@@ -24,27 +24,23 @@ if(CMAKE_VERSION VERSION_LESS 3.11)
 
 else()
     include(FetchContent)
+
     FetchContent_Declare(googletest
         GIT_REPOSITORY      https://github.com/google/googletest.git
-        GIT_TAG             v1.14.0)
-    FetchContent_GetProperties(googletest)
-    if(NOT googletest_POPULATED)
-        FetchContent_Populate(googletest)
-        set(CMAKE_SUPPRESS_DEVELOPER_WARNINGS 1 CACHE BOOL "")
-        add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
-        unset(CMAKE_SUPPRESS_DEVELOPER_WARNINGS)
-    endif()
+        GIT_TAG             v1.17.0
+    )
 
+    FetchContent_MakeAvailable(googletest)
 endif()
 
 
 if(CMAKE_CONFIGURATION_TYPES)
-    add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} 
-        --force-new-ctest-process --output-on-failure 
+    add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
+        --force-new-ctest-process --output-on-failure
         --build-config "$<CONFIGURATION>")
 
 else()
-    add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} 
+    add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
         --force-new-ctest-process --output-on-failure)
 
 endif()
@@ -60,7 +56,7 @@ set_target_properties(check PROPERTIES FOLDER "Scripts")
 if(GOOGLE_TEST_INDIVIDUAL)
     if(NOT CMAKE_VERSION VERSION_LESS 3.9)
         include(GoogleTest)
-    
+
 else()
     	    set(GOOGLE_TEST_INDIVIDUAL OFF)
     endif()
@@ -70,24 +66,24 @@ endif()
 # Target must already exist
 #macro(add_gtest TESTNAME)
 #    target_link_libraries(${TESTNAME} PUBLIC gtest gmock gtest_main)
-#    
+#
 #    if(GOOGLE_TEST_INDIVIDUAL)
 #        if(CMAKE_VERSION VERSION_LESS 3.10)
 #            gtest_add_tests(TARGET ${TESTNAME}
 #                            TEST_PREFIX "${TESTNAME}."
 #                            TEST_LIST TmpTestList)
 #            set_tests_properties(${TmpTestList} PROPERTIES FOLDER "Tests")
-#        
+#
 #    	else()
 #            gtest_discover_tests(${TESTNAME}
 #                TEST_PREFIX "${TESTNAME}."
 #                PROPERTIES FOLDER "Tests")
 #        endif()
-#    
+#
 #    else()
 #        add_test(${TESTNAME} ${TESTNAME})
 #        set_target_properties(${TESTNAME} PROPERTIES FOLDER "Tests")
-#    
+#
 #    endif()
 #
 #endmacro()
@@ -131,7 +127,7 @@ mark_as_advanced(
 
 set_target_properties(
     gtest
-    gtest_main 
-    gmock 
+    gtest_main
+    gmock
     gmock_main
     PROPERTIES FOLDER "ext")
