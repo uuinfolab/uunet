@@ -73,13 +73,8 @@ add_library (uunet SHARED ${SOURCES})
 
 # Include private components
 target_include_directories (uunet PUBLIC
-	ext/eclat/eclat/src
-	ext/eclat/tract/src
-	ext/eclat/math/src
-	ext/eclat/util/src
-	ext/eclat/apriori/src
 	ext/infomap
-    ext/boost)
+    	ext/boost)
 
 add_definitions(-DNS_INFOMAP -DONLY_C_LOCALE=1)
 
@@ -149,12 +144,6 @@ install(DIRECTORY "libs/" # source directory
         DESTINATION "include/uunet" # target directory
         FILES_MATCHING # install only matched files
         PATTERN "*.ipp" # select header files
-)
-
-install(DIRECTORY "ext/eclat/" # source directory
-        DESTINATION "include/eclat" # target directory
-        FILES_MATCHING # install only matched files
-        PATTERN "*.h" # select header files
 )
 
 install(DIRECTORY "ext/infomap" # source directory

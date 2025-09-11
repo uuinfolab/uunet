@@ -1,0 +1,72 @@
+#include "gtest/gtest.h"
+
+#include <cstdio>
+#include <iostream>
+#include <fstream>
+
+#include "core/arules/eclat.hpp"
+#include "core/arules/read_transactions.hpp"
+#include "core/arules/print_freq_itemset.hpp"
+
+TEST(core_arules_eclat, eclat)
+{
+    std::string test_file_name = "core_arules_eclat_file.tmp";
+    
+    std::ofstream test_file;
+    test_file.open(test_file_name);
+    if (!test_file.is_open())
+    {
+        FAIL()
+                << "Could not create temporary file. Test not executed.";
+    }
+    test_file << "i1,i2,i3" << std::endl;
+    test_file << "i4,i5,i2,i6" << std::endl;
+    test_file << "i5,i1" << std::endl;
+    test_file << "i6,i5,i1,i2" << std::endl;
+    test_file << "i6,i5,i1,i2" << std::endl;
+    test_file << "i6,i1" << std::endl;
+    test_file << "i6,i5" << std::endl;
+    test_file << "i2,i6" << std::endl;
+    
+    std::unordered_map<size_t,std::string> trans;
+    std::unordered_map<size_t,std::string> items;
+    std::vector<std::vector<size_t>> data;
+    uu::core::read_transactions(test_file_name,trans,items,data);
+    
+    std::vector<uu::core::freq_itemset> freq;
+    std::vector<uu::core::freq_itemset> closed;
+    
+    size_t eclat_min_sup = 2;
+    size_t eclat_min_size = 1;
+    uu::core::eclat(data, freq, closed, eclat_min_sup, eclat_min_size);
+    
+    EXPECT_EQ(freq.size(), (size_t)15);
+    EXPECT_EQ(closed.size(), (size_t)11);
+    
+    size_t min_sup = 10;
+    size_t min_size = 10;
+    size_t max_sup = 0;
+    size_t max_size = 0;
+    for (auto e: freq) {
+        // uu::core::print_freq_itemset(e);
+        if (e.items.size() < min_size) min_size = e.items.size();
+        if (e.items.size() > max_size) max_size = e.items.size();
+        if (e.s < min_sup) min_sup = e.s;
+        if (e.s > max_sup) max_sup = e.s;
+    }
+    EXPECT_EQ(min_sup, (size_t)2);
+    EXPECT_EQ(max_sup, (size_t)6);
+    EXPECT_EQ(min_size, (size_t)1);
+    EXPECT_EQ(max_size, (size_t)4);
+    
+    eclat_min_size = 2;
+    std::vector<uu::core::freq_itemset> freq2;
+    std::vector<uu::core::freq_itemset> closed2;
+    uu::core::eclat(data, freq2, closed2, eclat_min_sup, eclat_min_size);
+    
+    EXPECT_EQ(freq2.size(), (size_t)11);
+    EXPECT_EQ(closed2.size(), (size_t)7);
+    
+    //for (auto e: closed) uu::core::print_freq_itemset(e);
+    std::remove(test_file_name.data());
+}

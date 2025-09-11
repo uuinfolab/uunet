@@ -11,14 +11,10 @@
 #include "objects/EdgeMode.hpp"
 #include "objects/Vertex.hpp"
 
-extern "C" {
-#include <eclat.h>
-}
-
 namespace uu {
 namespace net {
 
-/*  */
+/*
 template <typename M>
 void
 read_layers(
@@ -27,7 +23,6 @@ read_layers(
     FILE* file
 );
 
-/*  */
 template <typename M>
 int
 read_actors(
@@ -36,7 +31,7 @@ read_actors(
     FILE* tidfile
 );
 
-/*  */
+
 template <typename M>
 std::set<std::unique_ptr<PillarCommunity<M>>>
 read_eclat_communities(
@@ -44,6 +39,7 @@ read_eclat_communities(
     FILE* file,
     FILE* tidfile
 );
+*/
 
 /*  */
 template <typename M>

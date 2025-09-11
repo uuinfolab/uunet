@@ -2,7 +2,7 @@
 
 #include "core/utils/string.hpp"
 
-TEST(io_utils_test, string)
+TEST(core_utils_test, string)
 {
 
     std::string s = "An <example> &";
