@@ -14,33 +14,6 @@
 namespace uu {
 namespace net {
 
-/*
-template <typename M>
-void
-read_layers(
-    const M* mnet,
-    PillarCommunity<M>* com,
-    FILE* file
-);
-
-template <typename M>
-int
-read_actors(
-    const M* mnet,
-    PillarCommunity<M>* com,
-    FILE* tidfile
-);
-
-
-template <typename M>
-std::set<std::unique_ptr<PillarCommunity<M>>>
-read_eclat_communities(
-    const M* mnet,
-    FILE* file,
-    FILE* tidfile
-);
-*/
-
 /*  */
 template <typename M>
 std::set<std::unique_ptr<PillarCommunity<M>>>
