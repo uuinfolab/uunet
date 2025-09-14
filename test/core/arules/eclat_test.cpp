@@ -6,7 +6,6 @@
 
 #include "core/arules/eclat.hpp"
 #include "core/arules/read_transactions.hpp"
-#include "core/arules/print_freq_itemset.hpp"
 
 TEST(core_arules_eclat, eclat)
 {
@@ -67,6 +66,6 @@ TEST(core_arules_eclat, eclat)
     EXPECT_EQ(freq2.size(), (size_t)11);
     EXPECT_EQ(closed2.size(), (size_t)7);
     
-    //for (auto e: closed) uu::core::print_freq_itemset(e);
+    //for (auto e: closed) std::cout << e.to_string() << std::endl;
     std::remove(test_file_name.data());
 }
