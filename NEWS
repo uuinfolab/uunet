@@ -1,3 +1,8 @@
+# version 0.8
+
+- Minor modification for CRAN compatibility
+- Removed external library Eclat and added a local implementation
+
 # version 0.7.3
 
 - Minor modification for CRAN compatibility
@@ -12,7 +17,7 @@
 
 # version 0.7
 
-- Added weighted Louvain and Generalised Louvain. Weighted are automatically considered if present.
+- Added weighted Louvain and Generalised Louvain. Weights are automatically considered if present.
 
 - Added resolution parameter to Louvain and Generalised Louvain.
 
