@@ -10,7 +10,7 @@ TEST_F(community_mlalgo_test, mlcpm)
 
     for (auto com: *c)
     {
-        EXPECT_EQ((size_t) 6, com->size());
+        EXPECT_EQ((std::size_t) 6, com->size());
     }
     
     // Determinism test
@@ -19,9 +19,9 @@ TEST_F(community_mlalgo_test, mlcpm)
     auto net = uu::net::read_multilayer_network(test_file_name, "g");
     
     auto c_dup = uu::net::mlcpm(net.get(), 3, 1);
-    size_t num_comm = c_dup->size();
+    std::size_t num_comm = c_dup->size();
     
-    size_t num_mistakes = 0;
+    std::size_t num_mistakes = 0;
     for (int i=0; i<100; i++)
     {
         net = uu::net::read_multilayer_network(test_file_name, "g");

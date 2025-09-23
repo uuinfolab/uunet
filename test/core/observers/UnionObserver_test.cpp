@@ -19,22 +19,22 @@ TEST(core_observers_test, UnionObserver)
     store1.attach(&obs);
     store2.attach(&obs);
 
-    EXPECT_EQ(union_store.size(), (size_t)0);
+    EXPECT_EQ(union_store.size(), (std::size_t)0);
 
     store1.add(p1);
-    EXPECT_EQ(union_store.size(), (size_t)1);
+    EXPECT_EQ(union_store.size(), (std::size_t)1);
     store1.add(p2);
-    EXPECT_EQ(union_store.size(), (size_t)2);
+    EXPECT_EQ(union_store.size(), (std::size_t)2);
     store2.add(p1);
-    EXPECT_EQ(union_store.size(), (size_t)2);
+    EXPECT_EQ(union_store.size(), (std::size_t)2);
     store1.erase(p2.get());
-    EXPECT_EQ(union_store.size(), (size_t)1);
+    EXPECT_EQ(union_store.size(), (std::size_t)1);
     store1.erase(p1.get());
-    EXPECT_EQ(union_store.size(), (size_t)1);
+    EXPECT_EQ(union_store.size(), (std::size_t)1);
     store2.erase(p1.get());
-    EXPECT_EQ(union_store.size(), (size_t)0);
+    EXPECT_EQ(union_store.size(), (std::size_t)0);
     store1.add(p2);
-    EXPECT_EQ(union_store.size(), (size_t)1);
+    EXPECT_EQ(union_store.size(), (std::size_t)1);
 }
 
 

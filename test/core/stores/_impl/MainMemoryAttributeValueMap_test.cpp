@@ -39,7 +39,7 @@ TEST_F(core_stores_impl_attr_test, MainMemoryAttributeValueMap_add_attributes)
 
 TEST_F(core_stores_impl_attr_test, MainMemoryAttributeValueMap_get_attributes)
 {
-    EXPECT_EQ((size_t) 9,
+    EXPECT_EQ((std::size_t) 9,
               att_store->size());
 
     EXPECT_EQ(a1,
@@ -81,10 +81,10 @@ TEST_F(core_stores_impl_attr_test, MainMemoryAttributeValueMap_set_get)
 TEST_F(core_stores_impl_attr_test, MainMemoryAttributeValueMap_add_get)
 {
     // No results
-    EXPECT_EQ(att_store->get_strings(id0, "s_satt").size(), (size_t) 0);
-    EXPECT_EQ(att_store->get_ints(id0, "i_satt").size(), (size_t) 0);
-    EXPECT_EQ(att_store->get_doubles(id0, "d_satt").size(), (size_t) 0);
-    EXPECT_EQ(att_store->get_times(id0, "t_satt").size(), (size_t) 0);
+    EXPECT_EQ(att_store->get_strings(id0, "s_satt").size(), (std::size_t) 0);
+    EXPECT_EQ(att_store->get_ints(id0, "i_satt").size(), (std::size_t) 0);
+    EXPECT_EQ(att_store->get_doubles(id0, "d_satt").size(), (std::size_t) 0);
+    EXPECT_EQ(att_store->get_times(id0, "t_satt").size(), (std::size_t) 0);
 
     // Add first value
     att_store->add_string(id0, "s_satt", "a string");
@@ -101,9 +101,9 @@ TEST_F(core_stores_impl_attr_test, MainMemoryAttributeValueMap_add_get)
 
     // More values
     att_store->add_string(id0, "s_satt", "a string"); // duplicate
-    EXPECT_EQ(att_store->get_strings(id0, "s_satt").size(), (size_t) 1);
+    EXPECT_EQ(att_store->get_strings(id0, "s_satt").size(), (std::size_t) 1);
     att_store->add_string(id0, "s_satt", "another string");
-    EXPECT_EQ(att_store->get_strings(id0, "s_satt").size(), (size_t) 2);
+    EXPECT_EQ(att_store->get_strings(id0, "s_satt").size(), (std::size_t) 2);
 
 
     // Exceptions

@@ -65,9 +65,9 @@ TEST_F(net_io_read_common_test, read_metadata)
             << "wrong feature: DIRECTED";
     EXPECT_TRUE(meta.features.is_weighted)
             << "wrong feature: WEIGHTED";
-    EXPECT_EQ((size_t)2, meta.vertex_attributes.size())
+    EXPECT_EQ((std::size_t)2, meta.vertex_attributes.size())
             << "wrong number of vertex attributes read";
-    EXPECT_EQ((size_t)2, meta.edge_attributes.size())
+    EXPECT_EQ((std::size_t)2, meta.edge_attributes.size())
             << "wrong number of vertex attributes read";
 }
 

@@ -22,7 +22,7 @@ TEST(networks_test, MultiNetwork)
 
     // Here is a multi-edge
 
-    EXPECT_EQ((size_t)2, g->edges()->get(v1, v3).size())
+    EXPECT_EQ((std::size_t)2, g->edges()->get(v1, v3).size())
             << "Multi-edge not stored correctly";
 
     // Adding an edge to a vertex that is not in the graph produces an exception
@@ -35,7 +35,7 @@ TEST(networks_test, MultiNetwork)
 
     // The removal of a vertex propagates to the edges
     g->vertices()->erase(v1);
-    EXPECT_EQ((size_t)0, g->edges()->size())
+    EXPECT_EQ((std::size_t)0, g->edges()->size())
             << "Vertex removal was not propagated to the edges";
 
     // Checking network properties

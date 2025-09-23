@@ -25,6 +25,6 @@ TEST(networks_test, temporal)
 
     add_time(g.get(), e1, uu::core::epoch_to_time(15434));
     add_time(g.get(), e1, uu::core::epoch_to_time(154));
-    EXPECT_EQ(uu::net::get_times(g.get(), e1).size(), (size_t) 2);
-    EXPECT_EQ(uu::net::get_times(g.get(), e2).size(), (size_t) 0);
+    EXPECT_EQ(uu::net::get_times(g.get(), e1).size(), (std::size_t) 2);
+    EXPECT_EQ(uu::net::get_times(g.get(), e2).size(), (std::size_t) 0);
 }

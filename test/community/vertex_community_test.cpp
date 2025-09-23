@@ -16,7 +16,7 @@ TEST(net_community_test, VertexCommunity)
     c.add(v1.get());
     c.add(v2.get());
 
-    EXPECT_EQ((size_t)2, c.size())
+    EXPECT_EQ((std::size_t)2, c.size())
             << "Wrong community size";
 }
 

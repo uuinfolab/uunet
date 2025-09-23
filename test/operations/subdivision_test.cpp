@@ -23,11 +23,11 @@ TEST(operations_test, edge_subdivision_directed)
 
     auto new_vertex = uu::net::edge_subdivision(g.get(), e1, "new_vertex");
 
-    size_t n = g->vertices()->size();
-    size_t m = g->edges()->size();
+    std::size_t n = g->vertices()->size();
+    std::size_t m = g->edges()->size();
 
-    EXPECT_EQ(n, (size_t) 3);
-    EXPECT_EQ(m, (size_t) 2);
+    EXPECT_EQ(n, (std::size_t) 3);
+    EXPECT_EQ(m, (std::size_t) 2);
 
     EXPECT_TRUE(g->edges()->get(v1, new_vertex) != nullptr);
     EXPECT_TRUE(g->edges()->get(new_vertex, v2) != nullptr);
@@ -53,11 +53,11 @@ TEST(operations_test, edge_subdivision_undirected)
 
     auto new_vertex = uu::net::edge_subdivision(g.get(), e1, "new_vertex");
 
-    size_t n = g->vertices()->size();
-    size_t m = g->edges()->size();
+    std::size_t n = g->vertices()->size();
+    std::size_t m = g->edges()->size();
 
-    EXPECT_EQ(n, (size_t) 3);
-    EXPECT_EQ(m, (size_t) 2);
+    EXPECT_EQ(n, (std::size_t) 3);
+    EXPECT_EQ(m, (std::size_t) 2);
 
     EXPECT_TRUE(g->edges()->get(new_vertex, v1) != nullptr);
     EXPECT_TRUE(g->edges()->get(new_vertex, v2) != nullptr);

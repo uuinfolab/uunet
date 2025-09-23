@@ -68,7 +68,7 @@ TEST(networks_test, Network)
 
     g->vertices()->erase(v1);
 
-    EXPECT_EQ((size_t)0, g->edges()->size())
+    EXPECT_EQ((std::size_t)0, g->edges()->size())
             << "Vertex removal was not propagated to the edges";
 
 }

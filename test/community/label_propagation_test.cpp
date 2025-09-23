@@ -10,7 +10,7 @@ TEST_F(community_algo_test, label_propagation)
      // Too random to be predicted
     for (auto com: *communities)
     {
-        EXPECT_EQ((size_t) 3, com->size());
+        EXPECT_EQ((std::size_t) 3, com->size());
     }
      */
 }

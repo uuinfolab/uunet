@@ -13,8 +13,8 @@ TEST(olap_selection_test, Range)
 
     r.eval(5);
 
-    std::vector<size_t> vrange = {1, 2, 3};
-    std::vector<size_t> res;
+    std::vector<std::size_t> vrange = {1, 2, 3};
+    std::vector<std::size_t> res;
 
     while (r.has_next())
     {
@@ -37,8 +37,8 @@ TEST(olap_selection_test, Range_inverse)
 
     r.eval(5);
 
-    std::vector<size_t> vrange = {3, 2, 1};
-    std::vector<size_t> res;
+    std::vector<std::size_t> vrange = {3, 2, 1};
+    std::vector<std::size_t> res;
 
     while (r.has_next())
     {

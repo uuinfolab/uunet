@@ -32,7 +32,7 @@ TEST(core_stores_impl_test, SharedPtrSortedRandomSet_ptr_to_elem)
     EXPECT_FALSE(set.add(e3.get()))
             << "Insertion of an already existing element should return false";
 
-    EXPECT_EQ(set.size(), (size_t)3)
+    EXPECT_EQ(set.size(), (std::size_t)3)
             << "Inserted 3 elements, but size != 3";
 
     EXPECT_TRUE(set.contains(e3.get()))
@@ -54,10 +54,10 @@ TEST(core_stores_impl_test, SharedPtrSortedRandomSet_ptr_to_elem)
     EXPECT_TRUE(set.erase(e2.get()))
             << "Erasing an existing element should return true";
 
-    EXPECT_EQ(set.size(), (size_t)2)
+    EXPECT_EQ(set.size(), (std::size_t)2)
             << "Inserted 3 elements and erased 1, but size != 2";
 
-    size_t number_of_elements = 0;
+    std::size_t number_of_elements = 0;
 
     for (const Elem* el: set)
     {
@@ -67,7 +67,7 @@ TEST(core_stores_impl_test, SharedPtrSortedRandomSet_ptr_to_elem)
         number_of_elements++;
     }
 
-    EXPECT_EQ(number_of_elements, (size_t)2)
+    EXPECT_EQ(number_of_elements, (std::size_t)2)
             << "Iterator does not return the correct number of elements";
 
 }

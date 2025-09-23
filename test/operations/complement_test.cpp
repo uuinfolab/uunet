@@ -25,11 +25,11 @@ TEST(operations_test, graph_complement_directed)
 
     auto c_graph = uu::net::graph_complement(g.get());
 
-    size_t n = c_graph->vertices()->size();
-    size_t m = c_graph->edges()->size();
+    std::size_t n = c_graph->vertices()->size();
+    std::size_t m = c_graph->edges()->size();
 
-    EXPECT_EQ(n, (size_t) 3);
-    EXPECT_EQ(m, (size_t) 7);
+    EXPECT_EQ(n, (std::size_t) 3);
+    EXPECT_EQ(m, (std::size_t) 7);
 
     EXPECT_TRUE(c_graph->edges()->get(v2, v1) != nullptr);
     EXPECT_TRUE(c_graph->edges()->get(v3, v2) != nullptr);
@@ -58,11 +58,11 @@ TEST(operations_test, graph_complement_undirected)
 
     auto c_graph = uu::net::graph_complement(g.get());
 
-    size_t n = c_graph->vertices()->size();
-    size_t m = c_graph->edges()->size();
+    std::size_t n = c_graph->vertices()->size();
+    std::size_t m = c_graph->edges()->size();
 
-    EXPECT_EQ(n, (size_t) 3);
-    EXPECT_EQ(m, (size_t) 4);
+    EXPECT_EQ(n, (std::size_t) 3);
+    EXPECT_EQ(m, (std::size_t) 4);
 
     EXPECT_TRUE(c_graph->edges()->get(v1, v3) != nullptr);
 

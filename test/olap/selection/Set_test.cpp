@@ -13,8 +13,8 @@ TEST(olap_selection_test, Set)
 
     s.eval(5);
 
-    std::vector<size_t> vset = {1, 3};
-    std::vector<size_t> res;
+    std::vector<std::size_t> vset = {1, 3};
+    std::vector<std::size_t> res;
 
     while (s.has_next())
     {

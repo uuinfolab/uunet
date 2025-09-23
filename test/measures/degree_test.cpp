@@ -7,15 +7,15 @@
 
 TEST_F(net_measures_test, minimum_degree)
 {
-    size_t min_d = uu::net::minimum_degree(g.get());
-    EXPECT_EQ(min_d, (size_t) 0);
+    std::size_t min_d = uu::net::minimum_degree(g.get());
+    EXPECT_EQ(min_d, (std::size_t) 0);
 }
 
 
 TEST_F(net_measures_test, maximum_degree)
 {
-    size_t max_d = uu::net::maximum_degree(g.get());
-    EXPECT_EQ(max_d, (size_t) 4);
+    std::size_t max_d = uu::net::maximum_degree(g.get());
+    EXPECT_EQ(max_d, (std::size_t) 4);
 }
 
 
@@ -28,28 +28,28 @@ TEST_F(net_measures_test, average_degree)
 
 TEST_F(net_measures_test, degree_sequence)
 {
-    std::vector<size_t> seq = uu::net::degree_sequence(g.get());
-    std::vector<size_t> true_seq = {4, 2, 2, 2, 1, 1, 1, 1, 0};
+    std::vector<std::size_t> seq = uu::net::degree_sequence(g.get());
+    std::vector<std::size_t> true_seq = {4, 2, 2, 2, 1, 1, 1, 1, 0};
     EXPECT_EQ(seq, true_seq);
 }
 
 TEST_F(net_measures_test, degree_distribution)
 {
-    std::vector<size_t> dist = uu::net::degree_distribution(g.get());
-    std::vector<size_t> true_dist = {1, 4, 3, 0, 1};
+    std::vector<std::size_t> dist = uu::net::degree_distribution(g.get());
+    std::vector<std::size_t> true_dist = {1, 4, 3, 0, 1};
     EXPECT_EQ(dist, true_dist);
 }
 
 TEST_F(net_measures_test, degree)
 {
-    size_t deg1 = uu::net::degree(g.get(), v1);
-    EXPECT_EQ(deg1, (size_t) 0);
+    std::size_t deg1 = uu::net::degree(g.get(), v1);
+    EXPECT_EQ(deg1, (std::size_t) 0);
 
-    size_t deg2 = uu::net::degree(g.get(), v2);
-    EXPECT_EQ(deg2, (size_t) 1);
+    std::size_t deg2 = uu::net::degree(g.get(), v2);
+    EXPECT_EQ(deg2, (std::size_t) 1);
 
-    size_t deg4 = uu::net::degree(g.get(), v4);
-    EXPECT_EQ(deg4, (size_t) 4);
+    std::size_t deg4 = uu::net::degree(g.get(), v4);
+    EXPECT_EQ(deg4, (std::size_t) 4);
 }
 
 
@@ -65,21 +65,21 @@ TEST_F(net_measures_test, loops)
     dir_net->edges()->add(v.get(), v.get());
     und_net->edges()->add(v.get(), v.get());
     
-    size_t deg1 = uu::net::degree(dir_net.get(), v.get(), uu::net::EdgeMode::INOUT);
-    EXPECT_EQ(deg1, (size_t) 2);
+    std::size_t deg1 = uu::net::degree(dir_net.get(), v.get(), uu::net::EdgeMode::INOUT);
+    EXPECT_EQ(deg1, (std::size_t) 2);
 
-    size_t deg2 = uu::net::degree(dir_net.get(), v.get(), uu::net::EdgeMode::IN);
-    EXPECT_EQ(deg2, (size_t) 1);
+    std::size_t deg2 = uu::net::degree(dir_net.get(), v.get(), uu::net::EdgeMode::IN);
+    EXPECT_EQ(deg2, (std::size_t) 1);
 
-    size_t deg3 = uu::net::degree(dir_net.get(), v.get(), uu::net::EdgeMode::OUT);
-    EXPECT_EQ(deg3, (size_t) 1);
+    std::size_t deg3 = uu::net::degree(dir_net.get(), v.get(), uu::net::EdgeMode::OUT);
+    EXPECT_EQ(deg3, (std::size_t) 1);
     
-    size_t deg4 = uu::net::degree(und_net.get(), v.get(), uu::net::EdgeMode::INOUT);
-    EXPECT_EQ(deg4, (size_t) 2);
+    std::size_t deg4 = uu::net::degree(und_net.get(), v.get(), uu::net::EdgeMode::INOUT);
+    EXPECT_EQ(deg4, (std::size_t) 2);
 
-    size_t deg5 = uu::net::degree(und_net.get(), v.get(), uu::net::EdgeMode::IN);
-    EXPECT_EQ(deg5, (size_t) 2);
+    std::size_t deg5 = uu::net::degree(und_net.get(), v.get(), uu::net::EdgeMode::IN);
+    EXPECT_EQ(deg5, (std::size_t) 2);
 
-    size_t deg6 = uu::net::degree(und_net.get(), v.get(), uu::net::EdgeMode::OUT);
-    EXPECT_EQ(deg6, (size_t) 2);
+    std::size_t deg6 = uu::net::degree(und_net.get(), v.get(), uu::net::EdgeMode::OUT);
+    EXPECT_EQ(deg6, (std::size_t) 2);
 }

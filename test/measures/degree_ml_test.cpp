@@ -8,8 +8,8 @@
 TEST_F(net_measures_ml_test, degree)
 {
     std::vector<const uu::net::Network*> l = {l1, l2};
-    size_t degree = uu::net::degree(l.begin(), l.end(), v2);
-    EXPECT_EQ(degree, (size_t) 6);
+    std::size_t degree = uu::net::degree(l.begin(), l.end(), v2);
+    EXPECT_EQ(degree, (std::size_t) 6);
 }
 
 TEST_F(net_measures_ml_test, degree_deviation)

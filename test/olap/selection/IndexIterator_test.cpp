@@ -7,10 +7,10 @@ TEST(olap_selection_test, IndexIterator)
 
     uu::net::IndexIterator idx({{1,2},{0,4},{2}});
 
-    std::vector<size_t> vidx2 = {1, 4, 2};
-    std::vector<size_t> vidx3 = {2, 4, 2};
+    std::vector<std::size_t> vidx2 = {1, 4, 2};
+    std::vector<std::size_t> vidx3 = {2, 4, 2};
 
-    size_t iteration = 0;
+    std::size_t iteration = 0;
 
     for (auto index: idx)
     {

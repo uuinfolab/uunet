@@ -14,7 +14,7 @@ TEST(core_stores_test, ObjectStore)
     store.add(p1.get());
     store.add(p2.get());
     
-    EXPECT_EQ(store.size(), (size_t) 2);
+    EXPECT_EQ(store.size(), (std::size_t) 2);
     EXPECT_EQ(store.contains(p1.get()), true);
     EXPECT_EQ(store.contains("0001"), true);
     EXPECT_EQ(store.get("0002"), p2.get());
@@ -37,12 +37,12 @@ TEST(core_stores_test, ObjectStore)
     
     store.add(p1.get());
     store.add(p4.get());
-    size_t count = 0;
+    std::size_t count = 0;
     for (auto obj: store)
     {
         (void)obj;
         count++;
     }
-    EXPECT_EQ(count, (size_t) 3);
+    EXPECT_EQ(count, (std::size_t) 3);
     
 }

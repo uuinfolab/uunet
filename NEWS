@@ -1,3 +1,11 @@
+# version 0.9.1
+
+- Replaced size_t with std::size_t
+
+# version 0.9
+
+- Used the new implementation of Eclat inside ABACUS.
+
 # version 0.8
 
 - Minor modification for CRAN compatibility

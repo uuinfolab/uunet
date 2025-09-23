@@ -25,10 +25,10 @@ TEST(operations_test, vertex_induced_subgraph)
 
     auto v_sub = uu::net::vertex_induced_subgraph(g.get(), vertices.begin(), vertices.end());
 
-    size_t n = v_sub->vertices()->size();
-    size_t m = v_sub->edges()->size();
-    EXPECT_EQ(n, (size_t) 2);
-    EXPECT_EQ(m, (size_t) 1);
+    std::size_t n = v_sub->vertices()->size();
+    std::size_t m = v_sub->edges()->size();
+    EXPECT_EQ(n, (std::size_t) 2);
+    EXPECT_EQ(m, (std::size_t) 1);
 
 }
 
@@ -54,9 +54,9 @@ TEST(operations_test, edge_induced_subgraph)
 
     auto e_sub = uu::net::edge_induced_subgraph(g.get(), edges.begin(), edges.end());
 
-    size_t n = e_sub->vertices()->size();
-    size_t m = e_sub->edges()->size();
-    EXPECT_EQ(n, (size_t) 2);
-    EXPECT_EQ(m, (size_t) 1);
+    std::size_t n = e_sub->vertices()->size();
+    std::size_t m = e_sub->edges()->size();
+    EXPECT_EQ(n, (std::size_t) 2);
+    EXPECT_EQ(m, (std::size_t) 1);
 
 }

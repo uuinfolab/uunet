@@ -21,7 +21,7 @@ TEST(olap_selection_test, EntryIterator)
 
     uu::core::EntryIterator<uu::core::Cube<int>> it(&c, {{1,2}, {0,2}});
 
-    size_t iteration = 0;
+    std::size_t iteration = 0;
 
     for (auto entry: it)
     {

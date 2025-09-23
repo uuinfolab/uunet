@@ -21,67 +21,67 @@ TEST(olap_operators_test, dimension_change1)
 
     uu::net::extend_dimension(V.get(), "d0", {"m0"}, d1);
 
-    EXPECT_EQ(V->order(), (size_t) 1);
-    EXPECT_EQ(V->size(), (size_t) 3);
+    EXPECT_EQ(V->order(), (std::size_t) 1);
+    EXPECT_EQ(V->size(), (std::size_t) 3);
     
     // B -> B, two vertices preserved
     auto d2 = uu::net::TestDiscretization<uu::net::Vertex>(1, 1);
 
     uu::net::extend_dimension(V.get(), "d1", {"m0"}, d2);
 
-    EXPECT_EQ(V->order(), (size_t) 2);
-    EXPECT_EQ(V->size(), (size_t) 2);
+    EXPECT_EQ(V->order(), (std::size_t) 2);
+    EXPECT_EQ(V->size(), (std::size_t) 2);
     
     // B -> C, two vertices preserved
     auto d3 = uu::net::TestDiscretization<uu::net::Vertex>(2, 2);
 
     uu::net::extend_dimension(V.get(), "d2", {"m0", "m1"}, d3);
 
-    EXPECT_EQ(V->order(), (size_t) 3);
-    EXPECT_EQ(V->size(), (size_t) 2);
+    EXPECT_EQ(V->order(), (std::size_t) 3);
+    EXPECT_EQ(V->size(), (std::size_t) 2);
     auto idx30 = std::vector<std::string>({"m0", "m0", "m0"});
     auto idx31 = std::vector<std::string>({"m0", "m0", "m1"});
-    EXPECT_EQ(V->cell(idx30)->size(), (size_t) 1);
-    EXPECT_EQ(V->cell(idx31)->size(), (size_t) 1);
+    EXPECT_EQ(V->cell(idx30)->size(), (std::size_t) 1);
+    EXPECT_EQ(V->cell(idx31)->size(), (std::size_t) 1);
     
     
     // C -> C, two vertices preserved
     uu::net::extend_dimension(V.get(), "d3", {"m0", "m1"}, d3);
 
-    EXPECT_EQ(V->order(), (size_t) 4);
-    EXPECT_EQ(V->size(), (size_t) 2);
+    EXPECT_EQ(V->order(), (std::size_t) 4);
+    EXPECT_EQ(V->size(), (std::size_t) 2);
     auto idx40 = std::vector<std::string>({"m0", "m0", "m0", "m0"});
     auto idx41 = std::vector<std::string>({"m0", "m0", "m1", "m1"});
-    EXPECT_EQ(V->cell(idx40)->size(), (size_t) 1);
-    EXPECT_EQ(V->cell(idx41)->size(), (size_t) 1);
+    EXPECT_EQ(V->cell(idx40)->size(), (std::size_t) 1);
+    EXPECT_EQ(V->cell(idx41)->size(), (std::size_t) 1);
 
     // CONTRACTIONS
     
     // C -> C
     V->erase_dimension();
 
-    EXPECT_EQ(V->order(), (size_t) 3);
-    EXPECT_EQ(V->size(), (size_t) 2);
-    EXPECT_EQ(V->cell(idx30)->size(), (size_t) 1);
-    EXPECT_EQ(V->cell(idx31)->size(), (size_t) 1);
+    EXPECT_EQ(V->order(), (std::size_t) 3);
+    EXPECT_EQ(V->size(), (std::size_t) 2);
+    EXPECT_EQ(V->cell(idx30)->size(), (std::size_t) 1);
+    EXPECT_EQ(V->cell(idx31)->size(), (std::size_t) 1);
     
     // C -> B
     V->erase_dimension();
     
-    EXPECT_EQ(V->order(), (size_t) 2);
-    EXPECT_EQ(V->size(), (size_t) 2);
+    EXPECT_EQ(V->order(), (std::size_t) 2);
+    EXPECT_EQ(V->size(), (std::size_t) 2);
     
     // B -> B
     V->erase_dimension();
     
-    EXPECT_EQ(V->order(), (size_t) 1);
-    EXPECT_EQ(V->size(), (size_t) 2);
+    EXPECT_EQ(V->order(), (std::size_t) 1);
+    EXPECT_EQ(V->size(), (std::size_t) 2);
     
     // B -> A
     V->erase_dimension();
     
-    EXPECT_EQ(V->order(), (size_t) 0);
-    EXPECT_EQ(V->size(), (size_t) 2);
+    EXPECT_EQ(V->order(), (std::size_t) 0);
+    EXPECT_EQ(V->size(), (std::size_t) 2);
 }
 
 
@@ -99,18 +99,18 @@ TEST(olap_operators_test, dimension_change2)
     auto d = uu::net::TestDiscretization<uu::net::Vertex>(2, 2);
     uu::net::extend_dimension(V.get(), "d1", {"m0", "m1"}, d);
 
-    EXPECT_EQ(V->order(), (size_t) 1);
-    EXPECT_EQ(V->size(), (size_t) 3);
+    EXPECT_EQ(V->order(), (std::size_t) 1);
+    EXPECT_EQ(V->size(), (std::size_t) 3);
     auto idx10 = std::vector<std::string>({"m0"});
     auto idx11 = std::vector<std::string>({"m1"});
-    EXPECT_EQ(V->cell(idx10)->size(), (size_t) 1);
-    EXPECT_EQ(V->cell(idx11)->size(), (size_t) 2);
+    EXPECT_EQ(V->cell(idx10)->size(), (std::size_t) 1);
+    EXPECT_EQ(V->cell(idx11)->size(), (std::size_t) 2);
     
     // CONTRACTION
     
     // C -> A
     V->erase_dimension();
-    EXPECT_EQ(V->order(), (size_t) 0);
-    EXPECT_EQ(V->size(), (size_t) 3);
+    EXPECT_EQ(V->order(), (std::size_t) 0);
+    EXPECT_EQ(V->size(), (std::size_t) 3);
 
 }

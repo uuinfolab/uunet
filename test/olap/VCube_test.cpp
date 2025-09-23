@@ -8,7 +8,7 @@ TEST(olap_VCube_test, set_functionality)
 {
     auto V = std::make_unique<uu::net::VCube>("V");
     auto v1 = V->add("v1"); // v1 has type const Vertex*
-    EXPECT_EQ(V->size(), (size_t) 1);
+    EXPECT_EQ(V->size(), (std::size_t) 1);
     EXPECT_EQ(V->contains(v1), true);
     EXPECT_EQ(V->contains("v1"), true);
     EXPECT_EQ(V->get("v1"), v1);
@@ -21,7 +21,7 @@ TEST(olap_VCube_test, set_functionality)
     auto v2_sharedptr = std::make_shared<const uu::net::Vertex>("v2");
     auto v2 = v2_sharedptr.get();
     EXPECT_EQ(V->add(v2), v2);
-    EXPECT_EQ(V->size(), (size_t) 1);
+    EXPECT_EQ(V->size(), (std::size_t) 1);
 }
 
 TEST(olap_VCube_test, attribute_functionality)
@@ -55,8 +55,8 @@ TEST(olap_VCube_test, cube_functionality)
 
     // Cube functionality
 
-    EXPECT_EQ(V->order(), (size_t) 0);
-    EXPECT_EQ(V->dsize(), std::vector<size_t>({}));
+    EXPECT_EQ(V->order(), (std::size_t) 0);
+    EXPECT_EQ(V->dsize(), std::vector<std::size_t>({}));
     EXPECT_EQ(V->dimensions(), std::vector<std::string>({}));
     EXPECT_EQ(V->members(), std::vector<std::vector<std::string>>({}));
 
@@ -64,8 +64,8 @@ TEST(olap_VCube_test, cube_functionality)
     V->add_dimension("d1", {"m11", "m12", "m13"});
     V->add_dimension("d2", {"m21", "m22"});
 
-    EXPECT_EQ(V->order(), (size_t) 2);
-    EXPECT_EQ(V->dsize(), std::vector<size_t> ({3, 2}));
+    EXPECT_EQ(V->order(), (std::size_t) 2);
+    EXPECT_EQ(V->dsize(), std::vector<std::size_t> ({3, 2}));
     EXPECT_EQ(V->dimensions(), std::vector<std::string>({"d1", "d2"}));
     std::vector<std::vector<std::string>> m;
     m.push_back(std::vector<std::string>({"m11", "m12", "m13"}));
@@ -75,12 +75,12 @@ TEST(olap_VCube_test, cube_functionality)
     auto index = std::vector<std::string>({"m12", "m21"});
     V->cell(index)->add("v2");
     V->cell(index)->add("v3");
-    EXPECT_EQ(V->size(), (size_t) 3);
+    EXPECT_EQ(V->size(), (std::size_t) 3);
 
     auto v4 = V->add("v4"); // (added to all cells)
-    EXPECT_EQ(V->cell(index)->size(), (size_t) 4); // (i.e., v1, v2, v3, v4)
+    EXPECT_EQ(V->cell(index)->size(), (std::size_t) 4); // (i.e., v1, v2, v3, v4)
     EXPECT_EQ(V->erase(v4), true); // (erased from all cells)
-    EXPECT_EQ(V->cell(index)->size(), (size_t) 3); // (i.e., v1, v2, v3)
+    EXPECT_EQ(V->cell(index)->size(), (std::size_t) 3); // (i.e., v1, v2, v3)
 }
 
 
@@ -92,7 +92,7 @@ TEST(olap_VCube_test, discretization)
     V->add("v1");
 
     V->add_dimension("d0", {"m0"});
-    EXPECT_EQ(V->size(), (size_t) 1);
+    EXPECT_EQ(V->size(), (std::size_t) 1);
 
     // from 0 to 1 cell, discretization, false
 
@@ -102,7 +102,7 @@ TEST(olap_VCube_test, discretization)
     auto d1 = uu::net::UniformDiscretization<uu::net::Vertex>(1, false);
 
     V->add_dimension("d0", {"m0"}, d1);
-    EXPECT_EQ(V->size(), (size_t) 0);
+    EXPECT_EQ(V->size(), (std::size_t) 0);
 
     // from 0 to 1 cell, discretization, true
 
@@ -113,7 +113,7 @@ TEST(olap_VCube_test, discretization)
     auto d2 = uu::net::UniformDiscretization<uu::net::Vertex>(1, true);
 
     V->add_dimension("d0", {"m0"}, d2);
-    EXPECT_EQ(V->size(), (size_t) 1);
+    EXPECT_EQ(V->size(), (std::size_t) 1);
 
     /* ORDER 2 */
 
@@ -122,7 +122,7 @@ TEST(olap_VCube_test, discretization)
     V->add("v1");
     V->add("v2");
     V->add("v3");
-    EXPECT_EQ(V->size(), (size_t) 3);
+    EXPECT_EQ(V->size(), (std::size_t) 3);
 
     auto d3 = CustomVertexDiscretization();
 
@@ -131,9 +131,9 @@ TEST(olap_VCube_test, discretization)
     std::vector<std::string> m00 = {"m0","m0"};
     std::vector<std::string> m01 = {"m0","m1"};
 
-    EXPECT_EQ(V->size(), (size_t) 2);
-    EXPECT_EQ(V->cell(m00)->size(), (size_t) 1);
-    EXPECT_EQ(V->cell(m01)->size(), (size_t) 2);
+    EXPECT_EQ(V->size(), (std::size_t) 2);
+    EXPECT_EQ(V->cell(m00)->size(), (std::size_t) 1);
+    EXPECT_EQ(V->cell(m01)->size(), (std::size_t) 2);
 
     /* ORDER 3 */
 
@@ -144,13 +144,13 @@ TEST(olap_VCube_test, discretization)
     std::vector<std::string> m010 = {"m0","m1","m0"};
     std::vector<std::string> m011 = {"m0","m1","m1"};
 
-    EXPECT_EQ(V->size(), (size_t) 2);
-    EXPECT_EQ(V->cell(m000)->size(), (size_t) 1);
-    EXPECT_EQ(V->cell(m001)->size(), (size_t) 1);
-    EXPECT_EQ(V->cell(m010)->size(), (size_t) 1);
-    EXPECT_EQ(V->cell(m011)->size(), (size_t) 2);
+    EXPECT_EQ(V->size(), (std::size_t) 2);
+    EXPECT_EQ(V->cell(m000)->size(), (std::size_t) 1);
+    EXPECT_EQ(V->cell(m001)->size(), (std::size_t) 1);
+    EXPECT_EQ(V->cell(m010)->size(), (std::size_t) 1);
+    EXPECT_EQ(V->cell(m011)->size(), (std::size_t) 2);
 
     V->cell(m011)->add("v4");
-    EXPECT_EQ(V->size(), (size_t) 3);
+    EXPECT_EQ(V->size(), (std::size_t) 3);
 }
 

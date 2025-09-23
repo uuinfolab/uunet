@@ -16,10 +16,10 @@ TEST(core_stores_impl_test, SortedRandomBag_integer_key)
     EXPECT_TRUE(set.add(2))
             << "Insertion of an already existing element should return true";
 
-    EXPECT_EQ(set.dsize(), (size_t)3)
+    EXPECT_EQ(set.dsize(), (std::size_t)3)
             << "Inserted 3 distinct elements, but dsize != 3";
 
-    EXPECT_EQ(set.size(), (size_t)4)
+    EXPECT_EQ(set.size(), (std::size_t)4)
             << "Inserted 4 elements, but size != 4";
 
     EXPECT_TRUE(set.contains(3))
@@ -41,13 +41,13 @@ TEST(core_stores_impl_test, SortedRandomBag_integer_key)
     EXPECT_TRUE(set.erase(3))
             << "Erasing an existing element should return true";
 
-    EXPECT_EQ(set.size(), (size_t)3)
+    EXPECT_EQ(set.size(), (std::size_t)3)
             << "Inserted 4 elements and erased 1, but size != 3";
 
-    EXPECT_EQ(set.dsize(), (size_t)2)
+    EXPECT_EQ(set.dsize(), (std::size_t)2)
             << "Inserted 4 elements and erased 1, with a duplicate, but size != 2";
 
-    size_t number_of_elements = 0;
+    std::size_t number_of_elements = 0;
 
     for (int el: set)
     {
@@ -57,7 +57,7 @@ TEST(core_stores_impl_test, SortedRandomBag_integer_key)
         number_of_elements++;
     }
 
-    EXPECT_EQ(number_of_elements, (size_t)2)
+    EXPECT_EQ(number_of_elements, (std::size_t)2)
             << "Iterator does not return the correct number of elements";
 
 }

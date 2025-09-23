@@ -14,14 +14,14 @@ class
 
   private:
 
-    size_t pos_;
-    size_t order_;
+    std::size_t pos_;
+    std::size_t order_;
 
   public:
 
     TestDiscretization(
-        size_t pos,
-        size_t order // [1,10]
+        std::size_t pos,
+        std::size_t order // [1,10]
     ) : pos_(pos), order_(order)
     {}
 
@@ -31,7 +31,7 @@ class
     ) const
     {
         auto res = std::vector<bool>(order_, false);
-        size_t p = obj->name[pos_] - '0';
+        std::size_t p = obj->name[pos_] - '0';
         if (p >= order_) return res;
         res[p] = true;
         return res;

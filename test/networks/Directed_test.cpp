@@ -29,7 +29,7 @@ TEST(networks_test, Directed)
 
     EXPECT_EQ(
         g->edges()->size(),
-        (size_t) 2
+        (std::size_t) 2
     );
 
 }

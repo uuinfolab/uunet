@@ -24,23 +24,23 @@ TEST(olap_operators_test, sort)
     auto d3 = uu::net::TestDiscretization<uu::net::Vertex>(2, 3);
     uu::net::extend_dimension(V.get(), "d2", {"m0", "m1", "m2"}, d3);
     
-    EXPECT_EQ(V->order(), (size_t) 3);
-    EXPECT_EQ(V->size(), (size_t) 6);
+    EXPECT_EQ(V->order(), (std::size_t) 3);
+    EXPECT_EQ(V->size(), (std::size_t) 6);
     
-    std::vector<size_t> srt = {0, 2, 1};
+    std::vector<std::size_t> srt = {0, 2, 1};
     V->sort("d0", srt);
     
-    EXPECT_EQ(V->order(), (size_t) 3);
-    EXPECT_EQ(V->size(), (size_t) 6);
-    std::vector<size_t> test1 = {3, 2, 3};
+    EXPECT_EQ(V->order(), (std::size_t) 3);
+    EXPECT_EQ(V->size(), (std::size_t) 6);
+    std::vector<std::size_t> test1 = {3, 2, 3};
     EXPECT_EQ(V->dsize(), test1);
     std::vector<std::string> test2 = {"m0", "m2", "m1"};
     EXPECT_EQ(V->members("d0"), test2);
     
     auto idx101 = std::vector<std::string>({"m1", "m0", "m1"});
     auto idx100 = std::vector<std::string>({"m1", "m0", "m0"});
-    EXPECT_EQ(V->cell(idx101)->size(), (size_t) 0);
-    EXPECT_EQ(V->cell(idx100)->size(), (size_t) 1);
+    EXPECT_EQ(V->cell(idx101)->size(), (std::size_t) 0);
+    EXPECT_EQ(V->cell(idx100)->size(), (std::size_t) 1);
     
     
 }

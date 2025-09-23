@@ -30,10 +30,10 @@ TEST(operations_test, graph_union)
 
     auto u_graph = uu::net::graph_union(g1.get(), g2.get());
 
-    size_t n = u_graph->vertices()->size();
-    size_t m = u_graph->edges()->size();
-    ASSERT_EQ(n, (size_t) 3);
-    ASSERT_EQ(m, (size_t) 3);
+    std::size_t n = u_graph->vertices()->size();
+    std::size_t m = u_graph->edges()->size();
+    ASSERT_EQ(n, (std::size_t) 3);
+    ASSERT_EQ(m, (std::size_t) 3);
 
     // Exception handling
 

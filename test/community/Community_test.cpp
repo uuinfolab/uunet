@@ -17,7 +17,7 @@ TEST(net_community_test, Community)
     c.add(v1.get());
     c.add(v2.get());
 
-    EXPECT_EQ((size_t)2, c.size());
+    EXPECT_EQ((std::size_t)2, c.size());
 }
 
 TEST(net_community_test, CommunityStructure)
@@ -40,15 +40,15 @@ TEST(net_community_test, CommunityStructure)
     c1->add(v2.get());
     c2->add(v2.get());
     
-    EXPECT_EQ((size_t) 2, c1->size());
-    EXPECT_EQ((size_t) 1, c2->size());
+    EXPECT_EQ((std::size_t) 2, c1->size());
+    EXPECT_EQ((std::size_t) 1, c2->size());
     
     // Adding communities to the community structure
     
     com->add(std::move(c1));
     com->add(std::move(c2));
     
-    EXPECT_EQ((size_t) 2, com->size());
+    EXPECT_EQ((std::size_t) 2, com->size());
     
     // Communities for multilayer networks
     
@@ -69,9 +69,9 @@ TEST(net_community_test, CommunityStructure)
     ml_c->add(ml_v1);
     ml_c->add(ml_v2);
     
-    EXPECT_EQ((size_t) 2, ml_c->size());
+    EXPECT_EQ((std::size_t) 2, ml_c->size());
     
     ml_com->add(std::move(ml_c));
     
-    EXPECT_EQ((size_t) 1, ml_com->size());
+    EXPECT_EQ((std::size_t) 1, ml_com->size());
 }

@@ -12,7 +12,7 @@ TEST_F(community_mlalgo_test, flat_nw)
 
     for (auto com: *c)
     {
-        EXPECT_EQ((size_t)6, com->size());
+        EXPECT_EQ((std::size_t)6, com->size());
     }
 }
 
@@ -22,6 +22,6 @@ TEST_F(community_mlalgo_test, flat_ec)
 
     for (auto com: *c)
     {
-        EXPECT_EQ((size_t)6, com->size());
+        EXPECT_EQ((std::size_t)6, com->size());
     }
 }

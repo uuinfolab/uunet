@@ -28,7 +28,7 @@ TEST(networks_test, MultilayerNetwork)
     layer1->vertices()->add(v2);
     layer3->vertices()->add(v2);
 
-    EXPECT_EQ(net->actors()->size(), (size_t) 2);
+    EXPECT_EQ(net->actors()->size(), (std::size_t) 2);
 
     // and edges
 
@@ -47,61 +47,61 @@ TEST(networks_test, MultilayerNetwork)
 
     // neighborhood
 
-    EXPECT_EQ((size_t)1, net->interlayer_edges()->neighbors(layer1, layer3, v1, uu::net::EdgeMode::INOUT)->size())
+    EXPECT_EQ((std::size_t)1, net->interlayer_edges()->neighbors(layer1, layer3, v1, uu::net::EdgeMode::INOUT)->size())
             << "wrong number of undirected interlayer neighbors";
-    EXPECT_EQ((size_t)1, net->interlayer_edges()->neighbors(layer1, layer3, v1, uu::net::EdgeMode::IN)->size())
+    EXPECT_EQ((std::size_t)1, net->interlayer_edges()->neighbors(layer1, layer3, v1, uu::net::EdgeMode::IN)->size())
             << "wrong number of undirected interlayer neighbors";
-    EXPECT_EQ((size_t)1, net->interlayer_edges()->neighbors(layer1, layer3, v1, uu::net::EdgeMode::OUT)->size())
+    EXPECT_EQ((std::size_t)1, net->interlayer_edges()->neighbors(layer1, layer3, v1, uu::net::EdgeMode::OUT)->size())
             << "wrong number of undirected interlayer neighbors";
-    EXPECT_EQ((size_t)0, net->interlayer_edges()->neighbors(layer3, layer1, v1, uu::net::EdgeMode::INOUT)->size())
+    EXPECT_EQ((std::size_t)0, net->interlayer_edges()->neighbors(layer3, layer1, v1, uu::net::EdgeMode::INOUT)->size())
             << "wrong number of undirected interlayer neighbors";
-    EXPECT_EQ((size_t)0, net->interlayer_edges()->neighbors(layer3, layer1, v1, uu::net::EdgeMode::IN)->size())
+    EXPECT_EQ((std::size_t)0, net->interlayer_edges()->neighbors(layer3, layer1, v1, uu::net::EdgeMode::IN)->size())
             << "wrong number of undirected interlayer neighbors";
-    EXPECT_EQ((size_t)0, net->interlayer_edges()->neighbors(layer3, layer1, v1, uu::net::EdgeMode::OUT)->size())
+    EXPECT_EQ((std::size_t)0, net->interlayer_edges()->neighbors(layer3, layer1, v1, uu::net::EdgeMode::OUT)->size())
             << "wrong number of undirected interlayer neighbors";
-    EXPECT_EQ((size_t)1, net->interlayer_edges()->neighbors(layer2, layer3, v1, uu::net::EdgeMode::INOUT)->size())
+    EXPECT_EQ((std::size_t)1, net->interlayer_edges()->neighbors(layer2, layer3, v1, uu::net::EdgeMode::INOUT)->size())
             << "wrong number of directed interlayer neighbors";
-    EXPECT_EQ((size_t)0, net->interlayer_edges()->neighbors(layer2, layer3, v1, uu::net::EdgeMode::IN)->size())
+    EXPECT_EQ((std::size_t)0, net->interlayer_edges()->neighbors(layer2, layer3, v1, uu::net::EdgeMode::IN)->size())
             << "wrong number of directed interlayer neighbors";
-    EXPECT_EQ((size_t)1, net->interlayer_edges()->neighbors(layer2, layer3, v1, uu::net::EdgeMode::OUT)->size())
+    EXPECT_EQ((std::size_t)1, net->interlayer_edges()->neighbors(layer2, layer3, v1, uu::net::EdgeMode::OUT)->size())
             << "wrong number of directed interlayer neighbors";
-    EXPECT_EQ((size_t)1, net->interlayer_edges()->neighbors(layer3, layer2, v2, uu::net::EdgeMode::INOUT)->size())
+    EXPECT_EQ((std::size_t)1, net->interlayer_edges()->neighbors(layer3, layer2, v2, uu::net::EdgeMode::INOUT)->size())
             << "wrong number of directed interlayer neighbors";
-    EXPECT_EQ((size_t)1, net->interlayer_edges()->neighbors(layer3, layer2, v2, uu::net::EdgeMode::IN)->size())
+    EXPECT_EQ((std::size_t)1, net->interlayer_edges()->neighbors(layer3, layer2, v2, uu::net::EdgeMode::IN)->size())
             << "wrong number of directed interlayer neighbors";
-    EXPECT_EQ((size_t)0, net->interlayer_edges()->neighbors(layer3, layer2, v2, uu::net::EdgeMode::OUT)->size())
+    EXPECT_EQ((std::size_t)0, net->interlayer_edges()->neighbors(layer3, layer2, v2, uu::net::EdgeMode::OUT)->size())
             << "wrong number of directed interlayer neighbors";
 
-    EXPECT_EQ((size_t)1, net->interlayer_edges()->incident(layer1, layer3, v1, uu::net::EdgeMode::INOUT)->size())
+    EXPECT_EQ((std::size_t)1, net->interlayer_edges()->incident(layer1, layer3, v1, uu::net::EdgeMode::INOUT)->size())
             << "wrong number of undirected interlayer neighbors";
-    EXPECT_EQ((size_t)1, net->interlayer_edges()->incident(layer1, layer3, v1, uu::net::EdgeMode::IN)->size())
+    EXPECT_EQ((std::size_t)1, net->interlayer_edges()->incident(layer1, layer3, v1, uu::net::EdgeMode::IN)->size())
             << "wrong number of undirected interlayer neighbors";
-    EXPECT_EQ((size_t)1, net->interlayer_edges()->incident(layer1, layer3, v1, uu::net::EdgeMode::OUT)->size())
+    EXPECT_EQ((std::size_t)1, net->interlayer_edges()->incident(layer1, layer3, v1, uu::net::EdgeMode::OUT)->size())
             << "wrong number of undirected interlayer neighbors";
-    EXPECT_EQ((size_t)0, net->interlayer_edges()->incident(layer3, layer1, v1, uu::net::EdgeMode::INOUT)->size())
+    EXPECT_EQ((std::size_t)0, net->interlayer_edges()->incident(layer3, layer1, v1, uu::net::EdgeMode::INOUT)->size())
             << "wrong number of undirected interlayer neighbors";
-    EXPECT_EQ((size_t)0, net->interlayer_edges()->incident(layer3, layer1, v1, uu::net::EdgeMode::IN)->size())
+    EXPECT_EQ((std::size_t)0, net->interlayer_edges()->incident(layer3, layer1, v1, uu::net::EdgeMode::IN)->size())
             << "wrong number of undirected interlayer neighbors";
-    EXPECT_EQ((size_t)0, net->interlayer_edges()->incident(layer3, layer1, v1, uu::net::EdgeMode::OUT)->size())
+    EXPECT_EQ((std::size_t)0, net->interlayer_edges()->incident(layer3, layer1, v1, uu::net::EdgeMode::OUT)->size())
             << "wrong number of undirected interlayer neighbors";
-    EXPECT_EQ((size_t)1, net->interlayer_edges()->incident(layer2, layer3, v1, uu::net::EdgeMode::INOUT)->size())
+    EXPECT_EQ((std::size_t)1, net->interlayer_edges()->incident(layer2, layer3, v1, uu::net::EdgeMode::INOUT)->size())
             << "wrong number of directed interlayer neighbors";
-    EXPECT_EQ((size_t)0, net->interlayer_edges()->incident(layer2, layer3, v1, uu::net::EdgeMode::IN)->size())
+    EXPECT_EQ((std::size_t)0, net->interlayer_edges()->incident(layer2, layer3, v1, uu::net::EdgeMode::IN)->size())
             << "wrong number of directed interlayer neighbors";
-    EXPECT_EQ((size_t)1, net->interlayer_edges()->incident(layer2, layer3, v1, uu::net::EdgeMode::OUT)->size())
+    EXPECT_EQ((std::size_t)1, net->interlayer_edges()->incident(layer2, layer3, v1, uu::net::EdgeMode::OUT)->size())
             << "wrong number of directed interlayer neighbors";
-    EXPECT_EQ((size_t)1, net->interlayer_edges()->incident(layer3, layer2, v2, uu::net::EdgeMode::INOUT)->size())
+    EXPECT_EQ((std::size_t)1, net->interlayer_edges()->incident(layer3, layer2, v2, uu::net::EdgeMode::INOUT)->size())
             << "wrong number of directed interlayer neighbors";
-    EXPECT_EQ((size_t)1, net->interlayer_edges()->incident(layer3, layer2, v2, uu::net::EdgeMode::IN)->size())
+    EXPECT_EQ((std::size_t)1, net->interlayer_edges()->incident(layer3, layer2, v2, uu::net::EdgeMode::IN)->size())
             << "wrong number of directed interlayer neighbors";
-    EXPECT_EQ((size_t)0, net->interlayer_edges()->incident(layer3, layer2, v2, uu::net::EdgeMode::OUT)->size())
+    EXPECT_EQ((std::size_t)0, net->interlayer_edges()->incident(layer3, layer2, v2, uu::net::EdgeMode::OUT)->size())
             << "wrong number of directed interlayer neighbors";
 
     
     layer1->vertices()->erase(v1);
-    EXPECT_EQ((size_t)0, net->interlayer_edges()->neighbors(layer3, layer1, v2, uu::net::EdgeMode::INOUT)->size())
+    EXPECT_EQ((std::size_t)0, net->interlayer_edges()->neighbors(layer3, layer1, v2, uu::net::EdgeMode::INOUT)->size())
             << "wrong number of interlayer neighbors after vertex deletion";
-    EXPECT_EQ((size_t)0, net->interlayer_edges()->incident(layer3, layer1, v2, uu::net::EdgeMode::INOUT)->size())
+    EXPECT_EQ((std::size_t)0, net->interlayer_edges()->incident(layer3, layer1, v2, uu::net::EdgeMode::INOUT)->size())
             << "wrong number of interlayer incident edges after vertex deletion";
     
     net->layers()->erase(layer1);

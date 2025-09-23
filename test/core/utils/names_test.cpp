@@ -26,7 +26,7 @@ TEST(io_utils_test, names_iteration)
     auto n3 = *it;
     ASSERT_EQ("pre2", n3);
 
-    for (size_t i = 0; i < 2; i++)
+    for (std::size_t i = 0; i < 2; i++)
     {
         it++;
     }
@@ -47,7 +47,7 @@ TEST(io_utils_test, names_digits)
     auto n0 = *it;
     ASSERT_EQ("pre00", n0);
 
-    for (size_t i = 0; i < 10; i++)
+    for (std::size_t i = 0; i < 10; i++)
     {
         it++;
     }

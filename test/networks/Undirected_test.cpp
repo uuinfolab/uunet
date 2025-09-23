@@ -30,7 +30,7 @@ TEST(networks_test, Undirected)
 
     EXPECT_EQ(
         g->edges()->size(),
-        (size_t) 1
+        (std::size_t) 1
     );
 
     // Directionality

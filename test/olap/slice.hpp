@@ -33,7 +33,7 @@ class olap_operators_slice_test : public ::testing::Test
 
         vcube = std::make_unique<uu::net::VCube>("V");
 
-        for (size_t i = 0; i < 3; i++)
+        for (std::size_t i = 0; i < 3; i++)
         {
             vcube->add_dimension(dimensions[i], members[i]);
         }

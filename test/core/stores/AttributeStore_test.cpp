@@ -46,7 +46,7 @@ TEST(core_stores_test, AttributeStore)
               attr.add(std::make_unique<uu::core::Attribute>("s_att", uu::core::AttributeType::INTEGER)));
 
     // retrieving atttribute
-    EXPECT_EQ((size_t) 9,
+    EXPECT_EQ((std::size_t) 9,
               attr.size());
 
     EXPECT_EQ(a1,
@@ -78,10 +78,10 @@ TEST(core_stores_test, AttributeStore)
 
     // set-based attributes
     
-    EXPECT_EQ(attr.get_strings(p1.get(), "s_satt").size(), (size_t) 0);
-    EXPECT_EQ(attr.get_ints(p1.get(), "i_satt").size(), (size_t) 0);
-    EXPECT_EQ(attr.get_doubles(p1.get(), "d_satt").size(), (size_t) 0);
-    EXPECT_EQ(attr.get_times(p1.get(), "t_satt").size(), (size_t) 0);
+    EXPECT_EQ(attr.get_strings(p1.get(), "s_satt").size(), (std::size_t) 0);
+    EXPECT_EQ(attr.get_ints(p1.get(), "i_satt").size(), (std::size_t) 0);
+    EXPECT_EQ(attr.get_doubles(p1.get(), "d_satt").size(), (std::size_t) 0);
+    EXPECT_EQ(attr.get_times(p1.get(), "t_satt").size(), (std::size_t) 0);
 
     attr.add_string(p1.get(), "s_satt", "a string");
     attr.add_int(p1.get(), "i_satt", 0);
@@ -94,9 +94,9 @@ TEST(core_stores_test, AttributeStore)
     EXPECT_TRUE(attr.get_times(p1.get(), "t_satt").count(t));
 
     attr.add_string(p1.get(), "s_satt", "a string"); // duplicate
-    EXPECT_EQ(attr.get_strings(p1.get(), "s_satt").size(), (size_t) 1);
+    EXPECT_EQ(attr.get_strings(p1.get(), "s_satt").size(), (std::size_t) 1);
     attr.add_string(p1.get(), "s_satt", "another string");
-    EXPECT_EQ(attr.get_strings(p1.get(), "s_satt").size(), (size_t) 2);
+    EXPECT_EQ(attr.get_strings(p1.get(), "s_satt").size(), (std::size_t) 2);
 
 
     // Exceptions

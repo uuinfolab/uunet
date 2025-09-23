@@ -12,7 +12,7 @@ TEST_F(net_measures_w_test, minimum_strength)
 
 TEST_F(net_measures_w_test, maximum_strength)
 {
-    size_t max = uu::net::maximum_strength(g.get());
+    std::size_t max = uu::net::maximum_strength(g.get());
     EXPECT_EQ(max, 1.9);
 }
 
