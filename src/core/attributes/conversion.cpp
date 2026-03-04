@@ -167,7 +167,7 @@ epoch_to_time (
     std::chrono::time_point<std::chrono::system_clock> epoch{};
     std::chrono::seconds secs (seconds_since_epoch);
 
-    return time_point_cast<std::chrono::seconds>(epoch + secs);
+    return std::chrono::time_point_cast<std::chrono::seconds>(epoch + secs);
 
 }
 
@@ -208,7 +208,7 @@ to_time (
     ss >> std::get_time(&t, format.c_str());
 
     auto time = uunet_timegm(&t);
-    return time_point_cast<std::chrono::seconds>(std::chrono::system_clock::from_time_t(time));
+    return std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::from_time_t(time));
 }
 
 
