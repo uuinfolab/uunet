@@ -8,7 +8,7 @@ project (uunet LANGUAGES C CXX)
 
 set (PROJECT_VENDOR 			"Matteo Magnani")
 set (PROJECT_CONTACT 			"matteo.magnani@it.uu.se")
-set (PROJECT_URL 			    "https://github.com/uuinfolab/uunet")
+set (PROJECT_URL 			"https://github.com/uuinfolab/uunet")
 
 # Setting the project version
 file (READ				"${CMAKE_CURRENT_LIST_DIR}/VERSION" PROJECT_VERSION_FULL)
@@ -21,7 +21,7 @@ set (LIBRARY_VERSION_MINOR 		"${PROJECT_VERSION_MINOR}")
 set (LIBRARY_VERSION 			"${LIBRARY_VERSION_MAJOR}.${LIBRARY_VERSION_MINOR}")
 set (LIBRARY_VERSION_FULL 		"${PROJECT_VERSION_FULL}")
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -65,15 +65,12 @@ set (CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 
 # Generate uunet target
-file (GLOB_RECURSE SOURCES ext/eclat/*.c ext/infomap/*.cpp libs/*.cpp src/*.cpp)
+file (GLOB_RECURSE SOURCES ext/eclat/*.c libs/*.cpp src/*.cpp)
 add_library (uunet SHARED ${SOURCES})
 
 # Include private components
 target_include_directories (uunet PUBLIC
-	ext/infomap
-    	ext/boost)
-
-add_definitions(-DNS_INFOMAP -DONLY_C_LOCALE=1)
+	ext/boost)
 
 # Include public components
 target_include_directories (uunet PUBLIC 
@@ -84,11 +81,11 @@ target_include_directories (uunet PUBLIC
 # Compile uunet target
 if (${CMAKE_VERSION} VERSION_LESS 3.8)
 	set_target_properties (uunet PROPERTIES
-		CXX_STANDARD 17
+		CXX_STANDARD 20
 		CXX_STANDARD_REQUIRED YES
 		CXX_EXTENSIONS NO)
 else()
-	target_compile_features (uunet PUBLIC cxx_std_17)
+	target_compile_features (uunet PUBLIC cxx_std_20)
 	set_target_properties (uunet PROPERTIES CXX_EXTENSIONS OFF)
 endif()
 
@@ -141,12 +138,6 @@ install(DIRECTORY "libs/" # source directory
         DESTINATION "include/uunet" # target directory
         FILES_MATCHING # install only matched files
         PATTERN "*.ipp" # select header files
-)
-
-install(DIRECTORY "ext/infomap" # source directory
-        DESTINATION "include/infomap" # target directory
-        FILES_MATCHING # install only matched files
-        PATTERN "*.h" # select header files
 )
 
 # Generate tests only during Debug.
