@@ -1,3 +1,8 @@
+# version 0.10
+
+- moved to c++20 (CRAN compilation requirements)
+- removed infomap (old code not compatible with c++20)
+
 # version 0.9.1
 
 - Replaced size_t with std::size_t
